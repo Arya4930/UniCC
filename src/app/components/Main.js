@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";    
 
 export default function LoginPage() {
+    // --- State Management ---
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [captcha, setCaptcha] = useState("");
@@ -10,33 +11,49 @@ export default function LoginPage() {
     const [cookies, setCookies] = useState([]);
     const [message, setMessage] = useState("");
     const [attendanceData, setAttendanceData] = useState(null);
+    const [marksData, setMarksData] = useState(null);
     const [activeDay, setActiveDay] = useState("MON");
-    const [csrf, setCsrf] = useState("")
+    const [csrf, setCsrf] = useState("");
+    const [isReloading, setIsReloading] = useState(false); // Controls the reload modal
 
-    // Load captcha on mount
+    const isLoggedIn = attendanceData || marksData;
+
+    // --- Effects ---
     useEffect(() => {
-        const storedData = localStorage.getItem("attendance");
-        if (storedData) {
-            setAttendanceData(JSON.parse(storedData));
+        const storedAttendance = localStorage.getItem("attendance");
+        const storedMarks = localStorage.getItem("marks");
+        const storedUsername = localStorage.getItem("username");
+        const storedPassword = localStorage.getItem("password");
+
+        if (storedAttendance) setAttendanceData(JSON.parse(storedAttendance));
+        if (storedMarks) setMarksData(JSON.parse(storedMarks));
+        if (storedUsername) setUsername(storedUsername);
+        if (storedPassword) setPassword(storedPassword);
+
+        if (!storedAttendance && !storedMarks) {
+            loadCaptcha();
         }
-        loadCaptcha();
     }, []);
 
+    // --- API Functions ---
     const loadCaptcha = async () => {
+        setMessage("Loading captcha...");
         try {
             const res = await fetch("/api/getCaptcha");
             const data = await res.json();
             setCookies(Array.isArray(data.cookies) ? data.cookies : [data.cookies]);
             setCaptchaImage(data.captchaBase64);
-            setCsrf(data.csrf)
+            setCsrf(data.csrf);
+            setMessage("");
         } catch (err) {
-            console.error("Failed to load captcha", err);
+            setMessage("Failed to load captcha.");
         }
     };
 
     const handleLogin = async (e) => {
         e.preventDefault();
         if (!cookies.length) return alert("Cookies missing!");
+        setMessage("Logging in and fetching data...");
 
         try {
             const res = await fetch("/api/login", {
@@ -45,43 +62,138 @@ export default function LoginPage() {
                 body: JSON.stringify({ username, password, captcha, cookies, csrf }),
             });
             const data = await res.json();
-            setMessage(data.message || JSON.stringify(data));
-
+            
             if (data.success && data.dashboardHtml) {
-                const attRes = await fetch("/api/fetchAttendance", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
-                });
+                localStorage.setItem("username", username);
+                localStorage.setItem("password", password);
+                
+                const [attRes, marksRes] = await Promise.all([
+                    fetch("/api/fetchAttendance", {
+                        method: "POST", headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+                    }),
+                    fetch("/api/fetchMarks", {
+                        method: "POST", headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+                    })
+                ]);
+
                 const attData = await attRes.json();
-                console.log(attData)
+                const marksDataPayload = await marksRes.json();
+
+                // *** CRITICAL CHANGE: Update data and close modal ***
                 setAttendanceData(attData);
+                setMarksData(marksDataPayload);
                 localStorage.setItem("attendance", JSON.stringify(attData));
+                localStorage.setItem("marks", JSON.stringify(marksDataPayload));
+                
+                setIsReloading(false); // Close the modal on success
+                setMessage("Data reloaded successfully!");
+            } else {
+                 setMessage(data.message || "Login failed. Please try again.");
+                 setCaptcha("");
+                 loadCaptcha(); // Load a new captcha within the modal
             }
         } catch (err) {
-            console.error("Login failed", err);
             setMessage("Login failed, check console.");
         }
     };
 
+    // --- Event Handlers ---
+    const handleReloadRequest = () => {
+        setCaptcha(""); // Clear previous captcha
+        setIsReloading(true); // Open the modal
+        loadCaptcha();
+    };
+
+    // --- Render Logic ---
     return (
         <div style={{ padding: 20, fontFamily: "Arial" }}>
-            {!attendanceData && (
+            {isLoggedIn && (
+                <div style={{ textAlign: 'right', marginBottom: '20px' }}>
+                    <button onClick={handleReloadRequest} style={reloadButtonStyle}>
+                        Reload Data
+                    </button>
+                </div>
+            )}
+
+            {isReloading && (
+                <ReloadModal
+                    captchaImage={captchaImage}
+                    captcha={captcha}
+                    setCaptcha={setCaptcha}
+                    handleLogin={handleLogin}
+                    message={message}
+                    onClose={() => setIsReloading(false)}
+                />
+            )}
+
+            {!isLoggedIn && (
                 <form onSubmit={handleLogin} style={{ maxWidth: 400, margin: "auto" }}>
                     <h2>Login</h2>
-                    <input value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" style={{ width: "100%", marginBottom: 10, padding: 8 }} />
-                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" style={{ width: "100%", marginBottom: 10, padding: 8 }} />
-                    {captchaImage && <img src={captchaImage} alt="Captcha" style={{ marginBottom: 10 }} />}
-                    {captchaImage && <input value={captcha} onChange={e => setCaptcha(e.target.value)} placeholder="Enter Captcha" style={{ width: "100%", marginBottom: 10, padding: 8 }} />}
-                    {captchaImage && <button type="submit" style={{ width: "100%", padding: 10, background: "#3498db", color: "#fff", border: "none", borderRadius: 5 }}>Login</button>}
+                    <input value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" style={inputStyle} />
+                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" style={inputStyle} />
+                    {captchaImage && <img src={captchaImage} alt="Captcha" style={{ marginBottom: 10, display: 'block' }} />}
+                    <input value={captcha} onChange={e => setCaptcha(e.target.value)} placeholder="Enter Captcha" style={inputStyle} />
+                    <button type="submit" style={loginButtonStyle}>Login</button>
                     <p>{message}</p>
                 </form>
             )}
 
-            {attendanceData && <AttendanceTabs data={attendanceData} activeDay={activeDay} setActiveDay={setActiveDay} />}
+            {isLoggedIn && (
+                <>
+                    {attendanceData && <AttendanceTabs data={attendanceData} activeDay={activeDay} setActiveDay={setActiveDay} />}
+                    {marksData && <MarksDisplay data={marksData} />}
+                </>
+            )}
         </div>
     );
 }
+
+// --- New Reload Modal Component ---
+function ReloadModal({ captchaImage, captcha, setCaptcha, handleLogin, message, onClose }) {
+    return (
+        <div style={modalOverlayStyle}>
+            <div style={modalContentStyle}>
+                <button onClick={onClose} style={closeButtonStyle}>&times;</button>
+                <form onSubmit={handleLogin}>
+                    <h2>Reload Session</h2>
+                    <p>Enter the new captcha to refresh your data.</p>
+                    {captchaImage && <img src={captchaImage} alt="Captcha" style={{ marginBottom: 10, display: 'block' }} />}
+                    <input value={captcha} onChange={e => setCaptcha(e.target.value)} placeholder="Enter New Captcha" style={inputStyle} />
+                    <button type="submit" style={submitButtonStyle}>Submit</button>
+                    {message && <p style={{ marginTop: '10px' }}>{message}</p>}
+                </form>
+            </div>
+        </div>
+    );
+}
+
+// --- Your existing components (AttendanceTabs, MarksDisplay) go here ---
+// ... (omitted for brevity)
+
+// --- CSS-in-JS Styles ---
+const inputStyle = { width: "100%", marginBottom: 10, padding: 8, boxSizing: 'border-box' };
+const loginButtonStyle = { width: "100%", padding: 10, background: "#000000ff", color: "#000000ff", border: "none", borderRadius: 5, cursor: 'pointer' };
+const reloadButtonStyle = { padding: '8px 15px', background: '#3498db', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' };
+const submitButtonStyle = { ...loginButtonStyle, background: '#2ecc71' };
+
+const modalOverlayStyle = {
+    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    zIndex: 1000,
+};
+const modalContentStyle = {
+    background: 'black', padding: '20px 30px', borderRadius: '8px',
+    maxWidth: '400px', width: '90%', position: 'relative',
+    boxShadow: '0 5px 15px rgba(0,0,0,0.3)',
+};
+const closeButtonStyle = {
+    position: 'absolute', top: '10px', right: '15px',
+    background: 'transparent', border: 'none',
+    fontSize: '1.5rem', cursor: 'pointer',
+};
 
 // AttendanceTabs Component
 function AttendanceTabs({ data, activeDay, setActiveDay }) {
@@ -206,3 +318,78 @@ function AttendanceTabs({ data, activeDay, setActiveDay }) {
         </div>
     );
 }
+
+// MarksDisplay Component
+function MarksDisplay({ data }) {
+    // State to manage which course's details are visible
+    const [openCourse, setOpenCourse] = useState(null);
+
+    const toggleCourse = (slNo) => {
+        setOpenCourse(openCourse === slNo ? null : slNo);
+    };
+
+    if (!data || !data.marks || data.marks.length === 0) {
+        return <p>No marks data available to display.</p>;
+    }
+
+    return (
+        <div style={{ marginTop: '30px' }}>
+            <h1 style={{ textAlign: "center" }}>Academic Marks</h1>
+            <div style={{ maxWidth: '900px', margin: 'auto' }}>
+                {data.marks.map((course, idx) => (
+                    <div key={idx} style={{ marginBottom: '10px', border: '1px solid #000000ff', borderRadius: '8px' }}>
+                        <div
+                            onClick={() => toggleCourse(course.slNo)}
+                            style={{
+                                padding: '15px',
+                                background: '#000000ff',
+                                cursor: 'pointer',
+                                fontWeight: 'bold',
+                                display: 'flex',
+                                justifyContent: 'space-between'
+                            }}
+                        >
+                            <span>{course.courseCode} - {course.courseTitle}</span>
+                            <span>{openCourse === course.slNo ? '▲' : '▼'}</span>
+                        </div>
+                        {openCourse === course.slNo && (
+                            <div style={{ padding: '15px' }}>
+                                <p><strong>Faculty:</strong> {course.faculty}</p>
+                                <p><strong>Slot:</strong> {course.slot}</p>
+                                <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
+                                    <thead>
+                                        <tr style={{ background: '#000000ff' }}>
+                                            <th style={tableCellStyle}>Assessment</th>
+                                            <th style={tableCellStyle}>Max Mark</th>
+                                            <th style={tableCellStyle}>Scored Mark</th>
+                                            <th style={tableCellStyle}>Weightage %</th>
+                                            <th style={tableCellStyle}>Weighted Mark</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {course.assessments.map((asm, asmIdx) => (
+                                            <tr key={asmIdx} style={{ borderBottom: '1px solid #000000ff' }}>
+                                                <td style={tableCellStyle}>{asm.title}</td>
+                                                <td style={tableCellStyle}>{asm.maxMark}</td>
+                                                <td style={tableCellStyle}>{asm.scoredMark}</td>
+                                                <td style={tableCellStyle}>{asm.weightagePercent}</td>
+                                                <td style={tableCellStyle}>{asm.weightageMark}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+// Helper styles for the table
+const tableCellStyle = {
+    padding: '10px',
+    textAlign: 'left',
+    border: '1px solid #ddd'
+};

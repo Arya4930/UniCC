@@ -18,9 +18,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: 'Todo App',
+  title: 'Uni CC',
   description:
-    'List your stuff!',
+    'Taking data from VTOP and displaying it in a clean and simple way.',
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon.ico',
