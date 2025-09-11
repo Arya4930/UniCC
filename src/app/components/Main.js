@@ -15,6 +15,10 @@ export default function LoginPage() {
 
     // Load captcha on mount
     useEffect(() => {
+        const storedData = localStorage.getItem("attendance");
+        if (storedData) {
+            setAttendanceData(JSON.parse(storedData));
+        }
         loadCaptcha();
     }, []);
 
@@ -182,7 +186,7 @@ function AttendanceTabs({ data, activeDay, setActiveDay }) {
                     <div key={d} style={{ display: activeDay === d ? "flex" : "none", flexDirection: "column", gap: 20 }}>
                         {dayCardsMap[d].map((a, idx) => (
                             <div key={idx} style={{
-                                background: "white",
+                                background: "green",
                                 padding: 15,
                                 borderRadius: 12,
                                 boxShadow: "0 4px 8px rgba(0,0,0,0.1)"

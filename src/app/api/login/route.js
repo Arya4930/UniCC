@@ -1,5 +1,4 @@
 import { client } from "@/app/lib/VTOPClient";
-import * as cheerio from "cheerio";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -40,7 +39,20 @@ export async function POST(req) {
             });
         }
 
-        const dashboardHtml = dashboardRes.data.toLowerCase();
+        const dashboardHtml = dashboardRes.data;
+        let isAuthorized = false;
+
+        if (/authorizedidx/i.test(dashboardHtml)) {
+            isAuthorized = true;
+        } else if (/invalid\s*captcha/i.test(dashboardHtml)) {
+            return NextResponse.json({ success: false, error: "Invalid Captcha" }, { status: 401 });
+        } else if (/invalid\s*(user\s*name|login\s*id|user\s*id)\s*\/\s*password/i.test(dashboardHtml)) {
+            return NextResponse.json({ success: false, error: "Invalid Username / Password" }, { status: 401 });
+        }
+
+        if (!isAuthorized) {
+            return NextResponse.json({ success: false, error: "Login failed for an unknown reason." }, { status: 500 });
+        }
 
         return NextResponse.json({
             success: true,
