@@ -30,19 +30,20 @@ export default function LoginPage() {
         const storedUsername = localStorage.getItem("username");
         const storedPassword = localStorage.getItem("password");
 
-        if (storedAttendance) setAttendanceData(JSON.parse(storedAttendance));
+        if (storedAttendance) {
+            setAttendanceData(JSON.parse(storedAttendance))
+            let totalClass = 0;
+            let attendedClasses = 0;
+            JSON.parse(storedAttendance).attendance.forEach(course => {
+                totalClass += parseInt(course.totalClasses);
+                attendedClasses += parseInt(course.attendedClasses);
+            })
+            setattendancePercentage(Math.round(attendedClasses * 10000 / totalClass) / 100)
+        };
         if (storedMarks) setMarksData(JSON.parse(storedMarks));
         if (storedUsername) setUsername(storedUsername);
         if (storedPassword) setPassword(storedPassword);
         if (storedGrades) setGradesData(JSON.parse(storedGrades));
-
-        let totalClass = 0;
-        let attendedClasses = 0;
-        JSON.parse(storedAttendance).attendance.forEach(course => {
-            totalClass += parseInt(course.totalClasses);
-            attendedClasses += parseInt(course.attendedClasses);
-        })
-        setattendancePercentage(Math.round(attendedClasses*10000/totalClass)/100)
 
         if (!storedAttendance && !storedMarks) {
             loadCaptcha();
@@ -104,7 +105,6 @@ export default function LoginPage() {
                 setAttendanceData(attData);
                 setMarksData(marksDataPayload);
                 setGradesData(gradesDataPayload);
-                setattendancePercentage((totalClass / attendedClasses) * 100);
                 localStorage.setItem("attendance", JSON.stringify(attData));
                 localStorage.setItem("marks", JSON.stringify(marksDataPayload));
                 localStorage.setItem("grades", JSON.stringify(gradesDataPayload));
