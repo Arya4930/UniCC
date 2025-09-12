@@ -19,6 +19,9 @@ export default function LoginPage() {
     const [isReloading, setIsReloading] = useState(false); // Controls the reload modal
     const [activeTab, setActiveTab] = useState("attendance");
     const [attendancePercentage, setattendancePercentage] = useState(0);
+    const [ODhours, setODhours] = useState(0);
+    const [ODhoursData, setODhoursData] = useState(null);
+    const [ODhoursIsOpen, setODhoursIsOpen] = useState(false);
 
     const isLoggedIn = attendanceData || marksData;
 
@@ -39,6 +42,19 @@ export default function LoginPage() {
                 attendedClasses += parseInt(course.attendedClasses);
             })
             setattendancePercentage(Math.round(attendedClasses * 10000 / totalClass) / 100)
+
+            let ODhours = 0;
+            let ODArr = [];
+            JSON.parse(storedAttendance).attendance.forEach(course => {
+                course.viewLinkData.forEach(day => {
+                    if (day.status == "On Duty") {
+                        ODhours++;
+                        ODArr.push({ date: day.date, courseTitle: course.courseTitle });
+                    }
+                });
+            })
+            setODhours(ODhours);
+            setODhoursData(ODArr);
         };
         if (storedMarks) setMarksData(JSON.parse(storedMarks));
         if (storedUsername) setUsername(storedUsername);
@@ -222,34 +238,65 @@ export default function LoginPage() {
                     <div className="flex justify-center">
                         <div className="max-w-md w-full">
                             {GradesData && (
-                                <div className="grid grid-cols-3 gap-4 my-4 overflow-x-auto">
-                                    <div
-                                        className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition"
-                                        onClick={() => console.log("CGPA clicked")}
-                                    >
-                                        <h2 className="text-lg font-semibold text-gray-600">CGPA</h2>
-                                        <p className="text-3xl font-bold text-gray-900 mt-2">
-                                            {GradesData?.cgpa?.cgpa}
-                                        </p>
-                                    </div>
+                                <div className="overflow-x-auto">
+                                    <div className="inline-flex gap-4 py-4">
+                                        <div
+                                            className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition min-w-[180px]"
+                                            onClick={() => console.log("CGPA clicked")}
+                                        >
+                                            <h2 className="text-lg font-semibold text-gray-600">CGPA</h2>
+                                            <p className="text-3xl font-bold text-gray-900 mt-2">
+                                                {GradesData?.cgpa?.cgpa}
+                                            </p>
+                                        </div>
 
-                                    <div
-                                        className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition"
-                                        onClick={() => console.log("Credits clicked")}
-                                    >
-                                        <h2 className="text-lg font-semibold text-gray-600">Credits Earned</h2>
-                                        <p className="text-3xl font-bold text-gray-900 mt-2">
-                                            {GradesData?.cgpa?.creditsEarned}
-                                        </p>
-                                    </div>
-                                    <div
-                                        className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition"
-                                        onClick={() => console.log("Credits clicked")}
-                                    >
-                                        <h2 className="text-lg font-semibold text-gray-600">Attendance</h2>
-                                        <p className="text-3xl font-bold text-gray-900 mt-2">
-                                            {attendancePercentage}
-                                        </p>
+                                        <div
+                                            className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition min-w-[180px]"
+                                            onClick={() => console.log("Credits clicked")}
+                                        >
+                                            <h2 className="text-lg font-semibold text-gray-600">Credits Earned</h2>
+                                            <p className="text-3xl font-bold text-gray-900 mt-2">
+                                                {GradesData?.cgpa?.creditsEarned}
+                                            </p>
+                                        </div>
+
+                                        <div
+                                            className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition min-w-[180px]"
+                                            onClick={() => console.log("Attendance clicked")}
+                                        >
+                                            <h2 className="text-lg font-semibold text-gray-600">Attendance</h2>
+                                            <p className="text-3xl font-bold text-gray-900 mt-2">
+                                                {attendancePercentage}
+                                            </p>
+                                        </div>
+
+                                        <div
+                                            className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition min-w-[180px]"
+                                            onClick={() => setODhoursIsOpen(true)}
+                                        >
+                                            <h2 className="text-lg font-semibold text-gray-600">OD hours</h2>
+                                            <p className="text-3xl font-bold text-gray-900 mt-2">{ODhours}/40</p>
+                                        </div>
+
+                                        {/* Modal */}
+                                        {ODhoursIsOpen && (
+                                            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                                <div className="bg-gray-600 rounded-2xl shadow-lg p-6 w-80 relative">
+                                                    <h3 className="text-xl font-bold mb-4">OD Hours Info</h3>
+                                                    {ODhoursData.map((day, idx) => (
+                                                        <div key={idx}>
+                                                            {day.date} - {day.courseTitle}
+                                                        </div>
+                                                    ))}
+                                                    <button
+                                                        className="absolute top-2 right-2 text-gray-500 hover:text-gray-900 font-bold"
+                                                        onClick={() => setODhoursIsOpen(false)}
+                                                    >
+                                                        ✕
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             )}
