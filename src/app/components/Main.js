@@ -13,10 +13,12 @@ export default function LoginPage() {
     const [message, setMessage] = useState("");
     const [attendanceData, setAttendanceData] = useState(null);
     const [marksData, setMarksData] = useState(null);
+    const [GradesData, setGradesData] = useState(null);
     const [activeDay, setActiveDay] = useState("MON");
     const [csrf, setCsrf] = useState("");
     const [isReloading, setIsReloading] = useState(false); // Controls the reload modal
-    const [activeTab, setActiveTab] = useState("attendance")
+    const [activeTab, setActiveTab] = useState("attendance");
+    const [attendancePercentage, setattendancePercentage] = useState(0);
 
     const isLoggedIn = attendanceData || marksData;
 
@@ -24,6 +26,7 @@ export default function LoginPage() {
     useEffect(() => {
         const storedAttendance = localStorage.getItem("attendance");
         const storedMarks = localStorage.getItem("marks");
+        const storedGrades = localStorage.getItem("grades");
         const storedUsername = localStorage.getItem("username");
         const storedPassword = localStorage.getItem("password");
 
@@ -31,6 +34,15 @@ export default function LoginPage() {
         if (storedMarks) setMarksData(JSON.parse(storedMarks));
         if (storedUsername) setUsername(storedUsername);
         if (storedPassword) setPassword(storedPassword);
+        if (storedGrades) setGradesData(JSON.parse(storedGrades));
+
+        let totalClass = 0;
+        let attendedClasses = 0;
+        JSON.parse(storedAttendance).attendance.forEach(course => {
+            totalClass += parseInt(course.totalClasses);
+            attendedClasses += parseInt(course.attendedClasses);
+        })
+        setattendancePercentage(Math.round(attendedClasses*10000/totalClass)/100)
 
         if (!storedAttendance && !storedMarks) {
             loadCaptcha();
@@ -69,7 +81,7 @@ export default function LoginPage() {
                 localStorage.setItem("username", username);
                 localStorage.setItem("password", password);
 
-                const [attRes, marksRes] = await Promise.all([
+                const [attRes, marksRes, gradesRes] = await Promise.all([
                     fetch("/api/fetchAttendance", {
                         method: "POST", headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
@@ -77,17 +89,25 @@ export default function LoginPage() {
                     fetch("/api/fetchMarks", {
                         method: "POST", headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+                    }),
+                    fetch("/api/fetchGrades", {
+                        method: "POST", headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
                     })
                 ]);
 
                 const attData = await attRes.json();
                 const marksDataPayload = await marksRes.json();
+                const gradesDataPayload = await gradesRes.json();
 
                 // *** CRITICAL CHANGE: Update data and close modal ***
                 setAttendanceData(attData);
                 setMarksData(marksDataPayload);
+                setGradesData(gradesDataPayload);
+                setattendancePercentage((totalClass / attendedClasses) * 100);
                 localStorage.setItem("attendance", JSON.stringify(attData));
                 localStorage.setItem("marks", JSON.stringify(marksDataPayload));
+                localStorage.setItem("grades", JSON.stringify(gradesDataPayload));
 
                 setIsReloading(false); // Close the modal on success
                 setMessage("Data reloaded successfully!");
@@ -199,9 +219,40 @@ export default function LoginPage() {
                         </button>
                     </div>
 
-                    {/* Tab Content */}
                     <div className="flex justify-center">
                         <div className="max-w-md w-full">
+                            {GradesData && (
+                                <div className="grid grid-cols-3 gap-4 my-4 overflow-x-auto">
+                                    <div
+                                        className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition"
+                                        onClick={() => console.log("CGPA clicked")}
+                                    >
+                                        <h2 className="text-lg font-semibold text-gray-600">CGPA</h2>
+                                        <p className="text-3xl font-bold text-gray-900 mt-2">
+                                            {GradesData?.cgpa?.cgpa}
+                                        </p>
+                                    </div>
+
+                                    <div
+                                        className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition"
+                                        onClick={() => console.log("Credits clicked")}
+                                    >
+                                        <h2 className="text-lg font-semibold text-gray-600">Credits Earned</h2>
+                                        <p className="text-3xl font-bold text-gray-900 mt-2">
+                                            {GradesData?.cgpa?.creditsEarned}
+                                        </p>
+                                    </div>
+                                    <div
+                                        className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition"
+                                        onClick={() => console.log("Credits clicked")}
+                                    >
+                                        <h2 className="text-lg font-semibold text-gray-600">Attendance</h2>
+                                        <p className="text-3xl font-bold text-gray-900 mt-2">
+                                            {attendancePercentage}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
                             {activeTab === "attendance" && <AttendanceTabs data={attendanceData} activeDay={activeDay} setActiveDay={setActiveDay} />}
                             {activeTab === "marks" && <MarksDisplay data={marksData} />}
                         </div>
@@ -517,36 +568,36 @@ function MarksDisplay({ data }) {
                                     <p><strong>Faculty:</strong> {course.faculty}</p>
                                     <p><strong>Slot:</strong> {course.slotName}</p>
                                     <div className="overflow-x-auto">
-                                    <table className="w-full border mt-2">
-                                        <thead className="bg-gray-800 text-white">
-                                            <tr>
-                                                <th className="border p-2 text-left">Test</th>
-                                                <th className="border p-2">Max</th>
-                                                <th className="border p-2">Scored</th>
-                                                <th className="border p-2">Weight %</th>
-                                                <th className="border p-2">Weighted</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {course.assessments.map((asm, asmIdx) => (
-                                                <tr key={asmIdx}>
-                                                    <td className="border p-2">{asm.title}</td>
-                                                    <td className="border p-2">{asm.maxMark}</td>
-                                                    <td className="border p-2">{asm.scoredMark}</td>
-                                                    <td className="border p-2">{asm.weightagePercent}</td>
-                                                    <td className="border p-2">{asm.weightageMark}</td>
+                                        <table className="w-full border mt-2">
+                                            <thead className="bg-gray-800 text-white">
+                                                <tr>
+                                                    <th className="border p-2 text-left">Test</th>
+                                                    <th className="border p-2">Max</th>
+                                                    <th className="border p-2">Scored</th>
+                                                    <th className="border p-2">Weight %</th>
+                                                    <th className="border p-2">Weighted</th>
                                                 </tr>
-                                            ))}
-                                            {/* totals row */}
-                                            <tr className="font-bold">
-                                                <td className="border p-2">Total</td>
-                                                <td className="border p-2">{totals.max}</td>
-                                                <td className="border p-2">{totals.scored}</td>
-                                                <td className="border p-2">{totals.weightPercent}</td>
-                                                <td className="border p-2">{totals.weighted}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                {course.assessments.map((asm, asmIdx) => (
+                                                    <tr key={asmIdx}>
+                                                        <td className="border p-2">{asm.title}</td>
+                                                        <td className="border p-2">{asm.maxMark}</td>
+                                                        <td className="border p-2">{asm.scoredMark}</td>
+                                                        <td className="border p-2">{asm.weightagePercent}</td>
+                                                        <td className="border p-2">{asm.weightageMark}</td>
+                                                    </tr>
+                                                ))}
+                                                {/* totals row */}
+                                                <tr className="font-bold">
+                                                    <td className="border p-2">Total</td>
+                                                    <td className="border p-2">{totals.max}</td>
+                                                    <td className="border p-2">{totals.scored}</td>
+                                                    <td className="border p-2">{totals.weightPercent}</td>
+                                                    <td className="border p-2">{totals.weighted}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             )}
