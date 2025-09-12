@@ -2,6 +2,32 @@ import { client } from "@/app/lib/VTOPClient";
 import * as cheerio from "cheerio";
 import { NextResponse } from "next/server";
 import { URLSearchParams } from "url";
+import fetchTimetable from "./fetchTimeTable";
+
+function mergeAttendanceWithTimetable(attendance, timetable) {
+    return attendance.map(att => {
+        const attCourseCode = att.courseCode.split(" ")[0].trim();
+
+        const ttEntry = timetable.find(tt => {
+            const ttCourseCode = tt.course.split(" ")[0].trim();
+            return ttCourseCode === attCourseCode;
+        });
+
+        if (ttEntry) {
+            return {
+                ...att,
+                classId: ttEntry.classId,
+                credits: ttEntry.LTPJC?.split(" ")[4] || null,
+                slotVenue: ttEntry.slotVenue
+                    ? ttEntry.slotVenue.replace(/\s+/g, " ").trim().match(/[A-Z]+\d*-\d+/)?.[0] || null
+                    : null,
+                category: ttEntry.category,
+            };
+        } else {
+            return att;
+        }
+    });
+}
 
 export async function POST(req) {
     try {
@@ -60,12 +86,13 @@ export async function POST(req) {
                 },
             }
         );
+        const tt = await fetchTimetable(cookieHeader, dashboardHtml);
 
         // --- Parse Attendance Table ---
         const $$$ = cheerio.load(ttRes.data);
         const attendance = [];
 
-        $$$("#getStudentDetails table tbody tr").each((i, row) => {
+        $$$("#getStudentDetails table tbody tr").each(async (i, row) => {
             const cols = $$$(row).find("td");
 
             if (cols.length < 10) return; // skip invalid rows
@@ -75,25 +102,55 @@ export async function POST(req) {
                 courseCode: cols.eq(1).text().trim(),
                 courseTitle: cols.eq(2).text().trim(),
                 courseType: cols.eq(3).text().trim(),
-                slot: cols.eq(4).text().trim(),
+                slotName: cols.eq(4).text().trim(),
                 faculty: cols.eq(5).text().replace(/\s+/g, " ").trim(),
-                attendanceType: cols.eq(6).text().trim(),
                 registrationDate: cols.eq(7).text().trim(),
                 attendanceDate: cols.eq(8).text().trim(),
                 attendedClasses: cols.eq(9).text().trim(),
                 totalClasses: cols.eq(10).text().trim(),
                 attendancePercentage: cols.eq(11).text().trim(),
-                status: cols.eq(12).text().trim(),
                 viewLink: cols.eq(13).find("a").attr("onclick") || null,
             });
         });
+        const mergedAttendance = mergeAttendanceWithTimetable(attendance, tt.courseInfo);
+        for (const course of mergedAttendance) {
+            if (!course.viewLink) continue;
 
-        const finalData = {
-            semester: semesters[0],
-            attendance,
-        };
+            const match = course.viewLink.match(/processViewAttendanceDetail\('([^']+)','([^']+)'\)/);
+            if (!match) continue;
 
-        return NextResponse.json({ semester: semesters[0], attendance });
+            const [, classId, slotName] = match;
+
+            const attendanceRes = await client.post(
+                "/vtop/processViewAttendanceDetail",
+                new URLSearchParams({
+                    _csrf: csrf,
+                    authorizedID,
+                    x: Date.now().toString(),
+                    classId,
+                    slotName,
+                }).toString(),
+                { headers: { Cookie: cookieHeader, "Content-Type": "application/x-www-form-urlencoded" } }
+            );
+
+            const $$$ = cheerio.load(attendanceRes.data);
+            const detailed = [];
+
+            $$$("table.table tr").each((i, row) => {
+                if (i === 0) return;
+                const cols = $$$(row).find("td");
+                if (cols.length < 5) return;
+
+                detailed.push({
+                    date: cols.eq(1).text().trim(),
+                    status: cols.eq(4).text().trim(),
+                });
+            });
+
+            course.viewLinkData = detailed;
+        }
+
+        return NextResponse.json({ semester: semesters[0], attendance: mergedAttendance });
     } catch (err) {
         console.error(err);
         return NextResponse.json({ error: err.message }, { status: 500 });

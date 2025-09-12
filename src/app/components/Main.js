@@ -142,25 +142,27 @@ export default function LoginPage() {
                         placeholder="Password"
                     />
                     {captchaImage && (
-                        <img
-                            src={captchaImage}
-                            alt="Captcha"
-                            className="border rounded-lg w-full h-16 object-contain"
-                        />
+                        <>
+                            <img
+                                src={captchaImage}
+                                alt="Captcha"
+                                className="border rounded-lg w-full h-16 object-contain"
+                            />
+                            <input
+                                className="w-full border p-2 rounded-lg"
+                                value={captcha}
+                                onChange={(e) => setCaptcha(e.target.value)}
+                                placeholder="Enter Captcha"
+                            />
+                            <button
+                                type="submit"
+                                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                            >
+                                Login
+                            </button>
+                        </>
                     )}
-                    <input
-                        className="w-full border p-2 rounded-lg"
-                        value={captcha}
-                        onChange={(e) => setCaptcha(e.target.value)}
-                        placeholder="Enter Captcha"
-                    />
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-                    >
-                        Login
-                    </button>
-                    <p className="text-sm text-gray-600">{message}</p>
+                    <p className="text-sm">{message}</p>
                 </form>
             )}
 
@@ -226,98 +228,98 @@ function ReloadModal({ captchaImage, captcha, setCaptcha, handleLogin, message, 
                 </p>
                 <form onSubmit={handleLogin} className="space-y-4">
                     {captchaImage && (
-                        <img
-                            src={captchaImage}
-                            alt="Captcha"
-                            className="w-full h-16 object-contain"
-                        />
+                        <>
+                            <img
+                                src={captchaImage}
+                                alt="Captcha"
+                                className="w-full h-16 object-contain"
+                            />
+                            <input
+                                className="w-full border p-2 rounded-lg"
+                                value={captcha}
+                                onChange={(e) => setCaptcha(e.target.value)}
+                                placeholder="Enter New Captcha"
+                            />
+                            <button
+                                type="submit"
+                                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                            >
+                                Submit
+                            </button>
+                        </>
                     )}
-                    <input
-                        className="w-full border p-2 rounded-lg"
-                        value={captcha}
-                        onChange={(e) => setCaptcha(e.target.value)}
-                        placeholder="Enter New Captcha"
-                    />
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-                    >
-                        Submit
-                    </button>
-                    {message && <p className="text-sm text-gray-600">{message}</p>}
+                    {message && <p className="text-sm">{message}</p>}
                 </form>
             </div>
         </div>
     );
 }
 
+const slotMap = {
+    MON: {
+        A1: { time: "8:00-8:50" }, F1: { time: "8:55-9:45" }, D1: { time: "9:50-10:40" },
+        TB1: { time: "10:45-11:35" }, TG1: { time: "11:40-12:30" }, S11: { time: "12:35-1:25" },
+        A2: { time: "2:00-2:50" }, F2: { time: "2:55-3:45" }, D2: { time: "3:50-4:40" },
+        TB2: { time: "4:45-5:35" }, TG2: { time: "5:40-6:30" }, S3: { time: "6:35-7:25" },
+        L1: { time: "8:00-8:50" }, L2: { time: "8:50-9:40" }, L3: { time: "9:50-10:40" },
+        L4: { time: "10:40-11:30" }, L5: { time: "11:40-12:30" }, L6: { time: "12:30-1:20" },
+        L31: { time: "2:00-2:50" }, L32: { time: "2:50-3:40" }, L33: { time: "3:50-4:40" },
+        L34: { time: "4:40-5:30" }, L35: { time: "5:40-6:30" }, L36: { time: "6:30-7:20" }
+    },
+    TUE: {
+        B1: { time: "8:00-8:50" }, G1: { time: "8:55-9:45" }, E1: { time: "9:50-10:40" },
+        TC1: { time: "10:45-11:35" }, TAA1: { time: "11:40-12:30" }, L12: { time: "12:35-1:25" },
+        B2: { time: "2:00-2:50" }, G2: { time: "2:55-3:45" }, E2: { time: "3:50-4:40" },
+        TC2: { time: "4:45-5:35" }, TAA2: { time: "5:40-6:30" }, S1: { time: "6:35-7:25" },
+        L7: { time: "8:00-8:50" }, L8: { time: "8:50-9:40" }, L9: { time: "9:50-10:40" },
+        L10: { time: "10:40-11:30" }, L11: { time: "11:40-12:30" }, L37: { time: "2:00-2:50" },
+        L38: { time: "2:50-3:40" }, L39: { time: "3:50-4:40" }, L40: { time: "4:40-5:30" },
+        L41: { time: "5:40-6:30" }, L42: { time: "6:30-7:20" }
+    },
+    WED: {
+        C1: { time: "8:00-8:50" }, A1: { time: "8:55-9:45" }, F1: { time: "9:50-10:40" },
+        TD1: { time: "10:45-11:35" }, TBB1: { time: "11:40-12:30" }, L18: { time: "12:35-1:25" },
+        C2: { time: "2:00-2:50" }, A2: { time: "2:55-3:45" }, F2: { time: "3:50-4:40" },
+        TD2: { time: "4:45-5:35" }, TBB2: { time: "5:40-6:30" }, S4: { time: "6:35-7:25" },
+        L12: { time: "8:00-8:50" }, L13: { time: "8:50-9:40" }, L14: { time: "9:50-10:40" },
+        L15: { time: "10:40-11:30" }, L17: { time: "11:40-12:30" }, L43: { time: "2:00-2:50" },
+        L44: { time: "2:50-3:40" }, L45: { time: "3:50-4:40" }, L46: { time: "4:40-5:30" },
+        L47: { time: "5:40-6:30" }, L48: { time: "6:30-7:20" }
+    },
+    THU: {
+        D1: { time: "8:00-8:50" }, B1: { time: "8:55-9:45" }, G1: { time: "9:50-10:40" },
+        TE1: { time: "10:45-11:35" }, TCC1: { time: "11:40-12:30" }, L24: { time: "12:35-1:25" },
+        D2: { time: "2:00-2:50" }, B2: { time: "2:55-3:45" }, G2: { time: "3:50-4:40" },
+        TE2: { time: "4:45-5:35" }, TCC2: { time: "5:40-6:30" }, S2: { time: "6:35-7:25" },
+        L19: { time: "8:00-8:50" }, L20: { time: "8:50-9:40" }, L21: { time: "9:50-10:40" },
+        L22: { time: "10:40-11:30" }, L23: { time: "11:40-12:30" }, L49: { time: "2:00-2:50" },
+        L50: { time: "2:50-3:40" }, L51: { time: "3:50-4:40" }, L52: { time: "4:40-5:30" },
+        L53: { time: "5:40-6:30" }, L54: { time: "6:30-7:20" }
+    },
+    FRI: {
+        E1: { time: "8:00-8:50" }, C1: { time: "8:55-9:45" }, TA1: { time: "9:50-10:40" },
+        TF1: { time: "10:45-11:35" }, TDD1: { time: "11:40-12:30" }, S15: { time: "12:35-1:25" },
+        E2: { time: "2:00-2:50" }, C2: { time: "2:55-3:45" }, TA2: { time: "3:50-4:40" },
+        TF2: { time: "4:45-5:35" }, TDD2: { time: "5:40-6:30" }, L60: { time: "6:35-7:25" },
+        L25: { time: "8:00-8:50" }, L26: { time: "8:50-9:40" }, L27: { time: "9:50-10:40" },
+        L28: { time: "10:40-11:30" }, L29: { time: "11:40-12:30" }, L30: { time: "12:30-1:20" },
+        L55: { time: "2:00-2:50" }, L56: { time: "2:50-3:40" }, L57: { time: "3:50-4:40" },
+        L58: { time: "4:40-5:30" }, L59: { time: "5:40-6:30" }
+    }
+};
 
 function AttendanceTabs({ data, activeDay, setActiveDay }) {
     const days = ["MON", "TUE", "WED", "THU", "FRI"];
-    const slotMap = {
-        MON: {
-            A1: { time: "8:00-8:50" }, F1: { time: "8:55-9:45" }, D1: { time: "9:50-10:40" },
-            TB1: { time: "10:45-11:35" }, TG1: { time: "11:40-12:30" }, S11: { time: "12:35-1:25" },
-            A2: { time: "2:00-2:50" }, F2: { time: "2:55-3:45" }, D2: { time: "3:50-4:40" },
-            TB2: { time: "4:45-5:35" }, TG2: { time: "5:40-6:30" }, S3: { time: "6:35-7:25" },
-            L1: { time: "8:00-8:50" }, L2: { time: "8:50-9:40" }, L3: { time: "9:50-10:40" },
-            L4: { time: "10:40-11:30" }, L5: { time: "11:40-12:30" }, L6: { time: "12:30-1:20" },
-            L31: { time: "2:00-2:50" }, L32: { time: "2:50-3:40" }, L33: { time: "3:50-4:40" },
-            L34: { time: "4:40-5:30" }, L35: { time: "5:40-6:30" }, L36: { time: "6:30-7:20" }
-        },
-        TUE: {
-            B1: { time: "8:00-8:50" }, G1: { time: "8:55-9:45" }, E1: { time: "9:50-10:40" },
-            TC1: { time: "10:45-11:35" }, TAA1: { time: "11:40-12:30" }, L12: { time: "12:35-1:25" },
-            B2: { time: "2:00-2:50" }, G2: { time: "2:55-3:45" }, E2: { time: "3:50-4:40" },
-            TC2: { time: "4:45-5:35" }, TAA2: { time: "5:40-6:30" }, S1: { time: "6:35-7:25" },
-            L7: { time: "8:00-8:50" }, L8: { time: "8:50-9:40" }, L9: { time: "9:50-10:40" },
-            L10: { time: "10:40-11:30" }, L11: { time: "11:40-12:30" }, L37: { time: "2:00-2:50" },
-            L38: { time: "2:50-3:40" }, L39: { time: "3:50-4:40" }, L40: { time: "4:40-5:30" },
-            L41: { time: "5:40-6:30" }, L42: { time: "6:30-7:20" }
-        },
-        WED: {
-            C1: { time: "8:00-8:50" }, A1: { time: "8:55-9:45" }, F1: { time: "9:50-10:40" },
-            TD1: { time: "10:45-11:35" }, TBB1: { time: "11:40-12:30" }, L18: { time: "12:35-1:25" },
-            C2: { time: "2:00-2:50" }, A2: { time: "2:55-3:45" }, F2: { time: "3:50-4:40" },
-            TD2: { time: "4:45-5:35" }, TBB2: { time: "5:40-6:30" }, S4: { time: "6:35-7:25" },
-            L12: { time: "8:00-8:50" }, L13: { time: "8:50-9:40" }, L14: { time: "9:50-10:40" },
-            L15: { time: "10:40-11:30" }, L17: { time: "11:40-12:30" }, L43: { time: "2:00-2:50" },
-            L44: { time: "2:50-3:40" }, L45: { time: "3:50-4:40" }, L46: { time: "4:40-5:30" },
-            L47: { time: "5:40-6:30" }, L48: { time: "6:30-7:20" }
-        },
-        THU: {
-            D1: { time: "8:00-8:50" }, B1: { time: "8:55-9:45" }, G1: { time: "9:50-10:40" },
-            TE1: { time: "10:45-11:35" }, TCC1: { time: "11:40-12:30" }, L24: { time: "12:35-1:25" },
-            D2: { time: "2:00-2:50" }, B2: { time: "2:55-3:45" }, G2: { time: "3:50-4:40" },
-            TE2: { time: "4:45-5:35" }, TCC2: { time: "5:40-6:30" }, S2: { time: "6:35-7:25" },
-            L19: { time: "8:00-8:50" }, L20: { time: "8:50-9:40" }, L21: { time: "9:50-10:40" },
-            L22: { time: "10:40-11:30" }, L23: { time: "11:40-12:30" }, L49: { time: "2:00-2:50" },
-            L50: { time: "2:50-3:40" }, L51: { time: "3:50-4:40" }, L52: { time: "4:40-5:30" },
-            L53: { time: "5:40-6:30" }, L54: { time: "6:30-7:20" }
-        },
-        FRI: {
-            E1: { time: "8:00-8:50" }, C1: { time: "8:55-9:45" }, TA1: { time: "9:50-10:40" },
-            TF1: { time: "10:45-11:35" }, TDD1: { time: "11:40-12:30" }, S15: { time: "12:35-1:25" },
-            E2: { time: "2:00-2:50" }, C2: { time: "2:55-3:45" }, TA2: { time: "3:50-4:40" },
-            TF2: { time: "4:45-5:35" }, TDD2: { time: "5:40-6:30" }, L60: { time: "6:35-7:25" },
-            L25: { time: "8:00-8:50" }, L26: { time: "8:50-9:40" }, L27: { time: "9:50-10:40" },
-            L28: { time: "10:40-11:30" }, L29: { time: "11:40-12:30" }, L30: { time: "12:30-1:20" },
-            L55: { time: "2:00-2:50" }, L56: { time: "2:50-3:40" }, L57: { time: "3:50-4:40" },
-            L58: { time: "4:40-5:30" }, L59: { time: "5:40-6:30" }
-        }
-    };
+    const [expandedIdx, setExpandedIdx] = useState(null);
 
     const dayCardsMap = {};
+    days.forEach(day => (dayCardsMap[day] = []));
 
-    days.forEach(day => dayCardsMap[day] = []);
-
-    // 1. Build structured objects instead of raw DOM cards
+    // 1. Build structured data
     data.attendance.forEach(a => {
-        const slots = a.slot.split("+");
-
+        const slots = a.slotName.split("+");
         slots.forEach(slotName => {
             const cleanSlot = slotName.trim();
-
             for (const day of days) {
                 if (slotMap[day] && slotMap[day][cleanSlot]) {
                     const info = slotMap[day][cleanSlot];
@@ -341,18 +343,14 @@ function AttendanceTabs({ data, activeDay, setActiveDay }) {
             const slotA = a.slotName;
             const slotB = b.slotName;
 
-            // Morning/Evening sort like your old algorithm
             const isMorningA = /[A-Z]1$|L([1-2]?[0-9]|30)$/.test(slotA);
             const isMorningB = /[A-Z]1$|L([1-2]?[0-9]|30)$/.test(slotB);
 
             if (isMorningA && !isMorningB) return -1;
             if (!isMorningA && isMorningB) return 1;
-
-            // Sort by slot name within morning/evening
             return slotA.localeCompare(slotB, undefined, { numeric: true });
         });
 
-        // Merge consecutive slots if same class
         const merged = [];
         for (let i = 0; i < dayCardsMap[day].length; i++) {
             const current = dayCardsMap[day][i];
@@ -366,13 +364,9 @@ function AttendanceTabs({ data, activeDay, setActiveDay }) {
                 current.cls === next.cls
             ) {
                 const mergedSlotName = `${current.slotName}+${next.slotName}`;
-                const mergedSlotTime = `${(current.time.split('-')[0])}-${(next.time.split('-')[1])}`
-                merged.push({
-                    ...current,
-                    slotName: mergedSlotName,
-                    time: mergedSlotTime
-                });
-                i++; // skip next
+                const mergedSlotTime = `${current.time.split("-")[0]}-${next.time.split("-")[1]}`;
+                merged.push({ ...current, slotName: mergedSlotName, time: mergedSlotTime });
+                i++;
             } else {
                 merged.push(current);
             }
@@ -381,35 +375,66 @@ function AttendanceTabs({ data, activeDay, setActiveDay }) {
     }
 
     return (
-        <div className="p-2">
-            <h1 className="text-xl font-bold mb-4">Weekly Attendance Slots</h1>
-            <div className="flex gap-2 mb-4">
-                {days.map((d) => (
-                    <button
-                        key={d}
-                        onClick={() => setActiveDay(d)}
-                        className={`px-4 py-2 rounded-lg hover:bg-blue-300 hover:cursor-pointer ${activeDay === d
-                            ? "bg-blue-600 text-white"
-                            : "bg-gray-200 text-gray-700"
-                            }`}
-                    >
-                        {d}
-                    </button>
-                ))}
-            </div>
-            <div className="grid gap-4">
-                {dayCardsMap[activeDay].map((a, idx) => (
-                    <div key={idx} className={`p-4 rounded-lg shadow border border-color-white ${a.cls}`}>
-                        <h3 className="font-semibold">Slot: {a.slotName}</h3>
-                        <p><strong>Course:</strong> {a.courseTitle} ({a.courseType})</p>
-                        <p><strong>Faculty:</strong> {a.faculty}</p>
+        <div className="grid gap-4">
+            {dayCardsMap[activeDay].map((a, idx) => (
+                <div
+                    key={idx}
+                    className={`p-4 rounded-lg shadow border border-white transition hover:shadow-lg ${a.cls}`}
+                >
+                    <div className="flex justify-between items-center mb-2">
+                        <h3 className="font-semibold text-lg">{a.courseTitle}</h3>
+                        <button
+                            className="text-sm underline hover:cursor-pointer"
+                            onClick={() => setExpandedIdx(idx)}
+                        >
+                            View Details
+                        </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-x-4 text-sm">
+                        <p><strong>Slot:</strong> {a.slotName}</p>
                         <p><strong>Time:</strong> {a.time}</p>
+                        <p><strong>Faculty:</strong> {a.faculty}</p>
+                        <p><strong>Type:</strong> {a.courseType}</p>
+                        <p><strong>Credits:</strong> {a.credits}</p>
+                        <p><strong>Venue:</strong> {a.slotVenue}</p>
+                        <p><strong>Class ID:</strong> {a.classId}</p>
                         <p>
-                            Attendance: {a.attendedClasses}/{a.totalClasses} ({a.attendancePercentage}%)
+                            <strong>Attendance:</strong> {a.attendedClasses}/{a.totalClasses} ({a.attendancePercentage}%)
                         </p>
                     </div>
-                ))}
-            </div>
+
+                    {expandedIdx === idx && (
+                        <div className="fixed inset-0 bg-black flex items-center justify-center">
+                            <div className="bg-gray-600 rounded-lg shadow-lg p-6 max-w-md w-full relative">
+                                <ul className="list-disc list-inside text-sm max-h-60 overflow-y-auto max-h-[80vh]">
+                                    {a.viewLinkData?.map((d, i) => (
+                                        <li
+                                            key={i}
+                                            className={`${d.status.toLowerCase() === "absent"
+                                                    ? "text-red-500"
+                                                    : d.status.toLowerCase() === "present"
+                                                        ? "text-green-500"
+                                                        : d.status.toLowerCase() === "on duty"
+                                                            ? "text-yellow-500"
+                                                            : ""
+                                                }`}
+                                        >
+                                            {d.date} – {d.status}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <button
+                                    className="absolute top-2 right-2 m-1 text-white hover:text-black"
+                                    onClick={() => setExpandedIdx(null)}
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            ))}
         </div>
     );
 }
@@ -449,7 +474,7 @@ function MarksDisplay({ data }) {
                         {openCourse === course.slNo && (
                             <div className="mt-4">
                                 <p><strong>Faculty:</strong> {course.faculty}</p>
-                                <p><strong>Slot:</strong> {course.slot}</p>
+                                <p><strong>Slot:</strong> {course.slotName}</p>
                                 <table className="w-full border mt-2">
                                     <thead className="bg-gray-800">
                                         <tr>
