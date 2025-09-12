@@ -198,15 +198,12 @@ export default function LoginPage() {
                     </div>
 
                     {/* Tab Content */}
-                    {activeTab === "attendance" && attendanceData && (
-                        <AttendanceTabs
-                            data={attendanceData}
-                            activeDay={activeDay}
-                            setActiveDay={setActiveDay}
-                        />
-                    )}
-
-                    {activeTab === "marks" && marksData && <MarksDisplay data={marksData} />}
+                    <div className="flex justify-center">
+                        <div className="max-w-md w-full">
+                            {activeTab === "attendance" && <AttendanceTabs data={attendanceData} activeDay={activeDay} setActiveDay={setActiveDay} />}
+                            {activeTab === "marks" && <MarksDisplay data={marksData} />}
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
@@ -314,24 +311,77 @@ function AttendanceTabs({ data, activeDay, setActiveDay }) {
 
     days.forEach(day => dayCardsMap[day] = []);
 
+    // 1. Build structured objects instead of raw DOM cards
     data.attendance.forEach(a => {
         const slots = a.slot.split("+");
+
         slots.forEach(slotName => {
             const cleanSlot = slotName.trim();
+
             for (const day of days) {
                 if (slotMap[day] && slotMap[day][cleanSlot]) {
                     const info = slotMap[day][cleanSlot];
                     const pct = parseInt(a.attendancePercentage);
                     const cls = pct < 50 ? "low" : pct < 75 ? "medium" : "high";
 
-                    dayCardsMap[day].push({ ...a, slotName: cleanSlot, time: info.time, cls });
+                    dayCardsMap[day].push({
+                        ...a,
+                        slotName: cleanSlot,
+                        time: info.time,
+                        cls,
+                    });
                 }
             }
         });
     });
 
+    // 2. Sort + Merge
+    for (const day of days) {
+        dayCardsMap[day].sort((a, b) => {
+            const slotA = a.slotName;
+            const slotB = b.slotName;
+
+            // Morning/Evening sort like your old algorithm
+            const isMorningA = /[A-Z]1$|L([1-2]?[0-9]|30)$/.test(slotA);
+            const isMorningB = /[A-Z]1$|L([1-2]?[0-9]|30)$/.test(slotB);
+
+            if (isMorningA && !isMorningB) return -1;
+            if (!isMorningA && isMorningB) return 1;
+
+            // Sort by slot name within morning/evening
+            return slotA.localeCompare(slotB, undefined, { numeric: true });
+        });
+
+        // Merge consecutive slots if same class
+        const merged = [];
+        for (let i = 0; i < dayCardsMap[day].length; i++) {
+            const current = dayCardsMap[day][i];
+            const next = dayCardsMap[day][i + 1];
+
+            if (
+                next &&
+                current.courseTitle === next.courseTitle &&
+                current.courseType === next.courseType &&
+                current.faculty === next.faculty &&
+                current.cls === next.cls
+            ) {
+                const mergedSlotName = `${current.slotName}+${next.slotName}`;
+                const mergedSlotTime = `${(current.time.split('-')[0])}-${(next.time.split('-')[1])}`
+                merged.push({
+                    ...current,
+                    slotName: mergedSlotName,
+                    time: mergedSlotTime
+                });
+                i++; // skip next
+            } else {
+                merged.push(current);
+            }
+        }
+        dayCardsMap[day] = merged;
+    }
+
     return (
-        <div>
+        <div className="p-2">
             <h1 className="text-xl font-bold mb-4">Weekly Attendance Slots</h1>
             <div className="flex gap-2 mb-4">
                 {days.map((d) => (
@@ -349,7 +399,7 @@ function AttendanceTabs({ data, activeDay, setActiveDay }) {
             </div>
             <div className="grid gap-4">
                 {dayCardsMap[activeDay].map((a, idx) => (
-                    <div key={idx} className={`p-4 rounded-lg shadow ${a.cls}`}>
+                    <div key={idx} className={`p-4 rounded-lg shadow border border-color-white ${a.cls}`}>
                         <h3 className="font-semibold">Slot: {a.slotName}</h3>
                         <p><strong>Course:</strong> {a.courseTitle} ({a.courseType})</p>
                         <p><strong>Faculty:</strong> {a.faculty}</p>
@@ -378,7 +428,7 @@ function MarksDisplay({ data }) {
     }
 
     return (
-        <div>
+        <div className="p-2">
             <h1 className="text-xl font-bold mb-4">Academic Marks</h1>
             <div className="space-y-4">
                 {data.marks.map((course, idx) => (
@@ -401,9 +451,9 @@ function MarksDisplay({ data }) {
                                 <p><strong>Faculty:</strong> {course.faculty}</p>
                                 <p><strong>Slot:</strong> {course.slot}</p>
                                 <table className="w-full border mt-2">
-                                    <thead className="bg-gray-200">
+                                    <thead className="bg-gray-800">
                                         <tr>
-                                            <th className="border p-2 text-left">Assessment</th>
+                                            <th className="border p-2 text-left">Test</th>
                                             <th className="border p-2">Max</th>
                                             <th className="border p-2">Scored</th>
                                             <th className="border p-2">Weight %</th>

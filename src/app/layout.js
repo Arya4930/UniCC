@@ -2,7 +2,7 @@ import { Geist, Geist_Mono, Roboto } from 'next/font/google';
 import './globals.css';
  
 export const viewport = {
-  themeColor: "#317EFB",
+  themeColor: "#000000",
 }
  
 const geistSans = Geist({
