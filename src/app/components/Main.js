@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";    
+import { useState, useEffect } from "react";
+import { RefreshCcw, X, ChevronDown, ChevronUp } from 'lucide-react'
 
 export default function LoginPage() {
     // --- State Management ---
@@ -15,6 +16,7 @@ export default function LoginPage() {
     const [activeDay, setActiveDay] = useState("MON");
     const [csrf, setCsrf] = useState("");
     const [isReloading, setIsReloading] = useState(false); // Controls the reload modal
+    const [activeTab, setActiveTab] = useState("attendance")
 
     const isLoggedIn = attendanceData || marksData;
 
@@ -62,11 +64,11 @@ export default function LoginPage() {
                 body: JSON.stringify({ username, password, captcha, cookies, csrf }),
             });
             const data = await res.json();
-            
+
             if (data.success && data.dashboardHtml) {
                 localStorage.setItem("username", username);
                 localStorage.setItem("password", password);
-                
+
                 const [attRes, marksRes] = await Promise.all([
                     fetch("/api/fetchAttendance", {
                         method: "POST", headers: { "Content-Type": "application/json" },
@@ -86,13 +88,13 @@ export default function LoginPage() {
                 setMarksData(marksDataPayload);
                 localStorage.setItem("attendance", JSON.stringify(attData));
                 localStorage.setItem("marks", JSON.stringify(marksDataPayload));
-                
+
                 setIsReloading(false); // Close the modal on success
                 setMessage("Data reloaded successfully!");
             } else {
-                 setMessage(data.message || "Login failed. Please try again.");
-                 setCaptcha("");
-                 loadCaptcha(); // Load a new captcha within the modal
+                setMessage(data.message || "Login failed. Please try again.");
+                setCaptcha("");
+                loadCaptcha(); // Load a new captcha within the modal
             }
         } catch (err) {
             setMessage("Login failed, check console.");
@@ -108,15 +110,7 @@ export default function LoginPage() {
 
     // --- Render Logic ---
     return (
-        <div style={{ padding: 20, fontFamily: "Arial" }}>
-            {isLoggedIn && (
-                <div style={{ textAlign: 'right', marginBottom: '20px' }}>
-                    <button onClick={handleReloadRequest} style={reloadButtonStyle}>
-                        Reload Data
-                    </button>
-                </div>
-            )}
-
+        <div className="min-h-screen flex flex-col items-center">
             {isReloading && (
                 <ReloadModal
                     captchaImage={captchaImage}
@@ -129,22 +123,91 @@ export default function LoginPage() {
             )}
 
             {!isLoggedIn && (
-                <form onSubmit={handleLogin} style={{ maxWidth: 400, margin: "auto" }}>
-                    <h2>Login</h2>
-                    <input value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" style={inputStyle} />
-                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" style={inputStyle} />
-                    {captchaImage && <img src={captchaImage} alt="Captcha" style={{ marginBottom: 10, display: 'block' }} />}
-                    <input value={captcha} onChange={e => setCaptcha(e.target.value)} placeholder="Enter Captcha" style={inputStyle} />
-                    <button type="submit" style={loginButtonStyle}>Login</button>
-                    <p>{message}</p>
+                <form
+                    onSubmit={handleLogin}
+                    className="bg-gray-600 shadow-md rounded-xl p-6 w-full max-w-md space-y-4"
+                >
+                    <h2 className="text-xl font-bold text-white">Login</h2>
+                    <input
+                        className="w-full border p-2 rounded-lg"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Username"
+                    />
+                    <input
+                        className="w-full border p-2 rounded-lg"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                    />
+                    {captchaImage && (
+                        <img
+                            src={captchaImage}
+                            alt="Captcha"
+                            className="border rounded-lg w-full h-16 object-contain"
+                        />
+                    )}
+                    <input
+                        className="w-full border p-2 rounded-lg"
+                        value={captcha}
+                        onChange={(e) => setCaptcha(e.target.value)}
+                        placeholder="Enter Captcha"
+                    />
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                    >
+                        Login
+                    </button>
+                    <p className="text-sm text-gray-600">{message}</p>
                 </form>
             )}
 
             {isLoggedIn && (
-                <>
-                    {attendanceData && <AttendanceTabs data={attendanceData} activeDay={activeDay} setActiveDay={setActiveDay} />}
-                    {marksData && <MarksDisplay data={marksData} />}
-                </>
+                <div className="w-full">
+                    <div className="flex w-full pb-2 mb-4">
+                        <button
+                            onClick={() => setActiveTab("attendance")}
+                            className={`basis-9/20 text-center px-3 py-2 text-sm font-medium hover:cursor-pointer transition-colors ${activeTab === "attendance"
+                                ? "bg-blue-600 text-white"
+                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                }`}
+                        >
+                            Attendance
+                        </button>
+
+                        {/* Marks Tab */}
+                        <button
+                            onClick={() => setActiveTab("marks")}
+                            className={`basis-9/20 text-center px-3 py-2 text-sm font-medium hover:cursor-pointer transition-colors ${activeTab === "marks"
+                                ? "bg-blue-600 text-white"
+                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                }`}
+                        >
+                            Marks
+                        </button>
+
+                        {/* Reload Button */}
+                        <button
+                            onClick={handleReloadRequest}
+                            className="basis-2/20 flex items-center justify-center bg-blue-500 hover:cursor-pointer text-white px-3 py-2 text-sm font-medium hover:bg-blue-700 transition-colors"
+                        >
+                            <RefreshCcw className="w-4 h-4" />
+                        </button>
+                    </div>
+
+                    {/* Tab Content */}
+                    {activeTab === "attendance" && attendanceData && (
+                        <AttendanceTabs
+                            data={attendanceData}
+                            activeDay={activeDay}
+                            setActiveDay={setActiveDay}
+                        />
+                    )}
+
+                    {activeTab === "marks" && marksData && <MarksDisplay data={marksData} />}
+                </div>
             )}
         </div>
     );
@@ -153,49 +216,45 @@ export default function LoginPage() {
 // --- New Reload Modal Component ---
 function ReloadModal({ captchaImage, captcha, setCaptcha, handleLogin, message, onClose }) {
     return (
-        <div style={modalOverlayStyle}>
-            <div style={modalContentStyle}>
-                <button onClick={onClose} style={closeButtonStyle}>&times;</button>
-                <form onSubmit={handleLogin}>
-                    <h2>Reload Session</h2>
-                    <p>Enter the new captcha to refresh your data.</p>
-                    {captchaImage && <img src={captchaImage} alt="Captcha" style={{ marginBottom: 10, display: 'block' }} />}
-                    <input value={captcha} onChange={e => setCaptcha(e.target.value)} placeholder="Enter New Captcha" style={inputStyle} />
-                    <button type="submit" style={submitButtonStyle}>Submit</button>
-                    {message && <p style={{ marginTop: '10px' }}>{message}</p>}
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="bg-gray-600 rounded-xl shadow-lg p-6 w-full max-w-md">
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-lg font-bold">Reload Session</h2>
+                    <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-500 transition hover:cursor-pointer">
+                        <X className="w-5 h-5 text-white" />
+                    </button>
+                </div>
+                <p className="text-sm text-white mb-4">
+                    Enter the new captcha to refresh your data.
+                </p>
+                <form onSubmit={handleLogin} className="space-y-4">
+                    {captchaImage && (
+                        <img
+                            src={captchaImage}
+                            alt="Captcha"
+                            className="w-full h-16 object-contain"
+                        />
+                    )}
+                    <input
+                        className="w-full border p-2 rounded-lg"
+                        value={captcha}
+                        onChange={(e) => setCaptcha(e.target.value)}
+                        placeholder="Enter New Captcha"
+                    />
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                    >
+                        Submit
+                    </button>
+                    {message && <p className="text-sm text-gray-600">{message}</p>}
                 </form>
             </div>
         </div>
     );
 }
 
-// --- Your existing components (AttendanceTabs, MarksDisplay) go here ---
-// ... (omitted for brevity)
 
-// --- CSS-in-JS Styles ---
-const inputStyle = { width: "100%", marginBottom: 10, padding: 8, boxSizing: 'border-box' };
-const loginButtonStyle = { width: "100%", padding: 10, background: "#000000ff", color: "#000000ff", border: "none", borderRadius: 5, cursor: 'pointer' };
-const reloadButtonStyle = { padding: '8px 15px', background: '#3498db', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' };
-const submitButtonStyle = { ...loginButtonStyle, background: '#2ecc71' };
-
-const modalOverlayStyle = {
-    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    zIndex: 1000,
-};
-const modalContentStyle = {
-    background: 'black', padding: '20px 30px', borderRadius: '8px',
-    maxWidth: '400px', width: '90%', position: 'relative',
-    boxShadow: '0 5px 15px rgba(0,0,0,0.3)',
-};
-const closeButtonStyle = {
-    position: 'absolute', top: '10px', right: '15px',
-    background: 'transparent', border: 'none',
-    fontSize: '1.5rem', cursor: 'pointer',
-};
-
-// AttendanceTabs Component
 function AttendanceTabs({ data, activeDay, setActiveDay }) {
     const days = ["MON", "TUE", "WED", "THU", "FRI"];
     const slotMap = {
@@ -273,45 +332,31 @@ function AttendanceTabs({ data, activeDay, setActiveDay }) {
 
     return (
         <div>
-            <h1 style={{ textAlign: "center" }}>Weekly Attendance Slots</h1>
-            <div style={{ display: "flex", justifyContent: "center", gap: 10, marginBottom: 20 }}>
-                {days.map(d => (
+            <h1 className="text-xl font-bold mb-4">Weekly Attendance Slots</h1>
+            <div className="flex gap-2 mb-4">
+                {days.map((d) => (
                     <button
                         key={d}
-                        style={{
-                            padding: "10px 20px",
-                            borderRadius: 8,
-                            cursor: "pointer",
-                            fontWeight: "bold",
-                            background: activeDay === d ? "#3498db" : "#ddd",
-                            color: activeDay === d ? "white" : "black"
-                        }}
                         onClick={() => setActiveDay(d)}
+                        className={`px-4 py-2 rounded-lg hover:bg-blue-300 hover:cursor-pointer ${activeDay === d
+                            ? "bg-blue-600 text-white"
+                            : "bg-gray-200 text-gray-700"
+                            }`}
                     >
                         {d}
                     </button>
                 ))}
             </div>
-
-            <div>
-                {days.map(d => (
-                    <div key={d} style={{ display: activeDay === d ? "flex" : "none", flexDirection: "column", gap: 20 }}>
-                        {dayCardsMap[d].map((a, idx) => (
-                            <div key={idx} style={{
-                                background: "green",
-                                padding: 15,
-                                borderRadius: 12,
-                                boxShadow: "0 4px 8px rgba(0,0,0,0.1)"
-                            }}>
-                                <h3>Slot: {a.slotName}</h3>
-                                <div><strong>Course:</strong> {a.courseTitle} ({a.courseType})</div>
-                                <div><strong>Faculty:</strong> {a.faculty}</div>
-                                <div><strong>Time:</strong> {a.time}</div>
-                                <div style={{ fontWeight: "bold", color: a.cls === "low" ? "red" : a.cls === "medium" ? "orange" : "green" }}>
-                                    Attendance: {a.attendedClasses}/{a.totalClasses} ({a.attendancePercentage}%)
-                                </div>
-                            </div>
-                        ))}
+            <div className="grid gap-4">
+                {dayCardsMap[activeDay].map((a, idx) => (
+                    <div key={idx} className={`p-4 rounded-lg shadow ${a.cls}`}>
+                        <h3 className="font-semibold">Slot: {a.slotName}</h3>
+                        <p><strong>Course:</strong> {a.courseTitle} ({a.courseType})</p>
+                        <p><strong>Faculty:</strong> {a.faculty}</p>
+                        <p><strong>Time:</strong> {a.time}</p>
+                        <p>
+                            Attendance: {a.attendedClasses}/{a.totalClasses} ({a.attendancePercentage}%)
+                        </p>
                     </div>
                 ))}
             </div>
@@ -333,47 +378,46 @@ function MarksDisplay({ data }) {
     }
 
     return (
-        <div style={{ marginTop: '30px' }}>
-            <h1 style={{ textAlign: "center" }}>Academic Marks</h1>
-            <div style={{ maxWidth: '900px', margin: 'auto' }}>
+        <div>
+            <h1 className="text-xl font-bold mb-4">Academic Marks</h1>
+            <div className="space-y-4">
                 {data.marks.map((course, idx) => (
-                    <div key={idx} style={{ marginBottom: '10px', border: '1px solid #000000ff', borderRadius: '8px' }}>
+                    <div key={idx} className="p-4 rounded-lg shadow">
                         <div
+                            className="flex justify-between items-center cursor-pointer"
                             onClick={() => toggleCourse(course.slNo)}
-                            style={{
-                                padding: '15px',
-                                background: '#000000ff',
-                                cursor: 'pointer',
-                                fontWeight: 'bold',
-                                display: 'flex',
-                                justifyContent: 'space-between'
-                            }}
                         >
-                            <span>{course.courseCode} - {course.courseTitle}</span>
-                            <span>{openCourse === course.slNo ? '▲' : '▼'}</span>
+                            <span className="font-medium">
+                                {course.courseCode} - {course.courseTitle}
+                            </span>
+                            {openCourse === course.slNo ? (
+                                <ChevronUp className="w-5 h-5" />
+                            ) : (
+                                <ChevronDown className="w-5 h-5" />
+                            )}
                         </div>
                         {openCourse === course.slNo && (
-                            <div style={{ padding: '15px' }}>
+                            <div className="mt-4">
                                 <p><strong>Faculty:</strong> {course.faculty}</p>
                                 <p><strong>Slot:</strong> {course.slot}</p>
-                                <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
-                                    <thead>
-                                        <tr style={{ background: '#000000ff' }}>
-                                            <th style={tableCellStyle}>Assessment</th>
-                                            <th style={tableCellStyle}>Max Mark</th>
-                                            <th style={tableCellStyle}>Scored Mark</th>
-                                            <th style={tableCellStyle}>Weightage %</th>
-                                            <th style={tableCellStyle}>Weighted Mark</th>
+                                <table className="w-full border mt-2">
+                                    <thead className="bg-gray-200">
+                                        <tr>
+                                            <th className="border p-2 text-left">Assessment</th>
+                                            <th className="border p-2">Max</th>
+                                            <th className="border p-2">Scored</th>
+                                            <th className="border p-2">Weight %</th>
+                                            <th className="border p-2">Weighted</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {course.assessments.map((asm, asmIdx) => (
-                                            <tr key={asmIdx} style={{ borderBottom: '1px solid #000000ff' }}>
-                                                <td style={tableCellStyle}>{asm.title}</td>
-                                                <td style={tableCellStyle}>{asm.maxMark}</td>
-                                                <td style={tableCellStyle}>{asm.scoredMark}</td>
-                                                <td style={tableCellStyle}>{asm.weightagePercent}</td>
-                                                <td style={tableCellStyle}>{asm.weightageMark}</td>
+                                            <tr key={asmIdx}>
+                                                <td className="border p-2">{asm.title}</td>
+                                                <td className="border p-2">{asm.maxMark}</td>
+                                                <td className="border p-2">{asm.scoredMark}</td>
+                                                <td className="border p-2">{asm.weightagePercent}</td>
+                                                <td className="border p-2">{asm.weightageMark}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -386,10 +430,3 @@ function MarksDisplay({ data }) {
         </div>
     );
 }
-
-// Helper styles for the table
-const tableCellStyle = {
-    padding: '10px',
-    textAlign: 'left',
-    border: '1px solid #ddd'
-};

@@ -1,6 +1,10 @@
 import { Geist, Geist_Mono, Roboto } from 'next/font/google';
 import './globals.css';
-
+ 
+export const viewport = {
+  themeColor: "#317EFB",
+}
+ 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,7 +31,6 @@ export const metadata = {
     apple: '/favicon.ico'
   },
   manifest: "/manifest.json",
-  themeColor: "#317EFB",
 };
 
 export default function RootLayout({ children }) {
