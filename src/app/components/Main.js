@@ -337,8 +337,15 @@ function AttendanceTabs({ data, activeDay, setActiveDay }) {
         });
     });
 
-    // 2. Sort + Merge
+    function parseTime(timeStr) {
+        let [h, m] = timeStr.split(":").map(Number);
+        if (h < 8) h += 12;
+        return h * 60 + m;
+    }
+
     for (const day of days) {
+        if (!dayCardsMap[day]) dayCardsMap[day] = [];
+
         dayCardsMap[day].sort((a, b) => {
             const slotA = a.slotName;
             const slotB = b.slotName;
@@ -371,11 +378,34 @@ function AttendanceTabs({ data, activeDay, setActiveDay }) {
                 merged.push(current);
             }
         }
-        dayCardsMap[day] = merged;
+
+        merged.sort((a, b) => {
+            const startA = parseTime(a.time.split("-")[0]);
+            const startB = parseTime(b.time.split("-")[0]);
+            return startA - startB;
+        });
+
+        dayCardsMap[day] = merged.length > 0 ? merged : [];
     }
+
 
     return (
         <div className="grid gap-4">
+            <h1 className="text-xl font-bold mb-4">Weekly Attendance Slots</h1>
+            <div className="flex gap-2 mb-4">
+                {days.map((d) => (
+                    <button
+                        key={d}
+                        onClick={() => setActiveDay(d)}
+                        className={`px-4 py-2 rounded-lg hover:bg-blue-300 hover:cursor-pointer ${activeDay === d
+                            ? "bg-blue-600 text-white"
+                            : "bg-gray-200 text-gray-700"
+                            }`}
+                    >
+                        {d}
+                    </button>
+                ))}
+            </div>
             {dayCardsMap[activeDay].map((a, idx) => (
                 <div
                     key={idx}
@@ -412,12 +442,12 @@ function AttendanceTabs({ data, activeDay, setActiveDay }) {
                                         <li
                                             key={i}
                                             className={`${d.status.toLowerCase() === "absent"
-                                                    ? "text-red-500"
-                                                    : d.status.toLowerCase() === "present"
-                                                        ? "text-green-500"
-                                                        : d.status.toLowerCase() === "on duty"
-                                                            ? "text-yellow-500"
-                                                            : ""
+                                                ? "text-red-500"
+                                                : d.status.toLowerCase() === "present"
+                                                    ? "text-green-500"
+                                                    : d.status.toLowerCase() === "on duty"
+                                                        ? "text-yellow-500"
+                                                        : ""
                                                 }`}
                                         >
                                             {d.date} – {d.status}
