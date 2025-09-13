@@ -17,7 +17,7 @@ export function ReloadModal({ captchaImage, captcha, setCaptcha, handleLogin, me
                     Enter the new captcha to refresh your data.
                 </p>
                 <form onSubmit={handleLogin} className="space-y-4">
-                    {captchaImage && (
+                    {captchaImage && message !== "Logging in and fetching data..." && (
                         <>
                             <img
                                 src={captchaImage}

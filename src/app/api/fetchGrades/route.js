@@ -55,9 +55,8 @@ export async function POST(req) {
                 const tds = $$(el).find("td");
                 curriculum.push({
                     basketTitle: $$(tds[0]).text().trim(),
-                    distributionType: $$(tds[1]).text().trim(),
-                    creditsRequired: $$(tds[2]).text().trim(),
-                    creditsEarned: $$(tds[3]).text().trim(),
+                    creditsRequired: $$(tds[1]).text().trim(),
+                    creditsEarned: $$(tds[2]).text().trim(),
                 });
             });
         $$("#fixedTableContainer table")
@@ -67,7 +66,6 @@ export async function POST(req) {
                 const tds = $$(el).find("td");
                 curriculum.push({
                     basketTitle: $$(tds[0]).text().trim(),
-                    distributionType: $$(tds[1]).text().trim(),
                     creditsRequired: $$(tds[2]).text().trim(),
                     creditsEarned: $$(tds[3]).text().trim(),
                 });
