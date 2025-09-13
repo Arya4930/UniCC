@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 import { RefreshCcw, X, ChevronDown, ChevronUp } from 'lucide-react'
 import Image from "next/image";
 
+import { ReloadModal } from "./reloadModel";
+import { Button } from "../ui/button";
+
 export default function LoginPage() {
     // --- State Management ---
     const [username, setUsername] = useState("");
@@ -208,15 +211,16 @@ export default function LoginPage() {
             {isLoggedIn && (
                 <div className="w-full">
                     <div className="flex w-full pb-2 mb-4">
-                        <button
-                            onClick={() => setActiveTab("attendance")}
-                            className={`basis-9/20 text-center px-3 py-2 text-sm font-medium hover:cursor-pointer transition-colors ${activeTab === "attendance"
-                                ? "bg-blue-600 text-white"
-                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                                }`}
-                        >
-                            Attendance
-                        </button>
+                        <Button
+  onClick={() => setActiveTab("attendance")}
+  className={`basis-9/20 text-sm font-medium transition-colors rounded-none ${
+    activeTab === "attendance"
+      ? "bg-blue-600 text-white hover:bg-blue-700"
+      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+  }`}
+>
+  Attendance
+</Button>
 
                         {/* Marks Tab */}
                         <button
@@ -309,52 +313,6 @@ export default function LoginPage() {
                     </div>
                 </div>
             )}
-        </div>
-    );
-}
-
-// --- New Reload Modal Component ---
-function ReloadModal({ captchaImage, captcha, setCaptcha, handleLogin, message, onClose }) {
-    return (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="bg-gray-600 rounded-xl shadow-lg p-6 w-full max-w-md">
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-lg font-bold">Reload Session</h2>
-                    <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-500 transition hover:cursor-pointer">
-                        <X className="w-5 h-5 text-white" />
-                    </button>
-                </div>
-                <p className="text-sm text-white mb-4">
-                    Enter the new captcha to refresh your data.
-                </p>
-                <form onSubmit={handleLogin} className="space-y-4">
-                    {captchaImage && (
-                        <>
-                            <Image
-                                src={captchaImage}
-                                alt="Captcha"
-                                className="w-full h-16 object-contain"
-                                width={200}
-                                height={64}
-                                unoptimized
-                            />
-                            <input
-                                className="w-full border p-2 rounded-lg"
-                                value={captcha}
-                                onChange={(e) => setCaptcha(e.target.value)}
-                                placeholder="Enter New Captcha"
-                            />
-                            <button
-                                type="submit"
-                                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition hover:cursor-pointer"
-                            >
-                                Submit
-                            </button>
-                        </>
-                    )}
-                    {message && <p className="text-sm">{message}</p>}
-                </form>
-            </div>
         </div>
     );
 }
