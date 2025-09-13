@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { RefreshCcw, X, ChevronDown, ChevronUp } from 'lucide-react'
+import Image from "next/image";
 
 export default function LoginPage() {
     // --- State Management ---
@@ -11,16 +12,15 @@ export default function LoginPage() {
     const [captchaImage, setCaptchaImage] = useState("");
     const [cookies, setCookies] = useState([]);
     const [message, setMessage] = useState("");
-    const [attendanceData, setAttendanceData] = useState(null);
-    const [marksData, setMarksData] = useState(null);
-    const [GradesData, setGradesData] = useState(null);
+    const [attendanceData, setAttendanceData] = useState({});
+    const [marksData, setMarksData] = useState({});
+    const [GradesData, setGradesData] = useState({});
     const [activeDay, setActiveDay] = useState("MON");
     const [csrf, setCsrf] = useState("");
     const [isReloading, setIsReloading] = useState(false); // Controls the reload modal
     const [activeTab, setActiveTab] = useState("attendance");
     const [attendancePercentage, setattendancePercentage] = useState(0);
-    const [ODhours, setODhours] = useState(0);
-    const [ODhoursData, setODhoursData] = useState(null);
+    const [ODhoursData, setODhoursData] = useState([]);
     const [ODhoursIsOpen, setODhoursIsOpen] = useState(false);
 
     const isLoggedIn = attendanceData || marksData;
@@ -43,17 +43,14 @@ export default function LoginPage() {
             })
             setattendancePercentage(Math.round(attendedClasses * 10000 / totalClass) / 100)
 
-            let ODhours = 0;
             let ODArr = [];
             JSON.parse(storedAttendance).attendance.forEach(course => {
                 course.viewLinkData.forEach(day => {
                     if (day.status == "On Duty") {
-                        ODhours++;
                         ODArr.push({ date: day.date, courseTitle: course.courseTitle });
                     }
                 });
             })
-            setODhours(ODhours);
             setODhoursData(ODArr);
         };
         if (storedMarks) setMarksData(JSON.parse(storedMarks));
@@ -70,8 +67,11 @@ export default function LoginPage() {
     const loadCaptcha = async () => {
         setMessage("Loading captcha...");
         try {
-            const res = await fetch("/api/getCaptcha");
-            const data = await res.json();
+            let data;
+            do {
+                const res = await fetch("/api/getCaptcha");
+                data = await res.json();
+            } while (data.captchaType === "GRECAPTCHA");
             setCookies(Array.isArray(data.cookies) ? data.cookies : [data.cookies]);
             setCaptchaImage(data.captchaBase64);
             setCsrf(data.csrf);
@@ -179,10 +179,13 @@ export default function LoginPage() {
                     />
                     {captchaImage && (
                         <>
-                            <img
+                            <Image
                                 src={captchaImage}
                                 alt="Captcha"
                                 className="border rounded-lg w-full h-16 object-contain"
+                                width={200}
+                                height={64}
+                                unoptimized
                             />
                             <input
                                 className="w-full border p-2 rounded-lg"
@@ -192,7 +195,7 @@ export default function LoginPage() {
                             />
                             <button
                                 type="submit"
-                                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition hover:cursor-pointer"
                             >
                                 Login
                             </button>
@@ -275,7 +278,7 @@ export default function LoginPage() {
                                             onClick={() => setODhoursIsOpen(true)}
                                         >
                                             <h2 className="text-lg font-semibold text-gray-600">OD hours</h2>
-                                            <p className="text-3xl font-bold text-gray-900 mt-2">{ODhours}/40</p>
+                                            <p className="text-3xl font-bold text-gray-900 mt-2">{ODhoursData.length}/40</p>
                                         </div>
 
                                         {/* Modal */}
@@ -300,8 +303,8 @@ export default function LoginPage() {
                                     </div>
                                 </div>
                             )}
-                            {activeTab === "attendance" && <AttendanceTabs data={attendanceData} activeDay={activeDay} setActiveDay={setActiveDay} />}
-                            {activeTab === "marks" && <MarksDisplay data={marksData} />}
+                            {activeTab === "attendance" && attendanceData && attendanceData.attendance && <AttendanceTabs data={attendanceData} activeDay={activeDay} setActiveDay={setActiveDay} />}
+                            {activeTab === "marks" && marksData && <MarksDisplay data={marksData} />}
                         </div>
                     </div>
                 </div>
@@ -327,10 +330,13 @@ function ReloadModal({ captchaImage, captcha, setCaptcha, handleLogin, message, 
                 <form onSubmit={handleLogin} className="space-y-4">
                     {captchaImage && (
                         <>
-                            <img
+                            <Image
                                 src={captchaImage}
                                 alt="Captcha"
                                 className="w-full h-16 object-contain"
+                                width={200}
+                                height={64}
+                                unoptimized
                             />
                             <input
                                 className="w-full border p-2 rounded-lg"
@@ -340,7 +346,7 @@ function ReloadModal({ captchaImage, captcha, setCaptcha, handleLogin, message, 
                             />
                             <button
                                 type="submit"
-                                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition hover:cursor-pointer"
                             >
                                 Submit
                             </button>
