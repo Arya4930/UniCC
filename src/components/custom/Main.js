@@ -6,6 +6,7 @@ import Image from "next/image";
 
 import { ReloadModal } from "./reloadModel";
 import { Button } from "../ui/button";
+import CourseCard from "./courseCard";
 
 export default function LoginPage() {
     // --- State Management ---
@@ -149,7 +150,7 @@ export default function LoginPage() {
 
     // --- Render Logic ---
     return (
-        <div className="min-h-screen flex flex-col items-center">
+        <div className="min-h-screen flex flex-col items-center mb-5">
             {isReloading && (
                 <ReloadModal
                     captchaImage={captchaImage}
@@ -212,15 +213,14 @@ export default function LoginPage() {
                 <div className="w-full">
                     <div className="flex w-full pb-2 mb-4">
                         <Button
-  onClick={() => setActiveTab("attendance")}
-  className={`basis-9/20 text-sm font-medium transition-colors rounded-none ${
-    activeTab === "attendance"
-      ? "bg-blue-600 text-white hover:bg-blue-700"
-      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-  }`}
->
-  Attendance
-</Button>
+                            onClick={() => setActiveTab("attendance")}
+                            className={`basis-9/20 text-sm font-medium transition-colors rounded-none ${activeTab === "attendance"
+                                ? "bg-blue-600 text-white hover:bg-blue-700"
+                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                }`}
+                        >
+                            Attendance
+                        </Button>
 
                         {/* Marks Tab */}
                         <button
@@ -469,32 +469,8 @@ function AttendanceTabs({ data, activeDay, setActiveDay }) {
                 ))}
             </div>
             {dayCardsMap[activeDay].map((a, idx) => (
-                <div
-                    key={idx}
-                    className={`p-4 rounded-lg shadow border border-white transition hover:shadow-lg ${a.cls}`}
-                >
-                    <div className="flex justify-between items-center mb-2">
-                        <h3 className="font-semibold text-lg">{a.courseTitle}</h3>
-                        <button
-                            className="text-sm underline hover:cursor-pointer"
-                            onClick={() => setExpandedIdx(idx)}
-                        >
-                            View Details
-                        </button>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-x-4 text-sm">
-                        <p><strong>Slot:</strong> {a.slotName}</p>
-                        <p><strong>Time:</strong> {a.time}</p>
-                        <p><strong>Faculty:</strong> {a.faculty}</p>
-                        <p><strong>Type:</strong> {a.courseType}</p>
-                        <p><strong>Credits:</strong> {a.credits}</p>
-                        <p><strong>Venue:</strong> {a.slotVenue}</p>
-                        <p><strong>Class ID:</strong> {a.classId}</p>
-                        <p>
-                            <strong>Attendance:</strong> {a.attendedClasses}/{a.totalClasses} ({a.attendancePercentage}%)
-                        </p>
-                    </div>
+                <div key={idx}>
+                    <CourseCard a={a} onClick={() => setExpandedIdx(idx)}/>
 
                     {expandedIdx === idx && (
                         <div className="fixed inset-0 bg-black flex items-center justify-center">
@@ -517,7 +493,7 @@ function AttendanceTabs({ data, activeDay, setActiveDay }) {
                                     ))}
                                 </ul>
                                 <button
-                                    className="absolute top-2 right-2 m-1 text-white hover:text-black"
+                                    className="absolute top-2 right-2 m-1 text-white hover:text-black hover:cursor-pointer"
                                     onClick={() => setExpandedIdx(null)}
                                 >
                                     ✕
