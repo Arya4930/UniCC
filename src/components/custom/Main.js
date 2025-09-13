@@ -455,7 +455,7 @@ function AttendanceTabs({ data, activeDay, setActiveDay }) {
 
 
     return (
-        <div className="grid gap-4">
+        <div className="grid gap-4 m-2">
             <h1 className="text-xl font-bold mb-4">Weekly Attendance Slots</h1>
             <div className="flex gap-2 mb-4">
                 {days.map((d) => (
