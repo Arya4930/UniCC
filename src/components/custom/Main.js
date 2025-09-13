@@ -31,7 +31,7 @@ export default function LoginPage() {
 
     // --- Effects ---
     useEffect(() => {
-        const storedAttendance = localStorage.getItem("attendance");
+        let storedAttendance = localStorage.getItem("attendance");
         const storedMarks = localStorage.getItem("marks");
         const storedGrades = localStorage.getItem("grades");
         const storedUsername = localStorage.getItem("username");
