@@ -50,6 +50,7 @@ export default function LoginPage() {
 
             let ODArr = [];
             storedAttendance.attendance.forEach(course => {
+                if(!course.viewLinkData) return;
                 course.viewLinkData.forEach(day => {
                     if (day.status == "On Duty") {
                         ODArr.push({ date: day.date, courseTitle: course.courseTitle });
@@ -293,7 +294,7 @@ export default function LoginPage() {
                                                     <h3 className="text-xl font-bold mb-4">OD Hours Info</h3>
                                                     {ODhoursData.map((day, idx) => (
                                                         <div key={idx}>
-                                                            {day.date} - {day.courseTitle}
+                                                            {day?.date} - {day?.courseTitle}
                                                         </div>
                                                     ))}
                                                     <button
