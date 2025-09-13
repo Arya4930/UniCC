@@ -50,7 +50,7 @@ export default function LoginPage() {
 
             let ODArr = [];
             storedAttendance.attendance.forEach(course => {
-                if(!course.viewLinkData) return;
+                if(!course.viewLinkData || !Array.isArray(course.viewLinkData)) return;
                 course.viewLinkData.forEach(day => {
                     if (day.status == "On Duty") {
                         ODArr.push({ date: day.date, courseTitle: course.courseTitle });
