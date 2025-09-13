@@ -1,4 +1,4 @@
-import { client } from "@/app/lib/VTOPClient";
+import { client } from "@/lib/VTOPClient";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {

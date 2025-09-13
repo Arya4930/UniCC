@@ -235,7 +235,7 @@ export default function LoginPage() {
                         </button>
                     </div>
 
-                    <div className="flex justify-center">
+                    <div className="flex justify-center bg-white">
                         <div className="max-w-md w-full">
                             {GradesData && (
                                 <div className="overflow-x-auto">

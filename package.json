@@ -9,9 +9,12 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.2.3",
     "axios": "^1.11.0",
     "axios-cookiejar-support": "^6.0.4",
     "cheerio": "^1.1.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "dotenv": "^17.2.2",
     "https": "^1.0.0",
     "lucide-react": "^0.544.0",
@@ -20,6 +23,7 @@
     "prompt-sync": "^4.2.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "tailwind-merge": "^3.3.1",
     "tough-cookie": "^5.1.2"
   },
   "devDependencies": {
@@ -27,6 +31,7 @@
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4",
+    "tw-animate-css": "^1.3.8"
   }
 }

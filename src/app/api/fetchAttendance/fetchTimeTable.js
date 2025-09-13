@@ -1,5 +1,5 @@
 import * as cheerio from "cheerio";
-import { client } from "@/app/lib/VTOPClient";
+import { client } from "@/lib/VTOPClient";
 import { URLSearchParams } from "url";
 
 export default async function fetchTimetable(cookieHeader, dashboardHtml) {

@@ -1,5 +1,5 @@
 // https://vtopcc.vit.ac.in/vtop/examinations/examGradeView/StudentGradeHistory
-import { client } from "@/app/lib/VTOPClient";
+import { client } from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
 import { NextResponse } from "next/server";
 import { URLSearchParams } from "url";
