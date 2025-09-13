@@ -36,19 +36,20 @@ export default function LoginPage() {
         const storedGrades = localStorage.getItem("grades");
         const storedUsername = localStorage.getItem("username");
         const storedPassword = localStorage.getItem("password");
+        storedAttendance = JSON.parse(storedAttendance);
 
-        if (storedAttendance) {
-            setAttendanceData(JSON.parse(storedAttendance))
+        if (storedAttendance && storedAttendance.attendance) {
+            setAttendanceData(storedAttendance)
             let totalClass = 0;
             let attendedClasses = 0;
-            JSON.parse(storedAttendance).attendance.forEach(course => {
+            storedAttendance.attendance.forEach(course => {
                 totalClass += parseInt(course.totalClasses);
                 attendedClasses += parseInt(course.attendedClasses);
             })
             setattendancePercentage(Math.round(attendedClasses * 10000 / totalClass) / 100)
 
             let ODArr = [];
-            JSON.parse(storedAttendance).attendance.forEach(course => {
+            storedAttendance.attendance.forEach(course => {
                 course.viewLinkData.forEach(day => {
                     if (day.status == "On Duty") {
                         ODArr.push({ date: day.date, courseTitle: course.courseTitle });
