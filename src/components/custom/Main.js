@@ -249,6 +249,16 @@ export default function LoginPage() {
                                     <div className="inline-flex gap-4 py-4">
                                         <div
                                             className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition min-w-[180px]"
+                                            onClick={() => console.log("Attendance clicked")}
+                                        >
+                                            <h2 className="text-lg font-semibold text-gray-600">Attendance</h2>
+                                            <p className="text-3xl font-bold text-gray-900 mt-2">
+                                                {attendancePercentage}
+                                            </p>
+                                        </div>
+                                        
+                                        <div
+                                            className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition min-w-[180px]"
                                             onClick={() => console.log("CGPA clicked")}
                                         >
                                             <h2 className="text-lg font-semibold text-gray-600">CGPA</h2>
@@ -264,16 +274,6 @@ export default function LoginPage() {
                                             <h2 className="text-lg font-semibold text-gray-600">Credits Earned</h2>
                                             <p className="text-3xl font-bold text-gray-900 mt-2">
                                                 {GradesData?.cgpa?.creditsEarned}
-                                            </p>
-                                        </div>
-
-                                        <div
-                                            className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition min-w-[180px]"
-                                            onClick={() => console.log("Attendance clicked")}
-                                        >
-                                            <h2 className="text-lg font-semibold text-gray-600">Attendance</h2>
-                                            <p className="text-3xl font-bold text-gray-900 mt-2">
-                                                {attendancePercentage}
                                             </p>
                                         </div>
 
