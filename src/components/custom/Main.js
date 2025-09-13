@@ -8,6 +8,7 @@ import { ReloadModal } from "./reloadModel";
 import GradesDisplay from "./gradesDisplay";
 import MarksDisplay from "./marksDislay";
 import AttendanceTabs from "./attendanceTabs";
+import MessDisplay from "./messDisplay";
 
 export default function LoginPage() {
     // --- State Management ---
@@ -237,6 +238,15 @@ export default function LoginPage() {
                         >
                             Marks
                         </button>
+                        <button
+                            onClick={() => setActiveTab("mess")}
+                            className={`basis-9/20 text-center px-3 py-2 text-sm font-medium hover:cursor-pointer transition-colors ${activeTab === "mess"
+                                ? "bg-blue-600 text-white"
+                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                }`}
+                        >
+                            Mess
+                        </button>
 
                         {/* Reload Button */}
                         <button
@@ -328,6 +338,7 @@ export default function LoginPage() {
                             )}
                             {activeTab === "attendance" && attendanceData && attendanceData.attendance && <AttendanceTabs data={attendanceData} activeDay={activeDay} setActiveDay={setActiveDay} />}
                             {activeTab === "marks" && marksData && <MarksDisplay data={marksData} />}
+                            {activeTab === "mess" && <MessDisplay />}
                         </div>
                     </div>
                 </div>

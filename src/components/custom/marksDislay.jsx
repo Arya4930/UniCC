@@ -14,7 +14,7 @@ export default function MarksDisplay({ data }) {
 
     return (
         <div className="p-2">
-            <h1 className="text-xl font-bold mb-4">Academic Marks</h1>
+            <h1 className="text-xl font-bold mb-4 text-center">Academic Marks</h1>
             <div className="space-y-4">
                 {data.marks.map((course, idx) => {
                     // calculate totals
