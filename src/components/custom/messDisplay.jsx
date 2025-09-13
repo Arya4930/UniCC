@@ -52,7 +52,8 @@ export default function MessDisplay() {
 
     return (
         <div >
-            <h1 className="text-xl font-bold mb-2 text-center">Mess Menu ( Data taken from <a href="http://kaffeine.tech/unmessify" target="_blank" rel="noopener noreferrer" className="underline">Unmessify</a> )</h1>
+            <h1 className="text-xl font-bold mb-2 text-center">Mess Menu</h1>
+            <h2 className="text-md font-bold mb-2 text-center">( Data taken from <a href="http://kaffeine.tech/unmessify" target="_blank" rel="noopener noreferrer" className="underline">Unmessify</a> )</h2>
 
             <div className="flex flex-wrap gap-4 justify-center mb-6">
                 <select

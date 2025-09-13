@@ -261,7 +261,7 @@ export default function LoginPage() {
                         <div className="max-w-md w-full">
                             {GradesData && (
                                 <div className="overflow-x-auto">
-                                    <div className="inline-flex gap-4 py-4">
+                                    <div className="inline-flex gap-4 py-4 mx-2">
                                         <div
                                             className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition min-w-[180px]"
                                             onClick={() => console.log("Attendance clicked")}
