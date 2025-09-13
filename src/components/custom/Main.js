@@ -26,8 +26,7 @@ export default function LoginPage() {
     const [attendancePercentage, setattendancePercentage] = useState(0);
     const [ODhoursData, setODhoursData] = useState([]);
     const [ODhoursIsOpen, setODhoursIsOpen] = useState(false);
-
-    const isLoggedIn = attendanceData || marksData;
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     // --- Effects ---
     useEffect(() => {
@@ -63,6 +62,7 @@ export default function LoginPage() {
         if (storedUsername) setUsername(storedUsername);
         if (storedPassword) setPassword(storedPassword);
         if (storedGrades) setGradesData(JSON.parse(storedGrades));
+        setIsLoggedIn((storedUsername && storedPassword) ? true : false)
 
         if (!storedAttendance && !storedMarks) {
             loadCaptcha();
