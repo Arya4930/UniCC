@@ -133,6 +133,7 @@ export default function LoginPage() {
 
                 setIsReloading(false); // Close the modal on success
                 setMessage("Data reloaded successfully!");
+                setIsLoggedIn(true)
             } else {
                 setMessage(data.message || "Login failed. Please try again.");
                 setCaptcha("");
