@@ -9,6 +9,7 @@ import GradesDisplay from "./gradesDisplay";
 import MarksDisplay from "./marksDislay";
 import AttendanceTabs from "./attendanceTabs";
 import MessDisplay from "./messDisplay";
+import ScheduleDisplay from "./SchduleDisplay";
 
 export default function LoginPage() {
     // --- State Management ---
@@ -21,6 +22,7 @@ export default function LoginPage() {
     const [attendanceData, setAttendanceData] = useState({});
     const [marksData, setMarksData] = useState({});
     const [GradesData, setGradesData] = useState({});
+    const [ScheduleData, setScheduleData] = useState({});
     const [activeDay, setActiveDay] = useState("MON");
     const [csrf, setCsrf] = useState("");
     const [isReloading, setIsReloading] = useState(false); // Controls the reload modal
@@ -30,6 +32,7 @@ export default function LoginPage() {
     const [ODhoursIsOpen, setODhoursIsOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [GradesDisplayIsOpen, setGradesDisplayIsOpen] = useState(false)
+    const [activeSubTab, setActiveSubTab] = useState("marks")
 
     // --- Effects ---
     useEffect(() => {
@@ -38,6 +41,7 @@ export default function LoginPage() {
         const storedGrades = localStorage.getItem("grades");
         const storedUsername = localStorage.getItem("username");
         const storedPassword = localStorage.getItem("password");
+        const storedSchedule = localStorage.getItem("schedule");
         storedAttendance = JSON.parse(storedAttendance);
 
         if (storedAttendance && storedAttendance.attendance) {
@@ -73,6 +77,7 @@ export default function LoginPage() {
         if (storedMarks) setMarksData(JSON.parse(storedMarks));
         if (storedUsername) setUsername(storedUsername);
         if (storedPassword) setPassword(storedPassword);
+        if (storedSchedule) setScheduleData(JSON.parse(storedSchedule));
         if (storedGrades) setGradesData(JSON.parse(storedGrades));
         setIsLoggedIn((storedUsername && storedPassword) ? true : false)
 
@@ -116,7 +121,7 @@ export default function LoginPage() {
                 localStorage.setItem("username", username);
                 localStorage.setItem("password", password);
 
-                const [attRes, marksRes, gradesRes] = await Promise.all([
+                const [attRes, marksRes, gradesRes, ScheduleRes] = await Promise.all([
                     fetch("/api/fetchAttendance", {
                         method: "POST", headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
@@ -128,20 +133,27 @@ export default function LoginPage() {
                     fetch("/api/fetchGrades", {
                         method: "POST", headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+                    }),
+                    fetch('/api/fetchExamSchedule', {
+                        method: "POST", headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
                     })
                 ]);
 
                 const attData = await attRes.json();
                 const marksDataPayload = await marksRes.json();
                 const gradesDataPayload = await gradesRes.json();
+                const ScheduleDataPayload = await ScheduleRes.json();
 
                 // *** CRITICAL CHANGE: Update data and close modal ***
                 setAttendanceData(attData);
                 setMarksData(marksDataPayload);
                 setGradesData(gradesDataPayload);
+                setScheduleData(ScheduleDataPayload);
                 localStorage.setItem("attendance", JSON.stringify(attData));
                 localStorage.setItem("marks", JSON.stringify(marksDataPayload));
                 localStorage.setItem("grades", JSON.stringify(gradesDataPayload));
+                localStorage.setItem("schedule", JSON.stringify(ScheduleDataPayload));
 
                 setIsReloading(false); // Close the modal on success
                 setMessage("Data reloaded successfully!");
@@ -237,15 +249,15 @@ export default function LoginPage() {
                             Attendance
                         </button>
 
-                        {/* Marks Tab */}
+                        {/* Exams Tab */}
                         <button
-                            onClick={() => setActiveTab("marks")}
-                            className={`basis-9/20 text-center px-3 py-2 text-sm font-medium hover:cursor-pointer transition-colors ${activeTab === "marks"
+                            onClick={() => setActiveTab("exams")}
+                            className={`basis-9/20 text-center px-3 py-2 text-sm font-medium hover:cursor-pointer transition-colors ${activeTab === "exams"
                                 ? "bg-blue-600 text-white"
                                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                                 }`}
                         >
-                            Marks
+                            Exams
                         </button>
                         <button
                             onClick={() => setActiveTab("mess")}
@@ -332,9 +344,11 @@ export default function LoginPage() {
                                                         <div key={idx}>
                                                             <p className="font-semibold">{day.date}</p>
                                                             <ul className="list-disc ml-6">
-                                                                {day.courses.map((course, cIdx) => (
+                                                                {day && day.courses && day.courses[0].course ? (day.courses.map((course, cIdx) => (
                                                                     <li key={cIdx}>{course}</li>
-                                                                ))}
+                                                                ))) : (
+                                                                    <li>Faulty Data Please Reload</li>
+                                                                )}
                                                             </ul>
                                                         </div>
                                                     ))) : (
@@ -353,7 +367,33 @@ export default function LoginPage() {
                                 </div>
                             )}
                             {activeTab === "attendance" && attendanceData && attendanceData.attendance && <AttendanceTabs data={attendanceData} activeDay={activeDay} setActiveDay={setActiveDay} />}
-                            {activeTab === "marks" && marksData && <MarksDisplay data={marksData} />}
+                            {activeTab === "exams" && marksData && (
+                                <div>
+                                    <div className="flex w-full pb-2 mb-4">
+                                        <button
+                                            onClick={() => setActiveSubTab("marks")}
+                                            className={`basis-1/2 text-sm font-medium transition-colors rounded-none hover:cursor-pointer ${activeSubTab === "marks"
+                                                ? "bg-blue-600 text-white hover:bg-blue-700"
+                                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                                }`}
+                                        >
+                                            Marks
+                                        </button>
+
+                                        <button
+                                            onClick={() => setActiveSubTab("schedule")}
+                                            className={`basis-1/2 text-center px-3 py-2 text-sm font-medium hover:cursor-pointer transition-colors ${activeSubTab === "schedule"
+                                                ? "bg-blue-600 text-white"
+                                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                                }`}
+                                        >
+                                            Schedule
+                                        </button>
+                                    </div>
+                                    {activeSubTab === "marks" && <MarksDisplay data={marksData} />}
+                                    {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} />}
+                                </div>
+                            )}
                             {activeTab === "mess" && <MessDisplay />}
                         </div>
                     </div>

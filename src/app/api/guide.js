@@ -11,6 +11,8 @@
 // POST https://vtopcc.vit.ac.in/vtop/processViewAttendanceDetail               ( Get Student Attendance in detail for a subject )
 
 // EXAMINATIONS
+// POST https://vtopcc.vit.ac.in/vtop/examinations/StudExamSchedule                  ( Get Semester IDs )
+// POST https://vtopcc.vit.ac.in/vtop/examinations/doSearchExamScheduleForStudent    ( Get Student Exam Schedule for this Semester )
 // POST https://vtopcc.vit.ac.in/vtop/examinations/examGradeView/StudentGradeHistory ( Get tudent CGPA/Courses )
 // POST https://vtopcc.vit.ac.in/vtop/examinations/StudentMarkView                   ( Get Semester IDs )
 // POST https://vtopcc.vit.ac.in/vtop/examinations/doStudentMarkView                 ( Get Student Marks for this Semester )

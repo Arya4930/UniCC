@@ -17,7 +17,7 @@ export async function POST(req) {
 
         // Get available semesters
         const semRes = await client.post(
-            "/vtop/examinations/StudentMarkView",
+            "/vtop/examinations/StudExamSchedule",
             new URLSearchParams({
                 verifyMenu: "true",
                 authorizedID,
@@ -45,8 +45,8 @@ export async function POST(req) {
         const semesterId = semesters[1].id;
 
         // Fetch the marks data for the selected semester
-        const marksRes = await client.post(
-            "/vtop/examinations/doStudentMarkView",
+        const ScheduleRes = await client.post(
+            "/vtop/examinations/doSearchExamScheduleForStudent",
             new URLSearchParams({
                 authorizedID,
                 semesterSubId: semesterId,
@@ -63,50 +63,43 @@ export async function POST(req) {
         );
 
         // --- Parse Marks Table ---
-        const $$$ = cheerio.load(marksRes.data);
-        const courses = [];
+        const $$$ = cheerio.load(ScheduleRes.data);
+        const Schedule = {};
+        let currentExamType = null;
 
-        $$$("table.customTable > tbody > tr.tableContent").each((i, row) => {
-            const cols = $$$(row).find("td");
-            if (cols.length < 9) return;
+        $$$("table.customTable tr").each((i, row) => {
+            const tds = $$$(row).find("td");
 
-            const courseData = {
-                slNo: cols.eq(0).text().trim(),
-                classNbr: cols.eq(1).text().trim(),
-                courseCode: cols.eq(2).text().trim(),
-                courseTitle: cols.eq(3).text().trim(),
-                courseType: cols.eq(4).text().trim(),
-                courseSystem: cols.eq(5).text().trim(),
-                faculty: cols.eq(6).text().trim().replace(/\s+/g, " "),
-                slot: cols.eq(7).text().trim(),
-                courseMode: cols.eq(8).text().trim(),
-                assessments: [],
-            };
+            if (tds.length === 1 && $$$(tds[0]).attr("colspan") === "13") {
+                currentExamType = $$$(tds[0]).text().trim();
+                return;
+            }
 
-            const nestedTableRow = $$$(row).next('tr.tableContent');
-            
-            nestedTableRow.find('table.customTable-level1 > tbody > tr.tableContent-level1').each((j, assessmentRow) => {
-                const assessmentCols = $$$(assessmentRow).find('td');
-                
-                courseData.assessments.push({
-                    slNo: assessmentCols.eq(0).find('output').text().trim(),
-                    title: assessmentCols.eq(1).find('output').text().trim(),
-                    maxMark: assessmentCols.eq(2).find('output').text().trim(),
-                    weightagePercent: assessmentCols.eq(3).find('output').text().trim(),
-                    status: assessmentCols.eq(4).find('output').text().trim(),
-                    scoredMark: assessmentCols.eq(5).find('output').text().trim(),
-                    weightageMark: assessmentCols.eq(6).find('output').text().trim(),
-                });
-            });
+            if ($$$(row).hasClass("tableHeader")) return;
 
-            // *** CHANGE IS HERE ***
-            // Only add the course to our results if it has actual assessments
-            if (courseData.assessments.length > 0) {
-                courses.push(courseData);
+            if ($$$(row).hasClass("tableContent") && tds.length > 1) {
+                const item = {
+                    courseCode: $$$(tds[1]).text().trim(),
+                    courseTitle: $$$(tds[2]).text().trim(),
+                    classId: $$$(tds[4]).text().trim(),
+                    slot: $$$(tds[5]).text().trim(),
+                    examDate: $$$(tds[6]).text().trim(),
+                    examSession: $$$(tds[7]).text().trim(),
+                    reportingTime: $$$(tds[8]).text().trim(),
+                    examTime: $$$(tds[9]).text().trim(),
+                    venue: $$$(tds[10]).text().trim(),
+                    seatLocation: $$$(tds[11]).text().trim(),
+                    seatNo: $$$(tds[12]).text().trim(),
+                };
+
+                if (!Schedule[currentExamType]) {
+                    Schedule[currentExamType] = [];
+                }
+                Schedule[currentExamType].push(item);
             }
         });
 
-        return NextResponse.json({ semester: semesters[1], marks: courses });
+        return NextResponse.json({ semester: semesters[1], Schedule: Schedule });
     } catch (err) {
         console.error(err);
         return NextResponse.json({ error: err.message }, { status: 500 });
