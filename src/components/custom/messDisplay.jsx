@@ -4,14 +4,14 @@ import { useEffect, useState } from "react"
 
 const messLinks = {
     Male: {
-        "Non Veg": "https://raw.githubusercontent.com/Kanishka-Developer/unmessify/main/json/en/VITC-M-N.json",
-        Veg: "https://raw.githubusercontent.com/Kanishka-Developer/unmessify/main/json/en/VITC-M-V.json",
-        Special: "https://raw.githubusercontent.com/Kanishka-Developer/unmessify/main/json/en/VITC-M-S.json",
+        "Non Veg": "https://kanishka-developer.github.io/unmessify/json/en/VITC-M-N.json",
+        Veg: "https://kanishka-developer.github.io/unmessify/json/en/VITC-M-V.json",
+        Special: "https://kanishka-developer.github.io/unmessify/json/en/VITC-M-S.json",
     },
     Female: {
-        "Non Veg": "https://raw.githubusercontent.com/Kanishka-Developer/unmessify/main/json/en/VITC-W-N.json",
-        Veg: "https://raw.githubusercontent.com/Kanishka-Developer/unmessify/main/json/en/VITC-W-V.json",
-        Special: "https://raw.githubusercontent.com/Kanishka-Developer/unmessify/main/json/en/VITC-W-S.json",
+        "Non Veg": "https://kanishka-developer.github.io/unmessify/json/en/VITC-W-N.json",
+        Veg: "https://kanishka-developer.github.io/unmessify/json/en/VITC-W-V.json",
+        Special: "https://kanishka-developer.github.io/unmessify/json/en/VITC-W-S.json",
     },
 }
 

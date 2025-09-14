@@ -26,7 +26,7 @@ export default function LoginPage() {
     const [isReloading, setIsReloading] = useState(false); // Controls the reload modal
     const [activeTab, setActiveTab] = useState("attendance");
     const [attendancePercentage, setattendancePercentage] = useState(0);
-    const [ODhoursData, setODhoursData] = useState([]);
+    const [ODhoursData, setODhoursData] = useState({});
     const [ODhoursIsOpen, setODhoursIsOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [GradesDisplayIsOpen, setGradesDisplayIsOpen] = useState(false)
@@ -50,16 +50,25 @@ export default function LoginPage() {
             })
             setattendancePercentage(Math.round(attendedClasses * 10000 / totalClass) / 100)
 
-            let ODArr = [];
+            let ODList = {};
             storedAttendance.attendance.forEach(course => {
                 if (!course.viewLinkData || !Array.isArray(course.viewLinkData)) return;
                 course.viewLinkData.forEach(day => {
-                    if (day.status == "On Duty") {
-                        ODArr.push({ date: day.date, courseTitle: course.courseTitle });
+                    if (day.status === "On Duty") {
+                        if (!ODList[day.date]) {
+                            ODList[day.date] = [];
+                        }
+                        ODList[day.date].push(course.courseTitle);
                     }
                 });
-            })
-            setODhoursData(ODArr);
+            });
+            ODList = Object.entries(ODList)
+                .map(([date, courses]) => ({
+                    date,
+                    courses
+                }))
+                .sort((a, b) => new Date(a.date) - new Date(b.date));
+            setODhoursData(ODList);
         };
         if (storedMarks) setMarksData(JSON.parse(storedMarks));
         if (storedUsername) setUsername(storedUsername);
@@ -311,21 +320,28 @@ export default function LoginPage() {
                                             onClick={() => setODhoursIsOpen(true)}
                                         >
                                             <h2 className="text-lg font-semibold text-gray-600">OD hours</h2>
-                                            <p className="text-3xl font-bold text-gray-900 mt-2">{ODhoursData.length}/40</p>
+                                            <p className="text-3xl font-bold text-gray-900 mt-2">{ODhoursData && ODhoursData.length > 0 && ODhoursData[0].courses ? ODhoursData.reduce((sum, day) => sum + day.courses.length, 0) : 0}/40</p>
                                         </div>
 
                                         {/* Modal */}
                                         {ODhoursIsOpen && (
-                                            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                                                <div className="bg-gray-600 rounded-2xl shadow-lg p-6 w-80 relative">
+                                            <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+                                                <div className="bg-gray-600 rounded-2xl p-6 w-80 relative text-white">
                                                     <h3 className="text-xl font-bold mb-4">OD Hours Info</h3>
-                                                    {ODhoursData.map((day, idx) => (
+                                                    {ODhoursData && ODhoursData.length > 0 && ODhoursData[0].courses ? (ODhoursData.map((day, idx) => (
                                                         <div key={idx}>
-                                                            {day?.date} - {day?.courseTitle}
+                                                            <p className="font-semibold">{day.date}</p>
+                                                            <ul className="list-disc ml-6">
+                                                                {day.courses.map((course, cIdx) => (
+                                                                    <li key={cIdx}>{course}</li>
+                                                                ))}
+                                                            </ul>
                                                         </div>
-                                                    ))}
+                                                    ))) : (
+                                                        <p>No OD hours recorded/Reload Data Please.</p>
+                                                    )}
                                                     <button
-                                                        className="absolute top-2 right-2 text-gray-500 hover:text-gray-900 font-bold"
+                                                        className="absolute top-2 right-2 text-gray-500 hover:text-gray-900 font-bold hover:cursor-pointer"
                                                         onClick={() => setODhoursIsOpen(false)}
                                                     >
                                                         ✕
