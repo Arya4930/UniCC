@@ -10,6 +10,7 @@ import MarksDisplay from "./marksDislay";
 import AttendanceTabs from "./attendanceTabs";
 import MessDisplay from "./messDisplay";
 import ScheduleDisplay from "./SchduleDisplay";
+import LaundryDisplay from "./LaundryDisplay";
 
 export default function LoginPage() {
     // --- State Management ---
@@ -33,6 +34,7 @@ export default function LoginPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [GradesDisplayIsOpen, setGradesDisplayIsOpen] = useState(false)
     const [activeSubTab, setActiveSubTab] = useState("marks")
+    const [HostelActiveSubTab, setHostelActiveSubTab] = useState("mess")
 
     // --- Effects ---
     useEffect(() => {
@@ -260,13 +262,13 @@ export default function LoginPage() {
                             Exams
                         </button>
                         <button
-                            onClick={() => setActiveTab("mess")}
-                            className={`basis-9/20 text-center px-3 py-2 text-sm font-medium hover:cursor-pointer transition-colors ${activeTab === "mess"
+                            onClick={() => setActiveTab("hostel")}
+                            className={`basis-9/20 text-center px-3 py-2 text-sm font-medium hover:cursor-pointer transition-colors ${activeTab === "hostel"
                                 ? "bg-blue-600 text-white"
                                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                                 }`}
                         >
-                            Mess
+                            Hostel
                         </button>
 
                         {/* Reload Button */}
@@ -344,7 +346,7 @@ export default function LoginPage() {
                                                         <div key={idx}>
                                                             <p className="font-semibold">{day.date}</p>
                                                             <ul className="list-disc ml-6">
-                                                                {day && day.courses && day.courses[0].course ? (day.courses.map((course, cIdx) => (
+                                                                {day && day.courses ? (day.courses.map((course, cIdx) => (
                                                                     <li key={cIdx}>{course}</li>
                                                                 ))) : (
                                                                     <li>Faulty Data Please Reload</li>
@@ -394,7 +396,33 @@ export default function LoginPage() {
                                     {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} />}
                                 </div>
                             )}
-                            {activeTab === "mess" && <MessDisplay />}
+                            {activeTab === "hostel" && (
+                                <div>
+                                    <div className="flex w-full pb-2 mb-4">
+                                        <button
+                                            onClick={() => setHostelActiveSubTab("mess")}
+                                            className={`basis-1/2 text-sm font-medium transition-colors rounded-none hover:cursor-pointer ${HostelActiveSubTab === "mess"
+                                                ? "bg-blue-600 text-white hover:bg-blue-700"
+                                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                                }`}
+                                        >
+                                            Mess
+                                        </button>
+
+                                        <button
+                                            onClick={() => setHostelActiveSubTab("laundry")}
+                                            className={`basis-1/2 text-center px-3 py-2 text-sm font-medium hover:cursor-pointer transition-colors ${HostelActiveSubTab === "laundry"
+                                                ? "bg-blue-600 text-white"
+                                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                                }`}
+                                        >
+                                            Laundry
+                                        </button>
+                                    </div>
+                                    {HostelActiveSubTab === "mess" && <MessDisplay />}
+                                    {HostelActiveSubTab === "laundry" && <LaundryDisplay />}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
