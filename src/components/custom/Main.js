@@ -1,7 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { RefreshCcw } from 'lucide-react'
+import { LogOut, RefreshCcw } from 'lucide-react'
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 import { ReloadModal } from "./reloadModel";
@@ -36,6 +39,37 @@ export default function LoginPage() {
     const [activeSubTab, setActiveSubTab] = useState("marks")
     const [HostelActiveSubTab, setHostelActiveSubTab] = useState("mess")
 
+    function setAttendanceAndOD(attendance) {
+        setAttendanceData(attendance)
+        let totalClass = 0;
+        let attendedClasses = 0;
+        attendance.attendance.forEach(course => {
+            totalClass += parseInt(course.totalClasses);
+            attendedClasses += parseInt(course.attendedClasses);
+        })
+        setattendancePercentage(Math.round(attendedClasses * 10000 / totalClass) / 100)
+
+        let ODList = {};
+        attendance.attendance.forEach(course => {
+            if (!course.viewLinkData || !Array.isArray(course.viewLinkData)) return;
+            course.viewLinkData.forEach(day => {
+                if (day.status === "On Duty") {
+                    if (!ODList[day.date]) {
+                        ODList[day.date] = [];
+                    }
+                    ODList[day.date].push(course.courseTitle);
+                }
+            });
+        });
+        ODList = Object.entries(ODList)
+            .map(([date, courses]) => ({
+                date,
+                courses
+            }))
+            .sort((a, b) => new Date(a.date) - new Date(b.date));
+        setODhoursData(ODList);
+    }
+
     // --- Effects ---
     useEffect(() => {
         let storedAttendance = localStorage.getItem("attendance");
@@ -47,34 +81,7 @@ export default function LoginPage() {
         storedAttendance = JSON.parse(storedAttendance);
 
         if (storedAttendance && storedAttendance.attendance) {
-            setAttendanceData(storedAttendance)
-            let totalClass = 0;
-            let attendedClasses = 0;
-            storedAttendance.attendance.forEach(course => {
-                totalClass += parseInt(course.totalClasses);
-                attendedClasses += parseInt(course.attendedClasses);
-            })
-            setattendancePercentage(Math.round(attendedClasses * 10000 / totalClass) / 100)
-
-            let ODList = {};
-            storedAttendance.attendance.forEach(course => {
-                if (!course.viewLinkData || !Array.isArray(course.viewLinkData)) return;
-                course.viewLinkData.forEach(day => {
-                    if (day.status === "On Duty") {
-                        if (!ODList[day.date]) {
-                            ODList[day.date] = [];
-                        }
-                        ODList[day.date].push(course.courseTitle);
-                    }
-                });
-            });
-            ODList = Object.entries(ODList)
-                .map(([date, courses]) => ({
-                    date,
-                    courses
-                }))
-                .sort((a, b) => new Date(a.date) - new Date(b.date));
-            setODhoursData(ODList);
+            setAttendanceAndOD(storedAttendance);
         };
         if (storedMarks) setMarksData(JSON.parse(storedMarks));
         if (storedUsername) setUsername(storedUsername);
@@ -148,7 +155,7 @@ export default function LoginPage() {
                 const ScheduleDataPayload = await ScheduleRes.json();
 
                 // *** CRITICAL CHANGE: Update data and close modal ***
-                setAttendanceData(attData);
+                setAttendanceAndOD(attData);
                 setMarksData(marksDataPayload);
                 setGradesData(gradesDataPayload);
                 setScheduleData(ScheduleDataPayload);
@@ -159,6 +166,8 @@ export default function LoginPage() {
 
                 setIsReloading(false); // Close the modal on success
                 setMessage("Data reloaded successfully!");
+                setCaptchaImage("");
+                setCaptcha("");
                 setIsLoggedIn(true)
             } else {
                 setMessage(data.message || "Login failed. Please try again.");
@@ -177,6 +186,22 @@ export default function LoginPage() {
         loadCaptcha();
     };
 
+    const handleLogOutRequest = () => {
+        setIsLoggedIn(false);
+        setUsername("");
+        setPassword("");
+        localStorage.removeItem("username");
+        localStorage.removeItem("password");
+        setAttendanceData({});
+        setMarksData({});
+        setGradesData({});
+        setScheduleData({});
+        localStorage.removeItem("attendance");
+        localStorage.removeItem("marks");
+        localStorage.removeItem("grades");
+        localStorage.removeItem("schedule");
+    }
+
     // --- Render Logic ---
     return (
         <div className="min-h-screen flex flex-col items-center mb-5">
@@ -194,7 +219,7 @@ export default function LoginPage() {
             {!isLoggedIn && (
                 <form
                     onSubmit={handleLogin}
-                    className="bg-gray-600 shadow-md rounded-xl p-6 w-full max-w-md space-y-4"
+                    className="bg-gray-600 shadow-md rounded-xl p-6 w-full max-w-md space-y-4 text-white"
                 >
                     <h2 className="text-xl font-bold text-white">Login</h2>
                     <input
@@ -215,7 +240,7 @@ export default function LoginPage() {
                             <Image
                                 src={captchaImage}
                                 alt="Captcha"
-                                className="border rounded-lg w-full h-16 object-contain"
+                                className="rounded-lg w-full h-16 object-contain"
                                 width={200}
                                 height={64}
                                 unoptimized
@@ -241,6 +266,13 @@ export default function LoginPage() {
             {isLoggedIn && (
                 <div className="w-full">
                     <div className="flex w-full pb-2 mb-4">
+                        <button
+                            onClick={handleLogOutRequest}
+                            className="basis-2/20 flex items-center justify-center bg-red-500 hover:cursor-pointer text-white px-3 py-2 text-sm font-medium hover:bg-red-600 transition-colors"
+                        >
+                            <LogOut className="w-4 h-4" />
+                        </button>
+
                         <button
                             onClick={() => setActiveTab("attendance")}
                             className={`basis-9/20 text-sm font-medium transition-colors rounded-none hover:cursor-pointer ${activeTab === "attendance"

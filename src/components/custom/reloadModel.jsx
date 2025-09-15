@@ -5,7 +5,7 @@ import { RefreshCcw, X, ChevronDown, ChevronUp } from 'lucide-react'
 
 export function ReloadModal({ captchaImage, captcha, setCaptcha, handleLogin, message, onClose }) {
     return (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50 text-white">
             <div className="bg-gray-600 rounded-xl shadow-lg p-6 w-full max-w-md">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-bold">Reload Session</h2>
