@@ -13,6 +13,7 @@
     "@radix-ui/react-progress": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.13",
+    "@serwist/next": "latest",
     "axios": "^1.11.0",
     "axios-cookiejar-support": "^6.0.4",
     "cheerio": "^1.1.2",
@@ -35,6 +36,7 @@
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
+    "serwist": "latest",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.8"
   }

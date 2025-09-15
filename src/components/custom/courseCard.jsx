@@ -4,7 +4,6 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import "react-circular-progressbar/dist/styles.css"
 
 export default function CourseCard({ a, onClick, activeDay }) {
-    console.log(a)
     const isOngoing = () => {
         if (!a.time || !activeDay) return false
 
