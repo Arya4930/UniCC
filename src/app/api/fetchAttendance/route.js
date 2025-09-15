@@ -147,7 +147,7 @@ export async function POST(req) {
                 });
             });
 
-            course.viewLinkData = detailed;
+            course.viewLink = detailed;
         }
 
         return NextResponse.json({ semester: semesters[0], attendance: mergedAttendance });

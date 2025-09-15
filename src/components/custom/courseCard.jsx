@@ -3,11 +3,44 @@ import { Building2, Clock } from "lucide-react"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import "react-circular-progressbar/dist/styles.css"
 
-export default function CourseCard({ a, onClick }) {
+export default function CourseCard({ a, onClick, activeDay }) {
+    console.log(a)
+    const isOngoing = () => {
+        if (!a.time || !activeDay) return false
+
+        const today = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase()
+        if (!today.startsWith(activeDay.slice(0, 3).toUpperCase())) return false
+
+        const [startStr, endStr] = a.time.split("-").map(t => t.trim())
+        if (!startStr || !endStr) return false
+
+        const parseTime = (str) => {
+            const [hour, minute] = str.split(":").map(Number)
+            const d = new Date()
+            let h = hour
+            let m = minute || 0
+
+            if (h < 8) h += 12
+            d.setHours(h, m, 0, 0)
+            return d
+        }
+
+        const start = parseTime(startStr)
+        const end = parseTime(endStr)
+        const now = new Date()
+
+        return now >= start && now <= end
+    }
+
+    const ongoing = isOngoing()
+
     return (
         <Card
             onClick={onClick}
-            className="p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer"
+            className={`p-4 rounded-lg shadow-sm transition-shadow duration-300 cursor-pointer ${ongoing
+                ? "ring-2 ring-yellow-200 shadow-lg bg-yellow-50"
+                : "hover:shadow-md"
+                }`}
         >
             <div className="flex justify-between items-center">
                 <div className="flex flex-col gap-2 flex-grow">
@@ -40,6 +73,37 @@ export default function CourseCard({ a, onClick }) {
                             </span>
                         </p>
                     </CardContent>
+                    {(() => {
+                            const attended = a.attendedClasses
+                            const total = a.totalClasses
+                            const percentage = (attended / total) * 100
+
+                            if (percentage < 75) {
+                                const needed = Math.ceil((0.75 * total - attended) / (1 - 0.75))
+                                return (
+                                    <p className="text-red-500 text-sm">
+                                        Need to attend <strong>{needed}</strong> more class
+                                        {needed > 1 && "es"} to reach 75%.
+                                    </p>
+                                )
+                            } else {
+                                const canMiss = Math.floor((attended / 0.75) - total)
+                                if (canMiss === 0) {
+                                    return (
+                                        <p className="text-yellow-500 text-sm">
+                                            You are on the edge! Attend the next class to stay above 75%.
+                                        </p>
+                                    )
+                                } else {
+                                    return (
+                                        <p className="text-green-500 text-sm">
+                                            Can miss <strong>{canMiss}</strong> class
+                                            {canMiss !== 1 && "es"} and stay above 75%.
+                                        </p>
+                                    )
+                                }
+                            }
+                        })()}
                 </div>
 
                 <div className="w-28 h-28 flex-shrink-0 flex flex-col items-center justify-center ml-4">

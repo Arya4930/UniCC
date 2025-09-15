@@ -154,13 +154,13 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
             </div>
             {dayCardsMap[activeDay].map((a, idx) => (
                 <div key={idx}>
-                    <CourseCard a={a} onClick={() => setExpandedIdx(idx)} />
+                    <CourseCard a={a} onClick={() => setExpandedIdx(idx)} activeDay={activeDay} />
 
                     {expandedIdx === idx && (
-                        <div className="fixed inset-0 bg-black flex items-center justify-center">
+                        <div className="fixed inset-0 flex items-center justify-center">
                             <div className="bg-gray-600 rounded-lg shadow-lg p-6 max-w-md w-full relative">
                                 <ul className="list-disc list-inside text-sm max-h-60 overflow-y-auto max-h-[80vh]">
-                                    {a.viewLinkData?.map((d, i) => (
+                                    {a.viewLink?.map((d, i) => (
                                         <li
                                             key={i}
                                             className={`${d.status.toLowerCase() === "absent"
