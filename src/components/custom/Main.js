@@ -2,9 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { LogOut, RefreshCcw } from 'lucide-react'
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 import { ReloadModal } from "./reloadModel";
@@ -14,6 +11,7 @@ import AttendanceTabs from "./attendanceTabs";
 import MessDisplay from "./messDisplay";
 import ScheduleDisplay from "./SchduleDisplay";
 import LaundryDisplay from "./LaundryDisplay";
+import Footer from "./Footer";
 
 export default function LoginPage() {
     const getInitialDay = () => {
@@ -475,6 +473,7 @@ export default function LoginPage() {
                     </div>
                 </div>
             )}
+            <Footer />
         </div>
     );
 }
