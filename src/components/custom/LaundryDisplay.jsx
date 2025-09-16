@@ -28,8 +28,8 @@ export default function LaundrySchedule({ hostelData }) {
     if (!hostelData.hostelInfo?.isHosteller) {
         return <p className="text-center text-gray-600">You are not a hosteller. / Reload Data</p>
     }
-    const [gender, setGender] = useState("Male")
-    const [hostel, setHostel] = useState("A")
+    const [gender, setGender] = useState("")
+    const [hostel, setHostel] = useState("")
     const [schedule, setSchedule] = useState([])
 
     const hostelOptions = {
@@ -40,49 +40,55 @@ export default function LaundrySchedule({ hostelData }) {
     const today = new Date().getDate()
 
     useEffect(() => {
-        if (hostelData.hostelInfo) {
-            const normalizedGender =
-                hostelData.hostelInfo.gender?.toLowerCase() === "female" ? "Female" : "Male"
-            const blockName = hostelData.hostelInfo.blockName?.split(" ")[0] || "A"
+        if (!hostelData.hostelInfo) return
 
-            setGender(normalizedGender)
-            setHostel(blockName)
-        }
+        const normalizedGender =
+            hostelData.hostelInfo.gender?.toLowerCase() === "female" ? "Female" : "Male"
+        const blockName = hostelData.hostelInfo.blockName?.split(" ")[0] || "A"
+
+        setGender(normalizedGender)
+        setHostel(blockName)
     }, [hostelData.hostelInfo])
 
     useEffect(() => {
-        fetch(LaundryLinks[gender][hostel])
-            .then((res) => res.json())
-            .then((data) => setSchedule(data.list || []))
-            .catch((err) => console.error("Error loading laundry schedule:", err))
-    }, [gender, hostel])
+        if (!hostelData.hostelInfo) return
+        if (LaundryLinks[gender] && LaundryLinks[gender][hostel]) {
+            fetch(LaundryLinks[gender][hostel])
+                .then((res) => res.json())
+                .then((data) => setSchedule(data.list || []))
+                .catch((err) => console.error("Error loading laundry schedule:", err))
+        }
+    }, [gender, hostel, hostelData.hostelInfo])
 
     return (
         <div>
             <h1 className="text-xl font-bold mb-2 text-center">Laundry Dates</h1>
             <h2 className="text-md font-bold mb-2 text-center">( Data taken from <a href="http://kaffeine.tech/unmessify" target="_blank" rel="noopener noreferrer" className="underline">Unmessify</a> )</h2>
-            <div className="flex flex-wrap gap-4 justify-center mb-6">
-                <select
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                    className="border rounded-lg p-2 shadow-sm hover:cursor-pointer"
-                >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
+            {gender && (
+                <div className="flex flex-wrap gap-4 justify-center mb-6">
+                    <select
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value)}
+                        className="border rounded-lg p-2 shadow-sm hover:cursor-pointer"
+                    >
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
 
-                <select
-                    value={hostel}
-                    onChange={(e) => setHostel(e.target.value)}
-                    className="border rounded-lg p-2 shadow-sm hover:cursor-pointer"
-                >
-                    {hostelOptions[gender].map((h) => (
-                        <option key={h} value={h}>
-                            {h}
-                        </option>
-                    ))}
-                </select>
-            </div>
+                    <select
+                        value={hostel}
+                        onChange={(e) => setHostel(e.target.value)}
+                        className="border rounded-lg p-2 shadow-sm hover:cursor-pointer"
+                    >
+                        {hostelOptions[gender]?.map((h) => (
+                            <option key={h} value={h}>
+                                {h}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            )}
+
 
             {schedule.length > 0 ? (
                 <div className="overflow-x-auto">
