@@ -135,40 +135,49 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
     }
 
 
-    return (
-        <div className="grid gap-4 m-2 px-2">
-            <h1 className="text-xl font-bold mb-4 text-center">Weekly Attendance Slots</h1>
-            <div className="flex gap-2 mb-4 justify-center">
-                {days.map((d) => (
-                    <button
-                        key={d}
-                        onClick={() => setActiveDay(d)}
-                        className={`px-4 py-2 rounded-lg hover:bg-blue-300 hover:cursor-pointer ${activeDay === d
+  return (
+    <div className="grid gap-3 m-2 px-2">
+        <h1 className="text-lg font-semibold mb-3 text-center">Weekly Attendance</h1>
+        <div className="flex gap-1 mb-3 justify-center flex-wrap">
+            {days.map((d) => (
+                <button
+                    key={d}
+                    onClick={() => setActiveDay(d)}
+                    className={`px-3 py-1 rounded-md text-sm transition-colors duration-150 
+                        ${activeDay === d
                             ? "bg-blue-600 text-white"
-                            : "bg-gray-200 text-gray-700"
-                            }`}
-                    >
-                        {d}
-                    </button>
-                ))}
-            </div>
+                            : "bg-gray-200 text-gray-700 hover:bg-blue-300"
+                        }`}
+                >
+                    {d}
+                </button>
+            ))}
+        </div>
+
+        <div className="space-y-2">
             {dayCardsMap[activeDay].map((a, idx) => (
                 <div key={idx}>
-                    <CourseCard a={a} onClick={() => setExpandedIdx(idx)} activeDay={activeDay} />
+                    <CourseCard
+                        a={a}
+                        onClick={() => setExpandedIdx(idx)}
+                        activeDay={activeDay}
+                        className="p-2 text-sm rounded-md shadow-sm hover:shadow-md transition"
+                    />
 
                     {expandedIdx === idx && (
-                        <div className="fixed inset-0 flex items-center justify-center">
-                            <div className="bg-gray-600 rounded-lg shadow-lg p-6 max-w-md w-full relative">
-                                <ul className="list-disc list-inside text-sm max-h-60 overflow-y-auto max-h-[80vh]">
+                        <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                            <div className="bg-gray-700 rounded-xl shadow-lg p-4 max-w-sm w-[90%] relative">
+                                <h2 className="text-base font-semibold mb-2">{a.courseTitle}</h2>
+                                <ul className="list-disc list-inside text-xs max-h-[70vh] overflow-y-auto space-y-1">
                                     {a.viewLink?.map((d, i) => (
                                         <li
                                             key={i}
                                             className={`${d.status.toLowerCase() === "absent"
-                                                ? "text-red-500"
+                                                ? "text-red-400"
                                                 : d.status.toLowerCase() === "present"
-                                                    ? "text-green-500"
+                                                    ? "text-green-400"
                                                     : d.status.toLowerCase() === "on duty"
-                                                        ? "text-yellow-500"
+                                                        ? "text-yellow-400"
                                                         : ""
                                                 }`}
                                         >
@@ -177,7 +186,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
                                     ))}
                                 </ul>
                                 <button
-                                    className="absolute top-2 right-2 m-1 text-white hover:text-black hover:cursor-pointer"
+                                    className="absolute top-2 right-2 text-white hover:text-gray-300"
                                     onClick={() => setExpandedIdx(null)}
                                 >
                                     ✕
@@ -188,5 +197,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
                 </div>
             ))}
         </div>
-    );
+    </div>
+);
+
 }
