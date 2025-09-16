@@ -90,12 +90,12 @@ export default function CourseCard({ a, onClick, activeDay }) {
                                 if (canMiss === 0) {
                                     return (
                                         <p className="text-yellow-500 text-sm">
-                                            You are on the edge! Attend the next class to stay above 75%.
+                                            You are on the edge! Attend the next class.
                                         </p>
                                     )
                                 } else {
                                     return (
-                                        <p className="text-green-500 text-sm">
+                                        <p className="text-green-500 font-bold text-sm">
                                             Can miss <strong>{canMiss}</strong> class
                                             {canMiss !== 1 && "es"} and stay above 75%.
                                         </p>

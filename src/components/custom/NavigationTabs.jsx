@@ -8,7 +8,7 @@ export default function NavigationTabs({
   handleReloadRequest
 }) {
   return (
-    <div className="flex w-full shadow-sm">
+    <div className="flex w-full shadow-sm pb-4">
       <button 
         onClick={handleLogOutRequest}
         className="w-12 flex items-center justify-center bg-red-500 hover:cursor-pointer text-white text-sm font-medium hover:bg-red-600 transition-colors"

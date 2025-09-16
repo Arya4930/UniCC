@@ -54,7 +54,6 @@ export default function DashboardContent({
           />
         )}
 
-        {/* OD Hours Modal */}
         {ODhoursIsOpen && (
           <ODHoursModal
             ODhoursData={ODhoursData}
@@ -62,7 +61,6 @@ export default function DashboardContent({
           />
         )}
 
-        {/* Grades Modal */}
         {GradesDisplayIsOpen && (
           <GradesModal
             GradesData={GradesData}
@@ -71,7 +69,6 @@ export default function DashboardContent({
         )}
 
         <div className="px-4">
-          {/* Attendance Tab Content */}
           {activeTab === "attendance" && attendanceData && attendanceData.attendance && (
             <AttendanceTabs 
               data={attendanceData} 
@@ -80,7 +77,6 @@ export default function DashboardContent({
             />
           )}
 
-          {/* Exams Tab Content */}
           {activeTab === "exams" && marksData && (
             <div>
               <ExamsSubTabs
@@ -92,7 +88,6 @@ export default function DashboardContent({
             </div>
           )}
 
-          {/* Hostel Tab Content */}
           {activeTab === "hostel" && (
             <div>
               <HostelSubTabs
