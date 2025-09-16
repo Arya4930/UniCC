@@ -92,7 +92,7 @@ export default function LoginPage() {
 
   // --- API Functions ---
   const loadCaptcha = async () => {
-    setMessage("Loading captcha...");
+    setMessage("Loading captcha... Pls wait for it to load.");
     try {
       let data;
       do {
