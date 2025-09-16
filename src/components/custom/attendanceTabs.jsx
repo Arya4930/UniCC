@@ -134,97 +134,59 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
         dayCardsMap[day] = merged.length > 0 ? merged : [];
     }
 
+
     return (
         <div className="w-full px-2 py-2">
-            <h1 className="text-xl font-bold mb-6 text-center text-gray-800">Weekly Attendance Slots</h1>
-            
-            {/* Day Selection Buttons */}
-            <div className="flex gap-2 mb-6 justify-center overflow-x-auto pb-2">
+            <h1 className="text-xl font-bold mb-4 text-center">Weekly Attendance Slots</h1>
+            <div className="flex gap-2 mb-4 justify-center">
                 {days.map((d) => (
                     <button
                         key={d}
                         onClick={() => setActiveDay(d)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
-                            activeDay === d
-                                ? "bg-blue-600 text-white shadow-md"
-                                : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300"
-                        }`}
+                        className={`px-4 py-2 rounded-lg hover:bg-blue-300 hover:cursor-pointer ${activeDay === d
+                            ? "bg-blue-600 text-white"
+                            : "bg-gray-200 text-gray-700"
+                            }`}
                     >
                         {d}
                     </button>
                 ))}
             </div>
+            {dayCardsMap[activeDay].map((a, idx) => (
+                <div key={idx}>
+                    <CourseCard a={a} onClick={() => setExpandedIdx(idx)} activeDay={activeDay} />
 
-            {/* Course Cards */}
-            <div className="space-y-3">
-                {dayCardsMap[activeDay].length > 0 ? (
-                    dayCardsMap[activeDay].map((a, idx) => (
-                        <div key={idx}>
-                            <CourseCard 
-                                a={a} 
-                                onClick={() => setExpandedIdx(idx)} 
-                                activeDay={activeDay} 
-                            />
-
-                            {/* Modal for expanded view */}
-                            {expandedIdx === idx && (
-                                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                                    <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full max-h-[80vh] overflow-hidden relative">
-                                        {/* Modal Header */}
-                                        <div className="bg-gray-600 text-white p-4 rounded-t-2xl">
-                                            <h3 className="font-bold text-lg truncate">{a.courseTitle}</h3>
-                                            <p className="text-gray-200 text-sm">{a.slotName} • {a.time}</p>
-                                        </div>
-
-                                        {/* Modal Content */}
-                                        <div className="p-4 max-h-96 overflow-y-auto">
-                                            <div className="space-y-2">
-                                                {a.viewLink?.map((d, i) => (
-                                                    <div
-                                                        key={i}
-                                                        className={`flex justify-between items-center p-2 rounded-lg text-sm ${
-                                                            d.status.toLowerCase() === "absent"
-                                                                ? "bg-red-50 text-red-700 border-l-4 border-red-500"
-                                                                : d.status.toLowerCase() === "present"
-                                                                ? "bg-green-50 text-green-700 border-l-4 border-green-500"
-                                                                : d.status.toLowerCase() === "on duty"
-                                                                ? "bg-yellow-50 text-yellow-700 border-l-4 border-yellow-500"
-                                                                : "bg-gray-50 text-gray-700 border-l-4 border-gray-300"
-                                                        }`}
-                                                    >
-                                                        <span className="font-medium">{d.date}</span>
-                                                        <span className="text-xs font-semibold uppercase">
-                                                            {d.status}
-                                                        </span>
-                                                    </div>
-                                                )) || (
-                                                    <div className="text-center text-gray-500 py-8">
-                                                        <p>No attendance data available</p>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                        {/* Close Button */}
-                                        <button
-                                            className="absolute top-3 right-3 w-8 h-8 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center text-white font-bold transition-all"
-                                            onClick={() => setExpandedIdx(null)}
+                    {expandedIdx === idx && (
+                        <div className="fixed inset-0 flex items-center justify-center">
+                            <div className="bg-gray-600 rounded-lg shadow-lg p-6 max-w-md w-full relative">
+                                <ul className="list-disc list-inside text-sm max-h-60 overflow-y-auto max-h-[80vh]">
+                                    {a.viewLink?.map((d, i) => (
+                                        <li
+                                            key={i}
+                                            className={`${d.status.toLowerCase() === "absent"
+                                                ? "text-red-500"
+                                                : d.status.toLowerCase() === "present"
+                                                    ? "text-green-500"
+                                                    : d.status.toLowerCase() === "on duty"
+                                                        ? "text-yellow-500"
+                                                        : ""
+                                                }`}
                                         >
-                                            ✕
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
+                                            {d.date} – {d.status}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <button
+                                    className="absolute top-2 right-2 m-1 text-white hover:text-black hover:cursor-pointer"
+                                    onClick={() => setExpandedIdx(null)}
+                                >
+                                    ✕
+                                </button>
+                            </div>
                         </div>
-                    ))
-                ) : (
-                    <div className="text-center py-12 bg-white rounded-2xl shadow-sm border border-gray-100">
-                        <div className="text-gray-400 text-6xl mb-4">📅</div>
-                        <p className="text-gray-500 font-medium">No classes scheduled for {activeDay}</p>
-                        <p className="text-gray-400 text-sm mt-1">Enjoy your free day!</p>
-                    </div>
-                )}
-            </div>
+                    )}
+                </div>
+            ))}
         </div>
     );
 }
