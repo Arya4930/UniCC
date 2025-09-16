@@ -136,7 +136,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
 
 
   return (
-    <div className="grid gap-3 m-2 px-2">
+    <div className="grid gap-3 ">
         <h1 className="text-lg font-semibold mb-3 text-center">Weekly Attendance</h1>
         <div className="flex gap-1 mb-3 justify-center flex-wrap">
             {days.map((d) => (
