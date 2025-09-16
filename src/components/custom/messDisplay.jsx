@@ -30,10 +30,28 @@ const shortToFullDay = Object.fromEntries(
 )
 
 export default function MessDisplay({ hostelData }) {
-    const [gender, setGender] = useState("Male")
-    const [type, setType] = useState("Veg")
+    if (!hostelData.hostelInfo?.isHosteller) {
+        return <p className="text-center text-gray-600">You are not a hosteller. / Reload Data</p>
+    }
+
+    const normalizeGender = (g) =>
+        g?.toLowerCase() === "male" ? "Male" : "Female"
+
+    const normalizeType = (t) => {
+        const map = {
+            VEG: "Veg",
+            "NON VEG": "Non Veg",
+            SPECIAL: "Special",
+        }
+        return map[t?.toUpperCase()] || "Veg"
+    }
+
+    const today = new Date().toLocaleDateString("en-US", { weekday: "long" })
+
+    const [gender, setGender] = useState(normalizeGender(hostelData.hostelInfo?.gender) || "Male")
+    const [type, setType] = useState(normalizeType(hostelData.hostelInfo?.messInfo) || "Veg")
     const [menu, setMenu] = useState([])
-    const [activeDay, setActiveDay] = useState("Monday")
+    const [activeDay, setActiveDay] = useState(today)
 
     const shortDays = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
 
@@ -43,7 +61,6 @@ export default function MessDisplay({ hostelData }) {
             .then((res) => res.json())
             .then((data) => {
                 setMenu(data.list || [])
-                setActiveDay("Monday")
             })
             .catch((err) => console.error("Error loading menu:", err))
     }, [gender, type])
@@ -70,8 +87,8 @@ export default function MessDisplay({ hostelData }) {
                     onChange={(e) => setType(e.target.value)}
                     className="border rounded-lg p-2 shadow-sm hover:cursor-pointer"
                 >
-                    <option value="Non Veg">Non Veg</option>
                     <option value="Veg">Veg</option>
+                    <option value="Non Veg">Non Veg</option>
                     <option value="Special">Special</option>
                 </select>
             </div>

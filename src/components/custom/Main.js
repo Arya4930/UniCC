@@ -167,12 +167,12 @@ export default function LoginPage() {
                 setMarksData(marksDataPayload);
                 setGradesData(gradesDataPayload);
                 setScheduleData(ScheduleDataPayload);
-                sethostelData(hostelRes.hostelInfo)
+                sethostelData(hostelRes)
                 localStorage.setItem("attendance", JSON.stringify(attData));
                 localStorage.setItem("marks", JSON.stringify(marksDataPayload));
                 localStorage.setItem("grades", JSON.stringify(gradesDataPayload));
                 localStorage.setItem("schedule", JSON.stringify(ScheduleDataPayload));
-                localStorage.setItem("hostel", JSON.stringify(hostelRes.hostelInfo))
+                localStorage.setItem("hostel", JSON.stringify(hostelRes))
 
                 setIsReloading(false); // Close the modal on success
                 setMessage("Data reloaded successfully!");

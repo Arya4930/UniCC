@@ -25,9 +25,12 @@ const LaundryLinks = {
 }
 
 export default function LaundrySchedule({ hostelData }) {
-    const [schedule, setSchedule] = useState([])
+    if (!hostelData.hostelInfo?.isHosteller) {
+        return <p className="text-center text-gray-600">You are not a hosteller. / Reload Data</p>
+    }
     const [gender, setGender] = useState("Male")
     const [hostel, setHostel] = useState("A")
+    const [schedule, setSchedule] = useState([])
 
     const hostelOptions = {
         Male: ["A", "C", "D1", "D2", "E"],
@@ -35,6 +38,17 @@ export default function LaundrySchedule({ hostelData }) {
     }
 
     const today = new Date().getDate()
+
+    useEffect(() => {
+        if (hostelData.hostelInfo) {
+            const normalizedGender =
+                hostelData.hostelInfo.gender?.toLowerCase() === "female" ? "Female" : "Male"
+            const blockName = hostelData.hostelInfo.blockName?.split(" ")[0] || "A"
+
+            setGender(normalizedGender)
+            setHostel(blockName)
+        }
+    }, [hostelData.hostelInfo])
 
     useEffect(() => {
         fetch(LaundryLinks[gender][hostel])
