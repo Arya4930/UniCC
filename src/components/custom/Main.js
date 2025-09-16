@@ -16,6 +16,10 @@ import ScheduleDisplay from "./SchduleDisplay";
 import LaundryDisplay from "./LaundryDisplay";
 
 export default function LoginPage() {
+    const getInitialDay = () => {
+        const today = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
+        return (today === "SAT" || today === "SUN")? "MON" : today;
+    };
     // --- State Management ---
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -28,7 +32,7 @@ export default function LoginPage() {
     const [GradesData, setGradesData] = useState({});
     const [ScheduleData, setScheduleData] = useState({});
     const [hostelData, sethostelData] = useState({})
-    const [activeDay, setActiveDay] = useState("MON");
+    const [activeDay, setActiveDay] = useState(getInitialDay);
     const [csrf, setCsrf] = useState("");
     const [isReloading, setIsReloading] = useState(false); // Controls the reload modal
     const [activeTab, setActiveTab] = useState("attendance");
@@ -338,7 +342,7 @@ export default function LoginPage() {
                                                 {attendancePercentage}
                                             </p>
                                         </div>
-                                        
+
                                         <div
                                             className="cursor-pointer p-6 bg-white rounded-2xl shadow hover:shadow-lg transition min-w-[180px]"
                                             onClick={() => setODhoursIsOpen(true)}
