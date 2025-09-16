@@ -11,7 +11,6 @@ import HostelSubTabs from "./HostelSubsTab";
 import MessDisplay from "./messDisplay";
 import LaundryDisplay from "./LaundryDisplay";
 
-
 export default function DashboardContent({
   activeTab,
   setActiveTab,
@@ -36,7 +35,7 @@ export default function DashboardContent({
   setHostelActiveSubTab
 }) {
   return (
-    <div className="w-full">
+    <div className="w-full max-w-md mx-auto">
       <NavigationTabs
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -44,32 +43,34 @@ export default function DashboardContent({
         handleReloadRequest={handleReloadRequest}
       />
 
-      <div className="flex justify-center bg-white">
-        <div className="max-w-md w-full">
-          {GradesData && (
-            <StatsCards
-              attendancePercentage={attendancePercentage}
-              ODhoursData={ODhoursData}
-              setODhoursIsOpen={setODhoursIsOpen}
-              GradesData={GradesData}
-              setGradesDisplayIsOpen={setGradesDisplayIsOpen}
-            />
-          )}
+      <div className="bg-gray-50 min-h-screen">
+        {GradesData && (
+          <StatsCards
+            attendancePercentage={attendancePercentage}
+            ODhoursData={ODhoursData}
+            setODhoursIsOpen={setODhoursIsOpen}
+            GradesData={GradesData}
+            setGradesDisplayIsOpen={setGradesDisplayIsOpen}
+          />
+        )}
 
-          {ODhoursIsOpen && (
-            <ODHoursModal
-              ODhoursData={ODhoursData}
-              onClose={() => setODhoursIsOpen(false)}
-            />
-          )}
+        {/* OD Hours Modal */}
+        {ODhoursIsOpen && (
+          <ODHoursModal
+            ODhoursData={ODhoursData}
+            onClose={() => setODhoursIsOpen(false)}
+          />
+        )}
 
-          {GradesDisplayIsOpen && (
-            <GradesModal
-              GradesData={GradesData}
-              onClose={() => setGradesDisplayIsOpen(false)}
-            />
-          )}
+        {/* Grades Modal */}
+        {GradesDisplayIsOpen && (
+          <GradesModal
+            GradesData={GradesData}
+            onClose={() => setGradesDisplayIsOpen(false)}
+          />
+        )}
 
+        <div className="px-4">
           {/* Attendance Tab Content */}
           {activeTab === "attendance" && attendanceData && attendanceData.attendance && (
             <AttendanceTabs 
@@ -79,7 +80,7 @@ export default function DashboardContent({
             />
           )}
 
-
+          {/* Exams Tab Content */}
           {activeTab === "exams" && marksData && (
             <div>
               <ExamsSubTabs
@@ -91,6 +92,7 @@ export default function DashboardContent({
             </div>
           )}
 
+          {/* Hostel Tab Content */}
           {activeTab === "hostel" && (
             <div>
               <HostelSubTabs

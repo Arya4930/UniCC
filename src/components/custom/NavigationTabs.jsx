@@ -8,19 +8,19 @@ export default function NavigationTabs({
   handleReloadRequest
 }) {
   return (
-    <div className="flex w-full pb-2 mb-4">
+    <div className="flex w-full shadow-sm">
       <button 
         onClick={handleLogOutRequest}
-        className="basis-2/20 flex items-center justify-center bg-red-500 hover:cursor-pointer text-white px-3 py-2 text-sm font-medium hover:bg-red-600 transition-colors"
+        className="w-12 flex items-center justify-center bg-red-500 hover:cursor-pointer text-white text-sm font-medium hover:bg-red-600 transition-colors"
       >
         <LogOut className="w-4 h-4" />
       </button>
 
       <button 
         onClick={() => setActiveTab("attendance")}
-        className={`basis-9/20 text-sm font-medium transition-colors rounded-none hover:cursor-pointer ${
+        className={`flex-1 py-3 text-sm font-medium transition-colors ${
           activeTab === "attendance" 
-            ? "bg-blue-600 text-white hover:bg-blue-700" 
+            ? "bg-blue-600 text-white" 
             : "bg-gray-200 text-gray-700 hover:bg-gray-300"
         }`}
       >
@@ -29,7 +29,7 @@ export default function NavigationTabs({
 
       <button 
         onClick={() => setActiveTab("exams")}
-        className={`basis-9/20 text-center px-3 py-2 text-sm font-medium hover:cursor-pointer transition-colors ${
+        className={`flex-1 py-3 text-sm font-medium transition-colors ${
           activeTab === "exams" 
             ? "bg-blue-600 text-white" 
             : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -40,7 +40,7 @@ export default function NavigationTabs({
 
       <button 
         onClick={() => setActiveTab("hostel")}
-        className={`basis-9/20 text-center px-3 py-2 text-sm font-medium hover:cursor-pointer transition-colors ${
+        className={`flex-1 py-3 text-sm font-medium transition-colors ${
           activeTab === "hostel" 
             ? "bg-blue-600 text-white" 
             : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -51,7 +51,7 @@ export default function NavigationTabs({
 
       <button 
         onClick={handleReloadRequest}
-        className="basis-2/20 flex items-center justify-center bg-blue-500 hover:cursor-pointer text-white px-3 py-2 text-sm font-medium hover:bg-blue-700 transition-colors"
+        className="w-12 flex items-center justify-center bg-blue-500 hover:cursor-pointer text-white text-sm font-medium hover:bg-blue-700 transition-colors"
       >
         <RefreshCcw className="w-4 h-4" />
       </button>
