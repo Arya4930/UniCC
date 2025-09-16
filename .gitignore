@@ -40,6 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Service Worker
+# service worker
 public/sw*
 public/swe-worker*
