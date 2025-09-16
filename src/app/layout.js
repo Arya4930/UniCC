@@ -1,10 +1,10 @@
 import { Geist, Geist_Mono, Roboto } from 'next/font/google';
 import './globals.css';
- 
+
 export const viewport = {
   themeColor: "#000000",
 }
- 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -21,31 +21,45 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const APP_NAME = "Uni CC";
+const APP_DESCRIPTION = "Taking data from VTOP and displaying it in a clean and simple way.";
+
 export const metadata = {
-  title: 'Uni CC',
-  description:
-    'Taking data from VTOP and displaying it in a clean and simple way.',
+  applicationName: APP_NAME,
+  title: {
+    default: APP_NAME,
+    template: "%s - UniCC App",
+  },
+  description: APP_DESCRIPTION,
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: APP_NAME,
+  },
+  formatDetection: {
+    telephone: false,
+  },
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon.ico',
     apple: '/favicon.ico'
   },
-  manifest: "/manifest.json",
 };
 
 export default function RootLayout({ children }) {
   return (
-      <html lang="en" suppressHydrationWarning>
-        <head>
-          <meta name="apple-mobile-web-app-capable" content="yes" />
-          <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-          <meta name="apple-mobile-web-app-title" content="My App" />
-          <link rel="apple-touch-icon" href="/logo.png" />
-        </head>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased`}
-        >
-          {children}
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="apple-mobile-web-app-title" content="My App" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+      </head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased`}
+      >
+        {children}
       </body>
     </html>
   );
