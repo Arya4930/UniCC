@@ -13,7 +13,7 @@ export default function StatsCards({
       : 0;
 
   return (
-    <div className="overflow-x-auto snap-x snap-mandatory">
+    <div className="overflow-x-auto snap-x snap-mandatory ml-4 mr-4">
       <div className="flex gap-4 py-4 px-2">
         {/* Card 1 */}
         <div
