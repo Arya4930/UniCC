@@ -8,7 +8,7 @@ const revision = crypto.randomUUID();
 
 const withSerwist = withSerwistInit({
   cacheOnNavigation: true,
-  swSrc: "sw.js",
+  swSrc: "src/app/sw.js",
   swDest: "public/sw.js",
   additionalPrecacheEntries: [{ url: "/~offline", revision }],
   disable: process.env.NODE_ENV !== "production",
