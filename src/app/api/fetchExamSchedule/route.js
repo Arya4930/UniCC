@@ -2,6 +2,7 @@ import { client } from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
 import { NextResponse } from "next/server";
 import { URLSearchParams } from "url";
+import config from '@/app/config.json'
 
 export async function POST(req) {
     try {
@@ -15,34 +16,7 @@ export async function POST(req) {
 
         if (!csrf || !authorizedID) throw new Error("Cannot find _csrf or authorizedID");
 
-        // Get available semesters
-        const semRes = await client.post(
-            "/vtop/examinations/StudExamSchedule",
-            new URLSearchParams({
-                verifyMenu: "true",
-                authorizedID,
-                _csrf: csrf,
-                nocache: Date.now().toString(),
-            }).toString(),
-            {
-                headers: {
-                    Cookie: cookieHeader,
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    Referer: "https://vtopcc.vit.ac.in/vtop/open/page",
-                },
-            }
-        );
-
-        const $$ = cheerio.load(semRes.data);
-        const semesters = [];
-        $$("#semesterSubId option").each((i, opt) => {
-            if (!opt.attribs.value) return;
-            semesters.push({ name: $$(opt).text().trim(), id: opt.attribs.value });
-        });
-
-        if (semesters.length === 0) throw new Error("No semesters found!");
-
-        const semesterId = semesters[1].id;
+        const semesterId = config.currSemID;
 
         // Fetch the marks data for the selected semester
         const ScheduleRes = await client.post(
@@ -99,7 +73,7 @@ export async function POST(req) {
             }
         });
 
-        return NextResponse.json({ semester: semesters[1], Schedule: Schedule });
+        return NextResponse.json({ semester: semesterId, Schedule: Schedule });
     } catch (err) {
         console.error(err);
         return NextResponse.json({ error: err.message }, { status: 500 });

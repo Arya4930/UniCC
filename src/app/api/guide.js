@@ -3,6 +3,9 @@
 // GET | POST https://vtopcc.vit.ac.in/vtop/login                               ( Login page to get captch and submit details )
 // POST https://vtopcc.vit.ac.in/vtop/open/page                                 ( Landing/Dashboard page after login )
 
+// DETAILS
+// https://vtopcc.vit.ac.in/vtop/studentsRecord/StudentProfileAllView           ( Student All Details )
+
 // ACADEMICS
 // POST https://vtopcc.vit.ac.in/vtop/academics/common/StudentTimeTableChn      ( Get Semester IDs )
 // POST https://vtopcc.vit.ac.in/vtop/processViewTimeTable                      ( Get Student Timetable for this Semester )
@@ -26,3 +29,4 @@
 // POST https://vtopcc.vit.ac.in/vtop/hostels/student/leave/4                   ( Leave status page )
 // POST https://vtopcc.vit.ac.in/vtop/hostels/student/leave/5                   ( Cancelling leave ( I think ))
 // POST https://vtopcc.vit.ac.in/vtop/hostels/student/leave/6                   ( Leave history page )
+// POST https://vtopcc.vit.ac.in/vtop/hostels/room/allotment/info/student/1     ( Get Student hostel info )

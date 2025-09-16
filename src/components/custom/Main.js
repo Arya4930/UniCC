@@ -27,6 +27,7 @@ export default function LoginPage() {
     const [marksData, setMarksData] = useState({});
     const [GradesData, setGradesData] = useState({});
     const [ScheduleData, setScheduleData] = useState({});
+    const [hostelData, sethostelData] = useState({})
     const [activeDay, setActiveDay] = useState("MON");
     const [csrf, setCsrf] = useState("");
     const [isReloading, setIsReloading] = useState(false); // Controls the reload modal
@@ -78,6 +79,7 @@ export default function LoginPage() {
         const storedUsername = localStorage.getItem("username");
         const storedPassword = localStorage.getItem("password");
         const storedSchedule = localStorage.getItem("schedule");
+        const storedHoste = localStorage.getItem("hostel")
         storedAttendance = JSON.parse(storedAttendance);
 
         if (storedAttendance && storedAttendance.attendance) {
@@ -88,6 +90,7 @@ export default function LoginPage() {
         if (storedPassword) setPassword(storedPassword);
         if (storedSchedule) setScheduleData(JSON.parse(storedSchedule));
         if (storedGrades) setGradesData(JSON.parse(storedGrades));
+        if (storedHoste) sethostelData(JSON.parse(storedHoste));
         setIsLoggedIn((storedUsername && storedPassword) ? true : false)
 
         if (!storedAttendance && !storedMarks) {
@@ -130,7 +133,7 @@ export default function LoginPage() {
                 localStorage.setItem("username", username);
                 localStorage.setItem("password", password);
 
-                const [attRes, marksRes, gradesRes, ScheduleRes] = await Promise.all([
+                const [attRes, marksRes, gradesRes, ScheduleRes, HostelRes] = await Promise.all([
                     fetch("/api/fetchAttendance", {
                         method: "POST", headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
@@ -146,6 +149,10 @@ export default function LoginPage() {
                     fetch('/api/fetchExamSchedule', {
                         method: "POST", headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+                    }),
+                    fetch('/api/fetchHostelDetails', {
+                        method: "POST", headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
                     })
                 ]);
 
@@ -153,16 +160,19 @@ export default function LoginPage() {
                 const marksDataPayload = await marksRes.json();
                 const gradesDataPayload = await gradesRes.json();
                 const ScheduleDataPayload = await ScheduleRes.json();
+                const hostelRes = await HostelRes.json();
 
                 // *** CRITICAL CHANGE: Update data and close modal ***
                 setAttendanceAndOD(attData);
                 setMarksData(marksDataPayload);
                 setGradesData(gradesDataPayload);
                 setScheduleData(ScheduleDataPayload);
+                sethostelData(hostelRes.hostelInfo)
                 localStorage.setItem("attendance", JSON.stringify(attData));
                 localStorage.setItem("marks", JSON.stringify(marksDataPayload));
                 localStorage.setItem("grades", JSON.stringify(gradesDataPayload));
                 localStorage.setItem("schedule", JSON.stringify(ScheduleDataPayload));
+                localStorage.setItem("hostel", JSON.stringify(hostelRes.hostelInfo))
 
                 setIsReloading(false); // Close the modal on success
                 setMessage("Data reloaded successfully!");
@@ -453,8 +463,8 @@ export default function LoginPage() {
                                             Laundry
                                         </button>
                                     </div>
-                                    {HostelActiveSubTab === "mess" && <MessDisplay />}
-                                    {HostelActiveSubTab === "laundry" && <LaundryDisplay />}
+                                    {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} />}
+                                    {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} />}
                                 </div>
                             )}
                         </div>

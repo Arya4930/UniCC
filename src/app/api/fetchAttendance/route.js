@@ -3,6 +3,7 @@ import * as cheerio from "cheerio";
 import { NextResponse } from "next/server";
 import { URLSearchParams } from "url";
 import fetchTimetable from "./fetchTimeTable";
+import config from "@/app/config.json"
 
 function mergeAttendanceWithTimetable(attendance, timetable) {
     return attendance.map(att => {
@@ -41,35 +42,8 @@ export async function POST(req) {
 
         if (!csrf || !authorizedID) throw new Error("Cannot find _csrf or authorizedID");
 
-        // Get semesters
-        const semRes = await client.post(
-            "/vtop/academics/common/StudentAttendance",
-            new URLSearchParams({
-                verifyMenu: "true",
-                authorizedID,
-                _csrf: csrf,
-                nocache: Date.now().toString(),
-            }).toString(),
-            {
-                headers: {
-                    Cookie: cookieHeader,
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    Referer: "https://vtopcc.vit.ac.in/vtop/open/page",
-                },
-            }
-        );
+        const semesterId = config.currSemID;
 
-        const $$ = cheerio.load(semRes.data);
-        const semesters = [];
-
-        $$("#semesterSubId option").each((i, opt) => {
-            if (!opt.attribs.value) return;
-            semesters.push({ name: $$(opt).text().trim(), id: opt.attribs.value });
-        });
-
-        if (semesters.length === 0) throw new Error("No semesters found!");
-
-        const semesterId = semesters[0].id;
         const ttRes = await client.post(
             "/vtop/processViewStudentAttendance",
             new URLSearchParams({
@@ -113,44 +87,54 @@ export async function POST(req) {
             });
         });
         const mergedAttendance = mergeAttendanceWithTimetable(attendance, tt.courseInfo);
-        for (const course of mergedAttendance) {
-            if (!course.viewLink) continue;
+
+        async function fetchDetail(course) {
+            if (!course.viewLink) return course;
 
             const match = course.viewLink.match(/processViewAttendanceDetail\('([^']+)','([^']+)'\)/);
-            if (!match) continue;
+            if (!match) return course;
 
             const [, classId, slotName] = match;
 
-            const attendanceRes = await client.post(
-                "/vtop/processViewAttendanceDetail",
-                new URLSearchParams({
-                    _csrf: csrf,
-                    authorizedID,
-                    x: Date.now().toString(),
-                    classId,
-                    slotName,
-                }).toString(),
-                { headers: { Cookie: cookieHeader, "Content-Type": "application/x-www-form-urlencoded" } }
-            );
+            try {
+                const attendanceRes = await client.post(
+                    "/vtop/processViewAttendanceDetail",
+                    new URLSearchParams({
+                        _csrf: csrf,
+                        authorizedID,
+                        x: Date.now().toString(),
+                        classId,
+                        slotName,
+                    }).toString(),
+                    { headers: { Cookie: cookieHeader, "Content-Type": "application/x-www-form-urlencoded" } }
+                );
 
-            const $$$ = cheerio.load(attendanceRes.data);
-            const detailed = [];
+                const $$$ = cheerio.load(attendanceRes.data);
+                const detailed = [];
 
-            $$$("table.table tr").each((i, row) => {
-                if (i === 0) return;
-                const cols = $$$(row).find("td");
-                if (cols.length < 5) return;
+                $$$("table.table tr").each((i, row) => {
+                    if (i === 0) return;
+                    const cols = $$$(row).find("td");
+                    if (cols.length < 5) return;
 
-                detailed.push({
-                    date: cols.eq(1).text().trim(),
-                    status: cols.eq(4).text().trim(),
+                    detailed.push({
+                        date: cols.eq(1).text().trim(),
+                        status: cols.eq(4).text().trim(),
+                    });
                 });
-            });
 
-            course.viewLink = detailed;
+                course.viewLink = detailed;
+            } catch (err) {
+                console.error(`Failed fetching detail for ${course.courseCode}`, err.message);
+            }
+
+            return course;
         }
 
-        return NextResponse.json({ semester: semesters[0], attendance: mergedAttendance });
+        const detailedAttendance = await Promise.all(mergedAttendance.map(fetchDetail));
+
+
+        return NextResponse.json({ semester: semesterId, attendance: detailedAttendance });
     } catch (err) {
         console.error(err);
         return NextResponse.json({ error: err.message }, { status: 500 });

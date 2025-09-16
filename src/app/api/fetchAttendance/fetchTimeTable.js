@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio";
 import { client } from "@/lib/VTOPClient";
 import { URLSearchParams } from "url";
+import config from '@/app/config.json'
 
 export default async function fetchTimetable(cookieHeader, dashboardHtml) {
     const $ = cheerio.load(dashboardHtml);
@@ -10,35 +11,7 @@ export default async function fetchTimetable(cookieHeader, dashboardHtml) {
 
     if (!csrf || !authorizedID) throw new Error("Cannot find _csrf or authorizedID");
 
-    // Get semesters
-    const semRes = await client.post(
-        "/vtop/academics/common/StudentTimeTableChn",
-        new URLSearchParams({
-            verifyMenu: "true",
-            authorizedID,
-            _csrf: csrf,
-            nocache: Date.now().toString(),
-        }).toString(),
-        {
-            headers: {
-                Cookie: cookieHeader,
-                "Content-Type": "application/x-www-form-urlencoded",
-                Referer: "https://vtopcc.vit.ac.in/vtop/open/page",
-            },
-        }
-    );
-
-    const $$ = cheerio.load(semRes.data);
-    const semesters = [];
-
-    $$("#semesterSubId option").each((i, opt) => {
-        if (!opt.attribs.value) return;
-        semesters.push({ name: $$(opt).text().trim(), id: opt.attribs.value });
-    });
-
-    if (semesters.length === 0) throw new Error("No semesters found!");
-
-    const semesterId = semesters[0].id;
+    const semesterId = config.currSemID;
     const ttRes = await client.post(
         "/vtop/processViewTimeTable",
         new URLSearchParams({
@@ -81,7 +54,7 @@ export default async function fetchTimetable(cookieHeader, dashboardHtml) {
 
     // === Save both to JSON ===
     const finalData = {
-        semester: semesters[0],
+        semester: semesterId,
         courseInfo,
     };
 

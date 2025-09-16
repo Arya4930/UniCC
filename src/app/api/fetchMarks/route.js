@@ -2,6 +2,7 @@ import { client } from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
 import { NextResponse } from "next/server";
 import { URLSearchParams } from "url";
+import config from '@/app/config.json'
 
 export async function POST(req) {
     try {
@@ -42,7 +43,7 @@ export async function POST(req) {
 
         if (semesters.length === 0) throw new Error("No semesters found!");
 
-        const semesterId = semesters[1].id;
+        const semesterId = config.currSemID;
 
         // Fetch the marks data for the selected semester
         const marksRes = await client.post(

@@ -29,7 +29,7 @@ const shortToFullDay = Object.fromEntries(
     Object.entries(fullToShortDay).map(([full, short]) => [short, full])
 )
 
-export default function MessDisplay() {
+export default function MessDisplay({ hostelData }) {
     const [gender, setGender] = useState("Male")
     const [type, setType] = useState("Veg")
     const [menu, setMenu] = useState([])

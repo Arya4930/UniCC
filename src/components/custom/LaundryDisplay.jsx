@@ -24,7 +24,7 @@ const LaundryLinks = {
     },
 }
 
-export default function LaundrySchedule() {
+export default function LaundrySchedule({ hostelData }) {
     const [schedule, setSchedule] = useState([])
     const [gender, setGender] = useState("Male")
     const [hostel, setHostel] = useState("A")
