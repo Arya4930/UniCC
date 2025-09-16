@@ -92,7 +92,7 @@ export default function LoginPage() {
 
   // --- API Functions ---
   const loadCaptcha = async () => {
-    setMessage("Loading captcha...");
+    setMessage("Loading captcha... Pls wait for it to load");
     try {
       let data;
       do {
@@ -206,7 +206,7 @@ export default function LoginPage() {
 
   // --- Render Logic ---
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       {isReloading && (
         <ReloadModal
           captchaImage={captchaImage}
@@ -219,7 +219,7 @@ export default function LoginPage() {
       )}
 
       {!isLoggedIn && (
-        <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="flex-grow flex items-center justify-center p-4">
           <LoginForm
             username={username}
             setUsername={setUsername}

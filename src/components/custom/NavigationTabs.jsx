@@ -1,59 +1,68 @@
 "use client";
-import { LogOut, RefreshCcw } from 'lucide-react';
+import { useState } from "react";
+import { LogOut, RefreshCcw } from "lucide-react";
 
 export default function NavigationTabs({
   activeTab,
   setActiveTab,
   handleLogOutRequest,
-  handleReloadRequest
+  handleReloadRequest,
 }) {
+  const [isSpinning, setIsSpinning] = useState(false);
+
+  const handleReloadClick = async () => {
+    setIsSpinning(true);
+    await handleReloadRequest();
+    setTimeout(() => setIsSpinning(false), 600); // smooth reset after animation
+  };
+
   return (
     <div className="flex w-full shadow-sm pb-4">
-      <button 
+      <button
         onClick={handleLogOutRequest}
         className="w-12 flex items-center justify-center bg-red-500 hover:cursor-pointer text-white text-sm font-medium hover:bg-red-600 transition-colors"
       >
         <LogOut className="w-4 h-4" />
       </button>
 
-      <button 
+      <button
         onClick={() => setActiveTab("attendance")}
         className={`flex-1 py-3 text-sm font-medium transition-colors ${
-          activeTab === "attendance" 
-            ? "bg-blue-600 text-white" 
+          activeTab === "attendance"
+            ? "bg-blue-600 text-white"
             : "bg-gray-200 text-gray-700 hover:bg-gray-300"
         }`}
       >
         Attendance
       </button>
 
-      <button 
+      <button
         onClick={() => setActiveTab("exams")}
         className={`flex-1 py-3 text-sm font-medium transition-colors ${
-          activeTab === "exams" 
-            ? "bg-blue-600 text-white" 
+          activeTab === "exams"
+            ? "bg-blue-600 text-white"
             : "bg-gray-200 text-gray-700 hover:bg-gray-300"
         }`}
       >
         Exams
       </button>
 
-      <button 
+      <button
         onClick={() => setActiveTab("hostel")}
         className={`flex-1 py-3 text-sm font-medium transition-colors ${
-          activeTab === "hostel" 
-            ? "bg-blue-600 text-white" 
+          activeTab === "hostel"
+            ? "bg-blue-600 text-white"
             : "bg-gray-200 text-gray-700 hover:bg-gray-300"
         }`}
       >
         Hostel
       </button>
 
-      <button 
-        onClick={handleReloadRequest}
+      <button
+        onClick={handleReloadClick}
         className="w-12 flex items-center justify-center bg-blue-500 hover:cursor-pointer text-white text-sm font-medium hover:bg-blue-700 transition-colors"
       >
-        <RefreshCcw className="w-4 h-4" />
+        <RefreshCcw className={`w-4 h-4 ${isSpinning ? "animate-spin" : ""}`} />
       </button>
     </div>
   );

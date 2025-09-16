@@ -136,23 +136,24 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
 
 
   return (
-    <div className="grid gap-3 ">
+    <div className="grid gap-4 ">
         <h1 className="text-lg font-semibold mb-3 text-center">Weekly Attendance</h1>
-        <div className="flex gap-1 mb-3 justify-center flex-wrap">
-            {days.map((d) => (
-                <button
-                    key={d}
-                    onClick={() => setActiveDay(d)}
-                    className={`px-3 py-1 rounded-md text-sm transition-colors duration-150 
-                        ${activeDay === d
-                            ? "bg-blue-600 text-white"
-                            : "bg-gray-200 text-gray-700 hover:bg-blue-300"
-                        }`}
-                >
-                    {d}
-                </button>
-            ))}
-        </div>
+        <div className="flex gap-2 mb-3 justify-center flex-wrap">
+    {days.map((d) => (
+        <button
+            key={d}
+            onClick={() => setActiveDay(d)}
+            className={`px-4 py-2 rounded-md text-sm md:text-base font-medium transition-colors duration-150 
+                ${activeDay === d
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-blue-300"
+                }`}
+        >
+            {d}
+        </button>
+    ))}
+</div>
+
 
         <div className="space-y-2">
             {dayCardsMap[activeDay].map((a, idx) => (
