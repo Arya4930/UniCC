@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import DashboardContent from "./Dashboard";
+import DashboardContent from "./dashboard";
 import Footer from "@/components/custom/Footer";
 
 export default function LoginPage() {
