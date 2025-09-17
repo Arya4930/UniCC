@@ -41,6 +41,7 @@ Interested in contributing? Feel free to fork the repo and submit pull requests.
 
 No license is currently set. Please check with the repository owner for usage permissions.
 
-## Author
+## Authors
 
 - [Arya4930](https://github.com/Arya4930)
+- [DumbTempest](https://github.com/DumbTempest)
