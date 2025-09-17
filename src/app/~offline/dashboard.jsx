@@ -11,7 +11,6 @@ import ScheduleDisplay from "@/components/custom/SchduleDisplay";
 export default function DashboardContent({
   activeTab,
   setActiveTab,
-  handleLogOutRequest,
   handleReloadRequest,
   GradesData,
   attendancePercentage,

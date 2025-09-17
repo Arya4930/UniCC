@@ -86,7 +86,6 @@ export default function LoginPage() {
         <DashboardContent
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-          handleLogOutRequest={handleLogOutRequest}
           handleReloadRequest={handleReloadRequest}
           GradesData={GradesData}
           attendancePercentage={attendancePercentage}
