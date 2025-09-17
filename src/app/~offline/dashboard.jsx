@@ -32,7 +32,6 @@ export default function DashboardContent({
       <NavigationTabs
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        handleLogOutRequest={handleLogOutRequest}
         handleReloadRequest={handleReloadRequest}
       />
 
