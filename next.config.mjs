@@ -11,7 +11,6 @@ const withSerwist = withSerwistInit({
   swSrc: "src/app/sw.js",
   swDest: "public/sw.js",
   additionalPrecacheEntries: [{ url: "/~offline", revision }],
-  disable: process.env.NODE_ENV !== "production",
 });
 
 /** @type {import('next').NextConfig} */

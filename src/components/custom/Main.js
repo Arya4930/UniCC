@@ -4,6 +4,7 @@ import { ReloadModal } from "./reloadModel";
 import LoginForm from "./loginForm";
 import DashboardContent from "./Dashboard";
 import Footer from "./Footer";
+import PushNotificationManager from "@/app/pushNotificationManager";
 
 export default function LoginPage() {
   const getInitialDay = () => {

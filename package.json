@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -28,7 +28,8 @@
     "react-circular-progressbar": "^2.2.0",
     "react-dom": "19.1.0",
     "tailwind-merge": "^3.3.1",
-    "tough-cookie": "^5.1.2"
+    "tough-cookie": "^5.1.2",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
