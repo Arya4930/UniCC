@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import DashboardContent from "./dashboard";
+import DashboardContent from "./Dashboard";
 import Footer from "@/components/custom/Footer";
 
 export default function LoginPage() {
@@ -68,7 +68,7 @@ export default function LoginPage() {
 
     setIsLoggedIn(!!(storedUsername && storedPassword));
   }, []);
-
+  
   const handleReloadRequest = () => {
     alert("Reload functionality is disabled in offline mode.");
   };

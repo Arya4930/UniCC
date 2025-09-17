@@ -1,12 +1,12 @@
 "use client";
-import NavigationTabs from "@/components/custom/NavigationTabs";
-import StatsCards from "@/components/custom/statCards";
-import ODHoursModal from "@/components/custom/ODHoursModal";
-import GradesModal from "@/components/custom/GradesModal";
-import AttendanceTabs from "@/components/custom/attendanceTabs";
-import ExamsSubTabs from "@/components/custom/ExamSubsTab";
-import MarksDisplay from "@/components/custom/marksDislay";
-import ScheduleDisplay from "@/components/custom/SchduleDisplay";
+import NavigationTabs from "./NavigationTabs";
+import StatsCards from "./statCards";
+import ODHoursModal from "./ODHoursModal";
+import GradesModal from "./GradesModal";
+import AttendanceTabs from "./attendanceTabs";
+import ExamsSubTabs from "./ExamSubsTab";
+import MarksDisplay from "./marksDislay";
+import ScheduleDisplay from "./SchduleDisplay";
 
 export default function DashboardContent({
   activeTab,
@@ -60,12 +60,12 @@ export default function DashboardContent({
           />
         )}
 
-        <div className="px-4 pb-4">
+        <div className="px-4">
           {activeTab === "attendance" && attendanceData && attendanceData.attendance && (
-            <AttendanceTabs 
-              data={attendanceData} 
-              activeDay={activeDay} 
-              setActiveDay={setActiveDay} 
+            <AttendanceTabs
+              data={attendanceData}
+              activeDay={activeDay}
+              setActiveDay={setActiveDay}
             />
           )}
 
