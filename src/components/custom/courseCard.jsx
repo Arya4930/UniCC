@@ -4,6 +4,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import "react-circular-progressbar/dist/styles.css"
 
 export default function CourseCard({ a, onClick, activeDay }) {
+    const lab = a.slotName.split('')[0] == "L"
     const isOngoing = () => {
         if (!a.time || !activeDay) return false
 
@@ -81,8 +82,8 @@ export default function CourseCard({ a, onClick, activeDay }) {
                                 const needed = Math.ceil((0.75 * total - attended) / (1 - 0.75))
                                 return (
                                     <p className="text-red-500 text-sm">
-                                        Need to attend <strong>{needed}</strong> more class
-                                        {needed > 1 && "es"} to reach 75%.
+                                        Need to attend <strong>{lab ? needed/2 : needed}</strong> more {lab ? "lab" : "class"}
+                                        {needed > 1 && (lab ? "s" : "es")} to reach 75%.
                                     </p>
                                 )
                             } else {
@@ -90,14 +91,14 @@ export default function CourseCard({ a, onClick, activeDay }) {
                                 if (canMiss === 0) {
                                     return (
                                         <p className="text-yellow-500 text-sm">
-                                            You are on the edge! Attend the next class.
+                                            You are on the edge! Attend the next {lab ? "lab" : "class"}.
                                         </p>
                                     )
                                 } else {
                                     return (
-                                        <p className="text-green-500 font-bold text-sm">
-                                            Can miss <strong>{canMiss}</strong> class
-                                            {canMiss !== 1 && "es"} and stay above 75%.
+                                        <p className="text-green-500 text-sm">
+                                            Can miss <strong>{lab ? canMiss/2 : canMiss}</strong> {lab ? "lab" : "class"}
+                                            {canMiss !== 1 && (lab ? "s" : "es")} and stay above 75%.
                                         </p>
                                     )
                                 }
