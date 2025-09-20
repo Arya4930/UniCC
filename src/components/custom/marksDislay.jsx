@@ -35,12 +35,18 @@ export default function MarksDisplay({ data }) {
                 className="flex justify-between items-center cursor-pointer"
                 onClick={() => toggleCourse(course.slNo)}
               >
-                {/* <div>{course.courseType}</div> */}
-                <span className="font-medium text-gray-800 text-sm sm:text-base max-w-[80%] whitespace-normal break-words">
-                  {course.courseCode} - {course.courseTitle}
-                </span>
+                <div className="flex flex-col items-start">
+                  <span className="font-medium text-gray-800 text-sm sm:text-base max-w-xs break-words">
+                    {course.courseCode} - {course.courseTitle}
+                  </span>
 
-                <div className="flex flex-col items-center w-22">
+                  <div className="w-20 h-6 flex items-center justify-center bg-gray-200 text-black text-xs rounded-full outline outline-1 outline-gray-700 mt-2">
+  {course.courseType}
+</div>
+
+                </div>
+
+                <div className="w-20 h-20 flex-shrink-0 flex flex-col items-center justify-center ml-4">
                   <CircularProgressbar
                     value={totals.weighted}
                     text={`${totals.weighted}/100`}
@@ -49,14 +55,11 @@ export default function MarksDisplay({ data }) {
                       textColor: "#111827",
                       trailColor: "#E5E7EB",
                       strokeLinecap: "round",
-                      textSize: "20px",
+                      textSize: "1.2em",
                       pathTransitionDuration: 0.5,
                     })}
                   />
-                 
                 </div>
-
-                
               </div>
               {openCourse === course.slNo && (
                 <div className="mt-4">
@@ -89,7 +92,7 @@ export default function MarksDisplay({ data }) {
                             <td className="border p-2">{asm.weightageMark}</td>
                           </tr>
                         ))}
- 
+
                         <tr className="font-bold">
                           <td className="border p-2">Total</td>
                           <td className="border p-2">{totals.max}</td>
