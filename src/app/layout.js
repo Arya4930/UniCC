@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono, Roboto } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
 export const viewport = {
@@ -60,6 +61,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
