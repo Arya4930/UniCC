@@ -35,11 +35,12 @@ export default function MarksDisplay({ data }) {
                 className="flex justify-between items-center cursor-pointer"
                 onClick={() => toggleCourse(course.slNo)}
               >
+                {/* <div>{course.courseType}</div> */}
                 <span className="font-medium text-gray-800 text-sm sm:text-base max-w-[80%] whitespace-normal break-words">
                   {course.courseCode} - {course.courseTitle}
                 </span>
 
-                <div className="flex flex-col items-center w-18">
+                <div className="flex flex-col items-center w-22">
                   <CircularProgressbar
                     value={totals.weighted}
                     text={`${totals.weighted}/100`}
@@ -52,9 +53,7 @@ export default function MarksDisplay({ data }) {
                       pathTransitionDuration: 0.5,
                     })}
                   />
-                  <p className="text-center text-[10px] font-medium mt-1 text-gray-600">
-                    Weighted Score
-                  </p>
+                 
                 </div>
 
                 
