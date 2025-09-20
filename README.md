@@ -1,6 +1,7 @@
 # UniCC
 
 **Live site:** [uni-cc.vercel.app](https://uni-cc.vercel.app)
+
 **Repository:** [Arya4930/UniCC](https://github.com/Arya4930/UniCC)
 
 ## Overview
@@ -58,7 +59,8 @@ Please make sure to read and follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 This project is licensed under the [MIT License](LICENSE).
 
-## Authors
+## Contributors
 
-* [Arya4930](https://github.com/Arya4930)
-* [DumbTempest](https://github.com/DumbTempest)
+[![Arya4930](https://img.shields.io/badge/Arya4930-000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Arya4930)
+[![DumbTempest](https://img.shields.io/badge/DumbTempest-000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/DumbTempest)
+
