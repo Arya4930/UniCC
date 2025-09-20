@@ -205,7 +205,6 @@ export default function LoginPage() {
     localStorage.removeItem("schedule");
   };
 
-  // --- Render Logic ---
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {isReloading && (

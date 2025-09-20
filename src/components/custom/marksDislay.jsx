@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 export default function MarksDisplay({ data }) {
   const [openCourse, setOpenCourse] = useState(null);
@@ -17,7 +18,6 @@ export default function MarksDisplay({ data }) {
       <h1 className="text-xl font-bold mb-4 text-center">Academic Marks</h1>
       <div className="space-y-4">
         {data.marks.map((course, idx) => {
-          // calculate totals
           const totals = course.assessments.reduce(
             (acc, asm) => {
               acc.max += Number(asm.maxMark) || 0;
@@ -35,14 +35,29 @@ export default function MarksDisplay({ data }) {
                 className="flex justify-between items-center cursor-pointer"
                 onClick={() => toggleCourse(course.slNo)}
               >
-                <span className="font-medium">
+                <span className="font-medium text-gray-800 text-sm sm:text-base max-w-[80%] whitespace-normal break-words">
                   {course.courseCode} - {course.courseTitle}
                 </span>
-                {openCourse === course.slNo ? (
-                  <ChevronUp className="w-5 h-5" />
-                ) : (
-                  <ChevronDown className="w-5 h-5" />
-                )}
+
+                <div className="flex flex-col items-center w-18">
+                  <CircularProgressbar
+                    value={totals.weighted}
+                    text={`${totals.weighted}/100`}
+                    styles={buildStyles({
+                      pathColor: "#00ff11ff",
+                      textColor: "#111827",
+                      trailColor: "#E5E7EB",
+                      strokeLinecap: "round",
+                      textSize: "20px",
+                      pathTransitionDuration: 0.5,
+                    })}
+                  />
+                  <p className="text-center text-[10px] font-medium mt-1 text-gray-600">
+                    Weighted Score
+                  </p>
+                </div>
+
+                
               </div>
               {openCourse === course.slNo && (
                 <div className="mt-4">
@@ -75,7 +90,7 @@ export default function MarksDisplay({ data }) {
                             <td className="border p-2">{asm.weightageMark}</td>
                           </tr>
                         ))}
-                        {/* totals row */}
+ 
                         <tr className="font-bold">
                           <td className="border p-2">Total</td>
                           <td className="border p-2">{totals.max}</td>
