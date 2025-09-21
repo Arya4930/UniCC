@@ -41,15 +41,14 @@ export default function MarksDisplay({ data }) {
                   </span>
 
                   <div className="w-20 h-6 flex items-center justify-center bg-gray-200 text-black text-xs rounded-full outline outline-1 outline-gray-700 mt-2">
-  {course.courseType}
-</div>
-
+                    {course.courseType}
+                  </div>
                 </div>
 
                 <div className="w-20 h-20 flex-shrink-0 flex flex-col items-center justify-center ml-4">
                   <CircularProgressbar
-                    value={totals.weighted}
-                    text={`${totals.weighted}/100`}
+                    value={(totals.weighted/totals.weightPercent) * 100 || 0}
+                    text={`${totals.weighted}/${totals.weightPercent}`}
                     styles={buildStyles({
                       pathColor: "#00ff11ff",
                       textColor: "#111827",
