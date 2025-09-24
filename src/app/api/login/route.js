@@ -1,11 +1,13 @@
 import { client } from "@/lib/VTOPClient";
 import { NextResponse } from "next/server";
 import solveCaptcha from "./solveCaptcha";
+import getCaptcha from "./getCaptcha";
 
 export async function POST(req) {
     try {
-        const { username, password, captchaImage, cookies, csrf } = await req.json();
-        const captcha = await solveCaptcha(captchaImage);
+        const { username, password } = await req.json();
+        const { captchaBase64, cookies, csrf } = await getCaptcha();
+        const captcha = await solveCaptcha(captchaBase64);
 
         if (!csrf) throw new Error("CSRF token not found");
 
@@ -60,6 +62,7 @@ export async function POST(req) {
             success: true,
             message: "Login successful!",
             cookies: allCookies,
+            csrf,
             dashboardHtml,
         });
     } catch (err) {

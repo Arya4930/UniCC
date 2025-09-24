@@ -15,8 +15,6 @@ export default function LoginPage() {
   // --- State Management ---
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [captchaImage, setCaptchaImage] = useState("");
-  const [cookies, setCookies] = useState([]);
   const [message, setMessage] = useState("");
   const [attendanceData, setAttendanceData] = useState({});
   const [marksData, setMarksData] = useState({});
@@ -24,7 +22,6 @@ export default function LoginPage() {
   const [ScheduleData, setScheduleData] = useState({});
   const [hostelData, sethostelData] = useState({});
   const [activeDay, setActiveDay] = useState(getInitialDay);
-  const [csrf, setCsrf] = useState("");
   const [isReloading, setIsReloading] = useState(false);
   const [activeTab, setActiveTab] = useState("attendance");
   const [attendancePercentage, setattendancePercentage] = useState(0);
@@ -84,41 +81,15 @@ export default function LoginPage() {
     if (storedGrades) setGradesData(JSON.parse(storedGrades));
     if (storedHoste) sethostelData(JSON.parse(storedHoste));
     setIsLoggedIn((storedUsername && storedPassword) ? true : false);
-
-    if (!storedAttendance && !storedMarks) {
-      loadCaptcha();
-    }
   }, []);
 
-  // --- API Functions ---
-  const loadCaptcha = async () => {
-    setMessage("Loading captcha..");
-    try {
-      let data;
-      do {
-        const res = await fetch("/api/getCaptcha");
-        data = await res.json();
-      } while (data.captchaType === "GRECAPTCHA");
-      setCookies(Array.isArray(data.cookies) ? data.cookies : [data.cookies]);
-      setCaptchaImage(data.captchaBase64);
-      setCsrf(data.csrf);
-      setMessage("");
-      if (username && password && data.captchaBase64 && data.cookies && data.csrf) {
-        handleLogin(data.captchaBase64, data.cookies, data.csrf);
-      }
-    } catch (err) {
-      setMessage("Failed to load captcha.");
-    }
-  };
-
-  const handleLogin = async (captcha, cookies, csrf) => {
-    if (!cookies.length) return alert("Cookies missing!");
+  const handleLogin = async () => {
     setMessage("Logging in and fetching data...");
     try {
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, captchaImage: captcha, cookies, csrf }),
+        body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
       if (data.success && data.dashboardHtml) {
@@ -174,7 +145,6 @@ export default function LoginPage() {
         setIsLoggedIn(true);
       } else {
         setMessage(data.message || "Login failed. Please try again.");
-        loadCaptcha();
       }
     } catch (err) {
       setMessage("Login failed, check console.");
@@ -184,7 +154,7 @@ export default function LoginPage() {
   // --- Event Handlers ---
   const handleReloadRequest = () => {
     setIsReloading(true);
-    loadCaptcha();
+    handleLogin();
   };
 
   const handleLogOutRequest = () => {
@@ -201,14 +171,6 @@ export default function LoginPage() {
     localStorage.removeItem("marks");
     localStorage.removeItem("grades");
     localStorage.removeItem("schedule");
-  };
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    if (!username || !password) {
-      return alert("Please fill all the fields!");
-    }
-    handleLogin(captchaImage, cookies, csrf);
   };
 
   return (
@@ -228,9 +190,8 @@ export default function LoginPage() {
             setUsername={setUsername}
             password={password}
             setPassword={setPassword}
-            captchaImage={captchaImage}
             message={message}
-            handleFormSubmit={handleFormSubmit}
+            handleLogin={handleLogin}
           />
         </div>
       )}

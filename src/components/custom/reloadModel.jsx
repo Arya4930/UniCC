@@ -3,8 +3,7 @@
 import React, { useEffect } from "react";
 import { RefreshCcw, X } from "lucide-react";
 
-export function ReloadModal({ handleLogin, message, onClose }) {
-    const isLoading = message === "Logging in and fetching data...";
+export function ReloadModal({ message, onClose }) {
     useEffect(() => {
         document.body.style.overflow = "hidden";
         return () => {
@@ -24,15 +23,12 @@ export function ReloadModal({ handleLogin, message, onClose }) {
                         <X className="w-5 h-5" />
                     </button>
                 </div>
-
-                <form onSubmit={handleLogin} className="space-y-4">
-                    {message && (
-                        <div className="flex items-center gap-2 justify-center text-sm">
-                            <RefreshCcw className="w-4 h-4 animate-spin" />
-                            <span>{message}</span>
-                        </div>
-                    )}
-                </form>
+                {message && (
+                    <div className="flex items-center gap-2 justify-center text-sm">
+                        <RefreshCcw className="w-4 h-4 animate-spin" />
+                        <span>{message}</span>
+                    </div>
+                )}
             </div>
         </div>
     );
