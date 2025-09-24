@@ -103,7 +103,7 @@ export default function LoginPage() {
       setCaptchaImage(data.captchaBase64);
       setCsrf(data.csrf);
       setMessage("");
-      if (data.captchaBase64 && data.cookies && data.csrf) {
+      if (username && password && data.captchaBase64 && data.cookies && data.csrf) {
         handleLogin(data.captchaBase64, data.cookies, data.csrf);
       }
     } catch (err) {
