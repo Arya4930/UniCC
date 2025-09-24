@@ -173,6 +173,14 @@ export default function LoginPage() {
     localStorage.removeItem("schedule");
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (!username || !password) {
+      return alert("Please fill all the fields!");
+    }
+    handleLogin();
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {isReloading && (
@@ -191,7 +199,7 @@ export default function LoginPage() {
             password={password}
             setPassword={setPassword}
             message={message}
-            handleLogin={handleLogin}
+            handleFormSubmit={handleFormSubmit}
           />
         </div>
       )}
