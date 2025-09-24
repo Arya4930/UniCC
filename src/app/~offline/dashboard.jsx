@@ -2,11 +2,11 @@
 import NavigationTabs from "./NavigationTabs";
 import StatsCards from "@/components/custom/statCards";
 import ODHoursModal from "@/components/custom/ODHoursModal";
-import GradesModal from "@/components/custom/GradesModal";
+import GradesModal from "@/components/custom/Exams/GradesModal";
 import AttendanceTabs from "@/components/custom/attendanceTabs";
-import ExamsSubTabs from "@/components/custom/ExamSubsTab";
-import MarksDisplay from "@/components/custom/marksDislay";
-import ScheduleDisplay from "@/components/custom/SchduleDisplay";
+import ExamsSubTabs from "@/components/custom/Exams/ExamSubsTab";
+import MarksDisplay from "@/components/custom/Exams/marksDislay";
+import ScheduleDisplay from "@/components/custom/Exams/SchduleDisplay";
 
 export default function DashboardContent({
   activeTab,

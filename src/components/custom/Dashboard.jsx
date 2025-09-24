@@ -2,14 +2,14 @@
 import NavigationTabs from "./NavigationTabs";
 import StatsCards from "./statCards";
 import ODHoursModal from "./ODHoursModal";
-import GradesModal from "./GradesModal";
-import AttendanceTabs from "./attendanceTabs";
-import ExamsSubTabs from "./ExamSubsTab";
-import MarksDisplay from "./marksDislay";
-import ScheduleDisplay from "./SchduleDisplay";
-import HostelSubTabs from "./HostelSubsTab";
-import MessDisplay from "./messDisplay";
-import LaundryDisplay from "./LaundryDisplay";
+import GradesModal from "./Exams/GradesModal";
+import AttendanceTabs from "./attendance/attendanceTabs";
+import ExamsSubTabs from "./Exams/ExamSubsTab";
+import MarksDisplay from "./Exams/marksDislay";
+import ScheduleDisplay from "./Exams/SchduleDisplay";
+import HostelSubTabs from "./Hostel/HostelSubsTab";
+import MessDisplay from "./Hostel/messDisplay";
+import LaundryDisplay from "./Hostel/LaundryDisplay";
 
 export default function DashboardContent({
   activeTab,
