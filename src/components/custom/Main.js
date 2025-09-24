@@ -141,7 +141,6 @@ export default function LoginPage() {
         localStorage.setItem("hostel", JSON.stringify(hostelRes));
         setIsReloading(false);
         setMessage("Data reloaded successfully!");
-        setCaptchaImage("");
         setIsLoggedIn(true);
       } else {
         setMessage(data.message || "Login failed. Please try again.");
