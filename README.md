@@ -8,6 +8,8 @@
 
 UniCC is a web app designed specifically for students of a Specific Uni. It provides a minimalist experience to help students access campus-related resources and tools.
 
+Captcha Solver code taken from [ViBoot-Enhanced](https://github.com/arshsaxena/ViBoot-Enhanced/blob/main/js/captcha/captchaparser.js)
+
 ## Getting Started
 
 To run UniCC locally:
