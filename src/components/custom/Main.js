@@ -92,7 +92,7 @@ export default function LoginPage() {
 
   // --- API Functions ---
   const loadCaptcha = async () => {
-    setMessage("Loading captcha... Pls wait for it to load");
+    setMessage("Loading captcha..");
     try {
       let data;
       do {
@@ -103,7 +103,7 @@ export default function LoginPage() {
       setCaptchaImage(data.captchaBase64);
       setCsrf(data.csrf);
       setMessage("");
-      if (username && password && data.captchaBase64 && data.cookies && data.csrf) {
+      if (data.captchaBase64 && data.cookies && data.csrf) {
         handleLogin(data.captchaBase64, data.cookies, data.csrf);
       }
     } catch (err) {
