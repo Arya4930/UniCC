@@ -7,18 +7,16 @@ export default function LoginForm({
   setUsername,
   password,
   setPassword,
-  captcha,
-  setCaptcha,
   captchaImage,
   message,
-  handleLogin,
+  handleFormSubmit,
 }) {
   const isLoading = message === "Logging in and fetching data...";
 
   return (
     <div className="flex items-center justify-center min-h-screen w-full px-4 ">
       <form
-        onSubmit={handleLogin}
+        onSubmit={handleFormSubmit}
         className="bg-gray-800 rounded-2xl p-8 w-full max-w-md space-y-5 text-white"
       >
         <h2 className="text-2xl font-bold text-center">Login</h2>
@@ -40,24 +38,6 @@ export default function LoginForm({
 
         {captchaImage && !isLoading && (
           <>
-            <div className="flex justify-center bg-gray-900 rounded-lg p-2">
-              <Image
-                src={captchaImage}
-                alt="Captcha"
-                className="object-contain"
-                width={200}
-                height={64}
-                unoptimized
-              />
-            </div>
-
-            <input
-              className="w-full border border-gray-500 bg-gray-900 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={captcha}
-              onChange={(e) => setCaptcha(e.target.value)}
-              placeholder="Enter Captcha"
-            />
-
             <button
               type="submit"
               className="w-full bg-blue-600 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"

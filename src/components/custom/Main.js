@@ -15,7 +15,6 @@ export default function LoginPage() {
   // --- State Management ---
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [captcha, setCaptcha] = useState("");
   const [captchaImage, setCaptchaImage] = useState("");
   const [cookies, setCookies] = useState([]);
   const [message, setMessage] = useState("");
@@ -104,20 +103,22 @@ export default function LoginPage() {
       setCaptchaImage(data.captchaBase64);
       setCsrf(data.csrf);
       setMessage("");
+      if (username && password && data.captchaBase64 && data.cookies && data.csrf) {
+        handleLogin(data.captchaBase64, data.cookies, data.csrf);
+      }
     } catch (err) {
       setMessage("Failed to load captcha.");
     }
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (captcha, cookies, csrf) => {
     if (!cookies.length) return alert("Cookies missing!");
     setMessage("Logging in and fetching data...");
     try {
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, captcha, cookies, csrf }),
+        body: JSON.stringify({ username, password, captchaImage: captcha, cookies, csrf }),
       });
       const data = await res.json();
       if (data.success && data.dashboardHtml) {
@@ -170,11 +171,9 @@ export default function LoginPage() {
         setIsReloading(false);
         setMessage("Data reloaded successfully!");
         setCaptchaImage("");
-        setCaptcha("");
         setIsLoggedIn(true);
       } else {
         setMessage(data.message || "Login failed. Please try again.");
-        setCaptcha("");
         loadCaptcha();
       }
     } catch (err) {
@@ -184,7 +183,6 @@ export default function LoginPage() {
 
   // --- Event Handlers ---
   const handleReloadRequest = () => {
-    setCaptcha("");
     setIsReloading(true);
     loadCaptcha();
   };
@@ -205,13 +203,18 @@ export default function LoginPage() {
     localStorage.removeItem("schedule");
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (!username || !password) {
+      return alert("Please fill all the fields!");
+    }
+    handleLogin(captchaImage, cookies, csrf);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {isReloading && (
         <ReloadModal
-          captchaImage={captchaImage}
-          captcha={captcha}
-          setCaptcha={setCaptcha}
           handleLogin={handleLogin}
           message={message}
           onClose={() => setIsReloading(false)}
@@ -225,11 +228,9 @@ export default function LoginPage() {
             setUsername={setUsername}
             password={password}
             setPassword={setPassword}
-            captcha={captcha}
-            setCaptcha={setCaptcha}
             captchaImage={captchaImage}
             message={message}
-            handleLogin={handleLogin}
+            handleFormSubmit={handleFormSubmit}
           />
         </div>
       )}
