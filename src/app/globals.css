@@ -120,3 +120,29 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Apply to everything */
+* {
+  scrollbar-width: thin;              /* Firefox */
+  scrollbar-color: #9ca3af #1f2937;   /* thumb (gray-400) track (gray-800) */
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #1f2937; /* gray-800 */
+  border-radius: 9999px; /* fully rounded track */
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #9ca3af; /* gray-400 */
+  border-radius: 9999px;     /* pill/curvy scrollbar */
+  border: 2px solid #1f2937; /* adds spacing effect */
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #d1d5db; /* lighter gray on hover (gray-300) */
+}
