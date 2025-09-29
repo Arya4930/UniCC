@@ -25,7 +25,7 @@ export function ReloadModal({ message, onClose }) {
                 </div>
                 {message && (
                     <div className="flex items-center gap-2 justify-center text-sm">
-                        <RefreshCcw className="w-4 h-4 animate-spin" />
+                       <RefreshCcw className="w-4 h-4 animate-[spin_1s_linear_infinite] [animation-direction:reverse]" />
                         <span>{message}</span>
                     </div>
                 )}
