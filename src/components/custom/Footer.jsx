@@ -22,7 +22,7 @@ export default function Footer() {
   </a>
 
   <span className="text-xs text-gray-600">
-    &copy; Arya Inc. All rights reserved.
+    &copy; Arya Evil Inc. All rights reserved.
   </span>
 </div>
 
