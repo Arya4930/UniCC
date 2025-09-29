@@ -3,7 +3,7 @@ import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
 export const viewport = {
-  themeColor: "#000000",
+  themeColor: "#ffffffff",
 }
 
 const geistSans = Geist({
