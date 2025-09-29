@@ -49,6 +49,7 @@ export default function LoginForm({
         {isLoading && (
           <div className="flex items-center justify-center gap-3 text-sm text-gray-300">
             <RefreshCcw className="w-5 h-5 animate-spin" />
+            {/* wow, definitely an easter egg */}
             <span>{message}</span>
           </div>
         )}
