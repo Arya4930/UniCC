@@ -37,27 +37,28 @@ export default function CourseCard({ a, onClick, activeDay }) {
     return (
         <Card
             onClick={onClick}
-            className={`p-4 rounded-lg shadow-sm transition-shadow duration-300 cursor-pointer ${ongoing
-                ? "ring-2 ring-yellow-200 shadow-lg bg-yellow-50"
-                : "hover:shadow-md"
-                }`}
+            className={`p-4 rounded-lg shadow-sm transition-shadow duration-300 cursor-pointer ${
+                ongoing
+                    ? "ring-2 ring-yellow-200 shadow-lg bg-yellow-50 dark:bg-yellow-900/40"
+                    : "hover:shadow-md dark:hover:shadow-lg"
+            }`}
         >
             <div className="flex justify-between items-center">
                 <div className="flex flex-col gap-2 flex-grow">
                     <CardHeader className="p-0">
-                        <CardTitle className="text-lg font-semibold text-gray-800">
+                        <CardTitle className="text-lg font-semibold text-gray-800 dark:text-gray-100">
                             {a.courseTitle}
                         </CardTitle>
-                        <p className="text-sm text-gray-500">{a.slotName}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">{a.slotName}</p>
                     </CardHeader>
 
-                    <CardContent className="p-0 text-sm text-gray-600 space-y-1">
+                    <CardContent className="p-0 text-sm text-gray-600 dark:text-gray-300 space-y-1">
                         <div className="flex items-center gap-2">
-                            <Building2 size={16} className="text-gray-500" />
+                            <Building2 size={16} className="text-gray-500 dark:text-gray-400" />
                             <span>{a.slotVenue}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <Clock size={16} className="text-gray-500" />
+                            <Clock size={16} className="text-gray-500 dark:text-gray-400" />
                             <span>{a.time}</span>
                         </div>
                         <p>
@@ -74,36 +75,36 @@ export default function CourseCard({ a, onClick, activeDay }) {
                         </p>
                     </CardContent>
                     {(() => {
-                            const attended = a.attendedClasses
-                            const total = a.totalClasses
-                            const percentage = (attended / total) * 100
+                        const attended = a.attendedClasses
+                        const total = a.totalClasses
+                        const percentage = (attended / total) * 100
 
-                            if (percentage < 75) {
-                                const needed = Math.ceil((0.75 * total - attended) / (1 - 0.75))
+                        if (percentage < 75) {
+                            const needed = Math.ceil((0.75 * total - attended) / (1 - 0.75))
+                            return (
+                                <p className="text-red-500 dark:text-red-400 text-sm">
+                                    Need to attend <strong>{lab ? needed/2 : needed}</strong> more {lab ? "lab" : "class"}
+                                    {needed > 1 && (lab ? "s" : "es")} to reach 75%.
+                                </p>
+                            )
+                        } else {
+                            const canMiss = Math.floor((attended / 0.75) - total)
+                            if (canMiss === 0) {
                                 return (
-                                    <p className="text-red-500 text-sm">
-                                        Need to attend <strong>{lab ? needed/2 : needed}</strong> more {lab ? "lab" : "class"}
-                                        {needed > 1 && (lab ? "s" : "es")} to reach 75%.
+                                    <p className="text-yellow-500 dark:text-yellow-400 text-sm">
+                                        You are on the edge! Attend the next {lab ? "lab" : "class"}.
                                     </p>
                                 )
                             } else {
-                                const canMiss = Math.floor((attended / 0.75) - total)
-                                if (canMiss === 0) {
-                                    return (
-                                        <p className="text-yellow-500 text-sm">
-                                            You are on the edge! Attend the next {lab ? "lab" : "class"}.
-                                        </p>
-                                    )
-                                } else {
-                                    return (
-                                        <p className="text-green-500 text-sm">
-                                            Can miss <strong>{lab ? canMiss/2 : canMiss}</strong> {lab ? "lab" : "class"}
-                                            {canMiss !== 1 && (lab ? "s" : "es")} and stay above 75%.
-                                        </p>
-                                    )
-                                }
+                                return (
+                                    <p className="text-green-500 dark:text-green-400 text-sm">
+                                        Can miss <strong>{lab ? canMiss/2 : canMiss}</strong> {lab ? "lab" : "class"}
+                                        {canMiss !== 1 && (lab ? "s" : "es")} and stay above 75%.
+                                    </p>
+                                )
                             }
-                        })()}
+                        }
+                    })()}
                 </div>
 
                 <div className="w-28 h-28 flex-shrink-0 flex flex-col items-center justify-center ml-4">
@@ -115,15 +116,15 @@ export default function CourseCard({ a, onClick, activeDay }) {
                                 a.attendancePercentage < 75
                                     ? "#EF4444"
                                     : a.attendancePercentage < 85
-                                        ? "#fff200ff"
-                                        : "#00ff11ff",
-                            textColor: "#111827",
-                            trailColor: "#E5E7EB",
+                                        ? "#FACC15" 
+                                        : "#22C55E", 
+                            textColor: "currentColor", 
+                            trailColor: "#CBD5E1", 
                             strokeLinecap: "round",
                             pathTransitionDuration: 0.5,
                         })}
                     />
-                    <p className="text-center text-xs font-semibold mt-2 text-gray-700">
+                    <p className="text-center text-xs font-semibold mt-2 text-gray-700 dark:text-gray-300">
                         Attendance
                     </p>
                 </div>

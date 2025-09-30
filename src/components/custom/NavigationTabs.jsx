@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { LogOut, RefreshCcw } from "lucide-react";
+import { ModeToggle } from "./toggle";
 
 export default function NavigationTabs({
   activeTab,
@@ -24,6 +25,7 @@ export default function NavigationTabs({
       >
         <LogOut className="w-4 h-4" />
       </button>
+      {/* <ModeToggle /> */}
 
       <button
         onClick={() => setActiveTab("attendance")}

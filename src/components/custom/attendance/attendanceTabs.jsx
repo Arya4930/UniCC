@@ -136,69 +136,73 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
 
 
     return (
-        <div className="grid gap-4 ">
-            <h1 className="text-lg font-semibold mb-3 text-center">Weekly Attendance</h1>
-            <div className="flex gap-2 mb-3 justify-center flex-wrap">
-                {days.map((d) => (
-                    <button
-                        key={d}
-                        onClick={() => setActiveDay(d)}
-                        className={`px-4 py-2 rounded-md text-sm md:text-base font-medium transition-colors duration-150 
-                ${activeDay === d
-                                ? "bg-blue-600 text-white"
-                                : "bg-gray-200 text-gray-700 hover:bg-blue-300"
-                            }`}
-                    >
-                        {d}
-                    </button>
-                ))}
-            </div>
+         <div className="grid gap-4">
+      <h1 className="text-lg font-semibold mb-3 text-center text-gray-800 dark:text-gray-100">
+        Weekly Attendance
+      </h1>
 
+      <div className="flex gap-2 mb-3 justify-center flex-wrap">
+        {days.map((d) => (
+          <button
+            key={d}
+            onClick={() => setActiveDay(d)}
+            className={`px-4 py-2 rounded-md text-sm md:text-base font-medium transition-colors duration-150
+              ${activeDay === d
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+              }`}
+          >
+            {d}
+          </button>
+        ))}
+      </div>
 
-            <div className="space-y-2">
-                {dayCardsMap[activeDay].map((a, idx) => (
-                    <div key={idx}>
-                        <CourseCard
-                            a={a}
-                            onClick={() => setExpandedIdx(idx)}
-                            activeDay={activeDay}
-                            className="p-2 text-sm rounded-md shadow-sm hover:shadow-md transition"
-                        />
+      <div className="space-y-2">
+        {dayCardsMap[activeDay].map((a, idx) => (
+          <div key={idx}>
+            <CourseCard
+              a={a}
+              onClick={() => setExpandedIdx(idx)}
+              activeDay={activeDay}
+              className="p-2 text-sm rounded-md shadow-sm bg-gray-100 dark:bg-gray-800 hover:shadow-md transition"
+            />
 
-                        {expandedIdx === idx && (
-                            <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-                                <div className="bg-gray-700 rounded-xl shadow-lg p-4 max-w-sm w-[90%] relative">
-                                    <h2 className="text-base text-white font-semibold mb-2">{a.courseTitle}</h2>
-                                    <ul className="list-disc list-inside text-xs max-h-[70vh] overflow-y-auto space-y-1">
-                                        {a.viewLink?.map((d, i) => (
-                                            <li
-                                                key={i}
-                                                className={`${d.status.toLowerCase() === "absent"
-                                                    ? "text-red-400"
-                                                    : d.status.toLowerCase() === "present"
-                                                        ? "text-green-400"
-                                                        : d.status.toLowerCase() === "on duty"
-                                                            ? "text-yellow-400"
-                                                            : ""
-                                                    }`}
-                                            >
-                                                {d.date} – {d.status}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                    <button
-                                        className="absolute top-2 right-2 text-white hover:text-gray-300"
-                                        onClick={() => setExpandedIdx(null)}
-                                    >
-                                        ✕
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                ))}
-            </div>
-        </div>
+            {expandedIdx === idx && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-xl shadow-lg p-4 max-w-sm w-[90%] relative">
+                  <h2 className="text-base font-semibold mb-2 text-gray-900 dark:text-gray-100">
+                    {a.courseTitle}
+                  </h2>
+                  <ul className="list-disc list-inside text-xs max-h-[70vh] overflow-y-auto space-y-1">
+                    {a.viewLink?.map((d, i) => (
+                      <li
+                        key={i}
+                        className={`${d.status.toLowerCase() === "absent"
+                          ? "text-red-500"
+                          : d.status.toLowerCase() === "present"
+                            ? "text-green-500"
+                            : d.status.toLowerCase() === "on duty"
+                              ? "text-yellow-500"
+                              : "text-gray-700 dark:text-gray-300"
+                          }`}
+                      >
+                        {d.date} – {d.status}
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    className="absolute top-2 right-2 text-gray-700 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400"
+                    onClick={() => setExpandedIdx(null)}
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
     );
 
 }

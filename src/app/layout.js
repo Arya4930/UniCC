@@ -1,10 +1,11 @@
 import { Geist, Geist_Mono, Roboto } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
+import { ThemeProvider } from "@/components/themeprovider";
 import './globals.css';
 
 export const viewport = {
   themeColor: "#ffffffff",
-}
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,16 +52,18 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <meta name="apple-mobile-web-app-title" content="My App" />
-        <link rel="apple-touch-icon" href="/logo.png" />
-      </head>
+      <head />
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>
