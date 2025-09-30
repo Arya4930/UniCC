@@ -117,7 +117,7 @@ export default function CourseCard({ a, onClick, activeDay }) {
                                     ? "#EF4444"
                                     : a.attendancePercentage < 85
                                         ? "#FACC15" 
-                                        : "#22C55E", 
+                                        : "#2df04aff", 
                             textColor: "currentColor", 
                             trailColor: "#CBD5E1", 
                             strokeLinecap: "round",
