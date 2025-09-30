@@ -2,7 +2,13 @@ import { Geist, Geist_Mono, Roboto } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from "@/components/themeprovider";
 import './globals.css';
-import ThemeColorUpdater from '@/components/custom/ThemeColorUpdater';
+
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#111827" },
+  ],
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,7 +65,6 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          <ThemeColorUpdater />
           {children}
         </ThemeProvider>
         <Analytics />
