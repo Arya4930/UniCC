@@ -56,7 +56,7 @@ export default function MarksDisplay({ data }) {
                     text={`${totals.weighted}/${totals.weightPercent}`}
                     styles={buildStyles({
                       pathColor: "#00ff11ff",
-                      textColor: "#4d5c7dff",
+                      textColor: "currentColor",
                       trailColor: "#E5E7EB",
                       strokeLinecap: "round",
                       textSize: "1.2em",
