@@ -36,7 +36,7 @@ const shortToFullDay = Object.fromEntries(
 export default function MessDisplay({ hostelData }) {
   if (!hostelData.hostelInfo?.isHosteller) {
     return (
-      <p className="text-center text-gray-600 dark:text-gray-300">
+      <p className="text-center text-gray-600 dark:text-gray-300 midnight:text-gray-300">
         You are not a hosteller. / Reload Data
       </p>
     );
@@ -80,17 +80,17 @@ export default function MessDisplay({ hostelData }) {
   const todayMenu = menu.find((day) => day.Day === activeDay);
 
   return (
-    <div className="dark:bg-black dark:text-gray-100 min-h-screen p-4 rounded-lg">
-      <h1 className="text-xl font-bold mb-2 text-center dark:text-white">
+    <div className="dark:bg-black midnight:bg-black dark:text-gray-100 midnight:text-gray-100 min-h-screen p-4 rounded-lg">
+      <h1 className="text-xl font-bold mb-2 text-center dark:text-white midnight:text-white">
         Mess Menu
       </h1>
-      <h2 className="text-md font-bold mb-2 text-center text-gray-700 dark:text-gray-300">
+      <h2 className="text-md font-bold mb-2 text-center text-gray-700 dark:text-gray-300 midnight:text-gray-300">
         ( Data taken from{" "}
         <a
           href="http://kaffeine.tech/unmessify"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline text-blue-600 dark:text-blue-400"
+          className="underline text-blue-600 dark:text-blue-400 midnight:text-blue-400"
         >
           Unmessify
         </a>{" "}
@@ -101,7 +101,7 @@ export default function MessDisplay({ hostelData }) {
         <select
           value={gender}
           onChange={(e) => setGender(e.target.value)}
-          className="border rounded-lg p-2 shadow-sm hover:cursor-pointer bg-white text-black dark:bg-gray-900 dark:text-gray-200"
+          className="border rounded-lg p-2 shadow-sm hover:cursor-pointer bg-white text-black dark:bg-gray-900 midnight:bg-gray-900 dark:text-gray-200 midnight:text-gray-200"
         >
           <option value="Male">Male</option>
           <option value="Female">Female</option>
@@ -110,7 +110,7 @@ export default function MessDisplay({ hostelData }) {
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
-          className="border rounded-lg p-2 shadow-sm hover:cursor-pointer bg-white text-black dark:bg-gray-900 dark:text-gray-200"
+          className="border rounded-lg p-2 shadow-sm hover:cursor-pointer bg-white text-black dark:bg-gray-900 midnight:bg-gray-900 dark:text-gray-200 midnight:text-gray-200"
         >
           <option value="Veg">Veg</option>
           <option value="Non Veg">Non Veg</option>
@@ -124,8 +124,8 @@ export default function MessDisplay({ hostelData }) {
             key={short}
             onClick={() => setActiveDay(shortToFullDay[short])}
             className={`px-4 py-2 rounded-lg transition-colors hover:cursor-pointer duration-200 shadow-sm ${activeDay === shortToFullDay[short]
-                ? "bg-blue-600 text-white dark:bg-blue-500 dark:text-gray-100"
-                : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-blue-500"
+                ? "bg-blue-600 text-white dark:bg-blue-500 midnight:bg-blue-500 dark:text-gray-100 midnight:text-gray-100"
+                : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-800 midnight:bg-gray-800 dark:text-gray-300 midnight:text-gray-300 dark:hover:bg-blue-500 midnight:hover:bg-blue-500"
               }`}
           >
             {short}
@@ -135,34 +135,34 @@ export default function MessDisplay({ hostelData }) {
 
       {todayMenu ? (
         <div className="p-6">
-          <h2 className="text-2xl font-bold mb-6 text-center dark:text-white">
+          <h2 className="text-2xl font-bold mb-6 text-center dark:text-white midnight:text-white">
             {todayMenu.Day}
           </h2>
 
           <div className="grid grid-cols-1 gap-4">
-            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 dark:text-gray-200">
+            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 midnight:bg-gray-900 dark:text-gray-200 midnight:text-gray-200">
               <h3 className="text-lg font-bold mb-2">🍳 Breakfast</h3>
               <p className="whitespace-pre-line">{todayMenu.Breakfast}</p>
             </div>
 
-            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 dark:text-gray-200">
+            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 midnight:bg-gray-900 dark:text-gray-200 midnight:text-gray-200">
               <h3 className="text-lg font-bold mb-2">🍲 Lunch</h3>
               <p className="whitespace-pre-line">{todayMenu.Lunch}</p>
             </div>
 
-            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 dark:text-gray-200">
+            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 midnight:bg-gray-900 dark:text-gray-200 midnight:text-gray-200">
               <h3 className="text-lg font-bold mb-2">☕ Snacks</h3>
               <p className="whitespace-pre-line">{todayMenu.Snacks}</p>
             </div>
 
-            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 dark:text-gray-200">
+            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 midnight:bg-gray-900 dark:text-gray-200 midnight:text-gray-200">
               <h3 className="text-lg font-bold mb-2">🍽️ Dinner</h3>
               <p className="whitespace-pre-line">{todayMenu.Dinner}</p>
             </div>
           </div>
         </div>
       ) : (
-        <p className="text-center text-gray-600 dark:text-gray-300">
+        <p className="text-center text-gray-600 dark:text-gray-300 midnight:text-gray-300">
           No menu found for {activeDay}.
         </p>
       )}
