@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 export default function MarksDisplay({ data }) {
@@ -10,12 +9,12 @@ export default function MarksDisplay({ data }) {
   };
 
   if (!data || !data.marks || data.marks.length === 0) {
-    return <p>No marks data available to display.</p>;
+    return <p className="text-gray-700 dark:text-gray-300 midnight:text-gray-300">No marks data available to display.</p>;
   }
 
   return (
     <div className="p-2">
-      <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100">
+      <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
         Academic Marks
       </h1>
       <div className="space-y-4">
@@ -34,18 +33,18 @@ export default function MarksDisplay({ data }) {
           return (
             <div
               key={idx}
-              className="p-4 rounded-lg shadow bg-white dark:bg-slate-800"
+              className="p-4 rounded-lg shadow bg-white dark:bg-slate-800 midnight:bg-black"
             >
               <div
                 className="flex justify-between items-center cursor-pointer"
                 onClick={() => toggleCourse(course.slNo)}
               >
                 <div className="flex flex-col items-start">
-                  <span className="font-medium text-gray-800 dark:text-gray-200 text-sm sm:text-base max-w-xs break-words">
+                  <span className="font-medium text-gray-800 dark:text-gray-200 midnight:text-gray-200 text-sm sm:text-base max-w-xs break-words">
                     {course.courseCode} - {course.courseTitle}
                   </span>
 
-                  <div className="w-20 h-6 flex items-center justify-center bg-gray-200 dark:bg-slate-700 text-black dark:text-gray-300 text-xs rounded-full outline outline-1 outline-gray-700 dark:outline-gray-500 mt-2">
+                  <div className="w-20 h-6 flex items-center justify-center bg-gray-200 dark:bg-slate-700 midnight:bg-gray-900 text-black dark:text-gray-300 midnight:text-gray-300 text-xs rounded-full outline outline-1 outline-gray-700 dark:outline-gray-500 midnight:outline-gray-700 mt-2">
                     {course.courseType}
                   </div>
                 </div>
@@ -68,7 +67,7 @@ export default function MarksDisplay({ data }) {
               </div>
 
               {openCourse === course.slNo && (
-                <div className="mt-4 text-gray-900 dark:text-gray-100">
+                <div className="mt-4 text-gray-900 dark:text-gray-100 midnight:text-gray-100">
                   <p>
                     <strong>Faculty:</strong> {course.faculty}
                   </p>
@@ -76,8 +75,8 @@ export default function MarksDisplay({ data }) {
                     <strong>Slot:</strong> {course.slotName}
                   </p>
                   <div className="overflow-x-auto">
-                    <table className="w-full border mt-2 border-gray-300 dark:border-gray-600">
-                      <thead className="bg-gray-800 text-white dark:bg-slate-700">
+                    <table className="w-full border mt-2 border-gray-300 dark:border-gray-600 midnight:border-gray-700">
+                      <thead className="bg-gray-800 text-white dark:bg-slate-700 midnight:bg-gray-900">
                         <tr>
                           <th className="border p-2 text-left">Test</th>
                           <th className="border p-2">Max</th>
@@ -90,7 +89,7 @@ export default function MarksDisplay({ data }) {
                         {course.assessments.map((asm, asmIdx) => (
                           <tr
                             key={asmIdx}
-                            className="border-gray-300 dark:border-gray-600"
+                            className="border-gray-300 dark:border-gray-600 midnight:border-gray-700"
                           >
                             <td className="border p-2">{asm.title}</td>
                             <td className="border p-2">{asm.maxMark}</td>
@@ -102,7 +101,7 @@ export default function MarksDisplay({ data }) {
                           </tr>
                         ))}
 
-                        <tr className="font-bold border-t border-gray-400 dark:border-gray-500">
+                        <tr className="font-bold border-t border-gray-400 dark:border-gray-500 midnight:border-gray-600">
                           <td className="border p-2">Total</td>
                           <td className="border p-2">{totals.max}</td>
                           <td className="border p-2">{totals.scored}</td>

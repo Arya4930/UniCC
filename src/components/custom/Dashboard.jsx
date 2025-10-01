@@ -43,7 +43,7 @@ export default function DashboardContent({
         handleReloadRequest={handleReloadRequest}
       />
 
-      <div className="bg-gray-50 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-gray-100 transition-colors">
+      <div className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-screen text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
         {GradesData && (
           <StatsCards
             attendancePercentage={attendancePercentage}
