@@ -9,7 +9,7 @@ export default function StatsCards({
 }) {
   const totalODHours =
     ODhoursData && ODhoursData.length > 0 && ODhoursData[0].courses
-      ? ODhoursData.reduce((sum, day) => sum + day.courses.length, 0)
+      ? ODhoursData.reduce((sum, day) => sum + day.total, 0)
       : 0;
 
   const cardBase =
