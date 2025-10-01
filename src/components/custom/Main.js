@@ -50,7 +50,12 @@ export default function LoginPage() {
           if (!ODList[day.date]) {
             ODList[day.date] = [];
           }
-          ODList[day.date].push(course.courseTitle);
+          if (course.slotName.startsWith("L")) {
+            ODList[day.date].push(course.courseTitle + " (Lab)");
+            ODList[day.date].push(course.courseTitle + " (Lab)");
+          } else {
+            ODList[day.date].push(course.courseTitle + " (Theory)");
+          }
         }
       });
     });
