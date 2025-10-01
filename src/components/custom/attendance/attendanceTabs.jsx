@@ -157,7 +157,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
         ))}
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-2 p-2">
         {dayCardsMap[activeDay].map((a, idx) => (
           <div key={idx}>
             <CourseCard

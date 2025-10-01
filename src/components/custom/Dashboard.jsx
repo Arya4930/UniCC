@@ -35,7 +35,7 @@ export default function DashboardContent({
   setHostelActiveSubTab
 }) {
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md md:max-w-full mx-auto">
       <NavigationTabs
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -68,7 +68,7 @@ export default function DashboardContent({
           />
         )}
 
-        <div className="px-4">
+        <div>
           {activeTab === "attendance" && attendanceData && attendanceData.attendance && (
             <AttendanceTabs 
               data={attendanceData} 

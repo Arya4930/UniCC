@@ -13,7 +13,7 @@ export default function StatsCards({
       : 0;
 
   const cardBase =
-    "cursor-pointer p-6 rounded-2xl shadow hover:shadow-lg transition flex-shrink-0 snap-start w-[calc(50%-8px)]";
+    "cursor-pointer p-6 rounded-2xl shadow hover:shadow-lg transition flex-shrink-0 snap-start w-[calc(50%-8px)] md:w-[calc(25%-12px)]";
 
   return (
     <div className="overflow-x-auto snap-x snap-mandatory ml-4 mr-4">
