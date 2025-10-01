@@ -80,7 +80,7 @@ export default function MessDisplay({ hostelData }) {
   const todayMenu = menu.find((day) => day.Day === activeDay);
 
   return (
-    <div className="dark:bg-black midnight:bg-black dark:text-gray-100 midnight:text-gray-100 min-h-screen p-4 rounded-lg">
+    <div>
       <h1 className="text-xl font-bold mb-2 text-center dark:text-white midnight:text-white">
         Mess Menu
       </h1>
@@ -101,7 +101,7 @@ export default function MessDisplay({ hostelData }) {
         <select
           value={gender}
           onChange={(e) => setGender(e.target.value)}
-          className="border rounded-lg p-2 shadow-sm hover:cursor-pointer bg-white text-black dark:bg-gray-900 midnight:bg-gray-900 dark:text-gray-200 midnight:text-gray-200"
+          className="border rounded-lg p-2 shadow-sm hover:cursor-pointer bg-white dark:bg-slate-700 midnight:bg-black text-gray-900 dark:text-gray-100 midnight:text-gray-100"
         >
           <option value="Male">Male</option>
           <option value="Female">Female</option>
@@ -110,7 +110,7 @@ export default function MessDisplay({ hostelData }) {
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
-          className="border rounded-lg p-2 shadow-sm hover:cursor-pointer bg-white text-black dark:bg-gray-900 midnight:bg-gray-900 dark:text-gray-200 midnight:text-gray-200"
+          className="border rounded-lg p-2 shadow-sm hover:cursor-pointer bg-white dark:bg-slate-700 midnight:bg-black text-gray-900 dark:text-gray-100 midnight:text-gray-100"
         >
           <option value="Veg">Veg</option>
           <option value="Non Veg">Non Veg</option>
@@ -124,7 +124,7 @@ export default function MessDisplay({ hostelData }) {
             key={short}
             onClick={() => setActiveDay(shortToFullDay[short])}
             className={`px-4 py-2 rounded-lg transition-colors hover:cursor-pointer duration-200 shadow-sm ${activeDay === shortToFullDay[short]
-                ? "bg-blue-600 text-white dark:bg-blue-500 midnight:bg-blue-500 dark:text-gray-100 midnight:text-gray-100"
+                ? "bg-blue-600 text-white dark:bg-blue-500 midnight:bg-blue-700 dark:text-gray-100 midnight:text-gray-100"
                 : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-800 midnight:bg-gray-800 dark:text-gray-300 midnight:text-gray-300 dark:hover:bg-blue-500 midnight:hover:bg-blue-500"
               }`}
           >

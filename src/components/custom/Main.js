@@ -45,22 +45,27 @@ export default function LoginPage() {
     let ODList = {};
     attendance.attendance.forEach(course => {
       if (!course.viewLink || !Array.isArray(course.viewLink)) return;
+
       course.viewLink.forEach(day => {
         if (day.status === "On Duty") {
           if (!ODList[day.date]) {
             ODList[day.date] = [];
           }
-          if (course.slotName.startsWith("L")) {
-            ODList[day.date].push(course.courseTitle + " (Lab)");
-            ODList[day.date].push(course.courseTitle + " (Lab)");
-          } else {
-            ODList[day.date].push(course.courseTitle + " (Theory)");
-          }
+          let hours = course.slotName.startsWith("L") ? 2 : 1;
+          ODList[day.date].push({
+            title: course.courseTitle,
+            type: course.slotName.startsWith("L") ? "LAB" : "TH",
+            hours
+          });
         }
       });
     });
     ODList = Object.entries(ODList)
-      .map(([date, courses]) => ({ date, courses }))
+      .map(([date, courses]) => ({
+        date,
+        courses,
+        total: courses.reduce((sum, c) => sum + c.hours, 0)
+      }))
       .sort((a, b) => new Date(a.date) - new Date(b.date));
     setODhoursData(ODList);
   }
