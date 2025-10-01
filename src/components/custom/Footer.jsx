@@ -20,8 +20,9 @@ export default function Footer() {
           </a>
 
           <p className="text-sm font-medium tracking-wide">
-            Made for No reason, By My heart
-          </p>
+  Made for No reason, By My heart <span className="ml-2 text-xs text-gray-400">v1.0.0</span>
+</p>
+
 
           <ModeToggle />
         </div>
