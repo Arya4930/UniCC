@@ -9,7 +9,11 @@ export default function MarksDisplay({ data }) {
   };
 
   if (!data || !data.marks || data.marks.length === 0) {
-    return <p className="text-gray-700 dark:text-gray-300 midnight:text-gray-300">No marks data available to display.</p>;
+    return (
+      <p className="text-gray-700 dark:text-gray-300 midnight:text-gray-300">
+        No marks data available to display.
+      </p>
+    );
   }
 
   return (
@@ -33,7 +37,7 @@ export default function MarksDisplay({ data }) {
           return (
             <div
               key={idx}
-              className="p-4 rounded-lg shadow bg-white dark:bg-slate-800 midnight:bg-black"
+              className="p-4 rounded-lg shadow bg-white dark:bg-slate-800 midnight:bg-black midnight:outline midnight:outline-1 midnight:outline-gray-800"
             >
               <div
                 className="flex justify-between items-center cursor-pointer"
@@ -44,7 +48,9 @@ export default function MarksDisplay({ data }) {
                     {course.courseCode} - {course.courseTitle}
                   </span>
 
-                  <div className="w-20 h-6 flex items-center justify-center bg-gray-200 dark:bg-slate-700 midnight:bg-gray-900 text-black dark:text-gray-300 midnight:text-gray-300 text-xs rounded-full outline outline-1 outline-gray-700 dark:outline-gray-500 midnight:outline-gray-700 mt-2">
+                  <div
+                    className="px-3 py-1 flex items-center justify-center bg-gray-200 dark:bg-slate-700 midnight:bg-gray-900 text-black dark:text-gray-300 midnight:text-gray-300 text-xs rounded-full outline outline-1 outline-gray-700 dark:outline-gray-500 midnight:outline-gray-700 mt-2"
+                  >
                     {course.courseType}
                   </div>
                 </div>

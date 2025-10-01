@@ -149,7 +149,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
             className={`px-4 py-2 rounded-md text-sm md:text-base font-medium transition-colors duration-150
           ${activeDay === d
                 ? "bg-blue-600 text-white midnight:bg-blue-700"
-                : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 midnight:bg-black midnight:text-gray-200 midnight:hover:bg-gray-800"
+                : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 midnight:bg-black midnight:text-gray-200 midnight:hover:bg-gray-800 midnight:outline midnight:outline-1 midnight:outline-gray-800"
               }`}
           >
             {d}
