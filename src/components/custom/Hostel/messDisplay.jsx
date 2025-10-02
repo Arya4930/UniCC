@@ -42,6 +42,8 @@ export default function MessDisplay({ hostelData }) {
     );
   }
 
+  console.log(hostelData + "This is for testing pls ignore :D")
+
   const normalizeGender = (g) =>
     g?.toLowerCase() === "male" ? "Male" : "Female";
 
@@ -57,10 +59,10 @@ export default function MessDisplay({ hostelData }) {
   const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
 
   const [gender, setGender] = useState(
-    normalizeGender(hostelData.hostelInfo?.gender) || "Male"
+    normalizeGender(hostelData.hostelInfo?.gender.toUpperCase()) || "Male"
   );
   const [type, setType] = useState(
-    normalizeType(hostelData.hostelInfo?.messInfo) || "Veg"
+    normalizeType(hostelData.hostelInfo?.messInfo.toUpperCase()) || "Veg"
   );
   const [menu, setMenu] = useState([]);
   const [activeDay, setActiveDay] = useState(today);
