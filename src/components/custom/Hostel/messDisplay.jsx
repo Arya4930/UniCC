@@ -123,10 +123,11 @@ export default function MessDisplay({ hostelData }) {
           <button
             key={short}
             onClick={() => setActiveDay(shortToFullDay[short])}
-            className={`px-4 py-2 rounded-lg transition-colors hover:cursor-pointer duration-200 shadow-sm ${activeDay === shortToFullDay[short]
+            className={`px-4 py-2 rounded-lg transition-colors hover:cursor-pointer duration-200 shadow-sm ${
+              activeDay === shortToFullDay[short]
                 ? "bg-blue-600 text-white dark:bg-blue-500 midnight:bg-blue-700 dark:text-gray-100 midnight:text-gray-100"
                 : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 midnight:bg-black midnight:text-gray-200 midnight:hover:bg-gray-800 midnight:outline midnight:outline-1 midnight:outline-gray-800"
-              }`}
+            }`}
           >
             {short}
           </button>
@@ -139,23 +140,23 @@ export default function MessDisplay({ hostelData }) {
             {todayMenu.Day}
           </h2>
 
-          <div className="grid grid-cols-1 gap-4">
-            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900  dark:text-gray-200 midnight:text-gray-200 midnight:bg-black shadow rounded-2xl p-4 midnight:outline midnight:outline-1 midnight:outline-gray-800">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 dark:text-gray-200 midnight:text-gray-200 midnight:bg-black midnight:outline midnight:outline-1 midnight:outline-gray-800">
               <h3 className="text-lg font-bold mb-2">🍳 Breakfast</h3>
               <p className="whitespace-pre-line">{todayMenu.Breakfast}</p>
             </div>
 
-            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900  dark:text-gray-200 midnight:text-gray-200 midnight:bg-black shadow rounded-2xl p-4 midnight:outline midnight:outline-1 midnight:outline-gray-800">
+            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 dark:text-gray-200 midnight:text-gray-200 midnight:bg-black midnight:outline midnight:outline-1 midnight:outline-gray-800">
               <h3 className="text-lg font-bold mb-2">🍲 Lunch</h3>
               <p className="whitespace-pre-line">{todayMenu.Lunch}</p>
             </div>
 
-            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 dark:text-gray-200 midnight:text-gray-200 midnight:bg-black shadow rounded-2xl p-4 midnight:outline midnight:outline-1 midnight:outline-gray-800 ">
+            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 dark:text-gray-200 midnight:text-gray-200 midnight:bg-black midnight:outline midnight:outline-1 midnight:outline-gray-800">
               <h3 className="text-lg font-bold mb-2">☕ Snacks</h3>
               <p className="whitespace-pre-line">{todayMenu.Snacks}</p>
             </div>
 
-            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900  dark:text-gray-200 midnight:text-gray-200 midnight:bg-black shadow rounded-2xl p-4 midnight:outline midnight:outline-1 midnight:outline-gray-800">
+            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 dark:text-gray-200 midnight:text-gray-200 midnight:bg-black midnight:outline midnight:outline-1 midnight:outline-gray-800">
               <h3 className="text-lg font-bold mb-2">🍽️ Dinner</h3>
               <p className="whitespace-pre-line">{todayMenu.Dinner}</p>
             </div>

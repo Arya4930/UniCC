@@ -19,7 +19,7 @@ export default function ExamSchedule({ data }) {
           key={examType}
           className="bg-slate-50 dark:bg-slate-800 midnight:bg-black shadow rounded-2xl p-4 midnight:outline midnight:outline-1 midnight:outline-gray-800"
         >
-          <h2 className="text-xl font-semibold text-blue-700 dark:text-blue-400 midnight:text-blue-300 mb-4">
+          <h2 className="text-xl font-semibold text-center text-blue-700 dark:text-blue-400 midnight:text-white mb-4">
             {examType}
           </h2>
 

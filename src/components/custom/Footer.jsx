@@ -16,14 +16,16 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="flex items-center justify-center p-2 border border-gray-300 dark:border-gray-600 midnight:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 midnight:hover:bg-gray-800 transition"
           >
-            <Github size={20} className="text-gray-600 dark:text-gray-300 midnight:text-gray-300" />
+            <Github
+              size={20}
+              className="text-gray-600 dark:text-gray-300 midnight:text-gray-300"
+            />
           </a>
 
           <p className="text-sm font-medium tracking-wide">
-  Made for No reason, By My heart <span className="ml-2 text-xs text-gray-400">v0.1.3</span>
-</p>
-
-
+            Made for No reason, By My heart{" "}
+            {/* <span className="ml-2 text-xs text-gray-400">v0.1.3</span> */}
+          </p>
 
           <ModeToggle />
         </div>
