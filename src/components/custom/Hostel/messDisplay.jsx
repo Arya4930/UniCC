@@ -67,14 +67,45 @@ export default function MessDisplay({ hostelData }) {
 
   const shortDays = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
-  useEffect(() => {
-    const url = messLinks[gender][type];
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
+  async function fetchMenuWithCache(gender, type, setMenu) {
+    const fileName = `VITC-${gender[0].toUpperCase()}-${type[0].toUpperCase()}.json`;
+    const localUrl = `/mess/${fileName}`;
+    const remoteUrl = messLinks[gender][type];
+
+    try {
+      const cached = localStorage.getItem(fileName);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        setMenu(parsed.list || []);
+      }
+    } catch (err) {
+      console.warn("LocalStorage read failed:", err);
+    }
+
+    if (!localStorage.getItem(fileName)) {
+      try {
+        const res = await fetch(localUrl);
+        const data = await res.json();
         setMenu(data.list || []);
+        localStorage.setItem(fileName, JSON.stringify(data));
+      } catch (err) {
+        console.error("Error loading from public folder:", err);
+      }
+    }
+
+    fetch(remoteUrl, { cache: "no-store" })
+      .then(res => res.json())
+      .then(data => {
+        setMenu(data.list || []);
+        localStorage.setItem(fileName, JSON.stringify(data));
       })
-      .catch((err) => console.error("Error loading menu:", err));
+      .catch(err => {
+        console.warn("Remote fetch failed, keeping cached:", err);
+      });
+  }
+
+  useEffect(() => {
+    fetchMenuWithCache(gender, type, setMenu);
   }, [gender, type]);
 
   const todayMenu = menu.find((day) => day.Day === activeDay);
@@ -123,11 +154,10 @@ export default function MessDisplay({ hostelData }) {
           <button
             key={short}
             onClick={() => setActiveDay(shortToFullDay[short])}
-            className={`px-4 py-2 rounded-lg transition-colors hover:cursor-pointer duration-200 shadow-sm ${
-              activeDay === shortToFullDay[short]
-                ? "bg-blue-600 text-white dark:bg-blue-500 midnight:bg-blue-700 dark:text-gray-100 midnight:text-gray-100"
-                : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 midnight:bg-black midnight:text-gray-200 midnight:hover:bg-gray-800 midnight:outline midnight:outline-1 midnight:outline-gray-800"
-            }`}
+            className={`px-4 py-2 rounded-lg transition-colors hover:cursor-pointer duration-200 shadow-sm ${activeDay === shortToFullDay[short]
+              ? "bg-blue-600 text-white dark:bg-blue-500 midnight:bg-blue-700 dark:text-gray-100 midnight:text-gray-100"
+              : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 midnight:bg-black midnight:text-gray-200 midnight:hover:bg-gray-800 midnight:outline midnight:outline-1 midnight:outline-gray-800"
+              }`}
           >
             {short}
           </button>

@@ -1,0 +1,98 @@
+{
+  "list": [
+    {
+      "Id": 1,
+      "ncRecordId": "rec96b3c99e20c84",
+      "ncRecordHash": "80bc773738a7d59847fc6d8a379e2a0a",
+      "Day": "Monday",
+      "Breakfast": "1. Idly, Paruppu Vada, Sambar, Mint Chutney, Podi, Oil\n2. Omlette with Spinach\n3. Puri, Aloo Masala (Peas & Carrots added)\n4. Tea, Milk, Coffee\n5. Bread, Butter, Jam",
+      "Lunch": "1. Phulka, Soya Gravy\n2. Tomato Rice with Green Beans\n3. White Rice, Raddish Sambar (extra drumstick), Rasam, Vaalaku Puttu Poriyal, Curd\n4. Paruppu Podi, Ghee, Thovaiyal, Pickle, Papad\n5. Fruit - Pineapple, Lemon Mint Juice",
+      "Snacks": "1. White Pasta / Veg Samosa Green Chutney \n2. Tea, Coffee, Milk",
+      "Dinner": "1. Chapathi, Chettinad Egg Masala\n2. Paruppu dam\n3. White Rice, Rasam, Dry Bhindi Fry, Butter Milk\n4. Salad (Carrot, Cucumber, Tomato)\n5. Ice Cream, Milk",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 2,
+      "ncRecordId": "rec36f1112228ff4",
+      "ncRecordHash": "ff0e951363351960f9cb47e3d48a9d2f",
+      "Day": "Tuesday",
+      "Breakfast": "1. Paneer Paratha, Tomato Onion Gravy, Curd\n2. Ghee Pongal, Vada, Vegetable Sambar, Coconut Chutney\n3. Boiled Egg\n4. Tea, Milk, Coffee\n5. Bread, Butter, Jam",
+      "Lunch": "1. Chapathi, Green Peas Masala / Paneer Butter Masala with capsicum \n2. Mint Rice / Coconut Rice\n3. White Rice, Mor Kulambu, Pepper Rasam, Carrot Beans Poriyal, Curd\n4. Payasam, Lemon Mint Juice",
+      "Snacks": "1. Boiled Sween Corn with Masala\n2. Tea, Coffee, Milk",
+      "Dinner": "1. Phulka, Palak Kofta Curry\n2. Adai Dosa, Tomato Onion Chutney, Sambar\n3. White Rice, Black Dhal, Rasam, Cabbage Poriyal, Butter Milk\n4. Salad (Carrot, Beetroot, Cucumber)\n5. Milk\n6. Banana",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 3,
+      "ncRecordId": "rec4f15c0dac0574",
+      "ncRecordHash": "a10763aa65b32bd76f206c8d2415e13a",
+      "Day": "Wednesday",
+      "Breakfast": "1. Thin Dosa, Vadacurry, Onion Chutney\n2. Veg Khichadi\n3. Egg Bhurji with onions and tomato\n4. Tea, Milk, Coffee\n5. Bread, Butter, Jam",
+      "Lunch": "1. Ajwain Chapathi, Dragon Chicken / Tandoori Chicken\n2. Veg Pulav (extra beans, carrot) / Jeera Rice\n3. White Rice, Mix, Veg Paruppu, Rasam, Cluster Beans Poriyal, Curd\n4. Paruppu Podi, Gingely Oil, Thovaiyal, Pickle, Papad\n5. Nannari Juice",
+      "Snacks": "1. Pani Puri  / Dahi Puri \n2. Tea, Coffee, Milk",
+      "Dinner": "1. Roti, Mushroom Masala\n2. Veg Biriyani with Cauliflower & beans, Raitha\n3. White Rice, Rasam, French Fries, Butter Milk\n4. Fruit Custard\n5. Milk",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 4,
+      "ncRecordId": "rec40a0727cd4fc4",
+      "ncRecordHash": "3b092b6b79fbed15d579d4f49b254ce4",
+      "Day": "Thursday",
+      "Breakfast": "1. Pav Bhaji (extra cabbage & beans), Masala, Chopped Onion and Chilli\n2. Carrot Dosa, Peanut chutney, Sambar\n3. French Toast\n4. Tea, Milk, Coffee\n5. Bread, Butter, Jam",
+      "Lunch": "1. Phulka, Dal Makani with spinach\n2. Bisibelebath with beans, carrot & drumstick \n3. White Rice Karamani Kara Puli Kolambu Rasam, Dry Keerai Poriyal, Curd\n4. Paruppu Podi, Ghee, Thovaiyal, Pickle, Potato Chips\n5. Jal Jeera, Fruit - Watermelon",
+      "Snacks": "1. Banana Bajji / Onion Pakoda \n2. Tea, Coffee, Milk",
+      "Dinner": "1. Phulka, Egg Gravy\n2. Masala Dosa, Carrot Chutney, Sambar\n3. White Rice, Dhal, Rasam, Dry Yam Varuval, Butter Milk\n4. Salad\n5. Milk, Jalebi",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 5,
+      "ncRecordId": "rec73102fd6cf8c4",
+      "ncRecordHash": "738230889091dfda1244041b8fc78b0b",
+      "Day": "Friday",
+      "Breakfast": "1. Idiyappam, Coconut Milk, Veg Stew (Extra carrot & beans)\n2. Potato Poha, onion / Aloo paratha, Curd, Pickle\n3. Boiled Egg\n4. Tea, Milk, Coffee\n5. Wheat Bread, Butter, Jam",
+      "Lunch": "1. Phulka, Paneer Tikka Masala\n2. Tamarind Rice  / Mango Rice\n3. White Rice, Drumstick Sambar, Pudalangai Poriyal, Rasam, Curd\n4. Paruppu Podi, Ghee, Paruppu Thovaiyal, Pickle, Appalam, Fruit salad\n5. Lemon Mint Juice",
+      "Snacks": "1. Sambar Vada (Extra Veggies) / Bhel Puri with separate veggies \n2. Tea, Coffee, Milk",
+      "Dinner": "1. Wheat Paratha, Chettinad Chicken Gravy / Kadai Chicken Gravy \n2. Idly, Tomato Veg Kurma, Chutney\n3. White Rice, Rasam, Buttermilk\n4. Gulab Jamun\n5. Salad\n6. Chocolate Milk / Badam Milk ",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 6,
+      "ncRecordId": "recee6b2d8b55624",
+      "ncRecordHash": "75b62dbe099e1991cf82b07ff1380739",
+      "Day": "Saturday",
+      "Breakfast": "1. White Puttu, Kadala Curry, Grated Coconut, Banana, Sugar + Ghee\n2. Veg Paratha curd, Pickle\n3. Boiled Egg\n4. Tea, Milk, Coffee\n5. Bread, Butter, Jam",
+      "Lunch": "1. Palak Chapathi, Dal Punjabi\n2. Egg Fried Rice with capsicum, Veg Manchurian with cabbage and beans\n3. White Rice, Green Dhal curry, Beetroot Poriyal, Rasam, Curd\n4. Paruppu Podi, Ghee, Thovaiyal, Pickle, Papad\n5. Lemon Juice",
+      "Snacks": "1. Sundal (With Grated Coconut) / Channa Chat (Cucumber, Onion, Carrot) \n2. Tea, Coffee, Milk",
+      "Dinner": "1. Chapati, Aloo Dum Gravy / Aloo Peas Gravy / Chole Bhature, White Channa Masala, Mirchi Raitha\n2. Veg Semiya / Tomato Sevai, Chutney\n3. White Rice, Dhal, Rasam, Gobi 65, Butter Milk\n4. Salad (Carrot, Beetroot, Cucumber)\n5. Milk ",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 7,
+      "ncRecordId": "recf69ee738a7b24",
+      "ncRecordHash": "04d8a1e035038a643f07be8dd9f602e1",
+      "Day": "Sunday",
+      "Breakfast": "1. Podi Onion Uttappam, Sambar, Chutney\n2. Sabudana Kichadi with carrot and beans\n3. Tea, Milk, Coffee\n4. Bread, Butter, Jam",
+      "Lunch": "1. Chettinad Chicken Biriyani  / Hyderabad Dum Chicken Biriyani \n2. Chicken Gravy without Pieces, Onion Raitha, Brinjal Curry, Boiled Egg, Gobi 65\n3. Pulka, Black Channa Dal Curry\n4. White Rice, Rasam, Curd Rice, Pickle\n5. Bread Halwa, Lemon Mint Juice",
+      "Snacks": "1. Burger (Patty, Tomato, Cucumber) Sauce / Kachodi, Kara Chutney \n2. Tea, Coffee, Milk",
+      "Dinner": "1. Phulka, Rajma Curry\n2. Methi Pulav\n3. White Rice, Sambar Pumpkin, Tomato Rasam, Carrot Poriyal \n4. Butter Milk, Papad\n5. Fruit - Papaya",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    }
+  ],
+  "pageInfo": {
+    "totalRows": 7,
+    "page": 1,
+    "pageSize": 50,
+    "isFirstPage": true,
+    "isLastPage": true
+  },
+  "stats": {
+    "dbQueryTime": "1.234"
+  }
+}

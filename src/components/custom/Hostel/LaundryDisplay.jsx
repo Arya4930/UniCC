@@ -43,22 +43,58 @@ export default function LaundrySchedule({ hostelData }) {
     if (!hostelData.hostelInfo) return
 
     const normalizedGender =
-      hostelData.hostelInfo.gender?.toLowerCase() === "female" ? "Female" : "Male"
-    const blockName = hostelData.hostelInfo.blockName?.split(" ")[0] || "A"
+      hostelData.hostelInfo.gender?.toLowerCase() === "female"
+        ? "Female"
+        : "Male";
+    const blockName = hostelData.hostelInfo.blockName?.split(" ")[0] || "A";
 
-    setGender(normalizedGender)
-    setHostel(blockName)
-  }, [hostelData.hostelInfo])
+    setGender(normalizedGender);
+    setHostel(blockName);
+  }, [hostelData.hostelInfo]);
+
+  async function fetchLaundryWithCache(gender, hostel, setSchedule) {
+    if (!LaundryLinks[gender] || !LaundryLinks[gender][hostel]) return;
+
+    const fileName = `VITC-${hostel}-${gender[0]}-L.json`;
+    const localUrl = `/laundry/${fileName}`;
+    const remoteUrl = LaundryLinks[gender][hostel];
+
+    try {
+      const cached = localStorage.getItem(fileName);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        setSchedule(parsed.list || []);
+      }
+    } catch (err) {
+      console.warn("LocalStorage read failed:", err);
+    }
+
+    if (!localStorage.getItem(fileName)) {
+      try {
+        const res = await fetch(localUrl);
+        const data = await res.json();
+        setSchedule(data.list || []);
+        localStorage.setItem(fileName, JSON.stringify(data));
+      } catch (err) {
+        console.error("Error loading laundry from public folder:", err);
+      }
+    }
+
+    fetch(remoteUrl, { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        setSchedule(data.list || []);
+        localStorage.setItem(fileName, JSON.stringify(data));
+      })
+      .catch((err) => {
+        console.warn("Remote fetch failed, keeping cached:", err);
+      });
+  }
 
   useEffect(() => {
-    if (!hostelData.hostelInfo) return
-    if (LaundryLinks[gender] && LaundryLinks[gender][hostel]) {
-      fetch(LaundryLinks[gender][hostel])
-        .then((res) => res.json())
-        .then((data) => setSchedule(data.list || []))
-        .catch((err) => console.error("Error loading laundry schedule:", err))
-    }
-  }, [gender, hostel, hostelData.hostelInfo])
+    if (!gender || !hostel) return;
+    fetchLaundryWithCache(gender, hostel, setSchedule);
+  }, [gender, hostel]);
 
   return (
     <div>
@@ -77,11 +113,12 @@ export default function LaundrySchedule({ hostelData }) {
         </a>{" "}
         )
       </h2>
+
       {gender && (
         <div className="flex flex-wrap gap-4 justify-center mb-6">
           <select
             value={gender}
-            onChange={(e) => setGender(e.target.value)}
+            onChange={(e) => {setGender(e.target.value); setHostel(hostelOptions[e.target.value][0])}}
             className="border rounded-lg p-2 shadow-sm hover:cursor-pointer bg-white dark:bg-slate-700 midnight:bg-black text-gray-900 dark:text-gray-100 midnight:text-gray-100"
           >
             <option value="Male">Male</option>
@@ -124,7 +161,9 @@ export default function LaundrySchedule({ hostelData }) {
                     }
                   >
                     <TableCell className="text-center">{item.Date}</TableCell>
-                    <TableCell className="text-center">{item.RoomNumber}</TableCell>
+                    <TableCell className="text-center">
+                      {item.RoomNumber}
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -137,6 +176,5 @@ export default function LaundrySchedule({ hostelData }) {
         </p>
       )}
     </div>
-
-  )
+  );
 }
