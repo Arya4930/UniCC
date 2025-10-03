@@ -1,6 +1,5 @@
 "use client";
-import Image from "next/image";
-import { RefreshCcw } from "lucide-react";
+import { useState } from "react";
 
 export default function LoginForm({
   username,
@@ -13,7 +12,7 @@ export default function LoginForm({
   const isLoading = message === "Logging in and fetching data...";
 
   return (
-    <div className="flex items-center justify-center min-h-screen w-full px-4 ">
+    <div className="flex items-center justify-center min-h-screen w-full px-4">
       <form
         onSubmit={handleFormSubmit}
         className="bg-gray-800 rounded-2xl p-8 w-full max-w-md space-y-5 text-white"
@@ -36,20 +35,21 @@ export default function LoginForm({
         />
 
         {!isLoading && (
-          <>
-            <button
-              type="submit"
-              className="w-full bg-blue-600 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-            >
-              Login
-            </button>
-          </>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+          >
+            Login
+          </button>
         )}
 
         {isLoading && (
-          <div className="flex items-center justify-center gap-3 text-sm text-gray-300">
-            <RefreshCcw className="w-5 h-5 animate-spin" />
-            {/* wow, definitely an easter egg */}
+          <div className="flex flex-col items-center justify-center gap-3 text-sm text-gray-300">
+            <img
+              src="/surfer.gif"   
+              alt="Loading..."
+              className="w-48 h-auto rounded-lg shadow-lg"
+            />
             <span>{message}</span>
           </div>
         )}
