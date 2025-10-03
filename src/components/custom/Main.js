@@ -31,6 +31,7 @@ export default function LoginPage() {
   const [GradesDisplayIsOpen, setGradesDisplayIsOpen] = useState(false);
   const [activeSubTab, setActiveSubTab] = useState("marks");
   const [HostelActiveSubTab, setHostelActiveSubTab] = useState("mess");
+  const [isLoading, setIsLoading] = useState(true);
 
   function setAttendanceAndOD(attendance) {
     setAttendanceData(attendance);
@@ -91,6 +92,7 @@ export default function LoginPage() {
     if (storedGrades) setGradesData(JSON.parse(storedGrades));
     if (storedHoste) sethostelData(JSON.parse(storedHoste));
     setIsLoggedIn((storedUsername && storedPassword) ? true : false);
+    setTimeout(() => setIsLoading(false), 300);
   }, []);
 
   const handleLogin = async () => {
@@ -189,6 +191,16 @@ export default function LoginPage() {
     }
     handleLogin();
   };
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 midnight:bg-black">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-transparent border-gray-500"></div>
+          <p className="text-gray-600 dark:text-gray-300">Loading app...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 midnight:bg-black flex flex-col text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
