@@ -1,0 +1,98 @@
+{
+  "list": [
+    {
+      "Id": 1,
+      "ncRecordId": "rec1a30d48b32364",
+      "ncRecordHash": "de27d51e9fb1d62d2beb13b21e6da1af",
+      "Day": "Monday",
+      "Breakfast": "1. Pav Bajji, Masala, Chopped Onion\n2. Idly, Vada, Sambar, Tomato Chutney\n3. Tea, Milk, Coffee\n4. Bread, Butter, Jam",
+      "Lunch": "1. Ajwain Chapathi, Veg Kofta\n2. Brinji Rice, Carrot Raitha\n3. White Rice, Drumstick Sambar, Rasam, Dry Bhindi Fry\n4. Parrupu Podi, Ghee, Thovaiyal, Pickle, Papad\n5. Butter Milk\n6. Fruit - Papaya",
+      "Snacks": "1. Papdi Chat / Vada Pav\n2. Tea, Coffee, Milk",
+      "Dinner": "1. Chapathi, Rajma Masala\n2. Tomato Sevai / Lemon Sevai, Chutney\n3. White Rice, Black dal, Rasam, French Fries, Curd\n4. Ice cream\n5. Milk, Salad (Carrot, Beetroot)",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 2,
+      "ncRecordId": "rec69ffd83bbbfe4",
+      "ncRecordHash": "25a4dd25a5e68610402440d7456e4eb5",
+      "Day": "Tuesday",
+      "Breakfast": "1. Idiyappam, Coconut Milk, veg stew\n2. Aloo paratha, Curd, Pickle\n3. Tea, Milk, Coffee\n4. Brown Bread, Butter, Jam",
+      "Lunch": "1. Chapathi, Veg Chana Masala\n2. Carrot rice / Coconut rice\n3. White Rice, Green Dhal, Potato Poriyal, Rasam, Curd\n4. Parrupu podi, Ghee, Thovaiyal, Pickle, Bat Fryums\n5. Fruit - Watermelon",
+      "Snacks": "1. Boiled Black Sundal with tadka / Boiled Sweet corn + Masala + Lemon \n2. Tea, Coffee, Milk",
+      "Dinner": "1. Podi Uttappam, Sambar, Tomato Chutney\n2. Phulka, Paneer Butter Masala\n3. White Rice, Sambar, Rasam, Cabbage Poriyal, Butter Milk\n4. Gulab Jamun, Milk",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 3,
+      "ncRecordId": "rec08d394ec31544",
+      "ncRecordHash": "ee0ca8853c6dc4a1b2fad0ed7843a9c4",
+      "Day": "Wednesday",
+      "Breakfast": "1. Thin dosa, Vadacurry, Groundnut Chutney\n2. Poha (carrot, beans, peas and aloo), onion\n3. Tea, Milk, Coffee\n4. Bread, Butter, Jam",
+      "Lunch": "1. Chapathi, Veg Sabji\n2. Paneer Pulav\n3. White Rice, Lady's finger Puli Kolumbu, Rasam, Beans Poriyal, Curd\n4. Parrupu podi, Gingeli oil, Thovaiyal , pickle, Potato Chips\n5. Salad, Lemon Mint Juice",
+      "Snacks": "1. Kachodi + Tamarind Chutney / Samosa \n2. Tea, Coffee, Milk",
+      "Dinner": "1. Masala Dosa, Sambar, Chutney\n2. Chapathi, Green Peas Capsicum Masala\n3. White Rice, Dal, Rasam, Pumpkin Poriyal, Buttermilk\n4. Banana, Milk",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 4,
+      "ncRecordId": "rec1d48ea5aeef34",
+      "ncRecordHash": "605645e26cac85556d5890ec3b949954",
+      "Day": "Thursday",
+      "Breakfast": "1. Vegetable Rava idly, Sambar, Mint Chutney\n2. Poori, Aloo Masala\n3. Tea, Milk, Coffee\n4. Brown Bread, Butter, Jam",
+      "Lunch": "1. Phulka, Soya Chunks curry\n2. Veg Pulav + Boondi Raitha / Mint Rice\n3. White Rice, Raddish Sambar, Tomato Rasam, Dry Keerai Poriyal, Buttermilk \n4. Parrupu Podi, Ghee, Thovaiyal, Pickle, Papad\n5. Fruit - Pineapple",
+      "Snacks": "1. Keerai Bonda + Chutney / Banana bajji \n2. Tea, Coffee, Milk",
+      "Dinner": "1. Wheat Veg Upma / Veg Semiya upma, Coconut Chutney\n2. Chapathi, Jeera dhal\n3. White Rice, Rasam, Dry Vazhakkai Poriyal, Curd\n4. Jalebi, Milk, Salad, (Onion, Carrot, Cucumber)",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 5,
+      "ncRecordId": "rec100a6ca432ba4",
+      "ncRecordHash": "adac0ea437df99132062c94c7ff68796",
+      "Day": "Friday",
+      "Breakfast": "1. Pesarattu Dosa, Parupu Vada, Veg stew \n2. Veg Khichdi / Sabudana Kichadi, Curd\n3. Tea, Milk, Coffee\n4. Bread, Butter, Jam",
+      "Lunch": "1. Chapathi, Spinach dal, Aloo peas masala\n2. Bisibelebath / Vangibath \n3. White Rice, Moor Kulambu, Carrot Poriayal, Rasam, Curd\n4. Parrupu podi, ghee, Thovaiyal, Pickle, Bat Fryums\n5. Lemon Mint Juice",
+      "Snacks": "1. White Sauce Pasta / Sandwich \n2. Tea, Coffee, Milk",
+      "Dinner": "1. Veg Biriyani, Raitha, Paneer Manchurian\n2. Chapathi, Kashmiri aloo dum\n3. White Rice, Rasam, Butter Milk\n4. Fruit Custard, Milk",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 6,
+      "ncRecordId": "rec6a0a671941e64",
+      "ncRecordHash": "fb146f46278502b1c436d4b38cecb29b",
+      "Day": "Saturday",
+      "Breakfast": "1. Pongal, Medhu Vada, Sambar, Chutney\n2. Palak Paratha, Curd, Tomato gravy\n3. Tea, Milk, Coffee\n4. Brown Bread, Butter, Jam",
+      "Lunch": "1. Chappathi, Dal Tadka\n2. Tamarind rice / Methi Rice \n3. White Rice, Avarakkai Sambar, Rasam, Beetroot Poriyal, Curd \n4. Parrupu podi, Gingely oil, Thovaiyal, Pickle, papad\n5. Fruit Salad",
+      "Snacks": "1. Dahi puri  / Pazhampori \n2. Tea, Coffee, Milk",
+      "Dinner": "1. Oil Chapathi, Peas Gravy\n2. White Rice, Cabbage Paruupu kootu, Rasam, Appalam , Butter Milk\n3. Salad (Onion, Carrot, Cucumber)\n4. Chocolate Milk / Badam Milk ",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 7,
+      "ncRecordId": "rec8efde8ae79024",
+      "ncRecordHash": "57b12c6ef4376790ba7ea94fd5eaeb4b",
+      "Day": "Sunday",
+      "Breakfast": "1. White Puttu, Kadala Curry, Grated Coconut, Banana, Sugar, Ghee\n2. Moong dhal paratha, Curd, Pickle\n3. Tea, Milk, Coffee\n4. Bread, Butter, Jam",
+      "Lunch": "1. Veg Biriyani, Gobi 65, Onion Raitha, Brinjal Curry\n2. Phulka, Matter Paneer\n3. White rice, Rasam, Curd Rice, Pickle\n4. Pineapple Kesari, Lemon Juice ",
+      "Snacks": "1. Bread Pakoda / Onion Pakoda\n2. Tea, Coffee, Milk",
+      "Dinner": "1. Chole Bhature, White Chenna Masala, Mirchi Raitha \n2. Methi Pulav\n3. White Rice, Andhra Dhal, Rasam, Mix veg poriyal, Butter Milk\n4. Salad (Tomato + Cucumber + Carrot + Lemon), Milk ",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    }
+  ],
+  "pageInfo": {
+    "totalRows": 7,
+    "page": 1,
+    "pageSize": 50,
+    "isFirstPage": true,
+    "isLastPage": true
+  },
+  "stats": {
+    "dbQueryTime": "1.234"
+  }
+}

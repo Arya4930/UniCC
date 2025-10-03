@@ -21,17 +21,17 @@ To run UniCC locally:
    cd UniCC
    ```
 2. **Install dependencies:**
-   *(If a package manager like npm or yarn is used)*
+   *(If a package manager like pnpm is used)*
 
    ```bash
-   npm install
+   pnpm install
    ```
 3. **Generate VAPID Keys** (for push notifications):
 
    * Install the `web-push` CLI globally:
 
      ```bash
-     npm install -g web-push
+     pnpm install -g web-push
      ```
    * Generate VAPID keys:
 
@@ -48,7 +48,7 @@ To run UniCC locally:
    *(This may vary based on setup)*
 
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 ## Contributing

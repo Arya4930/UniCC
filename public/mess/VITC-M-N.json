@@ -1,0 +1,98 @@
+{
+  "list": [
+    {
+      "Id": 1,
+      "ncRecordId": "rec82e34e0440be4",
+      "ncRecordHash": "d08b30a7b0d942776e27f63a28b3d846",
+      "Day": "Monday",
+      "Breakfast": "1. Puri + Poori Masala (aloo) (Weeks 1 & 3) / White Chana Masala (2 & 4)\n2. Millet Idly + Vada + Sambar + Tomato Pudina Chutney\n3. Omelette (Weeks 1 & 3) / Egg Podimas (Weeks 2 & 4)\n4. Toasted Bread (Weeks 1 & 3) / Bread (Weeks 2 & 4) + Butter + Jam\n5. Tea / Coffee / Milk",
+      "Lunch": "1. Phulka + Dal Makhani (Weeks 1 & 3) / Dal Tadka (Weeks 2 & 4)\n2. Tomato Rice + Papad (Weeks 1 & 3) / Gobi 65 (Weeks 2 & 4)\n3. White Rice + Chettinad Sambar + Uduppi Tomato Rasam + Curd + Aloo Poriyal (Weeks 1 & 3) / Fryums (Weeks 2 & 4)\n4. Parupu Podi + Ghee + Thovaiyal + Papad\n5. Pineapple + Pickle + Butter Milk (Weeks 2 & 4)",
+      "Snacks": "Bread Pakoda, Coconut Chutney (Weeks 1 & 3) /\nTea Cake (Weeks 2 & 4)\nTea (Weeks 1 & 3) / Ginger Tea (Weeks 2 & 4) / Coffee / Milk",
+      "Dinner": "1. Phulka + Mughalai Egg Curry (Weeks 1 & 3) / Chettinadu Egg Masala (Weeks 2 & 4)\n2. Dosai + Chutney + Sambar \n3. Rice + Rasam + Curd\n4. Salad (Onions + Carrot + Beetroot) (Weeks 1 & 3) / Salad (Onions + Carrot) (Weeks 2 & 4) + Milk + Ice Cream (Vanilla)",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 2,
+      "ncRecordId": "recc65f3e806c814",
+      "ncRecordHash": "436d067471a80a2f7d97757c8cbc8925",
+      "Day": "Tuesday",
+      "Breakfast": "1. Aloo Paratha + Tomato Onion Gravy + Curd\n2. Millet Pongal + Vada + Sambar + Coconut Chutney\n3. Boiled Egg (Dispense in Hot Water)\n4. Wheat Bread + Butter + Jam\n5. Tea / Coffee / Milk",
+      "Lunch": "1. Chapathi + Paneer Butter Masala (Weeks 1 & 3) / Paneer Tikka Masala (Weeks 2 & 4)\n2. Ghee Rice\n3. White Rice + More Kulambu (Weeks 1 & 3) / Dal (Weeks 2 & 4) + Paruppu Rasam + Carrot & Beans Poriyal + Butter Milk\n4. Parupu Podi + Ghee + Thovaiyal + Papad\n5. Banana + Pickle + Butter Milk",
+      "Snacks": "Sweet Corn (Weeks 1 & 3) /\nVeg Samosa + Sauce + Mint Chutney (Weeks 2 & 4)\nTea / Coffee / Milk",
+      "Dinner": "1. Chapathi + Cauliflower Curry (Weeks 1 & 3) / Veg Koftha (Weeks 2 & 4)\n2. White Rice + Rasam + Mix Veg Poriyal\n3. Idly + Podi + Oil + Mint Chutney + Sambar + Curd\n4. Salad (Carrot + Tomato + Lemon) + Milk + Motichur Laddu (Weeks 1 & 3) / Gulab Jamun (Weeks 2 & 4)",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 3,
+      "ncRecordId": "reca7159077a60e4",
+      "ncRecordHash": "a784fea18a8a39c7b7d11f76649ee734",
+      "Day": "Wednesday",
+      "Breakfast": "1. Millet Upma (Weeks 1 & 3) / Rava Kitchadi (Weeks 2 & 4)\n2. Masala Dosai + Sambar + Groundnut Chutney\n3. Egg Omelette\n4. Bread + Butter + Jam\n5. Tea / Coffee / Milk",
+      "Lunch": "1. Ajwain Chapathi + Chicken Handi Masala (Weeks 1 & 3) / Tandoori Chicken + Plain Gravy (Weeks 2 & 4)\n2. Veg. Pulao\n3. White Rice + Mix. Veg Pappu + Milagu Rasam + Tendli Poriyal (Weeks 1 & 3) / Cabbage Porial (Weeks 2 & 4) + Curd\n4. Parupu podi + Ghee / Oil + Thovaiyal\n5. Fruit Salad (Weeks 2 & 4) + Pappad + Pickle + Lemon Juice (Weeks 1 & 3) / Lemon Mint Juice (Weeks 2 & 4)",
+      "Snacks": "Boiled Masala Peanuts (Weeks 1 & 3) / Boiled Channa (Weeks 2 & 4)\nGinger Tea / Coffee / Milk",
+      "Dinner": "1. Chapathi + Peas Soya Gravy\n2. Rice + Andhra Dhal + Vazhaikai Poriyal (Weeks 1 & 3) / Cabbage Poriyal (Weeks 2 & 4) + Rasam + Sambar\n3. Rava / Semiya Kichadi + Coconut Chutney\n4. Salad + Milk + Curd\n5. Parupu Payasam (Weeks 1 & 3) / Pineapple Kesari (Weeks 2 & 4)",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 4,
+      "ncRecordId": "recf8c6a866e4fe4",
+      "ncRecordHash": "fc2cd25f5c07f74b4220b4e96de662f4",
+      "Day": "Thursday",
+      "Breakfast": "1. Pav Bhaji Masala + Chopped Onion & Lemon\n2. Podi Dosa + Sambar + Peanut Onion Chutney\n3. Egg Podimas\n4. Wheat Bread + Butter + Jam\n5. Tea / Coffee / Milk",
+      "Lunch": "1. Chapathi + Veg Kuruma\n2. Bisibilabath + Potato Chips\n3. White Rice + More Kuzhambu + Kerrai Kootu (Weeks 1 & 3) / Raw Banana Poriyal (Weeks 2 & 4) + Dhal Fry\n4. Parupu podi + Ghee + Thovaiyal\n5. Watermelon Fruit + Papad + Pickle + Butter Milk",
+      "Snacks": "Pani Puri (Weeks 1 & 3) /\nDal kachori + Sweet chutney (Weeks 2 & 4)\nTea / Coffee / Milk",
+      "Dinner": "1. Chole Batura + White / Black channa masala\n2. Veg. Biriyani + Dahi Onion Raitha\n3. White Rice + Rasam + Poriyal (Weeks 1 & 3) / Mix Veg Poriyal (Weeks 2 & 4) + Sambar\n4. Salad (Onion + Beetroot) + Milk + Curd + Sugar",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 5,
+      "ncRecordId": "rec86428b4c94554",
+      "ncRecordHash": "629440493974b6aca23468400658aed3",
+      "Day": "Friday",
+      "Breakfast": "1. Onion Dosa + Sambar + Mint, coriander & curry leaves Chutney\n2. Potato Poha + Onion (Weeks 1 & 3) / Puri + Puri masala (potato) (Weeks 2 & 4)\n3. Egg Masala Omlette\n4. Bread + Butter + Jam\n5. Tea / Coffee / Milk",
+      "Lunch": "1. Phulka + Chicken 65 + Chicken Gravy (without pieces) (Weeks 1 & 3) / Green Peas Gravy + French Fries (Weeks 2 & 4) \n2. Jeera Rice (Weeks 1 & 3) / Tomato Rice (Weeks 2 & 4) + Pappad\n3. White Rice + Uduppi Sambar + Potato, pattani masiyal (Weeks 1 & 3) / Pudalangai Poriyal (Weeks 2 & 4) + Moong Dal Rasam + Butter Milk\n4. Parupu podi + Ghee + Thovaiyal\n5. Muskmelon + Pickle + Lime Juice",
+      "Snacks": "Mysore Bonda + Coconut Chutney (Weeks 1 & 3) /\nBanana Bajji + Coconut Chutney (Weeks 2 & 4) \nTea / Coffee / Milk",
+      "Dinner": "1. Masala Kulcha (Weeks 1 & 3) / Kulcha (Weeks 2 & 4) + Corn Capsicum Gravy + French Fries (Weeks 1 & 3) / Kadai Chicken Curry (Weeks 2 & 4)\n2. White Rice + Raddish Sambar + Carrot Poriyal + Rasam\n3. Lemon Rice (Weeks 1 & 3) / Coconut Rice (Weeks 2 & 4)\n4. Chocolate Milkshake (Thick Consistency) (Weeks 1 & 3) / Strawberry Milkshake (Weeks 2 & 4) + (Onion + Carrot + Beetroot) Salad (Weeks 1 & 3) / Onion + Carrot Salad (Weeks 2 & 4)",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 6,
+      "ncRecordId": "rec0ff44a2540644",
+      "ncRecordHash": "c3c655abfa08bf80830ce7cd3b162344",
+      "Day": "Saturday",
+      "Breakfast": "1. Paneer Paratha + Tomato Chutney\n2. Pongal + Vada + Sambar\n3. Boiled Egg\n4. Wheat Bread + Butter + Jam\n5. Tea / Coffee / Milk",
+      "Lunch": "1. Phulka + Dhal Fry (Weeks 1 & 3) / Dhal Panjabi (Weeks 2 & 4)\n2. Fried Rice + Dry Chilli Gobi (Weeks 1 & 3) / Veg Manchurian (Weeks 2 & 4)\n3. White Rice + Karakulambu + Milagu Rasam + Curd + Keerai Porial\n4. Parupu podi + Ghee + Thovaiyal \n5. Pineapple + Papad + Pickle + Lemon Juice",
+      "Snacks": "Samosa + Sauce (Weeks 1 & 3) /\nSambar Vada (Weeks 2 & 4)\nGinger Tea / Coffee / Milk",
+      "Dinner": "1. Phulka + Dum Aloo (Weeks 1 & 3) / Dal Makhani (Weeks 2 & 4)\n2. Millet Masala Dosa (Weeks 1 & 3) / Millet Dosa (Weeks 2 & 4) + Sambar + Chutney \n3. White Rice + Rasam + Buttermilk + Pooriyal\n4. Parupu Podi + Ghee + Thovaiyal  + Bread Halwa (Weeks 1 & 3) / Mysore Pak (Weeks 2 & 4)\n5. Milk + Salad (Tomato, Onion, Lemon, Carrot)",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    },
+    {
+      "Id": 7,
+      "ncRecordId": "rec693fa0311cfd4",
+      "ncRecordHash": "0d3e6f27f75ce6d35aff0f56290c1857",
+      "Day": "Sunday",
+      "Breakfast": "1. Pav Bajji + Chopped Onion & Lemon\n2. Idly + Vada + Sambar + Chettinad Kara Chutney\n3. Egg Burji\n4. Bread + Butter + Jam\n5. Tea / Coffee / Milk",
+      "Lunch": "1. Hyderabadi Chicken Biryani (Weeks 1 & 3) / Dindugal Chicken Biryani (Weeks 2 & 4) + Plain Chicken Gravy + Onion Raitha\n2. Pulka + Black Channa Dal\n3. Plain Rice + Mysore Rasam\n4. Fruit Salad (Green Grapes + Papaya) (Weeks 1 & 3) / Salad (Weeks 2 & 4) + Chilled Baddam Milk (Weeks 1 & 3) / Lemon Juice (Weeks 2 & 4)\n5. Parupu podi + Ghee + Thovaiyal (Weeks 1 & 3)",
+      "Snacks": "Veg cutlet (Weeks 1 & 3) /\nPapdi Chat (Weeks 2 & 4)\nGinger Tea / Coffee / Milk",
+      "Dinner": "1. Chapathi + Rajma Curry (Weeks 1 & 3) / Mixed Dal (Weeks 2 & 4)\n2. Methi Pulav \n3. White Rice + Sambar + Rasam + Poriyal (Weeks 1 & 3) / Ridge Gourd with White Channa Poriyal (Weeks 2 & 4) + Curd Rice with Fruits\n4. Parupu Podi + Ghee + Thovaiyal (Weeks 2 & 4)\n5. Salad (Weeks 1 & 3) / Fruit Salad (Green Grapes + Papaya) (Weeks 2 & 4) + Papad + Pickle + Milk (Weeks 1 & 3) / Butter Milk (Weeks 2 & 4)",
+      "CreatedAt": "2025-09-11 20:25:53+05:30",
+      "UpdatedAt": "2025-09-11 20:25:53+05:30"
+    }
+  ],
+  "pageInfo": {
+    "totalRows": 7,
+    "page": 1,
+    "pageSize": 50,
+    "isFirstPage": true,
+    "isLastPage": true
+  },
+  "stats": {
+    "dbQueryTime": "1.234"
+  }
+}

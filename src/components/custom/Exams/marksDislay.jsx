@@ -25,6 +25,13 @@ export default function MarksDisplay({ data }) {
       {/* Grid for cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {data.marks.map((course, idx) => {
+          const formatNumber = (num) => {
+            const numericValue = Number(num);
+            if (num == null || isNaN(numericValue)) {
+              return "-";
+            }
+            return Number(numericValue.toFixed(2)).toString();
+          };
           const totals = course.assessments.reduce(
             (acc, asm) => {
               acc.max += Number(asm.maxMark) || 0;
@@ -56,7 +63,9 @@ export default function MarksDisplay({ data }) {
                 <div className="w-20 h-20 flex-shrink-0 flex flex-col items-center justify-center ml-4">
                   <CircularProgressbar
                     value={(totals.weighted / totals.weightPercent) * 100 || 0}
-                    text={`${totals.weighted}/${totals.weightPercent}`}
+                    text={`${formatNumber(totals.weighted)}/${formatNumber(
+                      totals.weightPercent
+                    )}`}
                     styles={buildStyles({
                       pathColor: "#00ff11ff",
                       textColor: "currentColor",
@@ -102,25 +111,35 @@ export default function MarksDisplay({ data }) {
                               className="border-gray-300 dark:border-gray-600 midnight:border-gray-700"
                             >
                               <td className="border p-2">{asm.title}</td>
-                              <td className="border p-2">{asm.maxMark}</td>
-                              <td className="border p-2">{asm.scoredMark}</td>
                               <td className="border p-2">
-                                {asm.weightagePercent}
+                                {formatNumber(asm.maxMark)}
                               </td>
                               <td className="border p-2">
-                                {asm.weightageMark}
+                                {formatNumber(asm.scoredMark)}
+                              </td>
+                              <td className="border p-2">
+                                {formatNumber(asm.weightagePercent)}
+                              </td>
+                              <td className="border p-2">
+                                {formatNumber(asm.weightageMark)}
                               </td>
                             </tr>
                           ))}
 
                           <tr className="font-bold border-t border-gray-400 dark:border-gray-500 midnight:border-gray-600">
                             <td className="border p-2">Total</td>
-                            <td className="border p-2">{totals.max}</td>
-                            <td className="border p-2">{totals.scored}</td>
                             <td className="border p-2">
-                              {totals.weightPercent}
+                              {formatNumber(totals.max)}
                             </td>
-                            <td className="border p-2">{totals.weighted}</td>
+                            <td className="border p-2">
+                              {formatNumber(totals.scored)}
+                            </td>
+                            <td className="border p-2">
+                              {formatNumber(totals.weightPercent)}
+                            </td>
+                            <td className="border p-2">
+                              {formatNumber(totals.weighted)}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
