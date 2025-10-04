@@ -10,6 +10,8 @@ import ScheduleDisplay from "./Exams/SchduleDisplay";
 import HostelSubTabs from "./Hostel/HostelSubsTab";
 import MessDisplay from "./Hostel/messDisplay";
 import LaundryDisplay from "./Hostel/LaundryDisplay";
+import AttendanceSubTabs from "./attendance/AttendanceSubsTabs";
+import CalendarView from "./attendance/CalendarView";
 
 export default function DashboardContent({
   activeTab,
@@ -32,7 +34,10 @@ export default function DashboardContent({
   ScheduleData,
   hostelData,
   HostelActiveSubTab,
-  setHostelActiveSubTab
+  setHostelActiveSubTab,
+  activeAttendanceSubTab,
+  setActiveAttendanceSubTab,
+  calendarData
 }) {
   return (
     <div className="w-full max-w-md md:max-w-full mx-auto">
@@ -70,33 +75,36 @@ export default function DashboardContent({
 
         <div>
           {activeTab === "attendance" && attendanceData && attendanceData.attendance && (
-            <AttendanceTabs 
-              data={attendanceData} 
-              activeDay={activeDay} 
-              setActiveDay={setActiveDay} 
-            />
+            <>
+              <AttendanceSubTabs
+                activeSubTab={activeAttendanceSubTab}
+                setActiveAttendanceSubTab={setActiveAttendanceSubTab}
+              />
+              {activeAttendanceSubTab === "attendance" && <AttendanceTabs data={attendanceData} activeDay={activeDay} setActiveDay={setActiveDay} />}
+              {activeAttendanceSubTab === "calendar" && <CalendarView calendars={calendarData.calendars} />}
+            </>
           )}
 
           {activeTab === "exams" && marksData && (
-            <div>
+            <>
               <ExamsSubTabs
                 activeSubTab={activeSubTab}
                 setActiveSubTab={setActiveSubTab}
               />
               {activeSubTab === "marks" && <MarksDisplay data={marksData} />}
               {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} />}
-            </div>
+            </>
           )}
 
           {activeTab === "hostel" && (
-            <div>
+            <>
               <HostelSubTabs
                 HostelActiveSubTab={HostelActiveSubTab}
                 setHostelActiveSubTab={setHostelActiveSubTab}
               />
               {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} />}
               {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} />}
-            </div>
+            </>
           )}
         </div>
       </div>

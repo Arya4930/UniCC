@@ -4,7 +4,6 @@ import { ReloadModal } from "./reloadModel";
 import LoginForm from "./loginForm";
 import DashboardContent from "./Dashboard";
 import Footer from "./Footer";
-import CalendarView from "./Calender/CalendarView";
 import PushNotificationManager from "@/app/pushNotificationManager";
 
 export default function LoginPage() {
@@ -28,6 +27,7 @@ export default function LoginPage() {
   const [GradesDisplayIsOpen, setGradesDisplayIsOpen] = useState(false);
   const [activeSubTab, setActiveSubTab] = useState("marks");
   const [HostelActiveSubTab, setHostelActiveSubTab] = useState("mess");
+  const [activeAttendanceSubTab, setActiveAttendanceSubTab] = useState("attendance");
   const [isLoading, setIsLoading] = useState(true);
 
   function setAttendanceAndOD(attendance) {
@@ -255,9 +255,11 @@ export default function LoginPage() {
           hostelData={hostelData}
           HostelActiveSubTab={HostelActiveSubTab}
           setHostelActiveSubTab={setHostelActiveSubTab}
+          activeAttendanceSubTab={activeAttendanceSubTab}
+          setActiveAttendanceSubTab={setActiveAttendanceSubTab}
+          calendarData={Calender}
         />
       )}
-      {/* <CalendarView calendars={Calender.calendars} /> */}
 
       <Footer />
     </div>
