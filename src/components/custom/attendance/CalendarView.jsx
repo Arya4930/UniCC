@@ -203,22 +203,23 @@ export default function CalendarView({ calendars }) {
                                     <div className="mt-2 w-full text-left overflow-y-auto max-h-32">
                                         {events.length > 0 && (
                                             <ul className="mt-2 space-y-1 text-xs text-gray-600 dark:text-gray-300 midnight:text-gray-200">
-                                                {events.map((e, i) => {
+                                                {events.slice(1).map((e, i) => {
                                                     const tagClass = isHolidayEvent(e)
                                                         ? "bg-red-100 text-red-800 border-red-200 dark:bg-red-800/40 dark:text-red-200 midnight:bg-red-950/40 midnight:text-red-300"
                                                         : isInstructionalEvent(e)
                                                             ? "bg-green-100 text-green-800 border-green-200 dark:bg-green-800/40 dark:text-green-200 midnight:bg-green-950/40 midnight:text-green-300"
                                                             : "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-800/40 dark:text-yellow-200 midnight:bg-yellow-950/40 midnight:text-yellow-300";
                                                     const label = e.category && e.category !== "General" ? e.category : e.text;
-                                                    return (
+                                                    const parts = String(label).split("/").map(p => p.trim()).filter(Boolean);
+                                                    return parts.map((p, j) => (
                                                         <li
-                                                            key={i}
+                                                            key={`${i}-${j}`}
                                                             className={`inline-block px-2 py-1 rounded border ${tagClass} mr-1 mb-1`}
                                                             title={e.text}
                                                         >
-                                                            {label ? String(label).replace(/^\(|\)$/g, "") : ""}
+                                                            {p.replace(/^\(|\)$/g, "")}
                                                         </li>
-                                                    );
+                                                    ));
                                                 })}
                                             </ul>
                                         )}
@@ -232,4 +233,3 @@ export default function CalendarView({ calendars }) {
         </div>
     );
 }
-    
