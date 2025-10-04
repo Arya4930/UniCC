@@ -50,31 +50,20 @@ export default function CalendarView({ calendars }) {
 
     const [activeIdx, setActiveIdx] = useState(0);
 
-    if (!safeCalendars.length) {
-        return (
-            <div className="text-center text-gray-500 dark:text-gray-400 p-4">
-                No calendar data available. / Reload Data
-            </div>
-        );
-    }
-
+    // Always call hooks — even if no data
     const activeCalendar = safeCalendars[activeIdx] || {};
     const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-    // parse month/year robustly
     const { year, monthIndex } = useMemo(() => {
         const now = new Date();
         let y = Number(activeCalendar.year);
         if (!Number.isFinite(y)) y = now.getFullYear();
 
-        let mIndex = undefined;
+        let mIndex;
         try {
             const mRaw = activeCalendar.month;
-
-            if (mRaw == null) {
-                mIndex = now.getMonth();
-            } else if (typeof mRaw === "number") {
-                // allow either 1-12 or 0-11
+            if (mRaw == null) mIndex = now.getMonth();
+            else if (typeof mRaw === "number") {
                 if (mRaw >= 1 && mRaw <= 12) mIndex = mRaw - 1;
                 else if (mRaw >= 0 && mRaw <= 11) mIndex = mRaw;
                 else mIndex = now.getMonth();
@@ -82,32 +71,29 @@ export default function CalendarView({ calendars }) {
                 const s = String(mRaw).trim();
                 const n = Number(s);
                 if (!Number.isNaN(n)) {
-                    if (n >= 1 && n <= 12) mIndex = n - 1;
-                    else if (n >= 0 && n <= 11) mIndex = n;
-                    else throw new Error("month numeric out of range");
+                    mIndex = n >= 1 && n <= 12 ? n - 1 : now.getMonth();
                 } else {
-                    // try Date.parse("Month 1, YYYY")
                     const parsed = Date.parse(`${s} 1, ${y}`);
-                    if (!Number.isNaN(parsed)) {
-                        mIndex = new Date(parsed).getMonth();
-                    } else {
-                        // try 3-letter map
-                        const key = s.toLowerCase().slice(0, 3);
-                        if (Object.prototype.hasOwnProperty.call(MONTH_NAME_MAP, key)) {
-                            mIndex = MONTH_NAME_MAP[key];
-                        } else {
-                            throw new Error("unrecognized month string");
-                        }
-                    }
+                    mIndex = !Number.isNaN(parsed)
+                        ? new Date(parsed).getMonth()
+                        : MONTH_NAME_MAP[s.toLowerCase().slice(0, 3)] ?? now.getMonth();
                 }
             }
         } catch (err) {
-            // fallback to current month if parsing failed
             console.error("CalendarView: month parse failed:", err);
             mIndex = now.getMonth();
         }
         return { year: y, monthIndex: mIndex };
     }, [activeCalendar.month, activeCalendar.year]);
+
+    // after hooks: now safe to early-return
+    if (!safeCalendars.length) {
+        return (
+            <div className="text-center text-gray-500 dark:text-gray-400 p-4">
+                No calendar data available. / Reload Data
+            </div>
+        );
+    }
 
     // build days array with date-fns; guard against exceptions
     let monthStart = new Date(year, monthIndex, 1);
