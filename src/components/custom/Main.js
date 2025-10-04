@@ -4,6 +4,7 @@ import { ReloadModal } from "./reloadModel";
 import LoginForm from "./loginForm";
 import DashboardContent from "./Dashboard";
 import Footer from "./Footer";
+import CalendarView from "./Calender/CalendarView";
 import PushNotificationManager from "@/app/pushNotificationManager";
 
 export default function LoginPage() {
@@ -16,6 +17,7 @@ export default function LoginPage() {
   const [GradesData, setGradesData] = useState({});
   const [ScheduleData, setScheduleData] = useState({});
   const [hostelData, sethostelData] = useState({});
+  const [Calender, setCalender] = useState({});
   const [activeDay, setActiveDay] = useState(new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase());
   const [isReloading, setIsReloading] = useState(false);
   const [activeTab, setActiveTab] = useState("attendance");
@@ -75,6 +77,7 @@ export default function LoginPage() {
     const storedPassword = localStorage.getItem("password");
     const storedSchedule = localStorage.getItem("schedule");
     const storedHoste = localStorage.getItem("hostel");
+    const calendar = localStorage.getItem("calender");
 
     storedAttendance = JSON.parse(storedAttendance);
     if (storedAttendance && storedAttendance.attendance) {
@@ -86,6 +89,7 @@ export default function LoginPage() {
     if (storedSchedule) setScheduleData(JSON.parse(storedSchedule));
     if (storedGrades) setGradesData(JSON.parse(storedGrades));
     if (storedHoste) sethostelData(JSON.parse(storedHoste));
+    if (calendar) setCalender(JSON.parse(calendar));
     setIsLoggedIn((storedUsername && storedPassword) ? true : false);
     setTimeout(() => setIsLoading(false), 300);
   }, []);
@@ -102,7 +106,7 @@ export default function LoginPage() {
       if (data.success && data.dashboardHtml) {
         localStorage.setItem("username", username);
         localStorage.setItem("password", password);
-        const [attRes, marksRes, gradesRes, ScheduleRes, HostelRes] = await Promise.all([
+        const [attRes, marksRes, gradesRes, ScheduleRes, HostelRes, calenderRes] = await Promise.all([
           fetch("/api/fetchAttendance", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -127,6 +131,11 @@ export default function LoginPage() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+          }),
+          fetch('/api/parseSemTT', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, type: "ALL" }),
           })
         ]);
 
@@ -135,17 +144,20 @@ export default function LoginPage() {
         const gradesDataPayload = await gradesRes.json();
         const ScheduleDataPayload = await ScheduleRes.json();
         const hostelRes = await HostelRes.json();
+        const CalenderRes = await calenderRes.json();
 
         setAttendanceAndOD(attData);
         setMarksData(marksDataPayload);
         setGradesData(gradesDataPayload);
         setScheduleData(ScheduleDataPayload);
         sethostelData(hostelRes);
+        setCalender(CalenderRes);
         localStorage.setItem("attendance", JSON.stringify(attData));
         localStorage.setItem("marks", JSON.stringify(marksDataPayload));
         localStorage.setItem("grades", JSON.stringify(gradesDataPayload));
         localStorage.setItem("schedule", JSON.stringify(ScheduleDataPayload));
         localStorage.setItem("hostel", JSON.stringify(hostelRes));
+        localStorage.setItem("calender", JSON.stringify(CalenderRes));
         setIsReloading(false);
         setMessage("Data reloaded successfully!");
         setIsLoggedIn(true);
@@ -245,6 +257,7 @@ export default function LoginPage() {
           setHostelActiveSubTab={setHostelActiveSubTab}
         />
       )}
+      {/* <CalendarView calendars={Calender.calendars} /> */}
 
       <Footer />
     </div>
