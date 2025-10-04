@@ -37,7 +37,9 @@ export default function DashboardContent({
   setHostelActiveSubTab,
   activeAttendanceSubTab,
   setActiveAttendanceSubTab,
-  calendarData
+  calendarData,
+  CGPAHidden,
+  setCGPAHidden,
 }) {
   return (
     <div className="w-full max-w-md md:max-w-full mx-auto">
@@ -56,6 +58,8 @@ export default function DashboardContent({
             setODhoursIsOpen={setODhoursIsOpen}
             GradesData={GradesData}
             setGradesDisplayIsOpen={setGradesDisplayIsOpen}
+            CGPAHidden={CGPAHidden}
+            setCGPAHidden={setCGPAHidden}
           />
         )}
 

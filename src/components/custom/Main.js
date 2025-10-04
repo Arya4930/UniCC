@@ -29,6 +29,7 @@ export default function LoginPage() {
   const [HostelActiveSubTab, setHostelActiveSubTab] = useState("mess");
   const [activeAttendanceSubTab, setActiveAttendanceSubTab] = useState("attendance");
   const [isLoading, setIsLoading] = useState(true);
+  const [CGPAHidden, setCGPAHidden] = useState(false);
 
   function setAttendanceAndOD(attendance) {
     setAttendanceData(attendance);
@@ -258,6 +259,8 @@ export default function LoginPage() {
           activeAttendanceSubTab={activeAttendanceSubTab}
           setActiveAttendanceSubTab={setActiveAttendanceSubTab}
           calendarData={Calender}
+          CGPAHidden={CGPAHidden}
+          setCGPAHidden={setCGPAHidden}
         />
       )}
 

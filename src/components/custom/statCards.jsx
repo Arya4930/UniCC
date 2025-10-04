@@ -1,12 +1,27 @@
 "use client";
 
+import { useEffect } from "react";
+
 export default function StatsCards({
   attendancePercentage,
   ODhoursData,
   setODhoursIsOpen,
   GradesData,
-  setGradesDisplayIsOpen
+  setGradesDisplayIsOpen,
+  CGPAHidden,
+  setCGPAHidden,
 }) {
+  useEffect(() => {
+    const saved = localStorage.getItem("CGPAHidden");
+    if (saved !== null) {
+      setCGPAHidden(saved === "true");
+    }
+  }, [setCGPAHidden]);
+
+  useEffect(() => {
+    localStorage.setItem("CGPAHidden", CGPAHidden);
+  }, [CGPAHidden]);
+
   const totalODHours =
     ODhoursData && ODhoursData.length > 0 && ODhoursData[0].courses
       ? ODhoursData.reduce((sum, day) => sum + day.total, 0)
@@ -43,11 +58,13 @@ export default function StatsCards({
         {/* Card 3 */}
         <div
           className={`${cardBase} bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800`}
-          onClick={() => console.log("CGPA clicked")}
+          onClick={() => setCGPAHidden((prev) => !prev)}
         >
-          <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 midnight:text-gray-200">CGPA</h2>
-          <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mt-2">
-            {GradesData?.cgpa?.cgpa}
+          <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 midnight:text-gray-200">
+            CGPA
+          </h2>
+          <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mt-2 select-none">
+            {CGPAHidden ? "###" : GradesData?.cgpa?.cgpa}
           </p>
         </div>
 
