@@ -30,6 +30,7 @@ export default function LoginPage() {
   const [activeAttendanceSubTab, setActiveAttendanceSubTab] = useState("attendance");
   const [isLoading, setIsLoading] = useState(true);
   const [CGPAHidden, setCGPAHidden] = useState(false);
+  const [calendarType, setCalenderType] = useState(null)
 
   function setAttendanceAndOD(attendance) {
     setAttendanceData(attendance);
@@ -79,6 +80,7 @@ export default function LoginPage() {
     const storedSchedule = localStorage.getItem("schedule");
     const storedHoste = localStorage.getItem("hostel");
     const calendar = localStorage.getItem("calender");
+    const calendarType = localStorage.getItem("calendarType");
 
     storedAttendance = JSON.parse(storedAttendance);
     if (storedAttendance && storedAttendance.attendance) {
@@ -91,6 +93,7 @@ export default function LoginPage() {
     if (storedGrades) setGradesData(JSON.parse(storedGrades));
     if (storedHoste) sethostelData(JSON.parse(storedHoste));
     if (calendar) setCalender(JSON.parse(calendar));
+    if (calendarType) setCalenderType(JSON.parse(calendar));
     setIsLoggedIn((storedUsername && storedPassword) ? true : false);
     setTimeout(() => setIsLoading(false), 300);
   }, []);
@@ -136,7 +139,7 @@ export default function LoginPage() {
           fetch('/api/parseSemTT', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, type: "ALL" }),
+            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, type: (calendarType || "ALL") }),
           })
         ]);
 
@@ -167,6 +170,44 @@ export default function LoginPage() {
       }
     } catch (err) {
       setMessage("Login failed, check console.");
+    }
+  };
+
+  const handleCalendarFetch = async (FncalendarType) => {
+    setIsReloading(true);
+    setMessage("Logging in and fetching data...");
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await res.json();
+      if (data.success && data.dashboardHtml) {
+        const [calenderRes] = await Promise.all([
+          fetch('/api/parseSemTT', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, type: (FncalendarType || "ALL") }),
+          })
+        ]);
+
+        const CalenderRes = await calenderRes.json();
+        setCalender(CalenderRes);
+        setCalenderType(calendarType);
+        localStorage.setItem("calender", JSON.stringify(CalenderRes));
+        localStorage.setItem("calendarType", JSON.stringify(FncalendarType));
+        setIsReloading(false);
+        setMessage("Data reloaded successfully!");
+        setIsLoggedIn(true);
+      } else {
+        setMessage(data.message || "Login failed. Please try again.");
+      }
+    } catch (err) {
+      setMessage("Login failed, check console.");
+    } finally {
+      setIsReloading(false);
+      window.location.reload();
     }
   };
 
@@ -261,6 +302,9 @@ export default function LoginPage() {
           calendarData={Calender}
           CGPAHidden={CGPAHidden}
           setCGPAHidden={setCGPAHidden}
+          calendarType={calendarType}
+          setCalendarType={setCalenderType}
+          handleCalendarFetch={handleCalendarFetch}
         />
       )}
 

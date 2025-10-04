@@ -162,7 +162,7 @@ export default function CourseCard({ a, onClick, activeDay, dayCardsMap, analyze
                                 {left} classes left in this semester
                             </div>
                             <div className="text-gray-700 dark:text-gray-500 midnight:text-gray-300 text-xs">
-                                ( Based on General Semester, Beta feature, can have bugs )
+                                Not Counting Saturday's, Beta feature, can have bugs
                             </div>
                         </>
                     ) : (

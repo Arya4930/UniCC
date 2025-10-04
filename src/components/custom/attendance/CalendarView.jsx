@@ -1,7 +1,6 @@
 "use client";
 import React, { useMemo, useState, useEffect } from "react";
 import { eachDayOfInterval, endOfMonth, getDay } from "date-fns";
-import { analyzeAllCalendars } from "@/lib/analyzeCalendar";
 
 const HOLIDAY_KEYWORDS = [
     "holiday", "pooja", "puja", "ayudha", "diwali", "pongal", "eid", "christmas", "good friday",
