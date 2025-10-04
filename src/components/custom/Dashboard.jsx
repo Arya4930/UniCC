@@ -150,14 +150,12 @@ export default function DashboardContent({
                       handleCalendarFetch={handleCalendarFetch}
                     />
                   )}
-                  {calendarType && (
-                    <AttendanceTabs
-                      data={attendanceData}
-                      activeDay={activeDay}
-                      setActiveDay={setActiveDay}
-                      calendars={calendarData.calendars}
-                    />
-                  )}
+                  <AttendanceTabs
+                    data={attendanceData}
+                    activeDay={activeDay}
+                    setActiveDay={setActiveDay}
+                    calendars={calendarData.calendars}
+                  />
                 </>
               )}
 
