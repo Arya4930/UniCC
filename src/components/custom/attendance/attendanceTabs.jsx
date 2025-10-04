@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CourseCard from "./courseCard";
 
 const slotMap = {
@@ -190,7 +190,6 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
   const dayCardsMap = {};
   days.forEach((day) => (dayCardsMap[day] = []));
 
-  // 1. Build structured data
   data.attendance.forEach((a) => {
     const slots = a.slotName.split("+");
     slots.forEach((slotName) => {
@@ -200,7 +199,6 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
           const info = slotMap[day][cleanSlot];
           const pct = parseInt(a.attendancePercentage);
           const cls = pct < 50 ? "low" : pct < 75 ? "medium" : "high";
-
           dayCardsMap[day].push({
             ...a,
             slotName: cleanSlot,
@@ -246,9 +244,8 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
         current.cls === next.cls
       ) {
         const mergedSlotName = `${current.slotName}+${next.slotName}`;
-        const mergedSlotTime = `${current.time.split("-")[0]}-${
-          next.time.split("-")[1]
-        }`;
+        const mergedSlotTime = `${current.time.split("-")[0]}-${next.time.split("-")[1]
+          }`;
         merged.push({
           ...current,
           slotName: mergedSlotName,
@@ -269,6 +266,21 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
     dayCardsMap[day] = merged.length > 0 ? merged : [];
   }
 
+  const daysWithClasses = days.filter((d) => dayCardsMap[d].length > 0);
+
+  useEffect(() => {
+    if (!daysWithClasses.includes(activeDay)) {
+      setActiveDay(daysWithClasses[0] || null);
+    }
+  }, [daysWithClasses]);
+
+  if (daysWithClasses.length === 0)
+    return (
+      <div className="text-center text-gray-700 dark:text-gray-300 midnight:text-gray-300">
+        No classes scheduled this week.
+      </div>
+    );
+
   return (
     <div className="grid gap-4">
       <h1 className="text-lg font-semibold mb-3 text-center text-gray-800 dark:text-gray-100 midnight:text-gray-100">
@@ -276,7 +288,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
       </h1>
 
       <div className="flex gap-2 mb-3 justify-center flex-wrap">
-        {days.map((d) => (
+        {daysWithClasses.map((d) => (
           <button
             key={d}
             onClick={() => setActiveDay(d)}
@@ -293,7 +305,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 p-2">
-        {dayCardsMap[activeDay].map((a, idx) => (
+        {dayCardsMap[activeDay]?.map((a, idx) => (
           <div key={idx}>
             <CourseCard
               a={a}
