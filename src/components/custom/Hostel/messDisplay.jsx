@@ -42,15 +42,13 @@ export default function MessDisplay({ hostelData }) {
     );
   }
 
-  console.log(hostelData.hostelInfo.messInfo + "This is for testing pls ignore :D")
-
   const normalizeGender = (g) =>
     g?.toLowerCase() === "male" ? "Male" : "Female";
 
   const normalizeType = (t) => {
     const map = {
       VEG: "Veg",
-      "NON VEG": "Non Veg",
+      NON: "Non Veg",
       SPECIAL: "Special",
     };
     return map[t?.toUpperCase()] || "Veg";
