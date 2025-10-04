@@ -84,7 +84,7 @@ export default function DashboardContent({
                 activeSubTab={activeAttendanceSubTab}
                 setActiveAttendanceSubTab={setActiveAttendanceSubTab}
               />
-              {activeAttendanceSubTab === "attendance" && <AttendanceTabs data={attendanceData} activeDay={activeDay} setActiveDay={setActiveDay} />}
+              {activeAttendanceSubTab === "attendance" && <AttendanceTabs data={attendanceData} activeDay={activeDay} setActiveDay={setActiveDay} calendars={calendarData.calendars} />}
               {activeAttendanceSubTab === "calendar" && <CalendarView calendars={calendarData.calendars} />}
             </>
           )}

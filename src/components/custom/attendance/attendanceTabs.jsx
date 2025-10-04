@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import CourseCard from "./courseCard";
+import { analyzeAllCalendars } from "@/lib/analyzeCalendar";
 
 const slotMap = {
   MON: {
@@ -183,7 +184,7 @@ const slotMap = {
   },
 };
 
-export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
+export default function AttendanceTabs({ data, activeDay, setActiveDay, calendars }) {
   const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
   const [expandedIdx, setExpandedIdx] = useState(null);
 
@@ -267,6 +268,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
   }
 
   const daysWithClasses = days.filter((d) => dayCardsMap[d].length > 0);
+  const analyzeCalendars = analyzeAllCalendars(calendars);
 
   useEffect(() => {
     if (!daysWithClasses.includes(activeDay)) {
@@ -311,6 +313,8 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay }) {
               a={a}
               onClick={() => setExpandedIdx(idx)}
               activeDay={activeDay}
+              dayCardsMap={dayCardsMap}
+              analyzeCalendars={analyzeCalendars}
               className="p-2 text-sm rounded-md shadow-sm bg-gray-100 dark:bg-gray-800 midnight:bg-black hover:shadow-md transition"
             />
             {expandedIdx === idx && (
