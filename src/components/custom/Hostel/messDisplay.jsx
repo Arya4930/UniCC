@@ -42,7 +42,7 @@ export default function MessDisplay({ hostelData }) {
     );
   }
 
-  console.log(hostelData + "This is for testing pls ignore :D")
+  console.log(hostelData.hostelInfo + "This is for testing pls ignore :D")
 
   const normalizeGender = (g) =>
     g?.toLowerCase() === "male" ? "Male" : "Female";

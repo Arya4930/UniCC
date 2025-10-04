@@ -3,9 +3,10 @@ import React, { useMemo, useState, useEffect } from "react";
 import { eachDayOfInterval, endOfMonth, getDay } from "date-fns";
 
 const HOLIDAY_KEYWORDS = [
-    "holiday", "pooja", "puja", "ayudha", "diwali", "pongal", "eid", "christmas", "good friday",
-    "independence", "republic", "onam", "holi", "ramadan", "ganesh", "maha shivaratri", "vesak",
-    "vacation", "term end", "no instructional", "noinstructional",
+    "holiday", "pooja", "puja", "ayudha", "diwali", "pongal", "eid", "christmas",
+    "good friday", "independence", "republic", "onam", "holi", "ramadan",
+    "ganesh", "maha shivaratri", "vesak", "vacation", "term end",
+    "no instructional", "noinstructional",
 ];
 
 function normalize(str = "") {
@@ -40,6 +41,74 @@ const MONTH_NAME_MAP = {
     jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
 };
 
+function computeCalendarData(calendar) {
+    if (!calendar) return null;
+
+    const now = new Date();
+    const year = Number(calendar.year) || now.getFullYear();
+
+    let monthIndex;
+    try {
+        const mRaw = calendar.month;
+        if (mRaw == null) monthIndex = now.getMonth();
+        else if (typeof mRaw === "number") {
+            if (mRaw >= 1 && mRaw <= 12) monthIndex = mRaw - 1;
+            else if (mRaw >= 0 && mRaw <= 11) monthIndex = mRaw;
+            else monthIndex = now.getMonth();
+        } else {
+            const s = String(mRaw).trim();
+            const n = Number(s);
+            if (!Number.isNaN(n)) monthIndex = n >= 1 && n <= 12 ? n - 1 : now.getMonth();
+            else {
+                const parsed = Date.parse(`${s} 1, ${year}`);
+                monthIndex = !Number.isNaN(parsed)
+                    ? new Date(parsed).getMonth()
+                    : MONTH_NAME_MAP[s.toLowerCase().slice(0, 3)] ?? now.getMonth();
+            }
+        }
+    } catch {
+        monthIndex = now.getMonth();
+    }
+
+    const monthStart = new Date(year, monthIndex, 1);
+    let daysInMonth = [];
+    try {
+        const monthEnd = endOfMonth(monthStart);
+        daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
+    } catch {
+        const totalDays = Number(calendar.totalDays) || 31;
+        daysInMonth = Array.from({ length: totalDays }, (_, i) => new Date(year, monthIndex, i + 1));
+    }
+
+    const firstDay = getDay(monthStart);
+    const blanksCount = (firstDay + 6) % 7;
+
+    const dayData = daysInMonth.map((dateObj) => {
+        const date = dateObj.getDate();
+        const dayInfo = Array.isArray(calendar.days)
+            ? calendar.days.find((d) => Number(d.date) === date)
+            : undefined;
+        const events = dayInfo?.events || [];
+
+        const hasHoliday = events.some(isHolidayEvent);
+        const hasInstructional = events.some(isInstructionalEvent);
+        const isEmpty = events.length === 0;
+
+        let dayType = "other";
+        if (hasHoliday || isEmpty || (!hasInstructional && events.length > 0)) dayType = "holiday";
+        else if (hasInstructional) dayType = "instructional";
+
+        return {
+            dateObj,
+            date,
+            events,
+            dayType,
+        };
+    });
+
+    return { year, monthIndex, monthStart, blanksCount, dayData };
+}
+
 export default function CalendarView({ calendars }) {
     const safeCalendars = useMemo(() => {
         if (!calendars) return [];
@@ -60,40 +129,6 @@ export default function CalendarView({ calendars }) {
         localStorage.setItem("calendar-active-index", String(activeIdx));
     }, [activeIdx]);
 
-    const activeCalendar = safeCalendars[activeIdx] || {};
-    const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-    const { year, monthIndex } = useMemo(() => {
-        const now = new Date();
-        let y = Number(activeCalendar.year);
-        if (!Number.isFinite(y)) y = now.getFullYear();
-
-        let mIndex;
-        try {
-            const mRaw = activeCalendar.month;
-            if (mRaw == null) mIndex = now.getMonth();
-            else if (typeof mRaw === "number") {
-                if (mRaw >= 1 && mRaw <= 12) mIndex = mRaw - 1;
-                else if (mRaw >= 0 && mRaw <= 11) mIndex = mRaw;
-                else mIndex = now.getMonth();
-            } else {
-                const s = String(mRaw).trim();
-                const n = Number(s);
-                if (!Number.isNaN(n)) {
-                    mIndex = n >= 1 && n <= 12 ? n - 1 : now.getMonth();
-                } else {
-                    const parsed = Date.parse(`${s} 1, ${y}`);
-                    mIndex = !Number.isNaN(parsed)
-                        ? new Date(parsed).getMonth()
-                        : MONTH_NAME_MAP[s.toLowerCase().slice(0, 3)] ?? now.getMonth();
-                }
-            }
-        } catch {
-            mIndex = now.getMonth();
-        }
-        return { year: y, monthIndex: mIndex };
-    }, [activeCalendar.month, activeCalendar.year]);
-
     if (!safeCalendars.length) {
         return (
             <div className="text-center text-gray-500 dark:text-gray-400 p-4">
@@ -102,34 +137,30 @@ export default function CalendarView({ calendars }) {
         );
     }
 
-    let monthStart = new Date(year, monthIndex, 1);
-    let daysInMonth = [];
-    try {
-        const monthEnd = endOfMonth(monthStart);
-        daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
-    } catch {
-        const totalDays = Number(activeCalendar.totalDays) || 31;
-        daysInMonth = Array.from({ length: totalDays }, (_, i) => new Date(year, monthIndex, i + 1));
-    }
+    const activeCalendar = safeCalendars[activeIdx];
+    const computed = useMemo(() => computeCalendarData(activeCalendar), [activeCalendar]);
+    const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-    const firstDay = getDay(monthStart);
-    const blanksCount = (firstDay + 6) % 7;
+    if (!computed) return null;
+    const { year, monthIndex, blanksCount, monthStart, dayData } = computed;
+
     const blanks = Array.from({ length: blanksCount }, (_, i) => i);
 
     return (
         <div className="flex flex-col gap-10 p-4">
-            <div className="text-sm text-yellow-800 dark:text-yellow-300 midnight:text-yellow-200 bg-yellow-100 dark:bg-yellow-800/30 midnight:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded p-2">
-                This page is still in testing, if any bug pls dont mind ( if you know me than dm me on whatsapp )
+            <div className="text-sm text-yellow-800 dark:text-yellow-300 bg-yellow-100 dark:bg-yellow-800/30 border border-yellow-200 dark:border-yellow-700 rounded p-2">
+                This page is still in testing, if any bug pls dont mind (if you know me then DM me on WhatsApp)
             </div>
 
+            {/* Month Buttons */}
             <div className="flex gap-2 mb-3 justify-center flex-wrap">
                 {safeCalendars.map((calendar, idx) => (
                     <button
                         key={calendar.id}
                         onClick={() => setActiveIdx(idx)}
                         className={`px-4 py-2 rounded-md text-sm md:text-base font-medium transition-colors duration-150 ${idx === activeIdx
-                            ? "bg-blue-600 text-white dark:bg-blue-700 midnight:bg-blue-800"
-                            : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 midnight:bg-black midnight:text-gray-200 midnight:hover:bg-gray-800 midnight:outline midnight:outline-1 midnight:outline-gray-800"
+                                ? "bg-blue-600 text-white"
+                                : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-700 dark:text-gray-200"
                             }`}
                     >
                         {calendar.month ?? "Month"} {calendar.year ?? ""}
@@ -137,18 +168,18 @@ export default function CalendarView({ calendars }) {
                 ))}
             </div>
 
+            {/* Month Display */}
             <div key={activeIdx} className="w-full">
-                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-800 dark:text-gray-100 midnight:text-gray-200">
-                    {activeCalendar.month ?? monthStart.toLocaleString(undefined, { month: "long" })} {year}
+                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-800 dark:text-gray-100">
+                    {activeCalendar.month ??
+                        monthStart.toLocaleString(undefined, { month: "long" })}{" "}
+                    {year}
                 </h2>
 
                 <div className="overflow-x-auto">
                     <div className="w-full min-w-[900px] grid grid-cols-7 text-center border-collapse">
                         {weekdays.map((day) => (
-                            <div
-                                key={day}
-                                className="font-semibold py-2 border-b text-gray-700 dark:text-gray-200 midnight:text-gray-100 bg-gray-100 dark:bg-gray-800 midnight:bg-gray-900"
-                            >
+                            <div key={day} className="font-semibold py-2 border-b bg-gray-100 dark:bg-gray-800">
                                 {day}
                             </div>
                         ))}
@@ -157,27 +188,13 @@ export default function CalendarView({ calendars }) {
                             <div key={`blank-${i}`} className="h-36" />
                         ))}
 
-                        {daysInMonth.map((dateObj) => {
-                            const date = dateObj.getDate();
-                            const dayInfo = Array.isArray(activeCalendar.days)
-                                ? activeCalendar.days.find((d) => Number(d.date) === date)
-                                : undefined;
-                            const events = dayInfo?.events || [];
-
-                            const hasHoliday = events.some(isHolidayEvent);
-                            const hasInstructional = events.some(isInstructionalEvent);
-                            const isEmpty = events.length === 0;
-
-                            let dayType = "other";
-                            if (hasHoliday || isEmpty || (!hasInstructional && events.length > 0)) dayType = "holiday";
-                            else if (hasInstructional) dayType = "instructional";
-
+                        {dayData.map(({ dateObj, date, events, dayType }) => {
                             const bgClass =
                                 dayType === "holiday"
-                                    ? "bg-red-50 dark:bg-red-900/30 midnight:bg-red-950/30"
+                                    ? "bg-red-50 dark:bg-red-900/30"
                                     : dayType === "instructional"
-                                        ? "bg-green-50 dark:bg-green-900/30 midnight:bg-green-950/30"
-                                        : "bg-yellow-50 dark:bg-yellow-900/30 midnight:bg-yellow-950/30";
+                                        ? "bg-green-50 dark:bg-green-900/30"
+                                        : "bg-yellow-50 dark:bg-yellow-900/30";
 
                             return (
                                 <div
@@ -185,32 +202,41 @@ export default function CalendarView({ calendars }) {
                                     className={`relative flex flex-col items-start justify-start p-3 h-42 ${bgClass} shadow-sm`}
                                 >
                                     <div className="w-full flex items-center justify-between">
-                                        <div className="text-lg font-bold text-left text-gray-800 dark:text-gray-100 midnight:text-gray-200">
-                                            {date}
-                                        </div>
+                                        <div className="text-lg font-bold">{date}</div>
                                         <div
                                             className={`text-xs font-semibold px-2 py-0.5 rounded ${dayType === "holiday"
-                                                ? "bg-red-200 text-red-800 dark:bg-red-800 dark:text-red-100 midnight:bg-red-900 midnight:text-red-200"
-                                                : dayType === "instructional"
-                                                    ? "bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-100 midnight:bg-green-900 midnight:text-green-200"
-                                                    : "bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100 midnight:bg-yellow-900 midnight:text-yellow-200"
+                                                    ? "bg-red-200 text-red-800"
+                                                    : dayType === "instructional"
+                                                        ? "bg-green-200 text-green-800"
+                                                        : "bg-yellow-200 text-yellow-800"
                                                 }`}
                                         >
-                                            {dayType === "holiday" ? "Holiday" : dayType === "instructional" ? "Working" : "Other"}
+                                            {dayType === "holiday"
+                                                ? "Holiday"
+                                                : dayType === "instructional"
+                                                    ? "Working"
+                                                    : "Other"}
                                         </div>
                                     </div>
 
+                                    {/* Event List */}
                                     <div className="mt-2 w-full text-left overflow-y-auto max-h-32">
                                         {events.length > 0 && (
-                                            <ul className="mt-2 space-y-1 text-xs text-gray-600 dark:text-gray-300 midnight:text-gray-200">
+                                            <ul className="mt-2 space-y-1 text-xs">
                                                 {events.slice(1).map((e, i) => {
                                                     const tagClass = isHolidayEvent(e)
-                                                        ? "bg-red-100 text-red-800 border-red-200 dark:bg-red-800/40 dark:text-red-200 midnight:bg-red-950/40 midnight:text-red-300"
+                                                        ? "bg-red-100 text-red-800"
                                                         : isInstructionalEvent(e)
-                                                            ? "bg-green-100 text-green-800 border-green-200 dark:bg-green-800/40 dark:text-green-200 midnight:bg-green-950/40 midnight:text-green-300"
-                                                            : "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-800/40 dark:text-yellow-200 midnight:bg-yellow-950/40 midnight:text-yellow-300";
-                                                    const label = e.category && e.category !== "General" ? e.category : e.text;
-                                                    const parts = String(label).split("/").map(p => p.trim()).filter(Boolean);
+                                                            ? "bg-green-100 text-green-800"
+                                                            : "bg-yellow-100 text-yellow-800";
+                                                    const label =
+                                                        e.category && e.category !== "General"
+                                                            ? e.category
+                                                            : e.text;
+                                                    const parts = String(label)
+                                                        .split("/")
+                                                        .map((p) => p.trim())
+                                                        .filter(Boolean);
                                                     return parts.map((p, j) => (
                                                         <li
                                                             key={`${i}-${j}`}
