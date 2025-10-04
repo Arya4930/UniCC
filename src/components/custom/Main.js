@@ -7,11 +7,6 @@ import Footer from "./Footer";
 import PushNotificationManager from "@/app/pushNotificationManager";
 
 export default function LoginPage() {
-  const getInitialDay = () => {
-    const today = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
-    return (today === "SAT" || today === "SUN") ? "MON" : today;
-  };
-
   // --- State Management ---
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +16,7 @@ export default function LoginPage() {
   const [GradesData, setGradesData] = useState({});
   const [ScheduleData, setScheduleData] = useState({});
   const [hostelData, sethostelData] = useState({});
-  const [activeDay, setActiveDay] = useState(getInitialDay);
+  const [activeDay, setActiveDay] = useState(new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase());
   const [isReloading, setIsReloading] = useState(false);
   const [activeTab, setActiveTab] = useState("attendance");
   const [attendancePercentage, setattendancePercentage] = useState(0);

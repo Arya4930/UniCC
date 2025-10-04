@@ -4,16 +4,11 @@ import DashboardContent from "./dashboard";
 import Footer from "@/components/custom/Footer";
 
 export default function LoginPage() {
-  const getInitialDay = () => {
-    const today = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
-    return (today === "SAT" || today === "SUN") ? "MON" : today;
-  };
-
   const [attendanceData, setAttendanceData] = useState({});
   const [marksData, setMarksData] = useState({});
   const [GradesData, setGradesData] = useState({});
   const [ScheduleData, setScheduleData] = useState({});
-  const [activeDay, setActiveDay] = useState(getInitialDay);
+  const [activeDay, setActiveDay] = useState(new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase());
   const [activeTab, setActiveTab] = useState("attendance");
   const [attendancePercentage, setattendancePercentage] = useState(0);
   const [ODhoursData, setODhoursData] = useState({});
