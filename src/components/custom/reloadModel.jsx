@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { RefreshCcw, X } from "lucide-react";
+import { X } from "lucide-react";
 
 export function ReloadModal({ message, onClose }) {
     useEffect(() => {
@@ -12,7 +12,7 @@ export function ReloadModal({ message, onClose }) {
     }, []);
 
     return (
-        <div className={`fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm`}>
+        <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm">
             <div className="bg-gray-700 rounded-xl p-6 w-full max-w-md text-white">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-bold">Reload Session</h2>
@@ -23,9 +23,17 @@ export function ReloadModal({ message, onClose }) {
                         <X className="w-5 h-5" />
                     </button>
                 </div>
+
                 {message && (
-                    <div className="flex items-center gap-2 justify-center text-sm">
-                       <RefreshCcw className="w-4 h-4 animate-[spin_1s_linear_infinite] [animation-direction:reverse]" />
+                    <div className="flex flex-col items-center justify-center gap-3 text-sm">
+                        <video
+                            src="/surfer.mp4" 
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-40 h-auto rounded-lg shadow-lg"
+                        />
                         <span>{message}</span>
                     </div>
                 )}
