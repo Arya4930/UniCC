@@ -161,7 +161,7 @@ export default function DashboardContent({
 
               {activeAttendanceSubTab === "calendar" && (
                 <>
-                  <CalendarView calendars={calendarData.calendars} />
+                  <CalendarView calendars={calendarData.calendars} calendarType={calendarType} />
                   <CalendarTabWrapper
                     calendarType={calendarType}
                     setCalendarType={setCalendarType}

@@ -1,6 +1,18 @@
 "use client";
 import React, { useMemo, useState, useEffect } from "react";
 import { eachDayOfInterval, endOfMonth, getDay } from "date-fns";
+import { TriangleAlert } from "lucide-react";
+
+const CALENDAR_TYPES = {
+    ALL: "General Semester",
+    ALL02: "General Flexible",
+    ALL03: "General Freshers",
+    ALL05: "General LAW",
+    ALL06: "Flexible Freshers",
+    ALL08: "Cohort LAW",
+    ALL11: "Flexible Research",
+    WEI: "Weekend Intra Semester",
+};
 
 const HOLIDAY_KEYWORDS = [
     "holiday", "pooja", "puja", "ayudha", "diwali", "pongal", "eid", "christmas", "good friday",
@@ -40,7 +52,7 @@ const MONTH_NAME_MAP = {
     jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
 };
 
-export default function CalendarView({ calendars }) {
+export default function CalendarView({ calendars, calendarType }) {
     const safeCalendars = useMemo(() => {
         if (!calendars) return [];
         if (Array.isArray(calendars)) return calendars;
@@ -117,9 +129,13 @@ export default function CalendarView({ calendars }) {
     const blanks = Array.from({ length: blanksCount }, (_, i) => i);
 
     return (
-        <div className="flex flex-col gap-10 p-4">
-            <div className="text-sm text-yellow-800 dark:text-yellow-300 midnight:text-yellow-200 bg-yellow-100 dark:bg-yellow-800/30 midnight:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded p-2">
-                This page is still in testing, if any bug pls dont mind ( if you know me than dm me on whatsapp )
+        <div className="flex flex-col gap-4 p-4">
+            <h1 className="text-lg font-semibold mb-3 text-center text-gray-800 dark:text-gray-100 midnight:text-gray-100">
+                Academic Calendar ({CALENDAR_TYPES[calendarType || "ALL"]})
+            </h1>
+            <div className="flex items-center gap-2 text-sm font-medium text-yellow-900 dark:text-yellow-200 midnight:text-yellow-100 bg-yellow-50 dark:bg-yellow-900/30 midnight:bg-yellow-950/30 border border-yellow-300 dark:border-yellow-800 rounded-xl p-3">
+                <TriangleAlert className="w-4 h-4 shrink-0 text-yellow-600 dark:text-yellow-400 midnight:text-yellow-300" />
+                <span>Page still in testing</span>
             </div>
 
             <div className="flex gap-2 mb-3 justify-center flex-wrap">

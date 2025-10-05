@@ -199,9 +199,11 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
         if (slotMap[day] && slotMap[day][cleanSlot]) {
           const info = slotMap[day][cleanSlot];
           const pct = parseInt(a.attendancePercentage);
+          const cleanCourseCode = a.courseCode + (a.slotName.startsWith("L") ? "(L)" : "(T)");
           const cls = pct < 50 ? "low" : pct < 75 ? "medium" : "high";
           dayCardsMap[day].push({
             ...a,
+            courseCode: cleanCourseCode,
             slotName: cleanSlot,
             time: info.time,
             cls,
