@@ -13,6 +13,7 @@ export default function ExamSchedule({ data }) {
   if (!data) return <p className="text-gray-500 midnight:text-gray-300">No schedule available</p>;
 
   const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   const parseExamDate = (dateStr) => {
     if (!dateStr) return null;
@@ -67,18 +68,17 @@ export default function ExamSchedule({ data }) {
                   const isPast = examDate && examDate < today;
                   const isToday =
                     examDate &&
-                    examDate.getFullYear() === today.getFullYear() &&
-                    examDate.getMonth() === today.getMonth() &&
-                    examDate.getDate() === today.getDate();
+                    examDate.getTime() === today.getTime();
 
-                  let rowClass = "odd:bg-slate-100 even:bg-slate-200 dark:odd:bg-slate-700 dark:even:bg-slate-800 midnight:odd:bg-gray-900 midnight:even:bg-gray-800 transition-all duration-200";
+                  let rowClass =
+                    "odd:bg-slate-100 even:bg-slate-200 dark:odd:bg-slate-700 dark:even:bg-slate-800 midnight:odd:bg-gray-900 midnight:even:bg-gray-800";
 
                   if (isPast)
                     rowClass +=
                       " opacity-40 line-through hover:opacity-50 cursor-not-allowed";
                   else if (isToday)
                     rowClass +=
-                      " bg-green-100 dark:bg-green-900/40 midnight:bg-green-950/50 border-l-4 border-green-500 shadow-sm";
+                      " !bg-green-100 dark:!bg-green-600/40 midnight:!bg-green-700/50 !border-l-4 !border-green-500 shadow-md !text-green-900 dark:!text-green-200";
 
                   return (
                     <TableRow key={idx} className={rowClass}>
