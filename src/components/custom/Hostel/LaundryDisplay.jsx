@@ -118,7 +118,7 @@ export default function LaundrySchedule({ hostelData }) {
         <div className="flex flex-wrap gap-4 justify-center mb-6">
           <select
             value={gender}
-            onChange={(e) => {setGender(e.target.value); setHostel(hostelOptions[e.target.value][0])}}
+            onChange={(e) => { setGender(e.target.value); setHostel(hostelOptions[e.target.value][0]) }}
             className="border rounded-lg p-2 shadow-sm hover:cursor-pointer bg-white dark:bg-slate-700 midnight:bg-black text-gray-900 dark:text-gray-100 midnight:text-gray-100"
           >
             <option value="Male">Male</option>
@@ -141,34 +141,39 @@ export default function LaundrySchedule({ hostelData }) {
 
       {schedule.length > 0 ? (
         <div className="overflow-x-auto">
-          <Table className="bg-white dark:bg-slate-800 midnight:bg-black text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-            <TableHeader>
-              <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead>Room Number Range</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
+          <table className="min-w-full border-collapse table-auto bg-white dark:bg-slate-800 midnight:bg-black text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+            <thead className="bg-gray-100 dark:bg-slate-700 midnight:bg-slate-900">
+              <tr>
+                <th className="px-4 py-2 text-center border-b border-gray-300 dark:border-gray-700">
+                  Date
+                </th>
+                <th className="px-4 py-2 text-center border-b border-gray-300 dark:border-gray-700">
+                  Room Number Range
+                </th>
+              </tr>
+            </thead>
+            <tbody>
               {schedule.map((item) => {
                 const isToday = parseInt(item.Date, 10) === today;
                 return (
-                  <TableRow
+                  <tr
                     key={item.Id}
-                    className={
-                      isToday
+                    className={`${isToday
                         ? "bg-yellow-200 dark:bg-yellow-600 midnight:bg-yellow-600 font-bold"
                         : ""
-                    }
+                      }`}
                   >
-                    <TableCell className="text-center">{item.Date}</TableCell>
-                    <TableCell className="text-center">
+                    <td className="px-4 py-2 text-center border-b border-gray-800 dark:border-gray-700">
+                      {item.Date}
+                    </td>
+                    <td className="px-4 py-2 text-center border-b border-gray-800 dark:border-gray-700">
                       {item.RoomNumber}
-                    </TableCell>
-                  </TableRow>
+                    </td>
+                  </tr>
                 );
               })}
-            </TableBody>
-          </Table>
+            </tbody>
+          </table>
         </div>
       ) : (
         <p className="text-center text-gray-600 dark:text-gray-400 midnight:text-gray-400">
