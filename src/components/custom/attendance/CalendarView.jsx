@@ -1,7 +1,6 @@
 "use client";
 import React, { useMemo, useState, useEffect } from "react";
 import { eachDayOfInterval, endOfMonth, getDay } from "date-fns";
-import { TriangleAlert } from "lucide-react";
 
 const CALENDAR_TYPES = {
     ALL: "General Semester",
@@ -133,11 +132,6 @@ export default function CalendarView({ calendars, calendarType }) {
             <h1 className="text-lg font-semibold mb-3 text-center text-gray-800 dark:text-gray-100 midnight:text-gray-100">
                 Academic Calendar ({CALENDAR_TYPES[calendarType || "ALL"]})
             </h1>
-            <div className="flex items-center gap-2 text-sm font-medium text-yellow-900 dark:text-yellow-200 midnight:text-yellow-100 bg-yellow-50 dark:bg-yellow-900/30 midnight:bg-yellow-950/30 border border-yellow-300 dark:border-yellow-800 rounded-xl p-3">
-                <TriangleAlert className="w-4 h-4 shrink-0 text-yellow-600 dark:text-yellow-400 midnight:text-yellow-300" />
-                <span>Page still in testing</span>
-            </div>
-
             <div className="flex gap-2 mb-3 justify-center flex-wrap">
                 {safeCalendars.map((calendar, idx) => (
                     <button

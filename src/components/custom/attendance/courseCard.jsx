@@ -1,7 +1,10 @@
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Building2, Clock } from "lucide-react"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import "react-circular-progressbar/dist/styles.css"
+import { useState, useEffect } from "react"
 
 function countRemainingClasses(courseCode, dayCardsMap, calendarMonths, fromDate = new Date()) {
     if (!courseCode || !dayCardsMap || !calendarMonths) return 0;
@@ -49,7 +52,8 @@ function countRemainingClasses(courseCode, dayCardsMap, calendarMonths, fromDate
     return remainingWorkingDays.length;
 }
 
-export default function CourseCard({ a, onClick, activeDay, dayCardsMap, analyzeCalendars }) {
+export default function CourseCard({ a, onClick, activeDay, dayCardsMap, analyzeCalendars, importantEvents }) {
+    const [ongoing, setOngoing] = useState(false);
     const lab = a.slotName.split('')[0] === "L";
 
     const isOngoing = () => {
@@ -78,11 +82,65 @@ export default function CourseCard({ a, onClick, activeDay, dayCardsMap, analyze
         return now >= start && now <= end;
     };
 
-    const ongoing = isOngoing();
+    useEffect(() => {
+        setOngoing(isOngoing());
+    }, [a.time, activeDay]);
 
-    const left = Array.isArray(analyzeCalendars) && analyzeCalendars.length > 0
-        ? countRemainingClasses(a.courseCode, dayCardsMap, analyzeCalendars)
-        : null;
+    const findEventDate = (eventName) => {
+        const ev = [...importantEvents.values()].find(
+            (e) => e.event.toLowerCase() === eventName.toLowerCase()
+        );
+        if (!ev) return null;
+        return ev.formattedDate;
+    };
+
+    const countTillDate = (endDate) => {
+        if (!endDate) return 0;
+        const endMid = new Date(endDate);
+        endMid.setHours(23, 59, 59, 999);
+
+        const filteredMonths = analyzeCalendars.map((monthObj) => ({
+            ...monthObj,
+            days: monthObj.days.filter((d) => {
+                if (!d.date || !d.weekday) return false;
+                const monthStr = monthObj.month?.toLowerCase() || "";
+                const mIndex = [
+                    "january", "february", "march", "april", "may", "june",
+                    "july", "august", "september", "october", "november", "december"
+                ].findIndex((m) => monthStr.includes(m));
+
+                const dFull = new Date(monthObj.year, mIndex, d.date);
+                dFull.setHours(0, 0, 0, 0);
+                return dFull <= endMid;
+            }),
+        }));
+
+        return countRemainingClasses(a.courseCode, dayCardsMap, filteredMonths, new Date());
+    };
+
+    const isLab = a.courseCode.endsWith("(L)");
+    const isTheory = a.courseCode.endsWith("(T)");
+
+    const cat1Date = findEventDate("CAT I");
+    const cat2Date = findEventDate("CAT II");
+    const lidLabDate = findEventDate("LID FOR LAB CLASSES");
+    const lidTheoryDate = findEventDate("LID FOR THEORY CLASSES");
+
+    let classesTillCAT1 = 0;
+    let classesTillCAT2 = 0;
+    let classesTillLID = 0;
+
+    if (Array.isArray(analyzeCalendars) && analyzeCalendars.length > 0) {
+        if (isLab) {
+            classesTillCAT1 = countTillDate(cat1Date);
+            classesTillCAT2 = countTillDate(cat2Date);
+            classesTillLID = countTillDate(lidLabDate);
+        } else if (isTheory) {
+            classesTillCAT1 = countTillDate(cat1Date);
+            classesTillCAT2 = countTillDate(cat2Date);
+            classesTillLID = countTillDate(lidTheoryDate);
+        }
+    }
 
     return (
         <Card
@@ -156,15 +214,12 @@ export default function CourseCard({ a, onClick, activeDay, dayCardsMap, analyze
                             }
                         }
                     })()}
-                    {left !== null ? (
-                        <>
-                            <div className="text-green-500 dark:text-green-400 midnight:text-green-400 text-sm">
-                                {left} classes left in this semester
-                            </div>
-                            <div className="text-gray-700 dark:text-gray-500 midnight:text-gray-300 text-xs">
-                                Not Counting Saturdays, Beta feature, can have bugs
-                            </div>
-                        </>
+                    {(classesTillCAT1 || classesTillCAT2 || classesTillLID) ? (
+                        <div className="text-green-500 dark:text-green-400 midnight:text-green-400 text-sm">
+                            {classesTillCAT1 !== 0 && <p>Classes left till CAT I: {classesTillCAT1}</p>}
+                            {classesTillCAT2 !== 0 && <p>Classes left till CAT II: {classesTillCAT2}</p>}
+                            {classesTillLID !== 0 && <p>Classes left till FAT: {classesTillLID}</p>}
+                        </div>
                     ) : (
                         <div className="text-gray-400 dark:text-gray-500 midnight:text-gray-500 text-sm italic">
                             Calendar data unavailable

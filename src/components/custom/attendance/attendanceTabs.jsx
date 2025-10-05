@@ -270,7 +270,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
   }
 
   const daysWithClasses = days.filter((d) => dayCardsMap[d].length > 0);
-  const analyzeCalendars = analyzeAllCalendars(calendars);
+  const { results, importantEvents } = analyzeAllCalendars(calendars);
 
   useEffect(() => {
     if (!daysWithClasses.includes(activeDay)) {
@@ -316,7 +316,8 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
               onClick={() => setExpandedIdx(idx)}
               activeDay={activeDay}
               dayCardsMap={dayCardsMap}
-              analyzeCalendars={analyzeCalendars}
+              analyzeCalendars={results}
+              importantEvents={importantEvents}
               className="p-2 text-sm rounded-md shadow-sm bg-gray-100 dark:bg-gray-800 midnight:bg-black hover:shadow-md transition"
             />
             {expandedIdx === idx && (

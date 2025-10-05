@@ -124,12 +124,58 @@ export function analyzeCalendar(calendar = {}) {
         result.summary[dayType]++;
     }
 
-    return result;
+    const IMPORTANT_EVENT_NAMES = new Set([
+        "cat   i",
+        "cat   ii",
+        "lid for lab classes",
+        "lid for theory classes",
+    ]);
+
+    const importantEvents = new Map();
+
+    for (const day of result.days) {
+        for (const ev of day.events) {
+            const text = normalize(ev.text || "");
+            for (const key of IMPORTANT_EVENT_NAMES) {
+                if (text.includes(key) && !importantEvents.has(key)) {
+                    const monthIndex = [
+                        "january", "february", "march", "april", "may", "june",
+                        "july", "august", "september", "october", "november", "december"
+                    ].findIndex((m) => result.month.toLowerCase().includes(m));
+                    importantEvents.set(key, {
+                        event: key.split(" ").filter(e => e.trim() !== "").join(" ").toUpperCase(),
+                        date: day.date,
+                        weekday: day.weekday,
+                        month: result.month,
+                        year: result.year,
+                        formattedDate: new Date(result.year, monthIndex, day.date),
+                    });
+                }
+            }
+        }
+    }
+    return { result, importantEvents };
 }
 
 export function analyzeAllCalendars(calendars) {
-    if (!calendars) return [];
-    if (Array.isArray(calendars)) return calendars.map(analyzeCalendar);
-    if (calendars.calendars) return calendars.calendars.map(analyzeCalendar);
-    return [analyzeCalendar(calendars)];
+    if (!calendars) return { results: [], importantEvents: new Map() };
+
+    const calArray = Array.isArray(calendars)
+        ? calendars
+        : calendars.calendars
+            ? calendars.calendars
+            : [calendars];
+
+    const results = [];
+    const importantEvents = new Map();
+
+    for (const cal of calArray) {
+        const { result, importantEvents: imp } = analyzeCalendar(cal);
+        results.push(result);
+        for (const [key, val] of imp.entries()) {
+            if (!importantEvents.has(key)) importantEvents.set(key, val);
+        }
+    }
+
+    return { results, importantEvents };
 }
