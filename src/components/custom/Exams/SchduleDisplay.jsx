@@ -78,7 +78,7 @@ export default function ExamSchedule({ data }) {
                       " opacity-40 line-through hover:opacity-50 cursor-not-allowed";
                   else if (isToday)
                     rowClass +=
-                      " !bg-green-100 dark:!bg-green-600/40 midnight:!bg-green-700/50 !border-l-4 !border-green-500 shadow-md !text-green-900 dark:!text-green-200";
+                      " !bg-green-100 dark:!bg-green-600/40 midnight:!bg-green-700/50 !text-green-900 dark:!text-green-200";
 
                   return (
                     <TableRow key={idx} className={rowClass}>

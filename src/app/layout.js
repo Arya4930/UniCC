@@ -9,6 +9,10 @@ export const viewport = {
     { media: "(prefers-color-scheme: dark)", color: "#111827" },
     { media: "(prefers-color-scheme: midnight)", color: "#0f172a" },
   ],
+  width: "device-width",
+  initialScale: 1.0,
+  maximumScale: 1.0,
+  userScalable: "no",
 };
 
 const geistSans = Geist({
