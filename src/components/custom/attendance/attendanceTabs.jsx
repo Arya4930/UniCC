@@ -1,192 +1,13 @@
 import { useState, useEffect } from "react";
 import CourseCard from "./courseCard";
 import { analyzeAllCalendars } from "@/lib/analyzeCalendar";
-
-const slotMap = {
-  MON: {
-    A1: { time: "8:00-8:50" },
-    F1: { time: "8:55-9:45" },
-    D1: { time: "9:50-10:40" },
-    TB1: { time: "10:45-11:35" },
-    TG1: { time: "11:40-12:30" },
-    S11: { time: "12:35-1:25" },
-    A2: { time: "2:00-2:50" },
-    F2: { time: "2:55-3:45" },
-    D2: { time: "3:50-4:40" },
-    TB2: { time: "4:45-5:35" },
-    TG2: { time: "5:40-6:30" },
-    S3: { time: "6:35-7:25" },
-    L1: { time: "8:00-8:50" },
-    L2: { time: "8:50-9:40" },
-    L3: { time: "9:50-10:40" },
-    L4: { time: "10:40-11:30" },
-    L5: { time: "11:40-12:30" },
-    L6: { time: "12:30-1:20" },
-    L31: { time: "2:00-2:50" },
-    L32: { time: "2:50-3:40" },
-    L33: { time: "3:50-4:40" },
-    L34: { time: "4:40-5:30" },
-    L35: { time: "5:40-6:30" },
-    L36: { time: "6:30-7:20" },
-  },
-  TUE: {
-    B1: { time: "8:00-8:50" },
-    G1: { time: "8:55-9:45" },
-    E1: { time: "9:50-10:40" },
-    TC1: { time: "10:45-11:35" },
-    TAA1: { time: "11:40-12:30" },
-    L12: { time: "12:35-1:25" },
-    B2: { time: "2:00-2:50" },
-    G2: { time: "2:55-3:45" },
-    E2: { time: "3:50-4:40" },
-    TC2: { time: "4:45-5:35" },
-    TAA2: { time: "5:40-6:30" },
-    S1: { time: "6:35-7:25" },
-    L7: { time: "8:00-8:50" },
-    L8: { time: "8:50-9:40" },
-    L9: { time: "9:50-10:40" },
-    L10: { time: "10:40-11:30" },
-    L11: { time: "11:40-12:30" },
-    L37: { time: "2:00-2:50" },
-    L38: { time: "2:50-3:40" },
-    L39: { time: "3:50-4:40" },
-    L40: { time: "4:40-5:30" },
-    L41: { time: "5:40-6:30" },
-    L42: { time: "6:30-7:20" },
-  },
-  WED: {
-    C1: { time: "8:00-8:50" },
-    A1: { time: "8:55-9:45" },
-    F1: { time: "9:50-10:40" },
-    TD1: { time: "10:45-11:35" },
-    TBB1: { time: "11:40-12:30" },
-    L18: { time: "12:35-1:25" },
-    C2: { time: "2:00-2:50" },
-    A2: { time: "2:55-3:45" },
-    F2: { time: "3:50-4:40" },
-    TD2: { time: "4:45-5:35" },
-    TBB2: { time: "5:40-6:30" },
-    S4: { time: "6:35-7:25" },
-    L12: { time: "8:00-8:50" },
-    L13: { time: "8:50-9:40" },
-    L14: { time: "9:50-10:40" },
-    L15: { time: "10:40-11:30" },
-    L17: { time: "11:40-12:30" },
-    L43: { time: "2:00-2:50" },
-    L44: { time: "2:50-3:40" },
-    L45: { time: "3:50-4:40" },
-    L46: { time: "4:40-5:30" },
-    L47: { time: "5:40-6:30" },
-    L48: { time: "6:30-7:20" },
-  },
-  THU: {
-    D1: { time: "8:00-8:50" },
-    B1: { time: "8:55-9:45" },
-    G1: { time: "9:50-10:40" },
-    TE1: { time: "10:45-11:35" },
-    TCC1: { time: "11:40-12:30" },
-    L24: { time: "12:35-1:25" },
-    D2: { time: "2:00-2:50" },
-    B2: { time: "2:55-3:45" },
-    G2: { time: "3:50-4:40" },
-    TE2: { time: "4:45-5:35" },
-    TCC2: { time: "5:40-6:30" },
-    S2: { time: "6:35-7:25" },
-    L19: { time: "8:00-8:50" },
-    L20: { time: "8:50-9:40" },
-    L21: { time: "9:50-10:40" },
-    L22: { time: "10:40-11:30" },
-    L23: { time: "11:40-12:30" },
-    L49: { time: "2:00-2:50" },
-    L50: { time: "2:50-3:40" },
-    L51: { time: "3:50-4:40" },
-    L52: { time: "4:40-5:30" },
-    L53: { time: "5:40-6:30" },
-    L54: { time: "6:30-7:20" },
-  },
-  FRI: {
-    E1: { time: "8:00-8:50" },
-    C1: { time: "8:55-9:45" },
-    TA1: { time: "9:50-10:40" },
-    TF1: { time: "10:45-11:35" },
-    TDD1: { time: "11:40-12:30" },
-    S15: { time: "12:35-1:25" },
-    E2: { time: "2:00-2:50" },
-    C2: { time: "2:55-3:45" },
-    TA2: { time: "3:50-4:40" },
-    TF2: { time: "4:45-5:35" },
-    TDD2: { time: "5:40-6:30" },
-    L60: { time: "6:35-7:25" },
-    L25: { time: "8:00-8:50" },
-    L26: { time: "8:50-9:40" },
-    L27: { time: "9:50-10:40" },
-    L28: { time: "10:40-11:30" },
-    L29: { time: "11:40-12:30" },
-    L30: { time: "12:30-1:20" },
-    L55: { time: "2:00-2:50" },
-    L56: { time: "2:50-3:40" },
-    L57: { time: "3:50-4:40" },
-    L58: { time: "4:40-5:30" },
-    L59: { time: "5:40-6:30" },
-    L60: { time: "6:30-7:20" },
-  },
-  SAT: {
-    X11: { time: "8:00-8:50" },
-    X12: { time: "8:55-9:45" },
-    Y11: { time: "9:50-10:40" },
-    Y12: { time: "10:45-11:35" },
-    S8: { time: "11:40-12:30" },
-    S8: { time: "12:35-1:25" },
-    X21: { time: "2:00-2:50" },
-    Z21: { time: "2:55-3:45" },
-    Y21: { time: "3:50-4:40" },
-    W21: { time: "4:45-5:35" },
-    W22: { time: "5:40-6:30" },
-    Z22: { time: "6:35-7:25" },
-    L71: { time: "8:00-8:50" },
-    L72: { time: "8:50-9:40" },
-    L73: { time: "9:50-10:40" },
-    L74: { time: "10:40-11:30" },
-    L75: { time: "11:40-12:30" },
-    L76: { time: "12:30-1:20" },
-    L77: { time: "2:00-2:50" },
-    L78: { time: "2:50-3:40" },
-    L79: { time: "3:50-4:40" },
-    L80: { time: "4:40-5:30" },
-    L81: { time: "5:40-6:30" },
-    L82: { time: "6:30-7:20" },
-  },
-  SUN: {
-    Y11: { time: "8:00-8:50" },
-    Y12: { time: "8:55-9:45" },
-    X11: { time: "9:50-10:40" },
-    X12: { time: "10:45-11:35" },
-    S10: { time: "11:40-12:30" },
-    S10: { time: "12:35-1:25" },
-    Y21: { time: "2:00-2:50" },
-    Z21: { time: "2:55-3:45" },
-    X21: { time: "3:50-4:40" },
-    W21: { time: "4:45-5:35" },
-    W22: { time: "5:40-6:30" },
-    Z22: { time: "6:35-7:25" },
-    L83: { time: "8:00-8:50" },
-    L84: { time: "8:50-9:40" },
-    L85: { time: "9:50-10:40" },
-    L86: { time: "10:40-11:30" },
-    L87: { time: "11:40-12:30" },
-    L88: { time: "12:30-1:20" },
-    L89: { time: "2:00-2:50" },
-    L90: { time: "2:50-3:40" },
-    L91: { time: "3:50-4:40" },
-    L92: { time: "4:40-5:30" },
-    L93: { time: "5:40-6:30" },
-    L94: { time: "6:30-7:20" },
-  },
-};
+import PopupCard from "./PopupCard";
+import config from '@/app/config.json'
 
 export default function AttendanceTabs({ data, activeDay, setActiveDay, calendars }) {
   const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
   const [expandedIdx, setExpandedIdx] = useState(null);
+  const slotMap = config.slotMap;
 
   const dayCardsMap = {};
   days.forEach((day) => (dayCardsMap[day] = []));
@@ -297,11 +118,10 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
             key={d}
             onClick={() => setActiveDay(d)}
             className={`px-4 py-2 rounded-md text-sm md:text-base font-medium transition-colors duration-150
-          ${
-            activeDay === d
-              ? "bg-blue-600 text-white midnight:bg-blue-700"
-              : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 midnight:bg-black midnight:text-gray-200 midnight:hover:bg-gray-800 midnight:outline midnight:outline-1 midnight:outline-gray-800"
-          }`}
+          ${activeDay === d
+                ? "bg-blue-600 text-white midnight:bg-blue-700"
+                : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 midnight:bg-black midnight:text-gray-200 midnight:hover:bg-gray-800 midnight:outline midnight:outline-1 midnight:outline-gray-800"
+              }`}
           >
             {d}
           </button>
@@ -315,43 +135,16 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
               a={a}
               onClick={() => setExpandedIdx(idx)}
               activeDay={activeDay}
-              dayCardsMap={dayCardsMap}
-              analyzeCalendars={results}
-              importantEvents={importantEvents}
-              className="p-2 text-sm rounded-md shadow-sm bg-gray-100 dark:bg-gray-800 midnight:bg-black hover:shadow-md transition"
             />
             {expandedIdx === idx && (
-              <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-                <div className="bg-gray-100 dark:bg-gray-800 midnight:bg-black rounded-xl shadow-lg p-4 max-w-sm w-[90%] relative">
-                  <h2 className="text-base font-semibold mb-2 text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                    {a.courseTitle}
-                  </h2>
-                  <ul className="list-disc list-inside text-xs max-h-[70vh] overflow-y-auto space-y-1">
-                    {a.viewLink?.map((d, i) => (
-                      <li
-                        key={i}
-                        className={
-                          d.status.toLowerCase() === "absent"
-                            ? "text-red-500"
-                            : d.status.toLowerCase() === "present"
-                            ? "text-green-500"
-                            : d.status.toLowerCase() === "on duty"
-                            ? "text-yellow-500"
-                            : "text-gray-700 dark:text-gray-300 midnight:text-gray-300"
-                        }
-                      >
-                        {d.date} – {d.status}
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                    className="absolute top-2 right-2 text-gray-700 dark:text-gray-200 midnight:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400 midnight:hover:text-gray-400"
-                    onClick={() => setExpandedIdx(null)}
-                  >
-                    ✕
-                  </button>
-                </div>
-              </div>
+              <PopupCard
+                a={a}
+                setExpandedIdx={setExpandedIdx}
+                activeDay={activeDay}
+                dayCardsMap={dayCardsMap}
+                analyzeCalendars={results}
+                importantEvents={importantEvents}
+              />
             )}
           </div>
         ))}
