@@ -150,7 +150,6 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                                 <p><strong>Faculty:</strong> {a.faculty}</p>
                                 <p><strong>Course Code:</strong> {a.courseCode.slice(0, -3)}</p>
                                 <p><strong>Credits:</strong> {a.credits}</p>
-                                <p><strong>Lab:</strong> {lab ? "True" : "False"}</p>
                                 <p>
                                     <strong>Classes Attended:</strong>{" "}
                                     <span className="font-semibold">
