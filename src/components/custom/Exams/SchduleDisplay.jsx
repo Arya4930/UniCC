@@ -124,7 +124,7 @@ export default function ExamSchedule({ data }) {
                     download={`${examType}_Schedule_iOS.ics`}
                     className="bg-yellow-500 hover:bg-yellow-600 text-black px-3 py-1.5 rounded-md text-sm font-medium"
                   >
-                    Add to iOS Calendar (.ics)
+                    Add Exams to Calendar
                   </a>
                 </div>
               )}
