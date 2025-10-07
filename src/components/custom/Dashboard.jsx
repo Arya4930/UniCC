@@ -26,7 +26,7 @@ function CalendarTabWrapper({ calendarType, setCalendarType, handleCalendarFetch
     WEI: "Weekend Intra Semester",
   };
 
-  const [selectedType, setSelectedType] = useState("ALL");
+  const [selectedType, setSelectedType] = useState(calendarType || "ALL");
 
   function handleSubmitCalendarType() {
     handleCalendarFetch(selectedType);

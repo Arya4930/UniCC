@@ -116,7 +116,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
     }
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
-            <div className="bg-gray-100 dark:bg-gray-800 midnight:bg-black rounded-2xl shadow-2xl p-5 w-[90%] max-w-md relative max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="bg-gray-100 dark:bg-gray-800 midnight:bg-black rounded-2xl shadow-2xl p-5 w-[90%] max-w-md relative max-h-[90vh] overflow-hidden flex flex-col overflow-y-auto">
                 <button
                     className="absolute top-3 right-3 text-gray-700 dark:text-gray-200 midnight:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400"
                     onClick={() => setExpandedIdx(null)}
@@ -193,7 +193,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                             </div>
 
                             {(classesTillCAT1 || classesTillCAT2 || classesTillLID) ? (
-                                <div className="mt-2 bg-yellow-100 dark:bg-yellow-900/40 midnight:bg-yellow-900/40 text-sm rounded-xl px-4 py-1">
+                                <div className="text-sm">
                                     {classesTillCAT1 !== 0 && <p>Classes left before CAT I: <strong>{classesTillCAT1}</strong></p>}
                                     {classesTillCAT2 !== 0 && <p>Classes left before CAT II: <strong>{classesTillCAT2}</strong></p>}
                                     {classesTillLID !== 0 && <p>Classes left before FAT: <strong>{classesTillLID}</strong></p>}
@@ -229,7 +229,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                     </div>
                 </div>
 
-                <div className="flex-1 overflow-y-auto pr-1">
+                <div className="flex-1 pr-1">
                     <ul className="list-disc list-inside text-xs space-y-1">
                         {a.viewLink?.map((d, i) => (
                             <li
