@@ -41,6 +41,7 @@ To run UniCC locally:
    * Copy the output and paste the keys into your `.env` file:
 
      ```env
+     PUSHNOTIFS_MAIL=<yourmail@mail.com>
      NEXT_PUBLIC_VAPID_PUBLIC_KEY=your_public_key_here
      VAPID_PRIVATE_KEY=your_private_key_here
      ```
