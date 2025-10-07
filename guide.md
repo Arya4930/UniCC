@@ -26,6 +26,7 @@
 | POST | `/vtop/academics/common/StudentAttendance` | Get Semester IDs (for attendance) |
 | POST | `/vtop/processViewStudentAttendance` | Get student attendance for a semester |
 | POST | `/vtop/processViewAttendanceDetail` | Get detailed subject-wise attendance |
+| POST | `/vtop/processViewCalendar` | Get timetable for the selected semester with suboptions for semester type |
 
 ---
 
