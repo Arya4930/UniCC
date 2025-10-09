@@ -125,7 +125,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                 </button>
 
                 <div
-                    className="rounded-xl shadow-md mb-4 transition-all duration-300"
+                    className="rounded-xl mb-4 transition-all duration-300"
                 >
                     <div className="flex justify-between items-start gap-4">
                         <div className="flex flex-col gap-2 flex-grow">
