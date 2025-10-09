@@ -308,7 +308,7 @@ export default function LoginPage() {
         />
       )}
 
-      <Footer />
+      <Footer isLoggedIn={isLoggedIn}/>
     </div>
   );
 }
