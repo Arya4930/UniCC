@@ -47,29 +47,51 @@ export default function DashboardContent({
   handleCalendarFetch,
 }) {
   const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
   const touchEndX = useRef(0);
+  const touchEndY = useRef(0);
+  const hasMoved = useRef(false);
 
   const tabsOrder = ["attendance", "exams", "hostel"];
 
   const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
+    const touch = e.touches[0];
+    touchStartX.current = touch.clientX;
+    touchStartY.current = touch.clientY;
+    hasMoved.current = false;
   };
 
   const handleTouchMove = (e) => {
-    touchEndX.current = e.touches[0].clientX;
+    const touch = e.touches[0];
+    touchEndX.current = touch.clientX;
+    touchEndY.current = touch.clientY;
+
+    const diffX = Math.abs(touchStartX.current - touchEndX.current);
+    const diffY = Math.abs(touchStartY.current - touchEndY.current);
+
+    if (diffX > diffY && diffX > 10) hasMoved.current = true;
   };
 
   const handleTouchEnd = (e) => {
-    const diff = touchStartX.current - touchEndX.current;
-    if (Math.abs(diff) < 75) return;
+    if (!hasMoved.current) return;
 
-    const target = e.target.closest("[data-scrollable]");
+    const diffX = touchStartX.current - touchEndX.current;
+    const diffY = touchStartY.current - touchEndY.current;
+
+    if (Math.abs(diffY) > Math.abs(diffX)) return;
+
+    const target = e.target.closest("button, a, input, textarea, select, [data-prevent-swipe]");
     if (target) return;
 
+    const scrollable = e.target.closest("[data-scrollable], [style*='overflow-x']");
+    if (scrollable) return;
+
+    if (Math.abs(diffX) < 75) return;
+
     const currentIndex = tabsOrder.indexOf(activeTab);
-    if (diff > 0 && currentIndex < tabsOrder.length - 1) {
+    if (diffX > 0 && currentIndex < tabsOrder.length - 1) {
       setActiveTab(tabsOrder[currentIndex + 1]);
-    } else if (diff < 0 && currentIndex > 0) {
+    } else if (diffX < 0 && currentIndex > 0) {
       setActiveTab(tabsOrder[currentIndex - 1]);
     }
   };
