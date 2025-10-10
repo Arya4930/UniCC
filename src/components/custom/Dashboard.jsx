@@ -61,7 +61,6 @@ export default function DashboardContent({
 
   const handleTouchEnd = (e) => {
     const diff = touchStartX.current - touchEndX.current;
-    console.log(diff)
     if (Math.abs(diff) < 75) return;
 
     const target = e.target.closest("[data-scrollable]");
@@ -117,7 +116,7 @@ export default function DashboardContent({
         )}
 
         {activeTab === "attendance" && attendanceData?.attendance && (
-          <>
+          <div className="animate-fadeIn">
             <AttendanceSubTabs
               activeSubTab={activeAttendanceSubTab}
               setActiveAttendanceSubTab={setActiveAttendanceSubTab}
@@ -154,29 +153,29 @@ export default function DashboardContent({
                 />
               </>
             )}
-          </>
+          </div>
         )}
 
         {activeTab === "exams" && marksData && (
-          <>
+          <div className="animate-fadeIn">
             <ExamsSubTabs
               activeSubTab={activeSubTab}
               setActiveSubTab={setActiveSubTab}
             />
             {activeSubTab === "marks" && <MarksDisplay data={marksData} />}
             {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} />}
-          </>
+          </div>
         )}
 
         {activeTab === "hostel" && (
-          <>
+          <div className="animate-fadeIn">
             <HostelSubTabs
               HostelActiveSubTab={HostelActiveSubTab}
               setHostelActiveSubTab={setHostelActiveSubTab}
             />
             {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} />}
             {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} />}
-          </>
+          </div>
         )}
       </div>
     </div>
