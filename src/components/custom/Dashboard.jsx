@@ -62,7 +62,7 @@ export default function DashboardContent({
   const handleTouchEnd = (e) => {
     const diff = touchStartX.current - touchEndX.current;
     console.log(diff)
-    if (Math.abs(diff) < 200) return;
+    if (Math.abs(diff) < 75) return;
 
     const target = e.target.closest("[data-scrollable]");
     if (target) return;
