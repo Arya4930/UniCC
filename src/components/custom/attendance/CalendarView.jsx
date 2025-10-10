@@ -147,7 +147,7 @@ export default function CalendarView({ calendars, calendarType }) {
                 ))}
             </div>
 
-            <div key={activeIdx} className="w-full">
+            <div data-scrollable key={activeIdx} className="w-full">
                 <h2 className="text-2xl font-semibold mb-4 text-center text-gray-800 dark:text-gray-100 midnight:text-gray-200">
                     {activeCalendar.month ?? monthStart.toLocaleString(undefined, { month: "long" })}
                 </h2>

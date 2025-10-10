@@ -13,6 +13,175 @@ import LaundryDisplay from "./Hostel/LaundryDisplay";
 import AttendanceSubTabs from "./attendance/AttendanceSubsTabs";
 import CalendarView from "./attendance/CalendarView";
 import { useState } from "react";
+import { useRef } from "react";
+
+export default function DashboardContent({
+  activeTab,
+  setActiveTab,
+  handleLogOutRequest,
+  handleReloadRequest,
+  GradesData,
+  attendancePercentage,
+  ODhoursData,
+  ODhoursIsOpen,
+  setODhoursIsOpen,
+  GradesDisplayIsOpen,
+  setGradesDisplayIsOpen,
+  attendanceData,
+  activeDay,
+  setActiveDay,
+  marksData,
+  activeSubTab,
+  setActiveSubTab,
+  ScheduleData,
+  hostelData,
+  HostelActiveSubTab,
+  setHostelActiveSubTab,
+  activeAttendanceSubTab,
+  setActiveAttendanceSubTab,
+  calendarData,
+  CGPAHidden,
+  setCGPAHidden,
+  calendarType,
+  setCalendarType,
+  handleCalendarFetch,
+}) {
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  const tabsOrder = ["attendance", "exams", "hostel"];
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    const diff = touchStartX.current - touchEndX.current;
+    console.log(diff)
+    if (Math.abs(diff) < 200) return;
+
+    const target = e.target.closest("[data-scrollable]");
+    if (target) return;
+
+    const currentIndex = tabsOrder.indexOf(activeTab);
+    if (diff > 0 && currentIndex < tabsOrder.length - 1) {
+      setActiveTab(tabsOrder[currentIndex + 1]);
+    } else if (diff < 0 && currentIndex > 0) {
+      setActiveTab(tabsOrder[currentIndex - 1]);
+    }
+  };
+
+  return (
+    <div
+      className="w-full max-w-md md:max-w-full mx-auto overflow-hidden"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      <NavigationTabs
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        handleLogOutRequest={handleLogOutRequest}
+        handleReloadRequest={handleReloadRequest}
+      />
+
+      <div className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-screen text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
+        {GradesData && (
+          <StatsCards
+            attendancePercentage={attendancePercentage}
+            ODhoursData={ODhoursData}
+            setODhoursIsOpen={setODhoursIsOpen}
+            GradesData={GradesData}
+            setGradesDisplayIsOpen={setGradesDisplayIsOpen}
+            CGPAHidden={CGPAHidden}
+            setCGPAHidden={setCGPAHidden}
+          />
+        )}
+
+        {ODhoursIsOpen && (
+          <ODHoursModal
+            ODhoursData={ODhoursData}
+            onClose={() => setODhoursIsOpen(false)}
+          />
+        )}
+
+        {GradesDisplayIsOpen && (
+          <GradesModal
+            GradesData={GradesData}
+            onClose={() => setGradesDisplayIsOpen(false)}
+          />
+        )}
+
+        {activeTab === "attendance" && attendanceData?.attendance && (
+          <>
+            <AttendanceSubTabs
+              activeSubTab={activeAttendanceSubTab}
+              setActiveAttendanceSubTab={setActiveAttendanceSubTab}
+            />
+
+            {activeAttendanceSubTab === "attendance" && (
+              <>
+                {!calendarType && (
+                  <CalendarTabWrapper
+                    calendarType={calendarType}
+                    setCalendarType={setCalendarType}
+                    handleCalendarFetch={handleCalendarFetch}
+                  />
+                )}
+                <AttendanceTabs
+                  data={attendanceData}
+                  activeDay={activeDay}
+                  setActiveDay={setActiveDay}
+                  calendars={calendarData.calendars}
+                />
+              </>
+            )}
+
+            {activeAttendanceSubTab === "calendar" && (
+              <>
+                <CalendarView
+                  calendars={calendarData.calendars}
+                  calendarType={calendarType}
+                />
+                <CalendarTabWrapper
+                  calendarType={calendarType}
+                  setCalendarType={setCalendarType}
+                  handleCalendarFetch={handleCalendarFetch}
+                />
+              </>
+            )}
+          </>
+        )}
+
+        {activeTab === "exams" && marksData && (
+          <>
+            <ExamsSubTabs
+              activeSubTab={activeSubTab}
+              setActiveSubTab={setActiveSubTab}
+            />
+            {activeSubTab === "marks" && <MarksDisplay data={marksData} />}
+            {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} />}
+          </>
+        )}
+
+        {activeTab === "hostel" && (
+          <>
+            <HostelSubTabs
+              HostelActiveSubTab={HostelActiveSubTab}
+              setHostelActiveSubTab={setHostelActiveSubTab}
+            />
+            {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} />}
+            {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} />}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function CalendarTabWrapper({ calendarType, setCalendarType, handleCalendarFetch }) {
   const CALENDAR_TYPES = {
@@ -62,139 +231,6 @@ function CalendarTabWrapper({ calendarType, setCalendarType, handleCalendarFetch
       >
         Submit
       </button>
-    </div>
-  );
-}
-
-export default function DashboardContent({
-  activeTab,
-  setActiveTab,
-  handleLogOutRequest,
-  handleReloadRequest,
-  GradesData,
-  attendancePercentage,
-  ODhoursData,
-  ODhoursIsOpen,
-  setODhoursIsOpen,
-  GradesDisplayIsOpen,
-  setGradesDisplayIsOpen,
-  attendanceData,
-  activeDay,
-  setActiveDay,
-  marksData,
-  activeSubTab,
-  setActiveSubTab,
-  ScheduleData,
-  hostelData,
-  HostelActiveSubTab,
-  setHostelActiveSubTab,
-  activeAttendanceSubTab,
-  setActiveAttendanceSubTab,
-  calendarData,
-  CGPAHidden,
-  setCGPAHidden,
-  calendarType,
-  setCalendarType,
-  handleCalendarFetch
-}) {
-  return (
-    <div className="w-full max-w-md md:max-w-full mx-auto">
-      <NavigationTabs
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        handleLogOutRequest={handleLogOutRequest}
-        handleReloadRequest={handleReloadRequest}
-      />
-
-      <div className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-screen text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
-        {GradesData && (
-          <StatsCards
-            attendancePercentage={attendancePercentage}
-            ODhoursData={ODhoursData}
-            setODhoursIsOpen={setODhoursIsOpen}
-            GradesData={GradesData}
-            setGradesDisplayIsOpen={setGradesDisplayIsOpen}
-            CGPAHidden={CGPAHidden}
-            setCGPAHidden={setCGPAHidden}
-          />
-        )}
-
-        {ODhoursIsOpen && (
-          <ODHoursModal
-            ODhoursData={ODhoursData}
-            onClose={() => setODhoursIsOpen(false)}
-          />
-        )}
-
-        {GradesDisplayIsOpen && (
-          <GradesModal
-            GradesData={GradesData}
-            onClose={() => setGradesDisplayIsOpen(false)}
-          />
-        )}
-
-        <div>
-          {activeTab === "attendance" && attendanceData && attendanceData.attendance && (
-            <>
-              <AttendanceSubTabs
-                activeSubTab={activeAttendanceSubTab}
-                setActiveAttendanceSubTab={setActiveAttendanceSubTab}
-              />
-
-              {activeAttendanceSubTab === "attendance" && (
-                <>
-                  {!calendarType && (
-                    <CalendarTabWrapper
-                      calendarType={calendarType}
-                      setCalendarType={setCalendarType}
-                      handleCalendarFetch={handleCalendarFetch}
-                    />
-                  )}
-                  <AttendanceTabs
-                    data={attendanceData}
-                    activeDay={activeDay}
-                    setActiveDay={setActiveDay}
-                    calendars={calendarData.calendars}
-                  />
-                </>
-              )}
-
-              {activeAttendanceSubTab === "calendar" && (
-                <>
-                  <CalendarView calendars={calendarData.calendars} calendarType={calendarType} />
-                  <CalendarTabWrapper
-                    calendarType={calendarType}
-                    setCalendarType={setCalendarType}
-                    handleCalendarFetch={handleCalendarFetch}
-                  />
-                </>
-              )}
-            </>
-          )}
-
-          {activeTab === "exams" && marksData && (
-            <>
-              <ExamsSubTabs
-                activeSubTab={activeSubTab}
-                setActiveSubTab={setActiveSubTab}
-              />
-              {activeSubTab === "marks" && <MarksDisplay data={marksData} />}
-              {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} />}
-            </>
-          )}
-
-          {activeTab === "hostel" && (
-            <>
-              <HostelSubTabs
-                HostelActiveSubTab={HostelActiveSubTab}
-                setHostelActiveSubTab={setHostelActiveSubTab}
-              />
-              {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} />}
-              {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} />}
-            </>
-          )}
-        </div>
-      </div>
     </div>
   );
 }

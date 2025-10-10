@@ -130,7 +130,7 @@ export default function ExamSchedule({ data }) {
               )}
             </div>
 
-            <div className="overflow-x-auto">
+            <div data-scrollable className="overflow-x-auto">
               <Table className="bg-transparent">
                 <TableHeader>
                   <TableRow>
