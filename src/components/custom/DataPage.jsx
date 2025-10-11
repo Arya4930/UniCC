@@ -12,13 +12,12 @@ function LocalStorageItem({ storageKey, value, onDelete }) {
     let parsedValue = value;
     try {
         parsedValue = JSON.stringify(JSON.parse(value), null, 2);
-    } catch (e) {
-    }
+    } catch (e) { }
 
     return (
-        <div className="flex bg-white dark:bg-gray-800 midnight:bg-gray-800 p-3 rounded-lg shadow border border-gray-300 dark:border-gray-700 midnight:border-gray-700">
+        <div className="flex bg-white dark:bg-slate-800 midnight:bg-black p-3 rounded-lg shadow border border-gray-300 dark:border-gray-700 midnight:border-gray-800">
             <div className="flex-1">
-                <p className="font-medium text-gray-800 dark:text-gray-100 midnight:text-gray-200">
+                <p className="font-medium text-gray-800 dark:text-gray-200 midnight:text-gray-100">
                     {storageKey}
                 </p>
                 <pre
@@ -42,7 +41,7 @@ function LocalStorageItem({ storageKey, value, onDelete }) {
 
 export default function DataPage({ handleClose, handleDeleteItem, storageData }) {
     return (
-        <div className="fixed inset-0 z-50 bg-gray-100 dark:bg-gray-900 midnight:bg-[#0a0a12] bg-opacity-95 flex flex-col items-center justify-start overflow-y-auto p-6">
+        <div className="fixed inset-0 z-50 bg-gray-100 dark:bg-slate-900 midnight:bg-black bg-opacity-95 flex flex-col items-center justify-start overflow-y-auto p-6">
             <div className="w-full flex justify-between items-center mb-6 max-w-3xl">
                 <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100">
                     LocalStorage Data
@@ -51,7 +50,7 @@ export default function DataPage({ handleClose, handleDeleteItem, storageData })
                     variant="ghost"
                     size="icon"
                     onClick={handleClose}
-                    className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 midnight:hover:bg-gray-800"
+                    className="cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-800 midnight:hover:bg-gray-900"
                 >
                     <X size={22} className="text-gray-600 dark:text-gray-300 midnight:text-gray-200" />
                 </Button>

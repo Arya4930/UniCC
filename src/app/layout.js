@@ -42,6 +42,7 @@ export const metadata = {
   },
   description: APP_DESCRIPTION,
   manifest: "/manifest.json",
+  orientation: "portrait",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",

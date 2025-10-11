@@ -166,7 +166,7 @@ export default function LoginPage() {
         setMessage("Data reloaded successfully!");
         setIsLoggedIn(true);
       } else {
-        setMessage(data.message || "Login failed. Please try again.");
+        setMessage(data.message || "Login failed. If you changed your VTOP password recently, please Logout and Login again.");
       }
     } catch (err) {
       setMessage("Login failed, check console.");
