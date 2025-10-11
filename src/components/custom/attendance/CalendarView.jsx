@@ -153,7 +153,7 @@ export default function CalendarView({ calendars, calendarType }) {
                 </h2>
 
                 <div className="overflow-x-auto">
-                    <div className="w-full min-w-[900px] grid grid-cols-7 text-center border-collapse">
+                    <div className="w-full min-w-[950px] grid grid-cols-7 text-center border-collapse">
                         {weekdays.map((day) => (
                             <div
                                 key={day}
@@ -224,7 +224,7 @@ export default function CalendarView({ calendars, calendarType }) {
                                                 : dayType === "instructional"
                                                     ? "Working"
                                                     : dayType === "semiholiday"
-                                                        ? "Campus Required"
+                                                        ? "Campus Req."
                                                         : "Other"}
                                         </div>
                                     </div>
