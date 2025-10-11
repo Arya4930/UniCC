@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import { Button } from "../ui/button";
+import { X } from "lucide-react"; 
 
 export default function ODHoursModal({ ODhoursData, onClose }) {
 
@@ -14,12 +16,14 @@ export default function ODHoursModal({ ODhoursData, onClose }) {
   return (
     <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="bg-gray-600 dark:bg-slate-800 midnight:bg-black p-6 pr-3 w-87 max-h-[80vh] relative text-white dark:text-gray-100 midnight:text-gray-100 rounded-2xl">
-        <button
-          className="absolute top-2 right-2 text-gray-300 hover:text-white dark:text-gray-400 dark:hover:text-gray-200 midnight:text-gray-400 midnight:hover:text-gray-200 font-bold hover:cursor-pointer"
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={onClose}
+          className="top-4 right-4 absolute cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-800 midnight:hover:bg-gray-900"
         >
-          ✕
-        </button>
+          <X size={22} className="text-gray-600 dark:text-gray-300 midnight:text-gray-200" />
+        </Button>
 
         <div className="overflow-y-auto max-h-[70vh] custom-scrollbar pr-2">
           <h3 className="text-xl font-bold mb-4 text-white dark:text-gray-100 midnight:text-gray-100">OD Hours Info</h3>

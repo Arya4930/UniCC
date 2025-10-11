@@ -3,7 +3,15 @@ import { BookOpen } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 export default function GradesDisplay({ data }) {
-  if (!data || !data.cgpa) return <p className="text-gray-700 dark:text-gray-300 midnight:text-gray-200">No grades data available.</p>;
+  if (!data || !data.cgpa){
+    return (
+      <div className="fixed inset-0 flex items-center justify-center backdrop-blur-md bg-black/50 z-50">
+        <p className="text-gray-700 dark:text-gray-300 midnight:text-gray-200">
+          No grades data available.
+        </p>
+      </div>
+    );
+  }
 
   const totalCredits = data.curriculum.find(c =>
     c.basketTitle.toLowerCase().includes("total credits")

@@ -20,7 +20,7 @@ export default function LoginPage() {
   const [activeDay, setActiveDay] = useState(new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase());
   const [isReloading, setIsReloading] = useState(false);
   const [activeTab, setActiveTab] = useState("attendance");
-  const [attendancePercentage, setattendancePercentage] = useState(0);
+  const [attendancePercentage, setattendancePercentage] = useState({});
   const [ODhoursData, setODhoursData] = useState({});
   const [ODhoursIsOpen, setODhoursIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,7 +40,7 @@ export default function LoginPage() {
       totalClass += parseInt(course.totalClasses);
       attendedClasses += parseInt(course.attendedClasses);
     });
-    setattendancePercentage(Math.round(attendedClasses * 10000 / totalClass) / 100);
+    setattendancePercentage({ "percentage": Math.round(attendedClasses * 10000 / totalClass) / 100, "str": `${attendedClasses}/${totalClass}`});
 
     let ODList = {};
     attendance.attendance.forEach(course => {

@@ -39,6 +39,7 @@
 | POST | `/vtop/examinations/examGradeView/StudentGradeHistory` | Fetch CGPA and course grade history |
 | POST | `/vtop/examinations/StudentMarkView` | Get Semester IDs (for marks) |
 | POST | `/vtop/examinations/doStudentMarkView` | Get student marks for a semester |
+| POST | `/vtop/get/dashboard/current/cgpa/credits` | Get student credit
 
 ---
 

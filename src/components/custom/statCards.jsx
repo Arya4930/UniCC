@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function StatsCards({
   attendancePercentage,
@@ -11,16 +11,22 @@ export default function StatsCards({
   CGPAHidden,
   setCGPAHidden,
 }) {
+  const [attendancePercentageOrString, setAttendancePercentageOrString] = useState("percentage");
   useEffect(() => {
     const saved = localStorage.getItem("CGPAHidden");
+    const savedAttendancePercentage = localStorage.getItem("attendancePercentageOrString");
+    if (savedAttendancePercentage !== null) {
+      setAttendancePercentageOrString(savedAttendancePercentage);
+    }
     if (saved !== null) {
       setCGPAHidden(saved === "true");
     }
-  }, [setCGPAHidden]);
+  }, [setCGPAHidden, setAttendancePercentageOrString]);
 
   useEffect(() => {
     localStorage.setItem("CGPAHidden", CGPAHidden);
-  }, [CGPAHidden]);
+    localStorage.setItem("attendancePercentageOrString", attendancePercentageOrString);
+  }, [CGPAHidden, attendancePercentageOrString]);
 
   const totalODHours =
     ODhoursData && ODhoursData.length > 0 && ODhoursData[0].courses
@@ -36,11 +42,11 @@ export default function StatsCards({
         {/* Card 1 */}
         <div
           className={`${cardBase} bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800`}
-          onClick={() => console.log("Attendance clicked")}
+          onClick={() => setAttendancePercentageOrString((prev) => (prev === "percentage" ? "str" : "percentage"))}
         >
           <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 midnight:text-gray-200">Attendance</h2>
           <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mt-2">
-            {attendancePercentage}
+            {attendancePercentage[attendancePercentageOrString]}
           </p>
         </div>
 
@@ -75,7 +81,7 @@ export default function StatsCards({
         >
           <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 midnight:text-gray-200">Credits Earned</h2>
           <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mt-2">
-            {GradesData?.cgpa?.creditsEarned}
+            {Number(GradesData?.cgpa?.creditsEarned) + Number(GradesData?.cgpa?.nonGradedRequirement || 0)}
           </p>
         </div>
       </div>
