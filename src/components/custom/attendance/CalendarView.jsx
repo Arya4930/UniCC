@@ -16,7 +16,7 @@ const CALENDAR_TYPES = {
 const HOLIDAY_KEYWORDS = [
     "holiday", "pooja", "puja", "ayudha", "diwali", "pongal", "eid", "christmas", "good friday",
     "independence", "republic", "onam", "holi", "ramadan", "ganesh", "maha shivaratri", "vesak",
-    "vacation", "term end", "no instructional", "noinstructional",
+    "vacation", "term end", "no instructional", "noinstructional", "vinayakar chathurthi", "gandhi jayanthi"
 ];
 
 function normalize(str = "") {
@@ -128,7 +128,7 @@ export default function CalendarView({ calendars, calendarType }) {
     const blanks = Array.from({ length: blanksCount }, (_, i) => i);
 
     return (
-        <div className="flex flex-col gap-4 p-4">
+        <div className="flex flex-col gap-4">
             <h1 className="text-lg font-semibold mb-3 text-center text-gray-800 dark:text-gray-100 midnight:text-gray-100">
                 Academic Calendar ({CALENDAR_TYPES[calendarType || "ALL"]})
             </h1>
@@ -178,16 +178,27 @@ export default function CalendarView({ calendars, calendarType }) {
                             const hasInstructional = events.some(isInstructionalEvent);
                             const isEmpty = events.length === 0;
 
+                            const semiHolidayEvents = ["CAT - I", "CAT - II", "TechnoVIT", "Vibrance"];
+                            const hasSemiHoliday = events.some(e =>
+                                semiHolidayEvents.some(keyword =>
+                                    (e.text || "").toLowerCase().includes(keyword.toLowerCase()) ||
+                                    (e.category || "").toLowerCase().includes(keyword.toLowerCase())
+                                )
+                            );
+
                             let dayType = "other";
-                            if (hasHoliday || isEmpty || (!hasInstructional && events.length > 0)) dayType = "holiday";
+                            if (hasSemiHoliday) dayType = "semiholiday";
+                            else if (hasHoliday || isEmpty || (!hasInstructional && events.length > 0)) dayType = "holiday";
                             else if (hasInstructional) dayType = "instructional";
 
                             const bgClass =
                                 dayType === "holiday"
-                                    ? "bg-red-50 dark:bg-red-900/30 midnight:bg-red-950/30"
+                                    ? "bg-red-50 dark:bg-red-900/30 midnight:bg-red-900/30"
                                     : dayType === "instructional"
-                                        ? "bg-green-50 dark:bg-green-900/30 midnight:bg-green-950/30"
-                                        : "bg-yellow-50 dark:bg-yellow-900/30 midnight:bg-yellow-950/30";
+                                        ? "bg-green-50 dark:bg-green-900/30 midnight:bg-green-900/30"
+                                        : dayType === "semiholiday"
+                                            ? "bg-yellow-50 dark:bg-yellow-900/30 midnight:bg-yellow-900/30"
+                                            : "bg-gray-50 dark:bg-gray-900/30 midnight:bg-gray-900/30";
 
                             return (
                                 <div
@@ -200,13 +211,21 @@ export default function CalendarView({ calendars, calendarType }) {
                                         </div>
                                         <div
                                             className={`text-xs font-semibold px-2 py-0.5 rounded ${dayType === "holiday"
-                                                ? "bg-red-200 text-red-800 dark:bg-red-800 dark:text-red-100 midnight:bg-red-900 midnight:text-red-200"
-                                                : dayType === "instructional"
-                                                    ? "bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-100 midnight:bg-green-900 midnight:text-green-200"
-                                                    : "bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100 midnight:bg-yellow-900 midnight:text-yellow-200"
+                                                    ? "bg-red-200 text-red-800 dark:bg-red-800 dark:text-red-100 midnight:bg-red-900 midnight:text-red-200"
+                                                    : dayType === "instructional"
+                                                        ? "bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-100 midnight:bg-green-900 midnight:text-green-200"
+                                                        : dayType === "semiholiday"
+                                                            ? "bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100 midnight:bg-yellow-900 midnight:text-yellow-200"
+                                                            : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-100 midnight:bg-gray-800 midnight:text-gray-200"
                                                 }`}
                                         >
-                                            {dayType === "holiday" ? "Holiday" : dayType === "instructional" ? "Working" : "Other"}
+                                            {dayType === "holiday"
+                                                ? "Holiday"
+                                                : dayType === "instructional"
+                                                    ? "Working"
+                                                    : dayType === "semiholiday"
+                                                        ? "Campus Required"
+                                                        : "Other"}
                                         </div>
                                     </div>
 

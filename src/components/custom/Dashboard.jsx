@@ -149,7 +149,6 @@ export default function DashboardContent({
                 {!calendarType && (
                   <CalendarTabWrapper
                     calendarType={calendarType}
-                    setCalendarType={setCalendarType}
                     handleCalendarFetch={handleCalendarFetch}
                   />
                 )}
@@ -170,7 +169,6 @@ export default function DashboardContent({
                 />
                 <CalendarTabWrapper
                   calendarType={calendarType}
-                  setCalendarType={setCalendarType}
                   handleCalendarFetch={handleCalendarFetch}
                 />
               </>
@@ -204,7 +202,7 @@ export default function DashboardContent({
   );
 }
 
-function CalendarTabWrapper({ calendarType, setCalendarType, handleCalendarFetch }) {
+function CalendarTabWrapper({ calendarType, handleCalendarFetch }) {
   const CALENDAR_TYPES = {
     ALL: "General Semester",
     ALL02: "General Flexible",
