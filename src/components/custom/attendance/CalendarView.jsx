@@ -153,7 +153,7 @@ export default function CalendarView({ calendars, calendarType }) {
                 </h2>
 
                 <div className="overflow-x-auto">
-                    <div className="w-full min-w-[950px] grid grid-cols-7 text-center border-collapse">
+                    <div className="w-full min-w-[970px] grid grid-cols-7 text-center border-collapse">
                         {weekdays.map((day) => (
                             <div
                                 key={day}
