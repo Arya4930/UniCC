@@ -37,7 +37,7 @@ export default function StatsCards({
     "cursor-pointer p-6 rounded-2xl shadow hover:shadow-lg transition flex-shrink-0 snap-start w-[calc(50%-8px)] md:w-[calc(25%-12px)] flex flex-col items-center justify-center text-center";
 
   return (
-    <div className="overflow-x-auto snap-x snap-mandatory ml-4 mr-4">
+    <div data-scrollable className="overflow-x-auto snap-x snap-mandatory ml-4 mr-4">
       <div className="flex gap-4 py-4 px-2">
         {/* Card 1 */}
         <div
