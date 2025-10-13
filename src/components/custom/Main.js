@@ -31,6 +31,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [CGPAHidden, setCGPAHidden] = useState(false);
   const [calendarType, setCalenderType] = useState(null)
+  const [progressBar, setProgressBar] = useState(0);
 
   function setAttendanceAndOD(attendance) {
     setAttendanceData(attendance);
@@ -40,7 +41,7 @@ export default function LoginPage() {
       totalClass += parseInt(course.totalClasses);
       attendedClasses += parseInt(course.attendedClasses);
     });
-    setattendancePercentage({ "percentage": Math.round(attendedClasses * 10000 / totalClass) / 100, "str": `${attendedClasses}/${totalClass}`});
+    setattendancePercentage({ "percentage": Math.round(attendedClasses * 10000 / totalClass) / 100, "str": `${attendedClasses}/${totalClass}` });
 
     let ODList = {};
     attendance.attendance.forEach(course => {
@@ -100,6 +101,8 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     setMessage("Logging in and fetching data...");
+    setProgressBar(10);
+
     try {
       const res = await fetch("/api/login", {
         method: "POST",
@@ -107,69 +110,123 @@ export default function LoginPage() {
         body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
+
       if (data.success && data.dashboardHtml) {
         localStorage.setItem("username", username);
         localStorage.setItem("password", password);
-        const [attRes, marksRes, gradesRes, ScheduleRes, HostelRes, calenderRes] = await Promise.all([
+        setMessage(prev => prev + "\n✅ Login successful");
+        setProgressBar(prev => prev + 30);
+
+        const [
+          attRes,
+          marksRes,
+          gradesRes,
+          ScheduleRes,
+          HostelRes,
+          calenderRes,
+        ] = await Promise.all([
           fetch("/api/fetchAttendance", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+          }).then(async r => {
+            const j = await r.json();
+            setMessage(prev => prev + "\n✅ Attendance fetched");
+            setProgressBar(prev => prev + 10);
+            return j;
           }),
+
           fetch("/api/fetchMarks", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+          }).then(async r => {
+            const j = await r.json();
+            setMessage(prev => prev + "\n✅ Marks fetched");
+            setProgressBar(prev => prev + 10);
+            return j;
           }),
+
           fetch("/api/fetchGrades", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+          }).then(async r => {
+            const j = await r.json();
+            setMessage(prev => prev + "\n✅ Grades fetched");
+            setProgressBar(prev => prev + 10);
+            return j;
           }),
-          fetch('/api/fetchExamSchedule', {
+
+          fetch("/api/fetchExamSchedule", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+          }).then(async r => {
+            const j = await r.json();
+            setMessage(prev => prev + "\n✅ Exam schedule fetched");
+            setProgressBar(prev => prev + 10);
+            return j;
           }),
-          fetch('/api/fetchHostelDetails', {
+
+          fetch("/api/fetchHostelDetails", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+          }).then(async r => {
+            const j = await r.json();
+            setMessage(prev => prev + "\n✅ Hostel details fetched");
+            setProgressBar(prev => prev + 10);
+            return j;
           }),
-          fetch('/api/parseSemTT', {
+
+          fetch("/api/parseSemTT", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, type: (calendarType || "ALL") }),
-          })
+            body: JSON.stringify({
+              cookies: data.cookies,
+              dashboardHtml: data.dashboardHtml,
+              type: calendarType || "ALL",
+            }),
+          }).then(async r => {
+            const j = await r.json();
+            setMessage(prev => prev + "\n✅ Calendar fetched");
+            setProgressBar(prev => prev + 10);
+            return j;
+          }),
         ]);
 
-        const attData = await attRes.json();
-        const marksDataPayload = await marksRes.json();
-        const gradesDataPayload = await gradesRes.json();
-        const ScheduleDataPayload = await ScheduleRes.json();
-        const hostelRes = await HostelRes.json();
-        const CalenderRes = await calenderRes.json();
+        setMessage(prev => prev + "\nFinalizing and saving data...");
 
-        setAttendanceAndOD(attData);
-        setMarksData(marksDataPayload);
-        setGradesData(gradesDataPayload);
-        setScheduleData(ScheduleDataPayload);
-        sethostelData(hostelRes);
-        setCalender(CalenderRes);
-        localStorage.setItem("attendance", JSON.stringify(attData));
-        localStorage.setItem("marks", JSON.stringify(marksDataPayload));
-        localStorage.setItem("grades", JSON.stringify(gradesDataPayload));
-        localStorage.setItem("schedule", JSON.stringify(ScheduleDataPayload));
-        localStorage.setItem("hostel", JSON.stringify(hostelRes));
-        localStorage.setItem("calender", JSON.stringify(CalenderRes));
+        setAttendanceAndOD(attRes);
+        setMarksData(marksRes);
+        setGradesData(gradesRes);
+        setScheduleData(ScheduleRes);
+        sethostelData(HostelRes);
+        setCalender(calenderRes);
+
+        localStorage.setItem("attendance", JSON.stringify(attRes));
+        localStorage.setItem("marks", JSON.stringify(marksRes));
+        localStorage.setItem("grades", JSON.stringify(gradesRes));
+        localStorage.setItem("schedule", JSON.stringify(ScheduleRes));
+        localStorage.setItem("hostel", JSON.stringify(HostelRes));
+        localStorage.setItem("calender", JSON.stringify(calenderRes));
+
         setIsReloading(false);
-        setMessage("Data reloaded successfully!");
+        setMessage(prev => prev + "\n✅ All data loaded successfully!");
+        setProgressBar(100);
         setIsLoggedIn(true);
       } else {
-        setMessage(data.message || "Login failed. If you changed your VTOP password recently, please Logout and Login again.");
+        setMessage(
+          data.message ||
+          "Login failed. If you changed your VTOP password recently, please Logout and Login again."
+        );
+        setProgressBar(0);
       }
     } catch (err) {
-      setMessage("Login failed, check console.");
+      console.error(err);
+      setMessage(prev => prev + "\n❌ Login failed, check console.");
+      setProgressBar(0);
     }
   };
 
@@ -258,6 +315,7 @@ export default function LoginPage() {
           handleLogin={handleLogin}
           message={message}
           onClose={() => setIsReloading(false)}
+          progressBar={progressBar}
         />
       )}
 
@@ -308,7 +366,7 @@ export default function LoginPage() {
         />
       )}
 
-      <Footer isLoggedIn={isLoggedIn}/>
+      <Footer isLoggedIn={isLoggedIn} />
     </div>
   );
 }

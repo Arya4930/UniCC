@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { X } from "lucide-react";
 
-export function ReloadModal({ message, onClose }) {
+export function ReloadModal({ message, onClose, progressBar }) {
     useEffect(() => {
         document.body.style.overflow = "hidden";
         return () => {
@@ -27,14 +27,20 @@ export function ReloadModal({ message, onClose }) {
                 {message && (
                     <div className="flex flex-col items-center justify-center gap-3 text-sm">
                         <video
-                            src="/surfer.mp4" 
+                            src="/surfer.mp4"
                             autoPlay
                             loop
                             muted
                             playsInline
                             className="w-40 h-auto rounded-lg shadow-lg"
                         />
-                        <span>{message}</span>
+                        <div className="w-36 bg-gray-600/50 rounded-full h-2 overflow-hidden">
+                            <div
+                                className="h-2 bg-blue-500 transition-all duration-500 ease-in-out"
+                                style={{ width: `${progressBar}%` }}
+                            ></div>
+                        </div>
+                        <span className="whitespace-pre-wrap">{message}</span>
                     </div>
                 )}
             </div>
