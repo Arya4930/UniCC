@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { Building2, Clock } from "lucide-react"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 import "react-circular-progressbar/dist/styles.css"
 
 export function countRemainingClasses(courseCode, dayCardsMap, calendarMonths, fromDate = new Date()) {
@@ -117,12 +119,14 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
             <div className="bg-gray-100 dark:bg-gray-800 midnight:bg-black rounded-2xl shadow-2xl p-5 w-[90%] max-w-md relative max-h-[90vh] overflow-hidden flex flex-col overflow-y-auto">
-                <button
-                    className="absolute top-3 right-3 text-gray-700 dark:text-gray-200 midnight:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400"
+                <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => setExpandedIdx(null)}
+                    className="top-2 right-2 absolute cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-800 midnight:hover:bg-gray-900"
                 >
-                    ✕
-                </button>
+                    <X size={22} className="text-gray-600 dark:text-gray-300 midnight:text-gray-200" />
+                </Button>
 
                 <div
                     className="rounded-xl mb-4 transition-all duration-300"

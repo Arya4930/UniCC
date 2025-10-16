@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 export default function MarksDisplay({ data }) {
@@ -145,12 +147,14 @@ export default function MarksDisplay({ data }) {
                       </table>
                     </div>
 
-                    <button
-                      className="absolute top-3 right-3 text-gray-700 dark:text-gray-200 midnight:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400 midnight:hover:text-gray-400"
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       onClick={() => setOpenCourse(null)}
+                      className="top-2 right-2 absolute cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-800 midnight:hover:bg-gray-900"
                     >
-                      ✕
-                    </button>
+                      <X size={22} className="text-gray-600 dark:text-gray-300 midnight:text-gray-200" />
+                    </Button>
                   </div>
                 </div>
               )}
