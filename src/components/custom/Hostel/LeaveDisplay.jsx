@@ -111,7 +111,7 @@ export default function LeaveDisplay({ leaveData, reloadLeaveHistory }) {
             )}
 
             {showHistory && pastLeaves.length > 0 && (
-                <div className="mt-6 overflow-x-auto">
+                <div data-scrollable className="mt-6 overflow-x-auto">
                     <table className="min-w-full border-collapse table-auto bg-white dark:bg-slate-800 midnight:bg-black text-gray-900 dark:text-gray-100 midnight:text-gray-100">
                         <thead className="bg-gray-100 dark:bg-slate-700 midnight:bg-slate-900">
                             <tr>
@@ -147,11 +147,11 @@ export default function LeaveDisplay({ leaveData, reloadLeaveHistory }) {
                                     <td className="px-4 py-2 text-center border-b border-gray-800 dark:border-gray-700">
                                         {leave.reason}
                                     </td>
-                                    <td className="px-4 py-2 text-center border-b border-gray-800 dark:border-gray-700">
+                                    <td className={`px-4 py-2 text-center border-b border-gray-800 dark:border-gray-700 ${getStatusClasses(
+                                        leave.status
+                                    )}`}>
                                         <span
-                                            className={`px-2 py-1 rounded-md font-semibold ${getStatusClasses(
-                                                leave.status
-                                            )}`}
+                                            className={`px-2 py-1 rounded-md font-semibold`}
                                         >
                                             {leave.status}
                                         </span>
