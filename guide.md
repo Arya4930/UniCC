@@ -47,7 +47,7 @@
 
 | Method | Endpoint | Purpose |
 |--------|----------|---------|
-| POST | `/vtop/hostels/student/leave/1` | Open leave request page |
+| POST | `/vtop/hostels/student/leave/1` | Open leave request page ( Need to call this before any of the ones below ) |
 | POST | `/vtop/hostels/student/leave/2` | Leave request step (details) |
 | POST | `/vtop/hostels/student/leave/3` | Submit leave request |
 | POST | `/vtop/hostels/student/leave/4` | View leave status |

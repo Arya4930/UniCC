@@ -14,6 +14,7 @@ import AttendanceSubTabs from "./attendance/AttendanceSubsTabs";
 import CalendarView from "./attendance/CalendarView";
 import { useState } from "react";
 import { useRef } from "react";
+import LeaveDisplay from "./Hostel/LeaveDisplay";
 
 export default function DashboardContent({
   activeTab,
@@ -45,6 +46,7 @@ export default function DashboardContent({
   calendarType,
   setCalendarType,
   handleCalendarFetch,
+  reloadLeaveHistory
 }) {
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
@@ -108,6 +110,7 @@ export default function DashboardContent({
         setActiveTab={setActiveTab}
         handleLogOutRequest={handleLogOutRequest}
         handleReloadRequest={handleReloadRequest}
+        hostelData={hostelData}
       />
 
       <div className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-screen text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
@@ -192,9 +195,11 @@ export default function DashboardContent({
             <HostelSubTabs
               HostelActiveSubTab={HostelActiveSubTab}
               setHostelActiveSubTab={setHostelActiveSubTab}
+              hostelData={hostelData}
             />
             {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} />}
             {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} />}
+            {HostelActiveSubTab === "leave" && <LeaveDisplay leaveData={hostelData.leaveHistory} reloadLeaveHistory={reloadLeaveHistory} />}
           </div>
         )}
       </div>

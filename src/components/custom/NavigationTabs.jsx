@@ -8,6 +8,7 @@ export default function NavigationTabs({
   setActiveTab,
   handleLogOutRequest,
   handleReloadRequest,
+  hostelData
 }) {
   const [isSpinning, setIsSpinning] = useState(false);
 
@@ -33,30 +34,29 @@ export default function NavigationTabs({
 
       <button
         onClick={() => setActiveTab("attendance")}
-        className={`${tabBase} ${
-          activeTab === "attendance" ? tabActive : tabInactive
-        }`}
+        className={`${tabBase} ${activeTab === "attendance" ? tabActive : tabInactive
+          }`}
       >
         Attendance
       </button>
 
       <button
         onClick={() => setActiveTab("exams")}
-        className={`${tabBase} ${
-          activeTab === "exams" ? tabActive : tabInactive
-        }`}
+        className={`${tabBase} ${activeTab === "exams" ? tabActive : tabInactive
+          }`}
       >
         Exams
       </button>
 
-      <button
-        onClick={() => setActiveTab("hostel")}
-        className={`${tabBase} ${
-          activeTab === "hostel" ? tabActive : tabInactive
-        }`}
-      >
-        Hostel
-      </button>
+      {hostelData.hostelInfo?.isHosteller && (
+        <button
+          onClick={() => setActiveTab("hostel")}
+          className={`${tabBase} ${activeTab === "hostel" ? tabActive : tabInactive
+            }`}
+        >
+          Hostel
+        </button>
+      )}
 
       <button
         onClick={handleReloadClick}
@@ -64,7 +64,7 @@ export default function NavigationTabs({
       >
         <RefreshCcw className={`w-4 h-4 ${isSpinning ? "animate-spin" : ""}`} />
       </button>
-      
+
     </div>
   );
 }

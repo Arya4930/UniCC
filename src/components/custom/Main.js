@@ -232,7 +232,9 @@ export default function LoginPage() {
 
   const handleCalendarFetch = async (FncalendarType) => {
     setIsReloading(true);
+    setProgressBar(10);
     setMessage("Logging in and fetching data...");
+
     try {
       const res = await fetch("/api/login", {
         method: "POST",
@@ -240,31 +242,96 @@ export default function LoginPage() {
         body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
+
       if (data.success && data.dashboardHtml) {
-        const [calenderRes] = await Promise.all([
-          fetch('/api/parseSemTT', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, type: (FncalendarType || "ALL") }),
-          })
-        ]);
+        setMessage((prev) => prev + "\n✅ Login successful");
+        setProgressBar((prev) => prev + 30);
+
+        const calenderRes = await fetch("/api/parseSemTT", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            cookies: data.cookies,
+            dashboardHtml: data.dashboardHtml,
+            type: FncalendarType || "ALL",
+          }),
+        });
 
         const CalenderRes = await calenderRes.json();
+        setProgressBar((prev) => prev + 40);
+
         setCalender(CalenderRes);
-        setCalenderType(calendarType);
+        setCalenderType(FncalendarType);
         localStorage.setItem("calender", JSON.stringify(CalenderRes));
-        localStorage.setItem("calendarType", JSON.stringify(FncalendarType));
-        setIsReloading(false);
-        setMessage("Data reloaded successfully!");
+        localStorage.setItem("calendarType", FncalendarType);
+
+        setMessage((prev) => prev + "\n✅ Calendar reloaded successfully!");
+        setProgressBar(100);
         setIsLoggedIn(true);
       } else {
-        setMessage(data.message || "Login failed. Please try again.");
+        setMessage(
+          data.message ||
+          "Login failed. If you changed your password recently, please logout and login again."
+        );
+        setProgressBar(0);
       }
     } catch (err) {
-      setMessage("Login failed, check console.");
+      console.error(err);
+      setMessage("❌ Calendar fetch failed, check console.");
+      setProgressBar(0);
     } finally {
       setIsReloading(false);
-      window.location.reload();
+    }
+  };
+
+
+  const reloadLeaveHistory = async () => {
+    setIsReloading(true);
+    setProgressBar(10);
+    setMessage("Logging in and fetching leave history...");
+
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await res.json();
+
+      if (data.success && data.dashboardHtml) {
+        setMessage((prev) => prev + "\n✅ Login successful");
+        setProgressBar((prev) => prev + 30);
+
+        const hostelRes = await fetch("/api/fetchHostelDetails", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            cookies: data.cookies,
+            dashboardHtml: data.dashboardHtml,
+          }),
+        });
+
+        const HostelRes = await hostelRes.json();
+        setProgressBar((prev) => prev + 40);
+
+        sethostelData(HostelRes);
+        localStorage.setItem("hostelData", JSON.stringify(HostelRes));
+
+        setMessage((prev) => prev + "\n✅ Leave history reloaded successfully!");
+        setProgressBar(100);
+      } else {
+        setMessage(
+          data.message ||
+          "Login failed. If you changed your password recently, please logout and login again."
+        );
+        setProgressBar(0);
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Leave history reload failed, check console.");
+      setProgressBar(0);
+    } finally {
+      setIsReloading(false);
     }
   };
 
@@ -363,6 +430,7 @@ export default function LoginPage() {
           calendarType={calendarType}
           setCalendarType={setCalenderType}
           handleCalendarFetch={handleCalendarFetch}
+          reloadLeaveHistory={reloadLeaveHistory}
         />
       )}
 

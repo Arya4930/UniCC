@@ -1,4 +1,5 @@
 // https://vtopcc.vit.ac.in/vtop/studentsRecord/StudentProfileAllView
+// https://vtopcc.vit.ac.in/vtop/hostels/student/leave/6
 import { client } from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
 import { NextResponse } from "next/server";
@@ -33,9 +34,47 @@ export async function POST(req) {
             }
         );
 
+        await client.post(
+            "/vtop/hostels/student/leave/1",
+            new URLSearchParams({
+                verifyMenu: "true",
+                authorizedID,
+                _csrf: csrf,
+                nocache: Date.now().toString(),
+            }).toString(),
+            {
+                headers: {
+                    Cookie: cookieHeader,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Referer: "https://vtopcc.vit.ac.in/vtop/open/page",
+                },
+            }
+        );
+
+        const leaveRes = await client.post(
+            "/vtop/hostels/student/leave/6",
+            new URLSearchParams({
+                history: "",
+                authorizedID,
+                _csrf: csrf,
+                form: "undefined",
+                control: "history",
+                x: Date.now().toString(),
+            }).toString(),
+            {
+                headers: {
+                    Cookie: cookieHeader,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Referer: "https://vtopcc.vit.ac.in/vtop/hostels/student/leave/1",
+                },
+            }
+        );
         const $$ = cheerio.load(hostelRes.data);
+        const $$$ = cheerio.load(leaveRes.data);
+        const leaveRows = $$$("#LeaveHistoryTable tbody tr");
 
         let hostelInfo = {};
+        const leaveHistory = [];
 
         $$("table tr").each((_, row) => {
             const cols = $$(row).find("td");
@@ -44,9 +83,9 @@ export async function POST(req) {
             const label = cols.eq(0).text().trim();
             const value = cols.eq(1).text().trim();
 
-            if(label.includes("GENDER")) {
+            if (label.includes("GENDER")) {
                 hostelInfo.gender = value;
-            } else if(label.includes("HOSTELLER")) {
+            } else if (label.includes("HOSTELLER")) {
                 hostelInfo.isHosteller = value === "HOSTELLER" ? true : false;
             }
             if (label.includes("Block Name")) {
@@ -67,7 +106,25 @@ export async function POST(req) {
             }
         });
 
-        return NextResponse.json({ hostelInfo });
+        leaveRows.each((_, row) => {
+            const cells = $$$(row).find("td");
+
+            if (cells.length >= 8) {
+                const leave = {
+                    leaveId: $$$(cells[1]).text().trim(),
+                    visitPlace: $$$(cells[2]).text().trim(),
+                    reason: $$$(cells[3]).text().trim(),
+                    leaveType: $$$(cells[4]).text().trim(),
+                    from: $$$(cells[5]).text().trim(),
+                    to: $$$(cells[6]).text().trim(),
+                    status: $$$(cells[7]).text().trim(),
+                    remarks: $$$(cells[8]).text().trim(),
+                };
+                leaveHistory.push(leave);
+            }
+        });
+
+        return NextResponse.json({ hostelInfo, leaveHistory });
     } catch (err) {
         console.error(err);
         return NextResponse.json({ error: err.message }, { status: 500 });
