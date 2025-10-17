@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { X, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 
@@ -8,33 +8,57 @@ function LocalStorageItem({ storageKey, value, onDelete }) {
     const [showValue, setShowValue] = useState(
         storageKey !== "username" && storageKey !== "password"
     );
+    const [expanded, setExpanded] = useState(false);
 
     let parsedValue = value;
     try {
         parsedValue = JSON.stringify(JSON.parse(value), null, 2);
     } catch (e) { }
 
-    return (
-        <div className="flex bg-white dark:bg-slate-800 midnight:bg-black p-3 rounded-lg shadow border border-gray-300 dark:border-gray-700 midnight:border-gray-800">
-            <div className="flex-1">
-                <p className="font-medium text-gray-800 dark:text-gray-200 midnight:text-gray-100">
-                    {storageKey}
-                </p>
-                <pre
-                    className={`text-sm text-gray-600 dark:text-gray-400 midnight:text-gray-300 break-all mt-1 whitespace-pre-wrap font-mono ${!showValue ? "blur-sm select-none" : ""
-                        }`}
-                    onClick={() => setShowValue(true)}
-                >
-                    {parsedValue}
-                </pre>
-            </div>
+    const isLarge = parsedValue.length > 400;
+    const displayValue = isLarge && !expanded
+        ? parsedValue.slice(0, 100) + "..."
+        : parsedValue;
 
-            <button
-                onClick={onDelete}
-                className="ml-3 text-red-500 hover:text-red-700 dark:hover:text-red-400 midnight:hover:text-red-400 transition cursor-pointer"
-            >
-                <X size={18} />
-            </button>
+    return (
+        <div className="flex flex-col bg-white dark:bg-slate-800 midnight:bg-black p-3 rounded-lg shadow border border-gray-300 dark:border-gray-700 midnight:border-gray-800">
+            <div className="flex justify-between items-start">
+                <div className="flex-1">
+                    <p className="font-medium text-gray-800 dark:text-gray-200 midnight:text-gray-100 break-all">
+                        {storageKey}
+                    </p>
+                    <pre
+                        className={`text-sm text-gray-600 dark:text-gray-400 midnight:text-gray-300 break-all mt-1 whitespace-pre-wrap font-mono transition-all duration-300 ease-in-out ${!showValue ? "blur-sm select-none" : ""
+                            }`}
+                        onClick={() => setShowValue(true)}
+                    >
+                        {displayValue}
+                    </pre>
+                    {isLarge && (
+                        <button
+                            className="mt-2 hover:cursor-pointer flex items-center gap-1 text-blue-600 dark:text-blue-400 text-xs font-medium hover:underline"
+                            onClick={() => setExpanded(!expanded)}
+                        >
+                            {expanded ? (
+                                <>
+                                    Show Less <ChevronUp size={14} />
+                                </>
+                            ) : (
+                                <>
+                                    Show More <ChevronDown size={14} />
+                                </>
+                            )}
+                        </button>
+                    )}
+                </div>
+
+                <button
+                    onClick={onDelete}
+                    className="ml-3 hover:cursor-pointer text-red-500 hover:text-red-700 dark:hover:text-red-400 midnight:hover:text-red-400 transition cursor-pointer"
+                >
+                    <X size={18} />
+                </button>
+            </div>
         </div>
     );
 }
