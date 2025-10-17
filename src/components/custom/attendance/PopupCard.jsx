@@ -16,8 +16,7 @@ export function countRemainingClasses(courseCode, dayCardsMap, calendarMonths, f
     const normalizeDay = (d) => d.slice(0, 3).toUpperCase();
     const subjectDays = daysWithSubject.map(normalizeDay);
 
-    const todayMid = new Date(fromDate);
-    todayMid.setHours(0, 0, 0, 0);
+    const now = new Date(fromDate);
 
     const monthNames = [
         "january", "february", "march", "april", "may", "june",
@@ -43,7 +42,7 @@ export function countRemainingClasses(courseCode, dayCardsMap, calendarMonths, f
 
         const dDate = new Date(d.fullDate);
         dDate.setHours(0, 0, 0, 0);
-        if (dDate < todayMid) return false;
+        if (dDate < now) return false;
 
         const dDay = normalizeDay(d.weekday || "");
         return subjectDays.includes(dDay);
