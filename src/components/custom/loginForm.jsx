@@ -8,8 +8,9 @@ export default function LoginForm({
   setPassword,
   message,
   handleFormSubmit,
+  progressBar,
 }) {
-  const isLoading = message === "Logging in and fetching data...";
+  const isLoading = message.startsWith("Logging");
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full px-4 bg-gray-100 dark:bg-slate-900 midnight:bg-black transition-colors duration-300">
@@ -44,23 +45,23 @@ export default function LoginForm({
         {!isLoading && (
           <button
             type="submit"
+            disabled={isLoading}
             className="w-full bg-blue-600 py-3 rounded-lg font-semibold text-white hover:bg-blue-700 transition focus:ring-2 focus:ring-blue-400"
           >
             Login
           </button>
         )}
 
-        {isLoading && (
-          <div className="flex items-center justify-center gap-3 text-sm text-gray-600 dark:text-gray-300 midnight:text-gray-300">
-            <RefreshCcw className="w-5 h-5 animate-spin" />
-            <span>{message}</span>
+        {message && (
+          <div className="flex flex-col items-center justify-center gap-3 text-sm">
+            <div className="w-92 bg-gray-600/50 rounded-full h-2 overflow-hidden">
+              <div
+                className="h-2 bg-blue-500 transition-all duration-500 ease-in-out"
+                style={{ width: `${progressBar}%` }}
+              ></div>
+            </div>
+            <span className="whitespace-pre-wrap">{message}</span>
           </div>
-        )}
-
-        {!isLoading && message && (
-          <p className="text-sm text-center text-gray-600 dark:text-gray-300 midnight:text-gray-400">
-            {message}
-          </p>
         )}
       </form>
     </div>

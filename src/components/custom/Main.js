@@ -227,6 +227,8 @@ export default function LoginPage() {
       console.error(err);
       setMessage(prev => prev + "\n❌ Login failed, check console.");
       setProgressBar(0);
+    } finally {
+      setMessage("");
     }
   };
 
@@ -395,6 +397,7 @@ export default function LoginPage() {
             setPassword={setPassword}
             message={message}
             handleFormSubmit={handleFormSubmit}
+            progressBar={progressBar}
           />
         </div>
       )}
