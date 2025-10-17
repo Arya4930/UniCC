@@ -107,6 +107,18 @@ export async function POST(req) {
             const parsed = await parseCalendar(ttRes.data);
             allCalendars.push(parsed);
         }
+        const addCustomEvent = {
+            text: "Crystal GuruVITa",
+            type: "Holiday",
+            color: "#B22222",
+            category: "Crystal GuruVITa"
+        };
+        allCalendars.forEach((cal, idx) => {
+            const calDate = months[idx] || "";
+            if (typeof calDate === "string" && calDate.toUpperCase().includes("-NOV-")) {
+                addHolidayToCalendar(cal, 7, addCustomEvent);
+            }
+        });
 
         return NextResponse.json({
             semesterId,
@@ -115,5 +127,35 @@ export async function POST(req) {
     } catch (err) {
         console.error(err);
         return NextResponse.json({ error: err.message }, { status: 500 });
+    }
+}
+
+// helper function
+function addHolidayToCalendar(calendar, dayNum, eventObj) {
+    if (!calendar || !Array.isArray(calendar.days)) return;
+
+    const day = calendar.days.find(d => Number(d.date) === Number(dayNum));
+
+    if (day) {
+        if (Array.isArray(day.events)) {
+            day.events = day.events.filter(
+                e => (e.text || "").toLowerCase() !== "instructional day"
+            );
+        } else {
+            day.events = [];
+        }
+
+        const exists = day.events.some(
+            e => (e.text || "").toLowerCase() === (eventObj.text || "").toLowerCase()
+        );
+        if (!exists) {
+            day.events.push(eventObj);
+        }
+
+    } else {
+        calendar.days.push({
+            date: Number(dayNum),
+            events: [eventObj],
+        });
     }
 }

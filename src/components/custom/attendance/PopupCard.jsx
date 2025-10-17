@@ -221,7 +221,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                                 </div>
                             ) : (
                                 <p className="text-gray-400 dark:text-gray-500 midnight:text-gray-500 text-sm italic">
-                                    Calendar data unavailable
+                                    No classes left for this subject
                                 </p>
                             )}
                         </div>
