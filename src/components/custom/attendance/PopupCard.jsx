@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import "react-circular-progressbar/dist/styles.css"
 
-export function countRemainingClasses(courseCode, dayCardsMap, calendarMonths, fromDate = new Date()) {
+export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calendarMonths, fromDate = new Date()) {
     if (!courseCode || !dayCardsMap || !calendarMonths) return 0;
 
     const daysWithSubject = Object.keys(dayCardsMap).filter(day =>
@@ -22,6 +22,22 @@ export function countRemainingClasses(courseCode, dayCardsMap, calendarMonths, f
         "january", "february", "march", "april", "may", "june",
         "july", "august", "september", "october", "november", "december"
     ];
+
+    let startHour = 8, startMinute = 0;
+    if (slotTime && slotTime.includes("-")) {
+        const [start] = slotTime.split("-");
+        const [hRaw, mRaw] = start.split(":");
+        let h = Number(hRaw);
+        const m = Number(mRaw) || 0;
+        if (h >= 8 && h <= 11) {
+        } else if (h === 12) {
+            h = 12;
+        } else if (h >= 1 && h <= 7) {
+            h += 12;
+        }
+        startHour = h;
+        startMinute = m;
+    }
 
     const allDays = calendarMonths.flatMap(monthObj => {
         const monthStr = monthObj.month?.toString().toLowerCase() || "";
@@ -40,13 +56,15 @@ export function countRemainingClasses(courseCode, dayCardsMap, calendarMonths, f
         if (!d || !d.type || d.type.toLowerCase() !== "working") return false;
         if (!d.fullDate || isNaN(d.fullDate.getTime())) return false;
 
-        const dDate = new Date(d.fullDate);
-        dDate.setHours(0, 0, 0, 0);
-        if (dDate < now) return false;
+        const classTime = new Date(d.fullDate);
+        classTime.setHours(startHour, startMinute, 0, 0);
+
+        if (classTime < now) return false;
 
         const dDay = normalizeDay(d.weekday || "");
         return subjectDays.includes(dDay);
     });
+
     return remainingWorkingDays.length;
 }
 
@@ -89,7 +107,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
             }),
         }));
 
-        return countRemainingClasses(a.courseCode, dayCardsMap, filteredMonths, new Date());
+        return countRemainingClasses(a.courseCode, a.time, dayCardsMap, filteredMonths, new Date());
     };
 
     const isLab = a.courseCode.endsWith("(L)");
