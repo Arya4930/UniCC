@@ -15,7 +15,7 @@ function LocalStorageItem({ storageKey, value, onDelete }) {
         parsedValue = JSON.stringify(JSON.parse(value), null, 2);
     } catch (e) { }
 
-    const isLarge = parsedValue.length > 400;
+    const isLarge = parsedValue.length > 100;
     const displayValue = isLarge && !expanded
         ? parsedValue.slice(0, 100) + "..."
         : parsedValue;
