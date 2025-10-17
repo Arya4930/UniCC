@@ -94,7 +94,7 @@ export default function LoginPage() {
     if (storedGrades) setGradesData(JSON.parse(storedGrades));
     if (storedHoste) sethostelData(JSON.parse(storedHoste));
     if (calendar) setCalender(JSON.parse(calendar));
-    if (calendarType) setCalenderType(JSON.parse(calendarType));
+    if (calendarType) setCalenderType(calendarType);
     setIsLoggedIn((storedUsername && storedPassword) ? true : false);
     setTimeout(() => setIsLoading(false), 300);
   }, []);
