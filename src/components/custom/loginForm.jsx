@@ -54,7 +54,7 @@ export default function LoginForm({
 
         {message && (
           <div className="flex flex-col items-center justify-center gap-3 text-sm">
-            <div className="w-92 bg-gray-600/50 rounded-full h-2 overflow-hidden">
+            <div className="w-36 bg-gray-600/50 rounded-full h-2 overflow-hidden">
               <div
                 className="h-2 bg-blue-500 transition-all duration-500 ease-in-out"
                 style={{ width: `${progressBar}%` }}
