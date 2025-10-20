@@ -6,7 +6,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import "react-circular-progressbar/dist/styles.css"
 import { useState, useEffect } from "react"
 
-export default function CourseCard({ a, onClick, activeDay }) {
+export default function CourseCard({ a, onClick, activeDay, isHoliday }) {
     const [ongoing, setOngoing] = useState(false);
     const lab = a.slotName.split('')[0] === "L";
 
@@ -43,7 +43,7 @@ export default function CourseCard({ a, onClick, activeDay }) {
     return (
         <Card
             onClick={onClick}
-            className={`p-4 rounded-lg shadow-sm transition-shadow duration-300 cursor-pointer ${ongoing
+            className={`p-4 rounded-lg shadow-sm transition-shadow duration-300 cursor-pointer ${(ongoing && !isHoliday)
                 ? "ring-2 ring-yellow-200 shadow-lg bg-yellow-50 dark:bg-yellow-900/40 midnight:bg-yellow-900/40"
                 : "hover:shadow-md dark:hover:shadow-lg midnight:hover:shadow-lg"
                 }`}

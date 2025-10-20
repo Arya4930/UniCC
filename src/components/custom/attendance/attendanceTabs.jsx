@@ -4,7 +4,7 @@ import { analyzeAllCalendars } from "@/lib/analyzeCalendar";
 import PopupCard from "./PopupCard";
 import config from '@/app/config.json'
 
-export default function AttendanceTabs({ data, activeDay, setActiveDay, calendars }) {
+export default function AttendanceTabs({ data, activeDay, setActiveDay, calendars, is9Pointer }) {
   const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
   const [expandedIdx, setExpandedIdx] = useState(null);
   const slotMap = config.slotMap;
@@ -93,6 +93,20 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
   const daysWithClasses = days.filter((d) => dayCardsMap[d].length > 0);
   const { results, importantEvents } = analyzeAllCalendars(calendars);
 
+  const today = new Date();
+  const todayDate = today.getDate();
+  const todayMonth = today.toLocaleString("default", { month: "long" }).toUpperCase() + " " + today.getFullYear();
+
+  const monthData = results.find(m => m.month === todayMonth && m.year === today.getFullYear());
+
+  let isHoliday = false;
+  if (monthData) {
+    const todayInfo = monthData.days.find(d => d.date === todayDate);
+    if (todayInfo && todayInfo.type === "holiday") {
+      isHoliday = true;
+    }
+  }
+
   useEffect(() => {
     if (!daysWithClasses.includes(activeDay)) {
       setActiveDay(daysWithClasses[0] || null);
@@ -135,6 +149,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
               a={a}
               onClick={() => setExpandedIdx(idx)}
               activeDay={activeDay}
+              isHoliday={isHoliday}
             />
             {expandedIdx === idx && (
               <PopupCard
@@ -144,6 +159,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
                 dayCardsMap={dayCardsMap}
                 analyzeCalendars={results}
                 importantEvents={importantEvents}
+                is9Pointer={is9Pointer}
               />
             )}
           </div>

@@ -5,70 +5,7 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import "react-circular-progressbar/dist/styles.css"
 
-export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calendarMonths, fromDate = new Date()) {
-    if (!courseCode || !dayCardsMap || !calendarMonths) return 0;
-
-    const daysWithSubject = Object.keys(dayCardsMap).filter(day =>
-        dayCardsMap[day].some(c => c.courseCode === courseCode)
-    );
-    if (daysWithSubject.length === 0) return 0;
-
-    const normalizeDay = (d) => d.slice(0, 3).toUpperCase();
-    const subjectDays = daysWithSubject.map(normalizeDay);
-
-    const now = new Date(fromDate);
-
-    const monthNames = [
-        "january", "february", "march", "april", "may", "june",
-        "july", "august", "september", "october", "november", "december"
-    ];
-
-    let startHour = 8, startMinute = 0;
-    if (slotTime && slotTime.includes("-")) {
-        const [start] = slotTime.split("-");
-        const [hRaw, mRaw] = start.split(":");
-        let h = Number(hRaw);
-        const m = Number(mRaw) || 0;
-        if (h >= 8 && h <= 11) {
-        } else if (h === 12) {
-            h = 12;
-        } else if (h >= 1 && h <= 7) {
-            h += 12;
-        }
-        startHour = h;
-        startMinute = m;
-    }
-
-    const allDays = calendarMonths.flatMap(monthObj => {
-        const monthStr = monthObj.month?.toString().toLowerCase() || "";
-        const year = monthObj.year || new Date().getFullYear();
-
-        const foundMonth = monthNames.find(m => monthStr.includes(m));
-        const mIndex = foundMonth ? monthNames.indexOf(foundMonth) : -1;
-
-        return (monthObj.days || []).map(day => ({
-            ...day,
-            fullDate: mIndex === -1 ? null : new Date(year, mIndex, day.date)
-        }));
-    });
-
-    const remainingWorkingDays = allDays.filter((d) => {
-        if (!d || !d.type || d.type.toLowerCase() !== "working") return false;
-        if (!d.fullDate || isNaN(d.fullDate.getTime())) return false;
-
-        const classTime = new Date(d.fullDate);
-        classTime.setHours(startHour, startMinute, 0, 0);
-
-        if (classTime < now) return false;
-
-        const dDay = normalizeDay(d.weekday || "");
-        return subjectDays.includes(dDay);
-    });
-
-    return remainingWorkingDays.length;
-}
-
-export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, analyzeCalendars, importantEvents }) {
+export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, analyzeCalendars, importantEvents, is9Pointer }) {
     const lab = a.slotName.split('')[0] === "L";
 
     useEffect(() => {
@@ -213,8 +150,16 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                                 })()}
                             </div>
 
-                            {(classesTillCAT1 || classesTillCAT2 || classesTillLID) ? (
+                            {(classesTillCAT1 >= 0 && classesTillCAT2 >= 0 && classesTillLID >= 0) ? (
                                 <div className="text-sm">
+                                    {is9Pointer && classesTillLID === 0 ? (
+                                        <p className="text-green-500">
+                                            You alright cuz 9 ptr
+                                        </p>
+                                    ) : (
+                                        <p className="text-red-500">
+                                            Debarred
+                                        </p>)}
                                     {classesTillCAT1 !== 0 && <p>Classes left before CAT I: <strong>{classesTillCAT1}</strong></p>}
                                     {classesTillCAT2 !== 0 && <p>Classes left before CAT II: <strong>{classesTillCAT2}</strong></p>}
                                     {classesTillLID !== 0 && <p>Classes left before FAT: <strong>{classesTillLID}</strong></p>}
@@ -273,4 +218,67 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
             </div>
         </div>
     );
+}
+
+export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calendarMonths, fromDate = new Date()) {
+    if (!courseCode || !dayCardsMap || !calendarMonths) return 0;
+
+    const daysWithSubject = Object.keys(dayCardsMap).filter(day =>
+        dayCardsMap[day].some(c => c.courseCode === courseCode)
+    );
+    if (daysWithSubject.length === 0) return 0;
+
+    const normalizeDay = (d) => d.slice(0, 3).toUpperCase();
+    const subjectDays = daysWithSubject.map(normalizeDay);
+
+    const now = new Date(fromDate);
+
+    const monthNames = [
+        "january", "february", "march", "april", "may", "june",
+        "july", "august", "september", "october", "november", "december"
+    ];
+
+    let startHour = 8, startMinute = 0;
+    if (slotTime && slotTime.includes("-")) {
+        const [start] = slotTime.split("-");
+        const [hRaw, mRaw] = start.split(":");
+        let h = Number(hRaw);
+        const m = Number(mRaw) || 0;
+        if (h >= 8 && h <= 11) {
+        } else if (h === 12) {
+            h = 12;
+        } else if (h >= 1 && h <= 7) {
+            h += 12;
+        }
+        startHour = h;
+        startMinute = m;
+    }
+
+    const allDays = calendarMonths.flatMap(monthObj => {
+        const monthStr = monthObj.month?.toString().toLowerCase() || "";
+        const year = monthObj.year || new Date().getFullYear();
+
+        const foundMonth = monthNames.find(m => monthStr.includes(m));
+        const mIndex = foundMonth ? monthNames.indexOf(foundMonth) : -1;
+
+        return (monthObj.days || []).map(day => ({
+            ...day,
+            fullDate: mIndex === -1 ? null : new Date(year, mIndex, day.date)
+        }));
+    });
+
+    const remainingWorkingDays = allDays.filter((d) => {
+        if (!d || !d.type || d.type.toLowerCase() !== "working") return false;
+        if (!d.fullDate || isNaN(d.fullDate.getTime())) return false;
+
+        const classTime = new Date(d.fullDate);
+        classTime.setHours(startHour, startMinute, 0, 0);
+
+        if (classTime < now) return false;
+
+        const dDay = normalizeDay(d.weekday || "");
+        return subjectDays.includes(dDay);
+    });
+
+    return remainingWorkingDays.length;
 }

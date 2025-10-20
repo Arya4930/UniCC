@@ -160,6 +160,7 @@ export default function DashboardContent({
                   activeDay={activeDay}
                   setActiveDay={setActiveDay}
                   calendars={calendarData.calendars}
+                  is9Pointer={GradesData?.cgpa?.cgpa >= 9.0}
                 />
               </>
             )}
