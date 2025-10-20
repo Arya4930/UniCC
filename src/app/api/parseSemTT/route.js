@@ -91,7 +91,7 @@ export async function POST(req) {
                     authorizedID,
                     semSubId: semesterId,
                     calDate,
-                    classGroupId: "ALL",
+                    classGroupId: type,
                     _csrf: csrf,
                     x: Date.now().toString(),
                 }).toString(),
