@@ -152,14 +152,14 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
 
                             {(classesTillCAT1 >= 0 && classesTillCAT2 >= 0 && classesTillLID >= 0) ? (
                                 <div className="text-sm">
-                                    {is9Pointer && classesTillLID === 0 ? (
+                                    {classesTillLID === 0 && ( is9Pointer ? (
                                         <p className="text-green-500">
                                             You alright cuz 9 ptr
                                         </p>
                                     ) : (
                                         <p className="text-red-500">
                                             Debarred
-                                        </p>)}
+                                        </p>))}
                                     {classesTillCAT1 !== 0 && <p>Classes left before CAT I: <strong>{classesTillCAT1}</strong></p>}
                                     {classesTillCAT2 !== 0 && <p>Classes left before CAT II: <strong>{classesTillCAT2}</strong></p>}
                                     {classesTillLID !== 0 && <p>Classes left before FAT: <strong>{classesTillLID}</strong></p>}

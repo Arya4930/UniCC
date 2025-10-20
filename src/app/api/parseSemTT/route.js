@@ -14,53 +14,6 @@ import config from "@/app/config.json";
 // ALL11 - Flexible Research
 // WEI - Weekend Intra Semester
 
-async function parseCalendar(html) {
-    const $ = cheerio.load(html);
-    const month = $("h4").first().text().trim();
-    const data = [];
-
-    $("table.calendar-table tbody tr td").each((_, td) => {
-        const cell = $(td);
-        const dateText = cell.find("span").first().text().trim();
-        if (!dateText) return;
-
-        const date = parseInt(dateText, 10);
-        const events = [];
-
-        cell.find("span").slice(1).each((__, span) => {
-            const text = $(span).text().trim();
-            if (!text) return;
-
-            const style = $(span).attr("style") || "";
-            const colorMatch = style.match(/color:\s*([^;]+)/);
-            const color = colorMatch ? colorMatch[1].trim() : "";
-
-            const isInstructional = text.toLowerCase().includes("instructional");
-            const isHoliday = text.toLowerCase().includes("holiday");
-
-            events.push({
-                text,
-                type: isInstructional ? "Instructional Day" : isHoliday ? "Holiday" : "Other",
-                color,
-            });
-        });
-
-        const structured = events.map((e) => {
-            const match = e.text.match(/\(([^)]+)\)/);
-            return {
-                ...e,
-                category: match ? match[1].trim() : "General",
-            };
-        });
-
-        if (events.length !== 0) {
-            data.push({ date, events: structured });
-        }
-    });
-
-    return { month, days: data };
-}
-
 export async function POST(req) {
     try {
         const { cookies, dashboardHtml, type } = await req.json();
@@ -158,4 +111,51 @@ function addHolidayToCalendar(calendar, dayNum, eventObj) {
             events: [eventObj],
         });
     }
+}
+
+async function parseCalendar(html) {
+    const $ = cheerio.load(html);
+    const month = $("h4").first().text().trim();
+    const data = [];
+
+    $("table.calendar-table tbody tr td").each((_, td) => {
+        const cell = $(td);
+        const dateText = cell.find("span").first().text().trim();
+        if (!dateText) return;
+
+        const date = parseInt(dateText, 10);
+        const events = [];
+
+        cell.find("span").slice(1).each((__, span) => {
+            const text = $(span).text().trim();
+            if (!text) return;
+
+            const style = $(span).attr("style") || "";
+            const colorMatch = style.match(/color:\s*([^;]+)/);
+            const color = colorMatch ? colorMatch[1].trim() : "";
+
+            const isInstructional = text.toLowerCase().includes("instructional");
+            const isHoliday = text.toLowerCase().includes("holiday");
+
+            events.push({
+                text,
+                type: isInstructional ? "Instructional Day" : isHoliday ? "Holiday" : "Other",
+                color,
+            });
+        });
+
+        const structured = events.map((e) => {
+            const match = e.text.match(/\(([^)]+)\)/);
+            return {
+                ...e,
+                category: match ? match[1].trim() : "General",
+            };
+        });
+
+        if (events.length !== 0) {
+            data.push({ date, events: structured });
+        }
+    });
+
+    return { month, days: data };
 }

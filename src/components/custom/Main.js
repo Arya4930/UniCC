@@ -212,7 +212,6 @@ export default function LoginPage() {
         localStorage.setItem("hostel", JSON.stringify(HostelRes));
         localStorage.setItem("calender", JSON.stringify(calenderRes));
 
-        setIsReloading(false);
         setMessage(prev => prev + "\n✅ All data loaded successfully!");
         setProgressBar(100);
         setIsLoggedIn(true);
@@ -229,6 +228,7 @@ export default function LoginPage() {
       setProgressBar(0);
     } finally {
       setMessage("");
+      setIsLoading(false);
     }
   };
 
