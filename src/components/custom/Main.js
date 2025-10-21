@@ -228,7 +228,7 @@ export default function LoginPage() {
       setProgressBar(0);
     } finally {
       setMessage("");
-      setIsLoading(false);
+      setIsReloading(false);
     }
   };
 
