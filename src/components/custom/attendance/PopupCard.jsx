@@ -152,7 +152,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
 
                             {(classesTillCAT1 >= 0 && classesTillCAT2 >= 0 && classesTillLID >= 0) ? (
                                 <div className="text-sm">
-                                    {classesTillLID === 0 && ( is9Pointer ? (
+                                    {classesTillLID === 0 && a.attendancePercentage < 75 && ( is9Pointer ? (
                                         <p className="text-green-500">
                                             You alright cuz 9 ptr
                                         </p>
