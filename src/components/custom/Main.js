@@ -220,6 +220,7 @@ export default function LoginPage() {
         setMessage(prev => prev + "\n✅ All data loaded successfully!");
         setProgressBar(100);
         setIsLoggedIn(true);
+        setIsReloading(false);
       } else {
         setMessage(
           data.message ||
@@ -231,9 +232,6 @@ export default function LoginPage() {
       console.error(err);
       setMessage(prev => prev + "\n❌ Login failed, check console.");
       setProgressBar(0);
-    } finally {
-      setMessage("");
-      setIsReloading(false);
     }
   };
 
