@@ -10,6 +10,7 @@ export default function LoginPage() {
   // --- State Management ---
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [campus, setCampus] = useState("chennai");
   const [message, setMessage] = useState("");
   const [attendanceData, setAttendanceData] = useState({});
   const [marksData, setMarksData] = useState({});
@@ -78,6 +79,7 @@ export default function LoginPage() {
     const storedGrades = localStorage.getItem("grades");
     const storedUsername = localStorage.getItem("username");
     const storedPassword = localStorage.getItem("password");
+    const storedCampus = localStorage.getItem("campus");
     const storedSchedule = localStorage.getItem("schedule");
     const storedHoste = localStorage.getItem("hostel");
     const calendar = localStorage.getItem("calender");
@@ -90,6 +92,7 @@ export default function LoginPage() {
     if (storedMarks) setMarksData(JSON.parse(storedMarks));
     if (storedUsername) setUsername(storedUsername);
     if (storedPassword) setPassword(storedPassword);
+    if (storedCampus) setCampus(storedCampus);
     if (storedSchedule) setScheduleData(JSON.parse(storedSchedule));
     if (storedGrades) setGradesData(JSON.parse(storedGrades));
     if (storedHoste) sethostelData(JSON.parse(storedHoste));
@@ -107,13 +110,14 @@ export default function LoginPage() {
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, campus }),
       });
       const data = await res.json();
 
       if (data.success && data.dashboardHtml) {
         localStorage.setItem("username", username);
         localStorage.setItem("password", password);
+        localStorage.setItem("campus", campus);
         setMessage(prev => prev + "\n✅ Login successful");
         setProgressBar(prev => prev + 30);
 
@@ -128,7 +132,7 @@ export default function LoginPage() {
           fetch("/api/fetchAttendance", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, campus }),
           }).then(async r => {
             const j = await r.json();
             setMessage(prev => prev + "\n✅ Attendance fetched");
@@ -139,7 +143,7 @@ export default function LoginPage() {
           fetch("/api/fetchMarks", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, campus }),
           }).then(async r => {
             const j = await r.json();
             setMessage(prev => prev + "\n✅ Marks fetched");
@@ -150,7 +154,7 @@ export default function LoginPage() {
           fetch("/api/fetchGrades", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, campus }),
           }).then(async r => {
             const j = await r.json();
             setMessage(prev => prev + "\n✅ Grades fetched");
@@ -161,7 +165,7 @@ export default function LoginPage() {
           fetch("/api/fetchExamSchedule", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, campus }),
           }).then(async r => {
             const j = await r.json();
             setMessage(prev => prev + "\n✅ Exam schedule fetched");
@@ -172,7 +176,7 @@ export default function LoginPage() {
           fetch("/api/fetchHostelDetails", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
+            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, campus }),
           }).then(async r => {
             const j = await r.json();
             setMessage(prev => prev + "\n✅ Hostel details fetched");
@@ -187,6 +191,7 @@ export default function LoginPage() {
               cookies: data.cookies,
               dashboardHtml: data.dashboardHtml,
               type: calendarType || "ALL",
+              campus,
             }),
           }).then(async r => {
             const j = await r.json();
@@ -241,7 +246,7 @@ export default function LoginPage() {
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, campus }),
       });
       const data = await res.json();
 
@@ -256,6 +261,7 @@ export default function LoginPage() {
             cookies: data.cookies,
             dashboardHtml: data.dashboardHtml,
             type: FncalendarType || "ALL",
+            campus,
           }),
         });
 
@@ -296,7 +302,7 @@ export default function LoginPage() {
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, campus }),
       });
       const data = await res.json();
 
@@ -310,6 +316,7 @@ export default function LoginPage() {
           body: JSON.stringify({
             cookies: data.cookies,
             dashboardHtml: data.dashboardHtml,
+            campus,
           }),
         });
 
@@ -347,8 +354,10 @@ export default function LoginPage() {
     setIsLoggedIn(false);
     setUsername("");
     setPassword("");
+    setCampus("chennai");
     localStorage.removeItem("username");
     localStorage.removeItem("password");
+    localStorage.removeItem("campus");
     setAttendanceData({});
     setMarksData({});
     setGradesData({});
@@ -361,7 +370,7 @@ export default function LoginPage() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    if (!username || !password) {
+    if (!username || !password || !campus) {
       return alert("Please fill all the fields!");
     }
     handleLogin();
@@ -395,6 +404,8 @@ export default function LoginPage() {
             setUsername={setUsername}
             password={password}
             setPassword={setPassword}
+            campus={campus}
+            setCampus={setCampus}
             message={message}
             handleFormSubmit={handleFormSubmit}
             progressBar={progressBar}

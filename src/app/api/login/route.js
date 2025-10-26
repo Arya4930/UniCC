@@ -1,15 +1,17 @@
-import { client } from "@/lib/VTOPClient";
+import { ChennaiClient, VelloreClient } from "@/lib/VTOPClient";
 import { NextResponse } from "next/server";
 import solveCaptcha from "./solveCaptcha";
 import getCaptcha from "./getCaptcha";
 
 export async function POST(req) {
     try {
-        const { username, password } = await req.json();
-        const { captchaBase64, cookies, csrf } = await getCaptcha();
+        const { username, password, campus } = await req.json();
+        const { captchaBase64, cookies, csrf } = await getCaptcha(campus);
         const captcha = await solveCaptcha(captchaBase64);
 
         if (!csrf) throw new Error("CSRF token not found");
+
+        const client = campus?.toLowerCase() === "vellore" ? VelloreClient : ChennaiClient;
 
         const loginRes = await client.post(
             "/vtop/login",
@@ -49,13 +51,13 @@ export async function POST(req) {
         if (/authorizedidx/i.test(dashboardHtml)) {
             isAuthorized = true;
         } else if (/invalid\s*captcha/i.test(dashboardHtml)) {
-            return NextResponse.json({ success: false, error: "Invalid Captcha" }, { status: 401 });
+            return NextResponse.json({ success: false, message: "Invalid Captcha" }, { status: 401 });
         } else if (/invalid\s*(user\s*name|login\s*id|user\s*id)\s*\/\s*password/i.test(dashboardHtml)) {
-            return NextResponse.json({ success: false, error: "Invalid Username / Password" }, { status: 401 });
+            return NextResponse.json({ success: false, message: "Invalid Username / Password" }, { status: 401 });
         }
 
         if (!isAuthorized) {
-            return NextResponse.json({ success: false, error: "Login failed for an unknown reason." }, { status: 500 });
+            return NextResponse.json({ success: false, message: "Login failed for an unknown reason." }, { status: 500 });
         }
 
         return NextResponse.json({

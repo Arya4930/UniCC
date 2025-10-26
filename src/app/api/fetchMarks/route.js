@@ -1,4 +1,4 @@
-import { client } from "@/lib/VTOPClient";
+import { ChennaiClient, VelloreClient } from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
 import { NextResponse } from "next/server";
 import { URLSearchParams } from "url";
@@ -6,7 +6,7 @@ import config from '@/app/config.json'
 
 export async function POST(req) {
     try {
-        const { cookies, dashboardHtml } = await req.json();
+        const { cookies, dashboardHtml, campus } = await req.json();
 
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
@@ -15,6 +15,8 @@ export async function POST(req) {
         const authorizedID = $('#authorizedID').val() || $('input[name="authorizedid"]').val();
 
         if (!csrf || !authorizedID) throw new Error("Cannot find _csrf or authorizedID");
+
+        const client = campus?.toLowerCase() === "vellore" ? VelloreClient : ChennaiClient;
 
         // Get available semesters
         const semRes = await client.post(

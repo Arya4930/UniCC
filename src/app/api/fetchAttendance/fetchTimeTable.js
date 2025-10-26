@@ -1,9 +1,9 @@
 import * as cheerio from "cheerio";
-import { client } from "@/lib/VTOPClient";
+import { ChennaiClient, VelloreClient } from "@/lib/VTOPClient";
 import { URLSearchParams } from "url";
 import config from '@/app/config.json'
 
-export default async function fetchTimetable(cookieHeader, dashboardHtml) {
+export default async function fetchTimetable(cookieHeader, dashboardHtml, campus) {
     const $ = cheerio.load(dashboardHtml);
 
     const csrf = $('input[name="_csrf"]').val();
@@ -12,6 +12,7 @@ export default async function fetchTimetable(cookieHeader, dashboardHtml) {
     if (!csrf || !authorizedID) throw new Error("Cannot find _csrf or authorizedID");
 
     const semesterId = config.currSemID;
+    const client = campus?.toLowerCase() === "vellore" ? VelloreClient : ChennaiClient;
     const ttRes = await client.post(
         "/vtop/processViewTimeTable",
         new URLSearchParams({

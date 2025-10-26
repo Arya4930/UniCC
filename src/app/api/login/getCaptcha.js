@@ -1,12 +1,13 @@
-import { client } from "@/lib/VTOPClient";
+import { ChennaiClient, VelloreClient } from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
 
 export async function getCaptchaType($) {
     return $('input#gResponse').length === 1 ? "GRECAPTCHA" : "DEFAULT";
 }
 
-export default async function getCaptcha() {
+export default async function getCaptcha(campus) {
     const MAX_RETRIES = 10;
+    const client = campus?.toLowerCase() === "vellore" ? VelloreClient : ChennaiClient;
 
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
         try {

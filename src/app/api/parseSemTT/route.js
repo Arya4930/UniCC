@@ -1,4 +1,4 @@
-import { client } from "@/lib/VTOPClient";
+import { ChennaiClient, VelloreClient } from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
 import { NextResponse } from "next/server";
 import { URLSearchParams } from "url";
@@ -16,7 +16,7 @@ import config from "@/app/config.json";
 
 export async function POST(req) {
     try {
-        const { cookies, dashboardHtml, type } = await req.json();
+        const { cookies, dashboardHtml, type, campus } = await req.json();
 
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
@@ -36,6 +36,8 @@ export async function POST(req) {
         }
 
         const allCalendars = [];
+
+        const client = campus?.toLowerCase() === "vellore" ? VelloreClient : ChennaiClient;
 
         for (const calDate of months) {
             const ttRes = await client.post(
