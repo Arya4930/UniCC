@@ -20,7 +20,17 @@ const serwist = new Serwist({
         ],
       }),
     },
+
+    {
+      matcher: ({ url }) => url.pathname.startsWith("/.well-known/vercel/"),
+      handler: "NetworkOnly",
+    },
+    {
+      matcher: ({ url }) => url.pathname.startsWith("/api/auth/"),
+      handler: "NetworkOnly",
+    },
   ],
+
   fallbacks: {
     entries: [
       {
@@ -32,27 +42,28 @@ const serwist = new Serwist({
     ],
   },
 });
-
 serwist.addEventListeners();
 
-self.addEventListener('push', function (event) {
+self.addEventListener("push", (event) => {
   if (event.data) {
-    const data = event.data.json()
+    const data = event.data.json();
     const options = {
       body: data.body,
-      icon: data.icon || '/logo.png',
-      badge: '/logo.png',
+      icon: data.icon || "/logo.png",
+      badge: "/logo.png",
       vibrate: [100, 50, 100],
       data: {
         dateOfArrival: Date.now(),
-        primaryKey: '2',
+        primaryKey: "2",
       },
-    }
-    event.waitUntil(self.registration.showNotification(data.title, options))
+    };
+    event.waitUntil(
+      self.registration.showNotification(data.title, options)
+    );
   }
-})
- 
-self.addEventListener('notificationclick', function (event) {
-  event.notification.close()
-  event.waitUntil(clients.openWindow('/'))
-})
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(clients.openWindow("/"));
+});
