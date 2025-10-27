@@ -5,10 +5,12 @@ import { Github, Settings, Link } from "lucide-react";
 import { ModeToggle } from "./toggle";
 import { Button } from "../ui/button";
 import DataPage from "./DataPage";
+import PrivacyPolicyPage from "./PrivacyPolicy";
 
 export default function Footer({ isLoggedIn }) {
   const [showStoragePage, setShowStoragePage] = useState(false);
   const [storageData, setStorageData] = useState({});
+  const [showPolicy, setShowPolicy] = useState(false);
 
   const openStoragePage = () => {
     const data = {};
@@ -45,11 +47,10 @@ export default function Footer({ isLoggedIn }) {
     });
   };
 
-  const handleClose = () => setShowStoragePage(false);
-
   return (
     <footer className="bg-transparent text-gray-700 dark:text-gray-300 midnight:text-gray-300 flex items-center justify-center">
-      {showStoragePage && isLoggedIn && <DataPage handleClose={handleClose} handleDeleteItem={handleDeleteItem} storageData={storageData} />}
+      {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} />}
+      {showPolicy && <PrivacyPolicyPage handleClose={() => setShowPolicy(false)} />}
       <div className="max-w-7xl mx-auto px-3 py-6 text-center w-full">
         <hr className="border-gray-300 dark:border-gray-700 midnight:border-gray-700 w-11/12 mx-auto mb-6" />
 
@@ -90,8 +91,16 @@ export default function Footer({ isLoggedIn }) {
           <ModeToggle />
         </div>
 
-        <span className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400">
-          &copy; {new Date().getFullYear()} Arya Evil Inc. All rights reserved.
+        <span className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400 block">
+          &copy; {new Date().getFullYear()} Arya Evil Inc. All rights reserved. &nbsp;
+          <Button
+            variant="ghost"
+            size="xs"
+            className="mt-2 underline text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400"
+            onClick={() => setShowPolicy(true)}
+          >
+            Privacy Policy
+          </Button>
         </span>
       </div>
     </footer>
