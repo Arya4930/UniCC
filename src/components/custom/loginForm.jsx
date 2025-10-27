@@ -50,6 +50,7 @@ export default function LoginForm({
         >
           <option value="chennai">Chennai Campus</option>
           <option value="vellore">Vellore Campus</option>
+          <option value="bhopal">Bhopal Campus</option>
         </select>
 
         {!isLoading && (

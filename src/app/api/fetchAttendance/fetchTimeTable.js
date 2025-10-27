@@ -1,5 +1,5 @@
 import * as cheerio from "cheerio";
-import { ChennaiClient, VelloreClient } from "@/lib/VTOPClient";
+import VTOPClient from "@/lib/VTOPClient";
 import { URLSearchParams } from "url";
 import config from '@/app/config.json'
 
@@ -12,7 +12,7 @@ export default async function fetchTimetable(cookieHeader, dashboardHtml, campus
     if (!csrf || !authorizedID) throw new Error("Cannot find _csrf or authorizedID");
 
     const semesterId = config.currSemID;
-    const client = campus?.toLowerCase() === "vellore" ? VelloreClient : ChennaiClient;
+    const client = VTOPClient(campus);
     const ttRes = await client.post(
         "/vtop/processViewTimeTable",
         new URLSearchParams({

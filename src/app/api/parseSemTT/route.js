@@ -1,4 +1,4 @@
-import { ChennaiClient, VelloreClient } from "@/lib/VTOPClient";
+import VTOPClient from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
 import { NextResponse } from "next/server";
 import { URLSearchParams } from "url";
@@ -37,7 +37,7 @@ export async function POST(req) {
 
         const allCalendars = [];
 
-        const client = campus?.toLowerCase() === "vellore" ? VelloreClient : ChennaiClient;
+        const client = VTOPClient(campus);
 
         for (const calDate of months) {
             const ttRes = await client.post(

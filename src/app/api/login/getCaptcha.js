@@ -1,4 +1,4 @@
-import { ChennaiClient, VelloreClient } from "@/lib/VTOPClient";
+import VTOPClient from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
 
 export async function getCaptchaType($) {
@@ -7,7 +7,7 @@ export async function getCaptchaType($) {
 
 export default async function getCaptcha(campus) {
     const MAX_RETRIES = 10;
-    const client = campus?.toLowerCase() === "vellore" ? VelloreClient : ChennaiClient;
+    const client = VTOPClient(campus);
 
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
         try {

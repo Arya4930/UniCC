@@ -1,4 +1,4 @@
-import { ChennaiClient, VelloreClient } from "@/lib/VTOPClient";
+import VTOPClient from "@/lib/VTOPClient";
 import { NextResponse } from "next/server";
 import solveCaptcha from "./solveCaptcha";
 import getCaptcha from "./getCaptcha";
@@ -11,7 +11,7 @@ export async function POST(req) {
 
         if (!csrf) throw new Error("CSRF token not found");
 
-        const client = campus?.toLowerCase() === "vellore" ? VelloreClient : ChennaiClient;
+        const client = VTOPClient(campus);
 
         const loginRes = await client.post(
             "/vtop/login",

@@ -15,7 +15,7 @@ export default function MarksDisplay({ data }) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center">
         <Image
-          src="/empty_page_chepu.png"
+          src="/chepu/empty_page_chepu.png"
           alt="Empty State"
           width={200}
           height={200}

@@ -1,6 +1,6 @@
 // https://vtopcc.vit.ac.in/vtop/studentsRecord/StudentProfileAllView
 // https://vtopcc.vit.ac.in/vtop/hostels/student/leave/6
-import { ChennaiClient, VelloreClient } from "@/lib/VTOPClient";
+import VTOPClient from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
 import { NextResponse } from "next/server";
 import { URLSearchParams } from "url";
@@ -17,7 +17,7 @@ export async function POST(req) {
 
         if (!csrf || !authorizedID) throw new Error("Cannot find _csrf or authorizedID");
 
-        const client = campus?.toLowerCase() === "vellore" ? VelloreClient : ChennaiClient;
+        const client = VTOPClient(campus);
 
         const hostelRes = await client.post(
             "/vtop/studentsRecord/StudentProfileAllView",

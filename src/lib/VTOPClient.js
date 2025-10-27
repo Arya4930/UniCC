@@ -3,7 +3,7 @@ import https from "https";
 
 const agent = new https.Agent({ rejectUnauthorized: false });
 
-export const ChennaiClient = axios.create({
+const ChennaiClient = axios.create({
   baseURL: "https://vtopcc.vit.ac.in",
   headers: {
     "User-Agent": "Mozilla/5.0 ...",
@@ -13,7 +13,7 @@ export const ChennaiClient = axios.create({
   withCredentials: true,
 });
 
-export const VelloreClient = axios.create({
+const VelloreClient = axios.create({
   baseURL: "https://vtop.vit.ac.in",
   headers: {
     "User-Agent": "Mozilla/5.0 ...",
@@ -22,3 +22,23 @@ export const VelloreClient = axios.create({
   httpsAgent: agent,
   withCredentials: true,
 });
+
+const BhopalClient = axios.create({
+  baseURL: "https://vtop.vitbhopal.ac.in",
+  headers: {
+    "User-Agent": "Mozilla/5.0 ...",
+    Accept: "text/html,application/xhtml+xml",
+  },
+  httpsAgent: agent,
+  withCredentials: true,
+});
+
+export default function VTOPClient(campus) {
+  if (campus === "vellore") {
+    return VelloreClient;
+  } else if (campus === "bhopal") {
+    return BhopalClient;
+  } else {
+    return ChennaiClient;
+  }
+}
