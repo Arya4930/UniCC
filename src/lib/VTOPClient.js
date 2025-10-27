@@ -33,11 +33,23 @@ const BhopalClient = axios.create({
   withCredentials: true,
 });
 
+const AmaravatiClient = axios.create({
+  baseURL: "https://vtop.vitap.ac.in",
+  headers: {
+    "User-Agent": "Mozilla/5.0 ...",
+    Accept: "text/html,application/xhtml+xml",
+  },
+  httpsAgent: agent,
+  withCredentials: true,
+});
+
 export default function VTOPClient(campus) {
   if (campus === "vellore") {
     return VelloreClient;
   } else if (campus === "bhopal") {
     return BhopalClient;
+  } else if (campus === "amaravati") {
+    return AmaravatiClient;
   } else {
     return ChennaiClient;
   }

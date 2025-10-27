@@ -51,7 +51,14 @@ export default function LoginForm({
           <option value="chennai">Chennai Campus</option>
           <option value="vellore">Vellore Campus</option>
           <option value="bhopal">Bhopal Campus</option>
+          <option value="amaravati">Amaravati Campus</option>
         </select>
+
+        {campus !== "chennai" && (
+          <div className="text-sm text-yellow-500">
+            Note: Support for {campus.charAt(0).toUpperCase() + campus.slice(1)} campus is experimental and may not work as expected.
+          </div>
+        )}
 
         {!isLoading && (
           <button
