@@ -10,7 +10,6 @@ export default function MarksDisplay({ data }) {
   const toggleCourse = (slNo) => {
     setOpenCourse(openCourse === slNo ? null : slNo);
   };
-  data = ""
 
   if (!data || !data.marks || data.marks.length === 0) {
     return (
