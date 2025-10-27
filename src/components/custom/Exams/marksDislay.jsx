@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import Image from "next/image";
 
 export default function MarksDisplay({ data }) {
   const [openCourse, setOpenCourse] = useState(null);
@@ -9,12 +10,19 @@ export default function MarksDisplay({ data }) {
   const toggleCourse = (slNo) => {
     setOpenCourse(openCourse === slNo ? null : slNo);
   };
+  data = ""
 
   if (!data || !data.marks || data.marks.length === 0) {
     return (
-      <p className="text-gray-700 dark:text-gray-300 midnight:text-gray-300">
-        No marks data available to display.
-      </p>
+      <div className="flex flex-col items-center justify-center h-full text-center">
+        <Image
+          src="/empty_page_chepu.png"
+          alt="Empty State"
+          width={200}
+          height={200}
+          className="mb-4 opacity-90"
+        />
+      </div>
     );
   }
 
