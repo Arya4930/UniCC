@@ -412,6 +412,8 @@ export default function LoginPage() {
       )}
 
       {isLoggedIn && (
+        <>
+        <OfflineBanner />
         <DashboardContent
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -444,9 +446,34 @@ export default function LoginPage() {
           handleCalendarFetch={handleCalendarFetch}
           reloadLeaveHistory={reloadLeaveHistory}
         />
+        </>
       )}
 
       <Footer isLoggedIn={isLoggedIn} />
+    </div>
+  );
+}
+function OfflineBanner() {
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
+
+  if (!isOffline) return null;
+
+  return (
+    <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium z-[9999] shadow-md">
+      ⚠️ You’re currently offline. Some features may not work.
     </div>
   );
 }
