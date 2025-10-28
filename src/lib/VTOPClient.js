@@ -44,13 +44,8 @@ const AmaravatiClient = axios.create({
 });
 
 export default function VTOPClient(campus) {
-  if (campus === "vellore") {
-    return VelloreClient;
-  } else if (campus === "bhopal") {
-    return BhopalClient;
-  } else if (campus === "amaravati") {
-    return AmaravatiClient;
-  } else {
-    return ChennaiClient;
-  }
+  return campus === "vellore" ? VelloreClient
+    : campus === "bhopal" ? BhopalClient
+    : campus === "amaravati" ? AmaravatiClient
+    : ChennaiClient;
 }
