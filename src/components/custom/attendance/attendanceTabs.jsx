@@ -3,6 +3,7 @@ import CourseCard from "./courseCard";
 import { analyzeAllCalendars } from "@/lib/analyzeCalendar";
 import PopupCard from "./PopupCard";
 import config from '@/app/config.json'
+import NoContentFound from "../NoContentFound";
 
 export default function AttendanceTabs({ data, activeDay, setActiveDay, calendars, is9Pointer }) {
   const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
@@ -114,11 +115,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
   }, [daysWithClasses]);
 
   if (daysWithClasses.length === 0)
-    return (
-      <div className="text-center text-gray-700 dark:text-gray-300 midnight:text-gray-300">
-        No classes scheduled this week.
-      </div>
-    );
+    return <NoContentFound  />
 
   return (
     <div className="grid gap-4">

@@ -14,6 +14,7 @@ export default function LoginPage() {
   const [attendanceData, setAttendanceData] = useState({});
   const [marksData, setMarksData] = useState({});
   const [GradesData, setGradesData] = useState({});
+  const [AllGradesData, setAllGradesData] = useState({});
   const [ScheduleData, setScheduleData] = useState({});
   const [hostelData, sethostelData] = useState({});
   const [Calender, setCalender] = useState({});
@@ -76,6 +77,7 @@ export default function LoginPage() {
     let storedAttendance = localStorage.getItem("attendance");
     const storedMarks = localStorage.getItem("marks");
     const storedGrades = localStorage.getItem("grades");
+    const storedAllGrades = localStorage.getItem("allGrades");
     const storedUsername = localStorage.getItem("username");
     const storedPassword = localStorage.getItem("password");
     const storedCampus = localStorage.getItem("campus");
@@ -94,6 +96,7 @@ export default function LoginPage() {
     if (storedCampus) setCampus(storedCampus);
     if (storedSchedule) setScheduleData(JSON.parse(storedSchedule));
     if (storedGrades) setGradesData(JSON.parse(storedGrades));
+    if (storedAllGrades) setAllGradesData(JSON.parse(storedAllGrades));
     if (storedHoste) sethostelData(JSON.parse(storedHoste));
     if (calendar) setCalender(JSON.parse(calendar));
     if (calendarType) setCalenderType(calendarType);
@@ -118,7 +121,7 @@ export default function LoginPage() {
         localStorage.setItem("password", password);
         localStorage.setItem("campus", campus);
         setMessage(prev => prev + "\n✅ Login successful");
-        setProgressBar(prev => prev + 30);
+        setProgressBar(prev => prev + 20);
 
         const [
           attRes,
@@ -127,6 +130,7 @@ export default function LoginPage() {
           ScheduleRes,
           HostelRes,
           calenderRes,
+          allGradesRes
         ] = await Promise.all([
           fetch("/api/fetchAttendance", {
             method: "POST",
@@ -198,6 +202,16 @@ export default function LoginPage() {
             setProgressBar(prev => prev + 10);
             return j;
           }),
+          fetch("/api/fetchAllGrades", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, campus }),
+          }).then(async r => {
+            const j = await r.json();
+            setMessage(prev => prev + "\n✅ All grades fetched");
+            setProgressBar(prev => prev + 10);
+            return j;
+          }),
         ]);
 
         setMessage(prev => prev + "\nFinalizing and saving data...");
@@ -205,6 +219,7 @@ export default function LoginPage() {
         setAttendanceAndOD(attRes);
         setMarksData(marksRes);
         setGradesData(gradesRes);
+        setAllGradesData(allGradesRes);
         setScheduleData(ScheduleRes);
         sethostelData(HostelRes);
         setCalender(calenderRes);
@@ -212,6 +227,7 @@ export default function LoginPage() {
         localStorage.setItem("attendance", JSON.stringify(attRes));
         localStorage.setItem("marks", JSON.stringify(marksRes));
         localStorage.setItem("grades", JSON.stringify(gradesRes));
+        localStorage.setItem("allGrades", JSON.stringify(allGradesRes));
         localStorage.setItem("schedule", JSON.stringify(ScheduleRes));
         localStorage.setItem("hostel", JSON.stringify(HostelRes));
         localStorage.setItem("calender", JSON.stringify(calenderRes));
@@ -362,7 +378,9 @@ export default function LoginPage() {
     localStorage.removeItem("attendance");
     localStorage.removeItem("marks");
     localStorage.removeItem("grades");
+    localStorage.removeItem("allGrades");
     localStorage.removeItem("schedule");
+    setMessage("");
   };
 
   const handleFormSubmit = (e) => {
@@ -412,39 +430,40 @@ export default function LoginPage() {
 
       {isLoggedIn && (
         <>
-        <OfflineBanner />
-        <DashboardContent
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          handleLogOutRequest={handleLogOutRequest}
-          handleReloadRequest={handleReloadRequest}
-          GradesData={GradesData}
-          attendancePercentage={attendancePercentage}
-          ODhoursData={ODhoursData}
-          ODhoursIsOpen={ODhoursIsOpen}
-          setODhoursIsOpen={setODhoursIsOpen}
-          GradesDisplayIsOpen={GradesDisplayIsOpen}
-          setGradesDisplayIsOpen={setGradesDisplayIsOpen}
-          attendanceData={attendanceData}
-          activeDay={activeDay}
-          setActiveDay={setActiveDay}
-          marksData={marksData}
-          activeSubTab={activeSubTab}
-          setActiveSubTab={setActiveSubTab}
-          ScheduleData={ScheduleData}
-          hostelData={hostelData}
-          HostelActiveSubTab={HostelActiveSubTab}
-          setHostelActiveSubTab={setHostelActiveSubTab}
-          activeAttendanceSubTab={activeAttendanceSubTab}
-          setActiveAttendanceSubTab={setActiveAttendanceSubTab}
-          calendarData={Calender}
-          CGPAHidden={CGPAHidden}
-          setCGPAHidden={setCGPAHidden}
-          calendarType={calendarType}
-          setCalendarType={setCalenderType}
-          handleCalendarFetch={handleCalendarFetch}
-          reloadLeaveHistory={reloadLeaveHistory}
-        />
+          <OfflineBanner />
+          <DashboardContent
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            handleLogOutRequest={handleLogOutRequest}
+            handleReloadRequest={handleReloadRequest}
+            GradesData={GradesData}
+            allGradesData={AllGradesData}
+            attendancePercentage={attendancePercentage}
+            ODhoursData={ODhoursData}
+            ODhoursIsOpen={ODhoursIsOpen}
+            setODhoursIsOpen={setODhoursIsOpen}
+            GradesDisplayIsOpen={GradesDisplayIsOpen}
+            setGradesDisplayIsOpen={setGradesDisplayIsOpen}
+            attendanceData={attendanceData}
+            activeDay={activeDay}
+            setActiveDay={setActiveDay}
+            marksData={marksData}
+            activeSubTab={activeSubTab}
+            setActiveSubTab={setActiveSubTab}
+            ScheduleData={ScheduleData}
+            hostelData={hostelData}
+            HostelActiveSubTab={HostelActiveSubTab}
+            setHostelActiveSubTab={setHostelActiveSubTab}
+            activeAttendanceSubTab={activeAttendanceSubTab}
+            setActiveAttendanceSubTab={setActiveAttendanceSubTab}
+            calendarData={Calender}
+            CGPAHidden={CGPAHidden}
+            setCGPAHidden={setCGPAHidden}
+            calendarType={calendarType}
+            setCalendarType={setCalenderType}
+            handleCalendarFetch={handleCalendarFetch}
+            reloadLeaveHistory={reloadLeaveHistory}
+          />
         </>
       )}
 

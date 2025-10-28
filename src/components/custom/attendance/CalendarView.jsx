@@ -1,6 +1,7 @@
 "use client";
 import React, { useMemo, useState, useEffect } from "react";
 import { eachDayOfInterval, endOfMonth, getDay } from "date-fns";
+import NoContentFound from "../NoContentFound";
 
 const CALENDAR_TYPES = {
     ALL: "General Semester",
@@ -106,11 +107,7 @@ export default function CalendarView({ calendars, calendarType }) {
     }, [activeCalendar.month, activeCalendar.year]);
 
     if (!safeCalendars.length) {
-        return (
-            <div className="text-center text-gray-500 dark:text-gray-400 p-4">
-                No calendar data available. / Reload Data
-            </div>
-        );
+        return <NoContentFound />;
     }
 
     let monthStart = new Date(year, monthIndex, 1);

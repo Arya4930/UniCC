@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import Image from "next/image";
+import NoContentFound from "../NoContentFound";
 
 export default function MarksDisplay({ data }) {
   const [openCourse, setOpenCourse] = useState(null);
@@ -13,15 +14,7 @@ export default function MarksDisplay({ data }) {
 
   if (!data || !data.marks || data.marks.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-center">
-        <Image
-          src="/chepu/empty_page_chepu.png"
-          alt="Empty State"
-          width={200}
-          height={200}
-          className="mb-4 opacity-90"
-        />
-      </div>
+      <NoContentFound />
     );
   }
 

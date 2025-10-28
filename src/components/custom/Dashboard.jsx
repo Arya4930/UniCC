@@ -15,6 +15,7 @@ import CalendarView from "./attendance/CalendarView";
 import { useState } from "react";
 import { useRef } from "react";
 import LeaveDisplay from "./Hostel/LeaveDisplay";
+import AllGradesDisplay from "./Exams/AllGradesDisplay";
 
 export default function DashboardContent({
   activeTab,
@@ -22,6 +23,7 @@ export default function DashboardContent({
   handleLogOutRequest,
   handleReloadRequest,
   GradesData,
+  allGradesData,
   attendancePercentage,
   ODhoursData,
   ODhoursIsOpen,
@@ -188,6 +190,7 @@ export default function DashboardContent({
             />
             {activeSubTab === "marks" && <MarksDisplay data={marksData} />}
             {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} />}
+            {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} />}
           </div>
         )}
 

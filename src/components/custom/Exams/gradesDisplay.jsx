@@ -1,15 +1,12 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import NoContentFound from "../NoContentFound";
 
 export default function GradesDisplay({ data }) {
   if (!data || !data.cgpa){
     return (
-      <div className="fixed inset-0 flex items-center justify-center backdrop-blur-md bg-black/50 z-50">
-        <p className="text-gray-700 dark:text-gray-300 midnight:text-gray-200">
-          No grades data available.
-        </p>
-      </div>
+      <NoContentFound />
     );
   }
 

@@ -2,9 +2,10 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import NoContentFound from "../NoContentFound";
 
 export default function ExamSchedule({ data }) {
-  if (!data) return <p className="text-gray-500 midnight:text-gray-300">No schedule available</p>;
+  if (!data) return <NoContentFound />;
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
