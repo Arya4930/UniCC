@@ -2,6 +2,7 @@ import { Geist, Geist_Mono, Roboto } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from "@/components/themeprovider";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import './globals.css';
 
 export const viewport = {
@@ -76,6 +77,7 @@ export default function RootLayout({ children }) {
           {children}
         </ThemeProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
       <GoogleAnalytics gaId="G-40NYS6B13N" />
     </html>
