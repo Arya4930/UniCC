@@ -37,7 +37,7 @@ export async function POST(req) {
                     semesterSubId: semId,
                     _csrf: csrf,
                     x: Date.now().toString(),
-                });
+                }).toString();
 
                 const res = await client.post(
                     "/vtop/examinations/examGradeView/doStudentGradeView",
@@ -101,7 +101,7 @@ export async function POST(req) {
                                     courseId: grade.courseId,
                                     _csrf: csrf,
                                     x: new Date().toUTCString(),
-                                });
+                                }).toString();
 
                                 const detailRes = await client.post(
                                     "/vtop/examinations/examGradeView/getGradeViewDetails",

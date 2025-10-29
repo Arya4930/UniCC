@@ -24,7 +24,7 @@ export default async function getCaptcha(campus) {
 
             await client.post(
                 "/vtop/prelogin/setup",
-                new URLSearchParams({ _csrf: csrf, flag: "VTOP" }),
+                new URLSearchParams({ _csrf: csrf, flag: "VTOP" }).toString(),
                 { headers: { Cookie: cookies.join("; "), "Content-Type": "application/x-www-form-urlencoded" } }
             );
 

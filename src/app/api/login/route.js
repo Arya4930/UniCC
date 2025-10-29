@@ -15,7 +15,7 @@ export async function POST(req) {
                 username,
                 password,
                 captchaStr: captcha,
-            }),
+            }).toString(),
             {
                 headers: {
                     Cookie: cookies.join("; "),
