@@ -92,7 +92,7 @@ export default function MarksDisplay({ data }) {
                       <strong>Faculty:</strong> {course.faculty}
                     </p>
                     <p className="mb-3">
-                      <strong>Slot:</strong> {course.slotName}
+                      <strong>Slot:</strong> {course.slot}
                     </p>
 
                     <div className="overflow-x-auto">
