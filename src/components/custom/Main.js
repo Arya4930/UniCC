@@ -4,6 +4,7 @@ import { ReloadModal } from "./reloadModel";
 import LoginForm from "./loginForm";
 import DashboardContent from "./Dashboard";
 import Footer from "./Footer";
+import { solveCaptchaClient } from "@/lib/solveCaptcha";
 
 export default function LoginPage() {
   // --- State Management ---
@@ -109,12 +110,31 @@ export default function LoginPage() {
     setProgressBar(10);
 
     try {
-      const res = await fetch("/api/login", {
+      const captchaRes = await fetch("/api/getCaptcha", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, campus }),
+        body: JSON.stringify({ campus }),
       });
-      const data = await res.json();
+      const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
+
+      if (error) throw new Error("Failed to get CAPTCHA: " + error);
+
+      const captcha = await solveCaptchaClient(captchaBase64);
+
+      const loginRes = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          password,
+          campus,
+          captcha,
+          cookies,
+          csrf,
+        }),
+      });
+
+      const data = await loginRes.json();
 
       if (data.success && data.dashboardHtml) {
         localStorage.setItem("username", username);
