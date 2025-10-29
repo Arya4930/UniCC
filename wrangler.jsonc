@@ -3,8 +3,9 @@
     "name": "unicc",
     "compatibility_date": "2025-03-25",
     "compatibility_flags": [
+        "nodejs_compat",
         "expose_global_message_channel",
-        "nodejs_compat_v2"
+        "enable_weak_ref"
     ],
     "assets": {
         "directory": ".open-next/assets",
