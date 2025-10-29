@@ -45,3 +45,4 @@ public/sw*
 public/swe-worker*
 certificates
 .open-next
+.wrangler
