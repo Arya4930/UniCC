@@ -49,7 +49,7 @@ export default function AllGradesDisplay({ data }) {
                             : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600 midnight:bg-black midnight:text-gray-300 midnight:hover:bg-gray-900"
                             }`}
                     >
-                        {sem}
+                        {sem.endsWith("1") ? `FALLSEM` : `WINTERSEM`} {sem.slice(4, -4)}-{sem.slice(6, -2)}
                     </button>
                 ))}
             </div>
