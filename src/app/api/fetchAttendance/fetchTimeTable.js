@@ -44,6 +44,7 @@ export default async function fetchTimetable(cookieHeader, dashboardHtml, campus
                 courseInfo.push({
                     slNo: $$$(cells[0]).text().trim(),
                     course: $$$(cells[2]).text().trim(),
+                    courseCode: $$$(cells[7]).text().trim().startsWith("L") ? $$$(cells[2]).text().trim().split(" ")[0] + "(L)" : $$$(cells[2]).text().trim().split(" ")[0] + "(T)",
                     LTPJC: $$$(cells[3]).text().trim(),
                     category: $$$(cells[4]).text().trim(),
                     classId: $$$(cells[6]).text().trim(),

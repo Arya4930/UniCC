@@ -10,7 +10,7 @@ function mergeAttendanceWithTimetable(attendance, timetable) {
         const attCourseCode = att.courseCode.split(" ")[0].trim();
 
         const ttEntry = timetable.find(tt => {
-            const ttCourseCode = tt.course.split(" ")[0].trim();
+            const ttCourseCode = tt.courseCode;
             return ttCourseCode === attCourseCode;
         });
 
@@ -20,7 +20,11 @@ function mergeAttendanceWithTimetable(attendance, timetable) {
                 classId: ttEntry.classId,
                 credits: ttEntry.LTPJC?.split(" ")[4] || null,
                 slotVenue: ttEntry.slotVenue
-                    ? ttEntry.slotVenue.replace(/\s+/g, " ").trim().match(/[A-Z]+\d*-\d+/)?.[0] || null
+                    ? (() => {
+                        const cleaned = ttEntry.slotVenue.replace(/\s+/g, " ").trim();
+                        const matches = cleaned.match(/[A-Z]+\d*\s*-\s*\d+/g);
+                        return matches ? matches[matches.length - 1] : null;
+                    })()
                     : null,
                 category: ttEntry.category,
             };
@@ -74,7 +78,7 @@ export async function POST(req) {
 
             attendance.push({
                 slNo: cols.eq(0).text().trim(),
-                courseCode: cols.eq(1).text().trim(),
+                courseCode: cols.eq(4).text().trim().startsWith("L") ? cols.eq(1).text().trim() + "(L)" : cols.eq(1).text().trim() + "(T)",
                 courseTitle: cols.eq(2).text().trim(),
                 courseType: cols.eq(3).text().trim(),
                 slotName: cols.eq(4).text().trim(),
