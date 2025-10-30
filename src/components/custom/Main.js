@@ -637,7 +637,7 @@ export default function LoginPage() {
             reloadLeaveHistory={reloadLeaveHistory}
             handleAllGradesFetch={handleAllGradesFetch}
             handleHostelDetailsFetch={handleHostelDetailsFetch}
-            handleAttendanceFetch={handleAttendanceFetch}
+            handleFetchGrades={handleFetchGrades}
           />
         </>
       )}
