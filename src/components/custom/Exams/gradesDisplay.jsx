@@ -2,11 +2,20 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import NoContentFound from "../NoContentFound";
+import { RefreshCcw } from "lucide-react";
 
-export default function GradesDisplay({ data }) {
-  if (!data || !data.cgpa){
+export default function GradesDisplay({ data, handleFetchGrades }) {
+  if (!data || !data.cgpa) {
     return (
-      <NoContentFound />
+      <div>
+        <p className="text-center text-gray-600 dark:text-gray-300 midnight:text-gray-200">
+          No Grades Data Available.{" "}
+          <button onClick={handleFetchGrades} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+            <RefreshCcw className={`w-4 h-4`} />
+          </button>
+        </p>
+        <NoContentFound />
+      </div>
     );
   }
 
@@ -23,7 +32,9 @@ export default function GradesDisplay({ data }) {
 
       <Card className="bg-white dark:bg-slate-800 midnight:bg-black">
         <CardHeader>
-          <CardTitle className="text-lg font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100">Grade Distribution</CardTitle>
+          <CardTitle className="text-lg font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100">Grade Distribution <button onClick={handleFetchGrades} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+            <RefreshCcw className={`w-4 h-4`} />
+          </button></CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-4 gap-2 text-center text-sm">
           {Object.entries(data.cgpa.grades).map(([grade, count]) => (

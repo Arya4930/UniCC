@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { RefreshCcw } from "lucide-react";
 
 const messLinks = {
   Male: {
@@ -33,7 +34,7 @@ const shortToFullDay = Object.fromEntries(
   Object.entries(fullToShortDay).map(([full, short]) => [short, full])
 );
 
-export default function MessDisplay({ hostelData }) {
+export default function MessDisplay({ hostelData, handleHostelDetailsFetch }) {
   if (!hostelData.hostelInfo?.isHosteller) {
     return (
       <p className="text-center text-gray-600 dark:text-gray-400 midnight:text-gray-400">

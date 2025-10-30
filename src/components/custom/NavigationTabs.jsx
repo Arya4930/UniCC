@@ -48,15 +48,13 @@ export default function NavigationTabs({
         Exams
       </button>
 
-      {hostelData.hostelInfo?.isHosteller && (
-        <button
-          onClick={() => setActiveTab("hostel")}
-          className={`${tabBase} ${activeTab === "hostel" ? tabActive : tabInactive
-            }`}
-        >
-          Hostel
-        </button>
-      )}
+      <button
+        onClick={() => setActiveTab("hostel")}
+        className={`${tabBase} ${activeTab === "hostel" ? tabActive : tabInactive
+          }`}
+      >
+        Hostel
+      </button>
 
       <button
         onClick={handleReloadClick}

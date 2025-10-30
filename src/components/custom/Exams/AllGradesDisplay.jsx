@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { X, RefreshCcw } from "lucide-react";
 import NoContentFound from "../NoContentFound";
 
 export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
@@ -48,7 +48,9 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
     return (
         <div className="py-2">
             <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                Academic Grades
+                Academic Grades <button onClick={handleAllGradesFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                    <RefreshCcw className={`w-4 h-4`} />
+                </button>
             </h1>
 
             <div

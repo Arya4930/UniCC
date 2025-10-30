@@ -128,6 +128,7 @@ export default function DashboardContent({
             setGradesDisplayIsOpen={setGradesDisplayIsOpen}
             CGPAHidden={CGPAHidden}
             setCGPAHidden={setCGPAHidden}
+            handleFetchGrades={handleFetchGrades}
           />
         )}
 
@@ -194,7 +195,7 @@ export default function DashboardContent({
             />
             {activeSubTab === "marks" && <MarksDisplay data={marksData} />}
             {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} />}
-            {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleGradesFetch={handleAllGradesFetch} />}
+            {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} />}
           </div>
         )}
 

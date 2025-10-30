@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { RefreshCcw } from "lucide-react";
 
 export default function StatsCards({
   attendancePercentage,
@@ -10,6 +11,7 @@ export default function StatsCards({
   setGradesDisplayIsOpen,
   CGPAHidden,
   setCGPAHidden,
+  handleFetchGrades
 }) {
   const [attendancePercentageOrString, setAttendancePercentageOrString] = useState("percentage");
   useEffect(() => {
@@ -62,7 +64,7 @@ export default function StatsCards({
         </div>
 
         {/* Card 3 */}
-        <div
+        {GradesData.cgpa ? (<div
           className={`${cardBase} bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800`}
           onClick={() => setCGPAHidden((prev) => !prev)}
         >
@@ -72,7 +74,20 @@ export default function StatsCards({
           <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mt-2 select-none">
             {CGPAHidden ? "###" : GradesData?.cgpa?.cgpa}
           </p>
-        </div>
+        </div>) : (
+          <div
+            className={`${cardBase} bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800`}
+          >
+            <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 midnight:text-gray-200">
+              CGPA
+            </h2>
+            <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mt-2 select-none">
+              N/A <button onClick={handleFetchGrades} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                <RefreshCcw className={`w-4 h-4`} />
+              </button>
+            </p>
+          </div>
+        )}
 
         {/* Card 4 */}
         <div
