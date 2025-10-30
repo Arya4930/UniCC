@@ -26,26 +26,7 @@ To run UniCC locally:
    ```bash
    pnpm install
    ```
-3. **Generate VAPID Keys** (for push notifications):
-
-   * Install the `web-push` CLI globally:
-
-     ```bash
-     pnpm install -g web-push
-     ```
-   * Generate VAPID keys:
-
-     ```bash
-     web-push generate-vapid-keys
-     ```
-   * Copy the output and paste the keys into your `.env` file:
-
-     ```env
-     PUSHNOTIFS_MAIL=<yourmail@mail.com>
-     NEXT_PUBLIC_VAPID_PUBLIC_KEY=your_public_key_here
-     VAPID_PRIVATE_KEY=your_private_key_here
-     ```
-4. **Start the development server:**
+3. **Start the development server:**
    *(This may vary based on setup)*
 
    ```bash
