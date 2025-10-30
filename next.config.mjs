@@ -36,11 +36,20 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/api/(.*)',
+        source: "/api/(.*)",
         headers: [
           {
-            key: 'Cache-Control',
-            value: 'public, s-maxage=1800, stale-while-revalidate=60',
+            key: "Cache-Control",
+            value: "public, s-maxage=1800, stale-while-revalidate=60",
+          },
+        ],
+      },
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, s-maxage=1800, stale-while-revalidate=60",
           },
         ],
       },
