@@ -33,6 +33,19 @@ const nextConfig = {
       },
     ],
   },
+  async headers() {
+    return [
+      {
+        source: '/api/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=1800, stale-while-revalidate=60',
+          },
+        ],
+      },
+    ];
+  },
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.externals.push("@napi-rs/canvas");
