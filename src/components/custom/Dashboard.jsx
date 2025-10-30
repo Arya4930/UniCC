@@ -48,7 +48,10 @@ export default function DashboardContent({
   calendarType,
   setCalendarType,
   handleCalendarFetch,
-  reloadLeaveHistory
+  reloadLeaveHistory,
+  handleAllGradesFetch,
+  handleHostelDetailsFetch,
+  handleFetchGrades
 }) {
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
@@ -139,6 +142,7 @@ export default function DashboardContent({
           <GradesModal
             GradesData={GradesData}
             onClose={() => setGradesDisplayIsOpen(false)}
+            handleFetchGrades={handleFetchGrades}
           />
         )}
 
@@ -190,7 +194,7 @@ export default function DashboardContent({
             />
             {activeSubTab === "marks" && <MarksDisplay data={marksData} />}
             {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} />}
-            {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} />}
+            {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleGradesFetch={handleAllGradesFetch} />}
           </div>
         )}
 
@@ -201,9 +205,9 @@ export default function DashboardContent({
               setHostelActiveSubTab={setHostelActiveSubTab}
               hostelData={hostelData}
             />
-            {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} />}
-            {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} />}
-            {HostelActiveSubTab === "leave" && <LeaveDisplay leaveData={hostelData.leaveHistory} reloadLeaveHistory={reloadLeaveHistory} />}
+            {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
+            {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
+            {HostelActiveSubTab === "leave" && <LeaveDisplay leaveData={hostelData.leaveHistory} reloadLeaveHistory={reloadLeaveHistory} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
           </div>
         )}
       </div>

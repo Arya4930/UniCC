@@ -4,14 +4,32 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import NoContentFound from "../NoContentFound";
 
-export default function AllGradesDisplay({ data }) {
+export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
     if (!data || !data.grades) {
-        return <NoContentFound />;
+        return (
+            <div>
+                <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+                    Academic Grades <button onClick={handleAllGradesFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                        <RefreshCcw className={`w-4 h-4`} />
+                    </button>
+                </h1>
+                <NoContentFound />
+            </div>
+        );
     }
 
     const semesterKeys = Object.keys(data.grades).filter((sem) => data.grades[sem]);
     if (semesterKeys.length === 0) {
-        return <NoContentFound />;
+        return (
+            <div>
+                <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+                    Academic Grades <button onClick={handleAllGradesFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                        <RefreshCcw className={`w-4 h-4`} />
+                    </button>
+                </h1>
+                <NoContentFound />
+            </div>
+        );
     }
 
     const [activeSem, setActiveSem] = useState(semesterKeys[semesterKeys.length - 1]);

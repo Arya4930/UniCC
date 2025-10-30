@@ -36,10 +36,13 @@ const shortToFullDay = Object.fromEntries(
 export default function MessDisplay({ hostelData }) {
   if (!hostelData.hostelInfo?.isHosteller) {
     return (
-      <p className="text-center text-gray-600 dark:text-gray-300 midnight:text-gray-300">
-        You are not a hosteller. / Reload Data
+      <p className="text-center text-gray-600 dark:text-gray-400 midnight:text-gray-400">
+        You are not a hosteller. / Reload Data{" "}
+        <button onClick={handleHostelDetailsFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+          <RefreshCcw className={`w-4 h-4`} />
+        </button>
       </p>
-    );
+    )
   }
 
   const normalizeGender = (g) =>

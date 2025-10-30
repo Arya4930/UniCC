@@ -146,11 +146,7 @@ export default function LoginPage() {
         const [
           attRes,
           marksRes,
-          gradesRes,
-          ScheduleRes,
-          HostelRes,
-          calenderRes,
-          allGradesRes
+          ScheduleRes
         ] = await Promise.all([
           fetch("/api/fetchAttendance", {
             method: "POST",
@@ -162,7 +158,6 @@ export default function LoginPage() {
             setProgressBar(prev => prev + 10);
             return j;
           }),
-
           fetch("/api/fetchMarks", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -173,18 +168,6 @@ export default function LoginPage() {
             setProgressBar(prev => prev + 10);
             return j;
           }),
-
-          fetch("/api/fetchGrades", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, campus }),
-          }).then(async r => {
-            const j = await r.json();
-            setMessage(prev => prev + "\n✅ Grades fetched");
-            setProgressBar(prev => prev + 10);
-            return j;
-          }),
-
           fetch("/api/fetchExamSchedule", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -195,62 +178,17 @@ export default function LoginPage() {
             setProgressBar(prev => prev + 10);
             return j;
           }),
-
-          fetch("/api/fetchHostelDetails", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, campus }),
-          }).then(async r => {
-            const j = await r.json();
-            setMessage(prev => prev + "\n✅ Hostel details fetched");
-            setProgressBar(prev => prev + 10);
-            return j;
-          }),
-
-          fetch("/api/parseSemTT", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              cookies: data.cookies,
-              dashboardHtml: data.dashboardHtml,
-              type: calendarType || "ALL",
-              campus,
-            }),
-          }).then(async r => {
-            const j = await r.json();
-            setMessage(prev => prev + "\n✅ Calendar fetched");
-            setProgressBar(prev => prev + 10);
-            return j;
-          }),
-          fetch("/api/fetchAllGrades", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, campus }),
-          }).then(async r => {
-            const j = await r.json();
-            setMessage(prev => prev + "\n✅ All grades fetched");
-            setProgressBar(prev => prev + 10);
-            return j;
-          }),
         ]);
 
         setMessage(prev => prev + "\nFinalizing and saving data...");
 
         setAttendanceAndOD(attRes);
         setMarksData(marksRes);
-        setGradesData(gradesRes);
-        setAllGradesData(allGradesRes);
         setScheduleData(ScheduleRes);
-        sethostelData(HostelRes);
-        setCalender(calenderRes);
 
         localStorage.setItem("attendance", JSON.stringify(attRes));
         localStorage.setItem("marks", JSON.stringify(marksRes));
-        localStorage.setItem("grades", JSON.stringify(gradesRes));
-        localStorage.setItem("allGrades", JSON.stringify(allGradesRes));
         localStorage.setItem("schedule", JSON.stringify(ScheduleRes));
-        localStorage.setItem("hostel", JSON.stringify(HostelRes));
-        localStorage.setItem("calender", JSON.stringify(calenderRes));
 
         setMessage(prev => prev + "\n✅ All data loaded successfully!");
         setProgressBar(100);
@@ -327,6 +265,7 @@ export default function LoginPage() {
 
         setMessage((prev) => prev + "\n✅ Calendar reloaded successfully!");
         setProgressBar(100);
+        setIsReloading(false);
         setIsLoggedIn(true);
       } else {
         setMessage(
@@ -339,11 +278,186 @@ export default function LoginPage() {
       console.error(err);
       setMessage("❌ Calendar fetch failed, check console.");
       setProgressBar(0);
-    } finally {
-      setIsReloading(false);
     }
   };
 
+  const handleFetchGrades = async () => {
+    setIsReloading(true);
+    setProgressBar(10);
+    setMessage("Logging in and fetching data...");
+    try {
+      const captchaRes = await fetch("/api/getCaptcha", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ campus }),
+      });
+      const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
+      if (error) throw new Error("Failed to get CAPTCHA: " + error);
+      const captcha = await solveCaptchaClient(captchaBase64);
+      const loginRes = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          password,
+          campus,
+          captcha,
+          cookies,
+          csrf,
+        }),
+      });
+      const data = await loginRes.json();
+      if (data.success && data.dashboardHtml) {
+        setMessage((prev) => prev + "\n✅ Login successful");
+        setProgressBar((prev) => prev + 30);
+        const gradesRes = await fetch("/api/fetchGrades", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, campus }),
+        });
+        const gradesData = await gradesRes.json();
+        setProgressBar((prev) => prev + 40);
+        setGradesData(gradesData);
+        localStorage.setItem("grades", JSON.stringify(gradesData));
+        setMessage((prev) => prev + "\n✅ Grades reloaded successfully!");
+        setProgressBar(100);
+        setIsLoggedIn(true);
+        setIsReloading(false);
+      } else {
+        setMessage(
+          data.message ||
+          "Login failed. If you changed your password recently, please logout and login again."
+        );
+        setProgressBar(0);
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Grades fetch failed, check console.");
+      setProgressBar(0);
+    }
+  };
+
+  const handleAllGradesFetch = async () => {
+    setIsReloading(true);
+    setProgressBar(10);
+    setMessage("Logging in and fetching data...");
+
+    try {
+      const captchaRes = await fetch("/api/getCaptcha", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ campus }),
+      });
+      const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
+
+      if (error) throw new Error("Failed to get CAPTCHA: " + error);
+
+      const captcha = await solveCaptchaClient(captchaBase64);
+
+      const loginRes = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          password,
+          campus,
+          captcha,
+          cookies,
+          csrf,
+        }),
+      });
+
+      const data = await loginRes.json();
+
+      if (data.success && data.dashboardHtml) {
+        setMessage((prev) => prev + "\n✅ Login successful");
+        setProgressBar((prev) => prev + 30);
+
+        const AllGradesRes = await fetch("/api/fetchAllGrades", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, campus }),
+        });
+
+        const AllGradesData = await AllGradesRes.json();
+        setProgressBar((prev) => prev + 40);
+
+        setAllGradesData(AllGradesData);
+        localStorage.setItem("allGradesData", JSON.stringify(AllGradesData));
+
+        setMessage((prev) => prev + "\n✅ All grades reloaded successfully!");
+        setProgressBar(100);
+        setIsLoggedIn(true);
+        setIsReloading(false);
+      } else {
+        setMessage(
+          data.message ||
+          "Login failed. If you changed your password recently, please logout and login again."
+        );
+        setProgressBar(0);
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Calendar fetch failed, check console.");
+      setProgressBar(0);
+    }
+  };
+
+  const handleHostelDetailsFetch = async () => {
+    setIsReloading(true);
+    setProgressBar(10);
+    setMessage("Logging in and fetching data...");
+    try {
+      const captchaRes = await fetch("/api/getCaptcha", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ campus }),
+      });
+      const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
+      if (error) throw new Error("Failed to get CAPTCHA: " + error);
+      const captcha = await solveCaptchaClient(captchaBase64);
+      const loginRes = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          password,
+          campus,
+          captcha,
+          cookies,
+          csrf,
+        }),
+      });
+      const data = await loginRes.json();
+      if (data.success && data.dashboardHtml) {
+        setMessage((prev) => prev + "\n✅ Login successful");
+        setProgressBar((prev) => prev + 30);
+        const HostelRes = await fetch("/api/fetchHostelDetails", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml, campus }),
+        });
+        const HostelData = await HostelRes.json();
+        setProgressBar((prev) => prev + 40);
+        sethostelData(HostelData);
+        localStorage.setItem("hostelData", JSON.stringify(HostelData));
+        setMessage((prev) => prev + "\n✅ Hostel details reloaded successfully!");
+        setProgressBar(100);
+        setIsLoggedIn(true);
+        setIsReloading(false);
+      } else {
+        setMessage(
+          data.message ||
+          "Login failed. If you changed your password recently, please logout and login again."
+        );
+        setProgressBar(0);
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Hostel details fetch failed, check console.");
+      setProgressBar(0);
+    }
+  };
 
   const reloadLeaveHistory = async () => {
     setIsReloading(true);
@@ -521,6 +635,9 @@ export default function LoginPage() {
             setCalendarType={setCalenderType}
             handleCalendarFetch={handleCalendarFetch}
             reloadLeaveHistory={reloadLeaveHistory}
+            handleAllGradesFetch={handleAllGradesFetch}
+            handleHostelDetailsFetch={handleHostelDetailsFetch}
+            handleAttendanceFetch={handleAttendanceFetch}
           />
         </>
       )}

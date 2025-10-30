@@ -24,9 +24,16 @@ const LaundryLinks = {
   },
 }
 
-export default function LaundrySchedule({ hostelData }) {
+export default function LaundrySchedule({ hostelData, handleHostelDetailsFetch }) {
   if (!hostelData.hostelInfo?.isHosteller) {
-    return <p className="text-center text-gray-600 dark:text-gray-400 midnight:text-gray-400">You are not a hosteller. / Reload Data</p>
+    return (
+      <p className="text-center text-gray-600 dark:text-gray-400 midnight:text-gray-400">
+        You are not a hosteller. / Reload Data{" "}
+        <button onClick={handleHostelDetailsFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+          <RefreshCcw className={`w-4 h-4`} />
+        </button>
+      </p>
+    )
   }
   const [gender, setGender] = useState("")
   const [hostel, setHostel] = useState("")
@@ -159,8 +166,8 @@ export default function LaundrySchedule({ hostelData }) {
                   <tr
                     key={item.Id}
                     className={`${isToday
-                        ? "bg-yellow-200 dark:bg-yellow-600 midnight:bg-yellow-600 font-bold"
-                        : ""
+                      ? "bg-yellow-200 dark:bg-yellow-600 midnight:bg-yellow-600 font-bold"
+                      : ""
                       }`}
                   >
                     <td className="px-4 py-2 text-center border-b border-gray-800 dark:border-gray-700">
