@@ -1,5 +1,3 @@
-export const runtime = "nodejs";
-
 import getCaptcha from "./getCaptcha";
 import { NextResponse } from "next/server";
 
