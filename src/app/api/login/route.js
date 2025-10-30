@@ -55,13 +55,18 @@ export async function POST(req) {
             return NextResponse.json({ success: false, message: "Login failed for an unknown reason." }, { status: 500 });
         }
 
-        return NextResponse.json({
+        const res = NextResponse.json({
             success: true,
             message: "Login successful!",
             cookies: allCookies,
             csrf,
             dashboardHtml,
         });
+        res.headers.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+        res.headers.set("Pragma", "no-cache");
+        res.headers.set("Expires", "0");
+        res.headers.set("Surrogate-Control", "no-store");
+        return res;
     } catch (err) {
         console.error(err);
         return NextResponse.json({ success: false, error: err.message }, { status: 500 });
