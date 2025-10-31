@@ -178,6 +178,7 @@ export default function DashboardContent({
                 <CalendarView
                   calendars={calendarData.calendars}
                   calendarType={calendarType}
+                  handleCalendarFetch={handleCalendarFetch}
                 />
                 <CalendarTabWrapper
                   calendarType={calendarType}

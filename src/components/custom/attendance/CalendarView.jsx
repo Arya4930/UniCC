@@ -2,6 +2,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { eachDayOfInterval, endOfMonth, getDay } from "date-fns";
 import NoContentFound from "../NoContentFound";
+import { RefreshCcw } from "lucide-react";
 
 const CALENDAR_TYPES = {
     ALL: "General Semester",
@@ -52,7 +53,7 @@ const MONTH_NAME_MAP = {
     jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
 };
 
-export default function CalendarView({ calendars, calendarType }) {
+export default function CalendarView({ calendars, calendarType, handleCalendarFetch }) {
     const safeCalendars = useMemo(() => {
         if (!calendars) return [];
         if (Array.isArray(calendars)) return calendars;
@@ -127,7 +128,9 @@ export default function CalendarView({ calendars, calendarType }) {
     return (
         <div className="flex flex-col gap-4">
             <h1 className="text-lg font-semibold mb-3 text-center text-gray-800 dark:text-gray-100 midnight:text-gray-100">
-                Academic Calendar ({CALENDAR_TYPES[calendarType || "ALL"]})
+                Academic Calendar ({CALENDAR_TYPES[calendarType || "ALL"]}) <button onClick={() => handleCalendarFetch(calendarType || "ALL")} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                    <RefreshCcw className={`w-4 h-4`} />
+                </button>
             </h1>
             <div className="flex gap-2 mb-3 justify-center flex-wrap">
                 {safeCalendars.map((calendar, idx) => (
@@ -208,12 +211,12 @@ export default function CalendarView({ calendars, calendarType }) {
                                         </div>
                                         <div
                                             className={`text-xs font-semibold px-2 py-0.5 rounded ${dayType === "holiday"
-                                                    ? "bg-red-200 text-red-800 dark:bg-red-800 dark:text-red-100 midnight:bg-red-900 midnight:text-red-200"
-                                                    : dayType === "instructional"
-                                                        ? "bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-100 midnight:bg-green-900 midnight:text-green-200"
-                                                        : dayType === "semiholiday"
-                                                            ? "bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100 midnight:bg-yellow-900 midnight:text-yellow-200"
-                                                            : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-100 midnight:bg-gray-800 midnight:text-gray-200"
+                                                ? "bg-red-200 text-red-800 dark:bg-red-800 dark:text-red-100 midnight:bg-red-900 midnight:text-red-200"
+                                                : dayType === "instructional"
+                                                    ? "bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-100 midnight:bg-green-900 midnight:text-green-200"
+                                                    : dayType === "semiholiday"
+                                                        ? "bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100 midnight:bg-yellow-900 midnight:text-yellow-200"
+                                                        : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-100 midnight:bg-gray-800 midnight:text-gray-200"
                                                 }`}
                                         >
                                             {dayType === "holiday"
