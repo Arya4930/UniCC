@@ -51,7 +51,8 @@ export default function DashboardContent({
   reloadLeaveHistory,
   handleAllGradesFetch,
   handleHostelDetailsFetch,
-  handleFetchGrades
+  handleFetchGrades,
+  handleScheduleFetch
 }) {
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
@@ -119,18 +120,17 @@ export default function DashboardContent({
       />
 
       <div className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-screen text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
-        {GradesData && (
-          <StatsCards
-            attendancePercentage={attendancePercentage}
-            ODhoursData={ODhoursData}
-            setODhoursIsOpen={setODhoursIsOpen}
-            GradesData={GradesData}
-            setGradesDisplayIsOpen={setGradesDisplayIsOpen}
-            CGPAHidden={CGPAHidden}
-            setCGPAHidden={setCGPAHidden}
-            handleFetchGrades={handleFetchGrades}
-          />
-        )}
+        <StatsCards
+          attendancePercentage={attendancePercentage}
+          ODhoursData={ODhoursData}
+          setODhoursIsOpen={setODhoursIsOpen}
+          marksData={marksData}
+          setGradesDisplayIsOpen={setGradesDisplayIsOpen}
+          CGPAHidden={CGPAHidden}
+          setCGPAHidden={setCGPAHidden}
+          handleFetchGrades={handleFetchGrades}
+        />
+
 
         {ODhoursIsOpen && (
           <ODHoursModal
@@ -142,6 +142,7 @@ export default function DashboardContent({
         {GradesDisplayIsOpen && (
           <GradesModal
             GradesData={GradesData}
+            marksData={marksData}
             onClose={() => setGradesDisplayIsOpen(false)}
             handleFetchGrades={handleFetchGrades}
           />
@@ -194,7 +195,7 @@ export default function DashboardContent({
               setActiveSubTab={setActiveSubTab}
             />
             {activeSubTab === "marks" && <MarksDisplay data={marksData} />}
-            {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} />}
+            {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} handleScheduleFetch={handleScheduleFetch} />}
             {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} />}
           </div>
         )}

@@ -10,13 +10,25 @@ const withSerwist = withSerwistInit({
   cacheOnNavigation: true,
   swSrc: "src/app/sw.js",
   swDest: "public/sw.js",
-  additionalPrecacheEntries: [{ url: "/~offline", revision }],
 });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   devIndicators: false,
+  cacheComponents: true,
+  cacheLife: {
+    halfHour: {
+      stale: 60 * 5,
+      revalidate: 60 * 30,
+      expire: 60 * 60,
+    },
+    monthly: {
+      stale: 60 * 60 * 24 * 7,
+      revalidate: 60 * 60 * 24 * 30,
+      expire: 60 * 60 * 24 * 60,
+    },
+  },
   images: {
     remotePatterns: [
       {
@@ -32,28 +44,6 @@ const nextConfig = {
         hostname: 'lh3.googleusercontent.com',
       },
     ],
-  },
-  async headers() {
-    return [
-      {
-        source: "/api/(.*)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, s-maxage=1800, stale-while-revalidate=60",
-          },
-        ],
-      },
-      {
-        source: "/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, s-maxage=1800, stale-while-revalidate=60",
-          },
-        ],
-      },
-    ];
   },
   webpack: (config, { isServer }) => {
     if (isServer) {

@@ -7,7 +7,7 @@ export default function StatsCards({
   attendancePercentage,
   ODhoursData,
   setODhoursIsOpen,
-  GradesData,
+  marksData,
   setGradesDisplayIsOpen,
   CGPAHidden,
   setCGPAHidden,
@@ -64,7 +64,7 @@ export default function StatsCards({
         </div>
 
         {/* Card 3 */}
-        {GradesData.cgpa ? (<div
+        {marksData.cgpa && <div
           className={`${cardBase} bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800`}
           onClick={() => setCGPAHidden((prev) => !prev)}
         >
@@ -72,22 +72,10 @@ export default function StatsCards({
             CGPA
           </h2>
           <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mt-2 select-none">
-            {CGPAHidden ? "###" : GradesData?.cgpa?.cgpa}
+            {CGPAHidden ? "###" : marksData?.cgpa?.cgpa}
           </p>
-        </div>) : (
-          <div
-            className={`${cardBase} bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800`}
-          >
-            <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 midnight:text-gray-200">
-              CGPA
-            </h2>
-            <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mt-2 select-none">
-              N/A <button onClick={handleFetchGrades} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-                <RefreshCcw className={`w-4 h-4`} />
-              </button>
-            </p>
-          </div>
-        )}
+        </div>
+        }
 
         {/* Card 4 */}
         <div
@@ -96,7 +84,7 @@ export default function StatsCards({
         >
           <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 midnight:text-gray-200">Credits Earned</h2>
           <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mt-2">
-            {Number(GradesData?.cgpa?.creditsEarned) + Number(GradesData?.cgpa?.nonGradedRequirement || 0)}
+            {Number(marksData?.cgpa?.creditsEarned) + Number(marksData?.cgpa?.nonGradedRequirement || 0)}
           </p>
         </div>
       </div>

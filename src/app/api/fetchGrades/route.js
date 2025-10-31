@@ -34,33 +34,6 @@ export async function POST(req) {
                 },
             }
         );
-        const creditsRes = await client.post(
-            "/vtop/get/dashboard/current/cgpa/credits",
-            new URLSearchParams({
-                authorizedID,
-                _csrf: csrf,
-                x: Date.now().toString(),
-            }).toString(),
-            {
-                headers: {
-                    Cookie: cookieHeader,
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    Referer: "https://vtopcc.vit.ac.in/vtop/open/page",
-                },
-            }
-        );
-        const $$$ = cheerio.load(creditsRes.data);
-        const cgpa = {};
-
-        $$$(".list-group-item").each((_, el) => {
-            const label = $$$("span.card-title", el).text().trim();
-            const value = $$$("span.fontcolor3 span", el).text().trim();
-
-            if (label.includes("Total Credits Required")) cgpa.creditsRequired = value;
-            else if (label.includes("Earned Credits")) cgpa.creditsEarned = value;
-            else if (label.includes("Current CGPA")) cgpa.cgpa = value;
-            else if (label.includes("Non-graded Core Requirement")) cgpa.nonGradedRequirement = value;
-        });
 
         const $$ = cheerio.load(gradeRes.data);
         const effectiveGrades = [];
@@ -100,6 +73,7 @@ export async function POST(req) {
                 });
             });
         // --- CGPA Details ---
+        const cgpa = {};
         const cgpaRow = $$("table.table.table-hover.table-bordered tbody tr").first();
         if (cgpaRow.length) {
             const tds = cgpaRow.find("td");

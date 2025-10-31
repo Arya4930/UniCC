@@ -12,7 +12,7 @@ export function ReloadModal({ message, onClose, progressBar }) {
     }, []);
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm">
+        <div className="fixed inset-0 flex items-center justify-center z-60 backdrop-blur-sm">
             <div className="bg-gray-700 rounded-xl p-6 w-full max-w-md text-white">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-bold">Reload Session</h2>

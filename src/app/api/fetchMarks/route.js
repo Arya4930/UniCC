@@ -18,33 +18,6 @@ export async function POST(req) {
 
         const client = VTOPClient(campus);
 
-        // Get available semesters
-        const semRes = await client.post(
-            "/vtop/examinations/StudentMarkView",
-            new URLSearchParams({
-                verifyMenu: "true",
-                authorizedID,
-                _csrf: csrf,
-                nocache: Date.now().toString(),
-            }).toString(),
-            {
-                headers: {
-                    Cookie: cookieHeader,
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    Referer: "https://vtopcc.vit.ac.in/vtop/open/page",
-                },
-            }
-        );
-
-        const $$ = cheerio.load(semRes.data);
-        const semesters = [];
-        $$("#semesterSubId option").each((i, opt) => {
-            if (!opt.attribs.value) return;
-            semesters.push({ name: $$(opt).text().trim(), id: opt.attribs.value });
-        });
-
-        if (semesters.length === 0) throw new Error("No semesters found!");
-
         const semesterId = config.currSemID;
 
         // Fetch the marks data for the selected semester
@@ -108,8 +81,35 @@ export async function POST(req) {
                 courses.push(courseData);
             }
         });
+        const creditsRes = await client.post(
+            "/vtop/get/dashboard/current/cgpa/credits",
+            new URLSearchParams({
+                authorizedID,
+                _csrf: csrf,
+                x: Date.now().toString(),
+            }).toString(),
+            {
+                headers: {
+                    Cookie: cookieHeader,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Referer: "https://vtopcc.vit.ac.in/vtop/open/page",
+                },
+            }
+        );
+        const $$$$ = cheerio.load(creditsRes.data);
+        const cgpa = {};
 
-        return NextResponse.json({ semester: semesters[1], marks: courses });
+        $$$$(".list-group-item").each((_, el) => {
+            const label = $$$$("span.card-title", el).text().trim();
+            const value = $$$$("span.fontcolor3 span", el).text().trim();
+
+            if (label.includes("Total Credits Required")) cgpa.creditsRequired = value;
+            else if (label.includes("Earned Credits")) cgpa.creditsEarned = value;
+            else if (label.includes("Current CGPA")) cgpa.cgpa = value;
+            else if (label.includes("Non-graded Core Requirement")) cgpa.nonGradedRequirement = value;
+        });
+
+        return NextResponse.json({ marks: courses, cgpa: cgpa });
     } catch (err) {
         console.error(err);
         return NextResponse.json({ error: err.message }, { status: 500 });

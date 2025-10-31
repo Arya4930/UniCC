@@ -4,8 +4,8 @@ import { Progress } from "@/components/ui/progress";
 import NoContentFound from "../NoContentFound";
 import { RefreshCcw } from "lucide-react";
 
-export default function GradesDisplay({ data, handleFetchGrades }) {
-  if (!data || !data.cgpa) {
+export default function GradesDisplay({ data, handleFetchGrades, marksData }) {
+  if (!data || !marksData.cgpa) {
     return (
       <div>
         <p className="text-center text-gray-600 dark:text-gray-300 midnight:text-gray-200">

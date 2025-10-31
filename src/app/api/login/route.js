@@ -1,7 +1,5 @@
 import VTOPClient from "@/lib/VTOPClient";
 import { NextResponse } from "next/server";
-import solveCaptcha from "./solveCaptcha";
-import getCaptcha from "../getCaptcha/getCaptcha";
 
 export async function POST(req) {
     try {
@@ -55,18 +53,13 @@ export async function POST(req) {
             return NextResponse.json({ success: false, message: "Login failed for an unknown reason." }, { status: 500 });
         }
 
-        const res = NextResponse.json({
+        return NextResponse.json({
             success: true,
             message: "Login successful!",
             cookies: allCookies,
             csrf,
             dashboardHtml,
         });
-        res.headers.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-        res.headers.set("Pragma", "no-cache");
-        res.headers.set("Expires", "0");
-        res.headers.set("Surrogate-Control", "no-store");
-        return res;
     } catch (err) {
         console.error(err);
         return NextResponse.json({ success: false, error: err.message }, { status: 500 });

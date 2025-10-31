@@ -3,9 +3,22 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import NoContentFound from "../NoContentFound";
+import { RefreshCcw } from "lucide-react";
 
-export default function ExamSchedule({ data }) {
-  if (!data) return <NoContentFound />;
+export default function ExamSchedule({ data, handleScheduleFetch }) {
+  if (!data) {
+    return (
+      <div>
+        <p className="text-center text-gray-600 dark:text-gray-300 midnight:text-gray-200">
+          No Exam Schedule Available.{" "}
+          <button onClick={handleScheduleFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+            <RefreshCcw className={`w-4 h-4`} />
+          </button>
+        </p>
+        <NoContentFound />
+      </div>
+    );
+  };
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -104,6 +117,11 @@ export default function ExamSchedule({ data }) {
 
   return (
     <div className="space-y-6">
+      <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+        Exam Schedule <button onClick={handleScheduleFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+          <RefreshCcw className={`w-4 h-4`} />
+        </button>
+      </h1>
       {Object.entries(data.Schedule).map(([examType, subjects]) => {
         const hasCalendarData = subjects.some((s) => s.examSession && s.reportingTime);
         const icsUrl = hasCalendarData ? generateICSFile(subjects, examType) : null;
