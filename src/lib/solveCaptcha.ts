@@ -1,5 +1,5 @@
 // utils/solveCaptchaClient.js
-import { bitmaps } from "./bitmaps.js";
+import { bitmaps } from "./bitmaps";
 
 function getImageBlocks(pixelData, width, height) {
     const saturate = new Array(pixelData.length / 4);

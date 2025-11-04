@@ -37,7 +37,7 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData }) {
           </button></CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-4 gap-2 text-center text-sm">
-          {Object.entries(data.cgpa.grades).map(([grade, count]) => (
+          {Object.entries(data.cgpa.grades as Record<string, number>).map(([grade, count]) => (
             <div
               key={grade}
               className="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 midnight:bg-gray-800 text-gray-900 dark:text-gray-100 midnight:text-gray-100 font-bold"

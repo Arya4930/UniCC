@@ -47,11 +47,19 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/dotenv": "^8.2.3",
+    "@types/node": "^24.10.0",
+    "@types/react": "^19.2.2",
+    "@types/react-circular-progressbar": "^1.1.0",
+    "@types/react-dom": "^19.2.2",
+    "@types/tough-cookie": "^4.0.5",
+    "@types/web-push": "^3.6.4",
     "eslint": "^9",
     "eslint-config-next": "16.0.0",
     "serwist": "latest",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.8",
+    "typescript": "^5.9.3",
     "wrangler": "^4.45.2"
   }
 }

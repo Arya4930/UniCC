@@ -1,4 +1,5 @@
-'use client';;
+'use client';
+
 import { getDay, getDaysInMonth, isSameDay } from 'date-fns';
 import { atom, useAtom } from 'jotai';
 import {
@@ -7,7 +8,15 @@ import {
   ChevronRightIcon,
   ChevronsUpDown,
 } from 'lucide-react';
-import { createContext, memo, useCallback, useContext, useMemo, useState } from 'react';
+import {
+  createContext,
+  memo,
+  type ReactNode,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -24,37 +33,81 @@ import {
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 
-const monthAtom = atom(new Date().getMonth());
-const yearAtom = atom(new Date().getFullYear());
+export type CalendarState = {
+  month: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+  year: number;
+};
+
+const monthAtom = atom<CalendarState['month']>(
+  new Date().getMonth() as CalendarState['month']
+);
+const yearAtom = atom<CalendarState['year']>(new Date().getFullYear());
 
 export const useCalendarMonth = () => useAtom(monthAtom);
 export const useCalendarYear = () => useAtom(yearAtom);
 
-const CalendarContext = createContext({
+type CalendarContextProps = {
+  locale: Intl.LocalesArgument;
+  startDay: number;
+};
+
+const CalendarContext = createContext<CalendarContextProps>({
   locale: 'en-US',
   startDay: 0,
 });
 
+export type Status = {
+  id: string;
+  name: string;
+  color: string;
+};
+
+export type Feature = {
+  id: string;
+  name: string;
+  startAt: Date;
+  endAt: Date;
+  status: Status;
+};
+
+type ComboboxProps = {
+  value: string;
+  setValue: (value: string) => void;
+  data: {
+    value: string;
+    label: string;
+  }[];
+  labels: {
+    button: string;
+    empty: string;
+    search: string;
+  };
+  className?: string;
+};
+
 export const monthsForLocale = (
-  localeName,
-  monthFormat = 'long'
+  localeName: Intl.LocalesArgument,
+  monthFormat: Intl.DateTimeFormatOptions['month'] = 'long'
 ) => {
   const format = new Intl.DateTimeFormat(localeName, { month: monthFormat })
     .format;
 
   return [...new Array(12).keys()].map((m) =>
-    format(new Date(Date.UTC(2021, m, 2))));
+    format(new Date(Date.UTC(2021, m, 2)))
+  );
 };
 
 export const daysForLocale = (
-  locale,
-  startDay
+  locale: Intl.LocalesArgument,
+  startDay: number
 ) => {
-  const weekdays = [];
+  const weekdays: string[] = [];
   const baseDate = new Date(2024, 0, startDay);
 
   for (let i = 0; i < 7; i++) {
-    weekdays.push(new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(baseDate));
+    weekdays.push(
+      new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(baseDate)
+    );
     baseDate.setDate(baseDate.getDate() + 1);
   }
 
@@ -66,8 +119,8 @@ const Combobox = ({
   setValue,
   data,
   labels,
-  className
-}) => {
+  className,
+}: ComboboxProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -76,7 +129,8 @@ const Combobox = ({
         <Button
           aria-expanded={open}
           className={cn('w-40 justify-between capitalize', className)}
-          variant="outline">
+          variant="outline"
+        >
           {value
             ? data.find((item) => item.value === value)?.label
             : labels.button}
@@ -89,7 +143,8 @@ const Combobox = ({
             const label = data.find((item) => item.value === value)?.label;
 
             return label?.toLowerCase().includes(search.toLowerCase()) ? 1 : 0;
-          }}>
+          }}
+        >
           <CommandInput placeholder={labels.search} />
           <CommandList>
             <CommandEmpty>{labels.empty}</CommandEmpty>
@@ -102,9 +157,14 @@ const Combobox = ({
                     setValue(currentValue === value ? '' : currentValue);
                     setOpen(false);
                   }}
-                  value={item.value}>
+                  value={item.value}
+                >
                   <Check
-                    className={cn('mr-2 h-4 w-4', value === item.value ? 'opacity-100' : 'opacity-0')} />
+                    className={cn(
+                      'mr-2 h-4 w-4',
+                      value === item.value ? 'opacity-100' : 'opacity-0'
+                    )}
+                  />
                   {item.label}
                 </CommandItem>
               ))}
@@ -116,26 +176,35 @@ const Combobox = ({
   );
 };
 
-const OutOfBoundsDay = ({
-  day
-}) => (
-  <div
-    className="relative h-full w-full bg-secondary p-1 text-muted-foreground text-xs">
+type OutOfBoundsDayProps = {
+  day: number;
+};
+
+const OutOfBoundsDay = ({ day }: OutOfBoundsDayProps) => (
+  <div className="relative h-full w-full bg-secondary p-1 text-muted-foreground text-xs">
     {day}
   </div>
 );
 
-export const CalendarBody = ({
-  features,
-  children
-}) => {
+export type CalendarBodyProps = {
+  features: Feature[];
+  children: (props: { feature: Feature }) => ReactNode;
+};
+
+export const CalendarBody = ({ features, children }: CalendarBodyProps) => {
   const [month] = useCalendarMonth();
   const [year] = useCalendarYear();
   const { startDay } = useContext(CalendarContext);
 
   // Memoize expensive date calculations
-  const currentMonthDate = useMemo(() => new Date(year, month, 1), [year, month]);
-  const daysInMonth = useMemo(() => getDaysInMonth(currentMonthDate), [currentMonthDate]);
+  const currentMonthDate = useMemo(
+    () => new Date(year, month, 1),
+    [year, month]
+  );
+  const daysInMonth = useMemo(
+    () => getDaysInMonth(currentMonthDate),
+    [currentMonthDate]
+  );
   const firstDay = useMemo(
     () => (getDay(currentMonthDate) - startDay + 7) % 7,
     [currentMonthDate, startDay]
@@ -146,7 +215,10 @@ export const CalendarBody = ({
     const prevMonth = month === 0 ? 11 : month - 1;
     const prevMonthYear = month === 0 ? year - 1 : year;
     const prevMonthDays = getDaysInMonth(new Date(prevMonthYear, prevMonth, 1));
-    const prevMonthDaysArray = Array.from({ length: prevMonthDays }, (_, i) => i + 1);
+    const prevMonthDaysArray = Array.from(
+      { length: prevMonthDays },
+      (_, i) => i + 1
+    );
     return { prevMonthDays, prevMonthDaysArray };
   }, [month, year]);
 
@@ -155,13 +227,16 @@ export const CalendarBody = ({
     const nextMonth = month === 11 ? 0 : month + 1;
     const nextMonthYear = month === 11 ? year + 1 : year;
     const nextMonthDays = getDaysInMonth(new Date(nextMonthYear, nextMonth, 1));
-    const nextMonthDaysArray = Array.from({ length: nextMonthDays }, (_, i) => i + 1);
+    const nextMonthDaysArray = Array.from(
+      { length: nextMonthDays },
+      (_, i) => i + 1
+    );
     return { nextMonthDaysArray };
   }, [month, year]);
 
   // Memoize features filtering by day to avoid recalculating on every render
   const featuresByDay = useMemo(() => {
-    const result = {};
+    const result: { [day: number]: Feature[] } = {};
     for (let day = 1; day <= daysInMonth; day++) {
       result[day] = features.filter((feature) => {
         return isSameDay(new Date(feature.endAt), new Date(year, month, day));
@@ -170,7 +245,7 @@ export const CalendarBody = ({
     return result;
   }, [features, daysInMonth, year, month]);
 
-  const days = [];
+  const days: ReactNode[] = [];
 
   for (let i = 0; i < firstDay; i++) {
     const day =
@@ -186,19 +261,22 @@ export const CalendarBody = ({
   for (let day = 1; day <= daysInMonth; day++) {
     const featuresForDay = featuresByDay[day] || [];
 
-    days.push(<div
-      className="relative flex h-full w-full flex-col gap-1 p-1 text-muted-foreground text-xs"
-      key={day}>
-      {day}
-      <div>
-        {featuresForDay.slice(0, 3).map((feature) => children({ feature }))}
+    days.push(
+      <div
+        className="relative flex h-full w-full flex-col gap-1 p-1 text-muted-foreground text-xs"
+        key={day}
+      >
+        {day}
+        <div>
+          {featuresForDay.slice(0, 3).map((feature) => children({ feature }))}
+        </div>
+        {featuresForDay.length > 3 && (
+          <span className="block text-muted-foreground text-xs">
+            +{featuresForDay.length - 3} more
+          </span>
+        )}
       </div>
-      {featuresForDay.length > 3 && (
-        <span className="block text-muted-foreground text-xs">
-          +{featuresForDay.length - 3} more
-        </span>
-      )}
-    </div>);
+    );
   }
 
   const remainingDays = 7 - ((firstDay + daysInMonth) % 7);
@@ -220,7 +298,8 @@ export const CalendarBody = ({
             'relative aspect-square overflow-hidden border-t border-r',
             index % 7 === 6 && 'border-r-0'
           )}
-          key={index}>
+          key={index}
+        >
           {day}
         </div>
       ))}
@@ -228,16 +307,25 @@ export const CalendarBody = ({
   );
 };
 
+export type CalendarDatePickerProps = {
+  className?: string;
+  children: ReactNode;
+};
+
 export const CalendarDatePicker = ({
   className,
-  children
-}) => (
+  children,
+}: CalendarDatePickerProps) => (
   <div className={cn('flex items-center gap-1', className)}>{children}</div>
 );
 
+export type CalendarMonthPickerProps = {
+  className?: string;
+};
+
 export const CalendarMonthPicker = ({
-  className
-}) => {
+  className,
+}: CalendarMonthPickerProps) => {
   const [month, setMonth] = useCalendarMonth();
   const { locale } = useContext(CalendarContext);
 
@@ -259,17 +347,24 @@ export const CalendarMonthPicker = ({
         search: 'Search month',
       }}
       setValue={(value) =>
-        setMonth(Number.parseInt(value))
+        setMonth(Number.parseInt(value) as CalendarState['month'])
       }
-      value={month.toString()} />
+      value={month.toString()}
+    />
   );
+};
+
+export type CalendarYearPickerProps = {
+  className?: string;
+  start: number;
+  end: number;
 };
 
 export const CalendarYearPicker = ({
   className,
   start,
-  end
-}) => {
+  end,
+}: CalendarYearPickerProps) => {
   const [year, setYear] = useCalendarYear();
 
   return (
@@ -285,13 +380,18 @@ export const CalendarYearPicker = ({
         search: 'Search year',
       }}
       setValue={(value) => setYear(Number.parseInt(value))}
-      value={year.toString()} />
+      value={year.toString()}
+    />
   );
 };
 
+export type CalendarDatePaginationProps = {
+  className?: string;
+};
+
 export const CalendarDatePagination = ({
-  className
-}) => {
+  className,
+}: CalendarDatePaginationProps) => {
   const [month, setMonth] = useCalendarMonth();
   const [year, setYear] = useCalendarYear();
 
@@ -300,7 +400,7 @@ export const CalendarDatePagination = ({
       setMonth(11);
       setYear(year - 1);
     } else {
-      setMonth((month - 1));
+      setMonth((month - 1) as CalendarState['month']);
     }
   }, [month, year, setMonth, setYear]);
 
@@ -309,7 +409,7 @@ export const CalendarDatePagination = ({
       setMonth(0);
       setYear(year + 1);
     } else {
-      setMonth((month + 1));
+      setMonth((month + 1) as CalendarState['month']);
     }
   }, [month, year, setMonth, setYear]);
 
@@ -325,15 +425,19 @@ export const CalendarDatePagination = ({
   );
 };
 
-export const CalendarDate = ({
-  children
-}) => (
+export type CalendarDateProps = {
+  children: ReactNode;
+};
+
+export const CalendarDate = ({ children }: CalendarDateProps) => (
   <div className="flex items-center justify-between p-3">{children}</div>
 );
 
-export const CalendarHeader = ({
-  className
-}) => {
+export type CalendarHeaderProps = {
+  className?: string;
+};
+
+export const CalendarHeader = ({ className }: CalendarHeaderProps) => {
   const { locale, startDay } = useContext(CalendarContext);
 
   // Memoize days data to avoid recalculating date formatting
@@ -352,28 +456,40 @@ export const CalendarHeader = ({
   );
 };
 
-export const CalendarItem = memo(({
-  feature,
-  className
-}) => (
-  <div className={cn('flex items-center gap-2', className)}>
-    <div
-      className="h-2 w-2 shrink-0 rounded-full"
-      style={{
-        backgroundColor: feature.status.color,
-      }} />
-    <span className="truncate">{feature.name}</span>
-  </div>
-));
+export type CalendarItemProps = {
+  feature: Feature;
+  className?: string;
+};
+
+export const CalendarItem = memo(
+  ({ feature, className }: CalendarItemProps) => (
+    <div className={cn('flex items-center gap-2', className)}>
+      <div
+        className="h-2 w-2 shrink-0 rounded-full"
+        style={{
+          backgroundColor: feature.status.color,
+        }}
+      />
+      <span className="truncate">{feature.name}</span>
+    </div>
+  )
+);
 
 CalendarItem.displayName = 'CalendarItem';
+
+export type CalendarProviderProps = {
+  locale?: Intl.LocalesArgument;
+  startDay?: number;
+  children: ReactNode;
+  className?: string;
+};
 
 export const CalendarProvider = ({
   locale = 'en-US',
   startDay = 0,
   children,
-  className
-}) => (
+  className,
+}: CalendarProviderProps) => (
   <CalendarContext.Provider value={{ locale, startDay }}>
     <div className={cn('relative flex flex-col', className)}>{children}</div>
   </CalendarContext.Provider>
