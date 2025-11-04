@@ -1,15 +1,13 @@
 {
     "main": ".open-next/worker.js",
     "name": "unicc",
-    "compatibility_date": "2025-03-25",
+    "compatibility_date": "2025-09-01",
     "compatibility_flags": [
-        "nodejs_compat",
-        "expose_global_message_channel",
-        "enable_weak_ref"
+        "nodejs_compat"
     ],
     "assets": {
         "directory": ".open-next/assets",
-        "binding": "ASSETS"
+        "binding": "ASSETS",
     },
     "observability": {
         "logs": {

@@ -41,6 +41,9 @@ importers:
       '@vercel/speed-insights':
         specifier: ^1.2.0
         version: 1.2.0(next@16.0.0(@babel/core@7.28.5)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)
+      appwrite:
+        specifier: ^21.3.0
+        version: 21.3.0
       axios:
         specifier: ^1.11.0
         version: 1.13.1
@@ -2328,6 +2331,9 @@ packages:
   ansi-styles@6.2.3:
     resolution: {integrity: sha512-4Dj6M28JB+oAH8kFkTLUo+a2jwOFkuqb3yucU0CANcRRUbxS0cP0nZYCGjcc3BNXwRIsUVmDGgzawme7zvJHvg==}
     engines: {node: '>=12'}
+
+  appwrite@21.3.0:
+    resolution: {integrity: sha512-b3apD2fiQ7g+2damLZ0Lk9SdCJb32wXKq1ijB7blAl0uItqMx0I34E0RVaC5aER5VTCXHFAlHRjZ1GQypdNt1A==}
 
   argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
@@ -7371,6 +7377,8 @@ snapshots:
       color-convert: 2.0.1
 
   ansi-styles@6.2.3: {}
+
+  appwrite@21.3.0: {}
 
   argparse@2.0.1: {}
 
