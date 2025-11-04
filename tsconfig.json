@@ -2,7 +2,9 @@
   "compilerOptions": {
     "target": "esnext",
     "paths": {
-       "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
     "lib": [
       "dom",
@@ -35,7 +37,9 @@
     "**/*.jsx",
     ".next\\dev/types/**/*.ts",
     ".next\\dev/types/**/*.ts",
-    "src/types"
+    "src/types",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
