@@ -38,7 +38,7 @@ function mergeAttendanceWithTimetable(attendance: attendanceItem[], timetable: c
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
-        const { cookies, dashboardHtml, campus }: RequestBody = await req.json();
+        const { cookies, dashboardHtml }: RequestBody = await req.json();
 
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         if (!csrf || !authorizedID) throw new Error("Cannot find _csrf or authorizedID");
 
         const semesterId = config.currSemID;
-        const client = VTOPClient(campus);
+        const client = VTOPClient();
 
         const ttRes = await client.post(
             "/vtop/processViewStudentAttendance",
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                 },
             }
         );
-        const courseInfo: courseItem[] = await fetchTimetable(cookieHeader, dashboardHtml, campus);
+        const courseInfo: courseItem[] = await fetchTimetable(cookieHeader, dashboardHtml);
 
         // --- Parse Attendance Table ---
         const $$$ = cheerio.load(ttRes.data);

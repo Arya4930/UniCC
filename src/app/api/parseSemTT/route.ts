@@ -3,6 +3,7 @@ import * as cheerio from "cheerio";
 import { NextRequest, NextResponse } from "next/server";
 import { URLSearchParams } from "url";
 import config from "@/app/config.json";
+import { AddHolidayFn, CalendarDay, CalendarEvent, CalendarRequestBody } from "@/types/data/semTT";
 
 // Types of calenders
 // ALL - Default General semester
@@ -16,7 +17,7 @@ import config from "@/app/config.json";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
-        const { cookies, dashboardHtml, type, campus } = await req.json();
+        const { cookies, dashboardHtml, type }: CalendarRequestBody = await req.json();
 
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
@@ -37,7 +38,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
         const allCalendars = [];
 
-        const client = VTOPClient(campus);
+        const client = VTOPClient();
 
         for (const calDate of months) {
             const ttRes = await client.post(
@@ -86,7 +87,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 }
 
 // helper function
-function addHolidayToCalendar(calendar, dayNum, eventObj) {
+function addHolidayToCalendar(calendar, dayNum, eventObj): AddHolidayFn {
     if (!calendar || !Array.isArray(calendar.days)) return;
 
     const day = calendar.days.find(d => Number(d.date) === Number(dayNum));
@@ -118,7 +119,7 @@ function addHolidayToCalendar(calendar, dayNum, eventObj) {
 async function parseCalendar(html) {
     const $ = cheerio.load(html);
     const month = $("h4").first().text().trim();
-    const data = [];
+    const data: CalendarDay[] = [];
 
     $("table.calendar-table tbody tr td").each((_, td) => {
         const cell = $(td);
@@ -126,7 +127,7 @@ async function parseCalendar(html) {
         if (!dateText) return;
 
         const date = parseInt(dateText, 10);
-        const events = [];
+        const events: CalendarEvent[] = [];
 
         cell.find("span").slice(1).each((__, span) => {
             const text = $(span).text().trim();
@@ -143,6 +144,7 @@ async function parseCalendar(html) {
                 text,
                 type: isInstructional ? "Instructional Day" : isHoliday ? "Holiday" : "Other",
                 color,
+                category: "",
             });
         });
 

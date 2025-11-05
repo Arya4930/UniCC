@@ -2,9 +2,9 @@ import VTOPClient from "@/lib/VTOPClient";
 import { CaptchaResult, CaptchaType } from "@/types/data/login";
 import * as cheerio from "cheerio";
 
-export default async function getCaptcha(campus: string): Promise<CaptchaResult> {
+export default async function getCaptcha(): Promise<CaptchaResult> {
     const MAX_RETRIES = 10;
-    const client = VTOPClient(campus);
+    const client = VTOPClient();
 
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
         try {

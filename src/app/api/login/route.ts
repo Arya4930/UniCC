@@ -1,10 +1,11 @@
 import VTOPClient from "@/lib/VTOPClient";
-import { NextResponse } from "next/server";
+import { LoginRequestBody } from "@/types/data/login";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
-        const { username, password, campus, captcha, cookies, csrf } = await req.json();
-        const client = VTOPClient(campus);
+        const { username, password, captcha, cookies, csrf }: LoginRequestBody = await req.json();
+        const client = VTOPClient();
 
         const loginRes = await client.post(
             "/vtop/login",
@@ -27,7 +28,7 @@ export async function POST(req) {
         const loginCookies = loginRes.headers["set-cookie"];
         const allCookies = [...(cookies || []), ...(loginCookies || [])].join("; ");
 
-        let dashboardRes;
+        let dashboardRes: any;
         if (loginRes.status === 302 && loginRes.headers.location) {
             dashboardRes = await client.get(loginRes.headers.location, {
                 headers: { Cookie: allCookies },

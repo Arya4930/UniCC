@@ -12,3 +12,11 @@ export type CaptchaResponseError = {
 }
 
 export type CaptchaResult = CaptchaResponse | CaptchaResponseError;
+
+export interface LoginRequestBody {
+  username: string;
+  password: string;
+  captcha: string;
+  csrf: string;
+  cookies: string[];
+}

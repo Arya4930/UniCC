@@ -7,8 +7,6 @@ export default function LoginForm({
   setUsername,
   password,
   setPassword,
-  campus,
-  setCampus,
   message,
   handleFormSubmit,
   progressBar,
@@ -53,22 +51,6 @@ export default function LoginForm({
             <Eye className="w-4 h-4 text-gray-500" />
           </button>
         </div>
-        <select
-          className="w-full border border-gray-400 dark:border-gray-600 midnight:border-gray-700 bg-gray-50 dark:bg-slate-900 midnight:bg-black p-3 rounded-lg text-gray-900 dark:text-gray-100 midnight:text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={campus}
-          onChange={(e) => setCampus(e.target.value)}
-        >
-          <option value="chennai">Chennai Campus</option>
-          <option value="vellore">Vellore Campus</option>
-          <option value="bhopal">Bhopal Campus</option>
-          <option value="amaravati">Amaravati Campus</option>
-        </select>
-
-        {campus !== "chennai" && (
-          <div className="text-sm text-yellow-500">
-            Note: Support for {campus.charAt(0).toUpperCase() + campus.slice(1)} campus is experimental and may not work as expected.
-          </div>
-        )}
 
         {!isLoading && (
           <button
