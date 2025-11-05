@@ -1,13 +1,15 @@
 // https://vtopcc.vit.ac.in/vtop/studentsRecord/StudentProfileAllView
 // https://vtopcc.vit.ac.in/vtop/hostels/student/leave/6
 import VTOPClient from "@/lib/VTOPClient";
+import { RequestBody } from "@/types/custom";
+import { hostel, leaveItem } from "@/types/data/hostel";
 import * as cheerio from "cheerio";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { URLSearchParams } from "url";
 
-export async function POST(req) {
+export async function POST(req: NextRequest) {
     try {
-        const { cookies, dashboardHtml, campus } = await req.json();
+        const { cookies, dashboardHtml, campus }: RequestBody = await req.json();
 
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
@@ -75,8 +77,8 @@ export async function POST(req) {
         const $$$ = cheerio.load(leaveRes.data);
         const leaveRows = $$$("#LeaveHistoryTable tbody tr");
 
-        let hostelInfo = {};
-        const leaveHistory = [];
+        let hostelInfo: hostel = {};
+        const leaveHistory: leaveItem[] = [];
 
         $$("table tr").each((_, row) => {
             const cols = $$(row).find("td");
@@ -96,7 +98,7 @@ export async function POST(req) {
                 hostelInfo.roomNo = value;
             } else if (label.includes("Mess Information")) {
                 hostelInfo.messInfo = value.split(' ')[0];
-                if (hostelInfo.length > 7) {
+                if (hostelInfo.messInfo.length > 7) {
                     if (hostelInfo.messInfo === "NON") {
                         hostelInfo.messInfo = "NON VEG";
                     } else if (hostelInfo.messInfo === "FOOD") {

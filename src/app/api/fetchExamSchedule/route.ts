@@ -1,12 +1,14 @@
 import VTOPClient from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { URLSearchParams } from "url";
 import config from '@/app/config.json'
+import { RequestBody } from "@/types/custom";
+import { ExamItem, Schedule } from "@/types/data/schedule";
 
-export async function POST(req) {
+export async function POST(req: NextRequest) {
     try {
-        const { cookies, dashboardHtml, campus } = await req.json();
+        const { cookies, dashboardHtml, campus }: RequestBody = await req.json();
 
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
@@ -39,8 +41,8 @@ export async function POST(req) {
 
         // --- Parse Marks Table ---
         const $$$ = cheerio.load(ScheduleRes.data);
-        const Schedule = {};
-        let currentExamType = null;
+        const Schedule: Schedule = {};
+        let currentExamType: string | null = null;
 
         $$$("table.customTable tr").each((i, row) => {
             const tds = $$$(row).find("td");
@@ -53,7 +55,7 @@ export async function POST(req) {
             if ($$$(row).hasClass("tableHeader")) return;
 
             if ($$$(row).hasClass("tableContent") && tds.length > 1) {
-                const item = {
+                const item: ExamItem = {
                     courseCode: $$$(tds[1]).text().trim(),
                     courseTitle: $$$(tds[2]).text().trim(),
                     classId: $$$(tds[4]).text().trim(),

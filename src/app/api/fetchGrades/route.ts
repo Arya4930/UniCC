@@ -1,12 +1,14 @@
 // https://vtopcc.vit.ac.in/vtop/examinations/examGradeView/StudentGradeHistory
 import VTOPClient from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { URLSearchParams } from "url";
+import type { CGPA, CurriculumItem, EffectiveGrade } from "@/types/data/grades";
+import { RequestBody } from "@/types/custom";
 
-export async function POST(req) {
+export async function POST(req: NextRequest) {
     try {
-        const { cookies, dashboardHtml, campus } = await req.json();
+        const { cookies, dashboardHtml, campus }: RequestBody = await req.json();
 
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
@@ -36,7 +38,7 @@ export async function POST(req) {
         );
 
         const $$ = cheerio.load(gradeRes.data);
-        const effectiveGrades = [];
+        const effectiveGrades: EffectiveGrade[] = [];
         $$("#fixedTableContainer table")
             .eq(1)
             .find("tr.tableContent")
@@ -49,7 +51,7 @@ export async function POST(req) {
                     creditsEarned: $$(tds[3]).text().trim(),
                 });
             });
-        const curriculum = [];
+        const curriculum: CurriculumItem[] = [];
         $$("#fixedTableContainer table")
             .eq(3)
             .find("tr.tableContent")
@@ -73,19 +75,19 @@ export async function POST(req) {
                 });
             });
         // --- CGPA Details ---
-        const cgpa = {};
+        const cgpa: CGPA = {};
         const cgpaRow = $$("table.table.table-hover.table-bordered tbody tr").first();
         if (cgpaRow.length) {
             const tds = cgpaRow.find("td");
             cgpa.grades = {
-                S: $$(tds[3]).text().trim(),
-                A: $$(tds[4]).text().trim(),
-                B: $$(tds[5]).text().trim(),
-                C: $$(tds[6]).text().trim(),
-                D: $$(tds[7]).text().trim(),
-                E: $$(tds[8]).text().trim(),
-                F: $$(tds[9]).text().trim(),
-                N: $$(tds[10]).text().trim(),
+                S: parseInt($$(tds[3]).text().trim()),
+                A: parseInt($$(tds[4]).text().trim()),
+                B: parseInt($$(tds[5]).text().trim()),
+                C: parseInt($$(tds[6]).text().trim()),
+                D: parseInt($$(tds[7]).text().trim()),
+                E: parseInt($$(tds[8]).text().trim()),
+                F: parseInt($$(tds[9]).text().trim()),
+                N: parseInt($$(tds[10]).text().trim()),
             };
         }
 

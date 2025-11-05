@@ -4,9 +4,10 @@ import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from "../components/themeprovider";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import type { Viewport, Metadata } from "next";
 import './globals.css';
 
-export const viewport = {
+export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffffff" },
     { media: "(prefers-color-scheme: dark)", color: "#111827" },
@@ -15,7 +16,7 @@ export const viewport = {
   width: "device-width",
   initialScale: 1.0,
   maximumScale: 1.0,
-  userScalable: "no",
+  userScalable: false,
 };
 
 const geistSans = Geist({
@@ -37,7 +38,7 @@ const geistMono = Geist_Mono({
 const APP_NAME = "Uni CC";
 const APP_DESCRIPTION = "Taking data from VTOP and displaying it in a clean and simple way.";
 
-export const metadata = {
+export const metadata: Metadata = {
   applicationName: APP_NAME,
   title: {
     default: APP_NAME,
@@ -45,7 +46,6 @@ export const metadata = {
   },
   description: APP_DESCRIPTION,
   manifest: "/manifest.json",
-  orientation: "portrait",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",

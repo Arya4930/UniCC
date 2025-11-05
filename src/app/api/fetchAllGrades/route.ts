@@ -16,7 +16,7 @@ export async function POST(req) {
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
 
         const csrf = $('input[name="_csrf"]').val();
-        const authorizedID = $('#authorizedID').val() || $('input[name="authorizedid"]').val();
+        const authorizedID = ($('#authorizedID').val() || $('input[name="authorizedid"]').val())[0];
 
         const startYear = parseInt(authorizedID.slice(0, 2), 10) + 2000; // e.g. 2024
         const currentYear = new Date().getFullYear();

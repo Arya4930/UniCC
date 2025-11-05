@@ -1,5 +1,6 @@
 "use client";
-import { RefreshCcw } from "lucide-react";
+import { Eye } from "lucide-react";
+import { useState } from "react";
 
 export default function LoginForm({
   username,
@@ -13,6 +14,7 @@ export default function LoginForm({
   progressBar,
 }) {
   const isLoading = message.startsWith("Logging");
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full px-4 bg-gray-100 dark:bg-slate-900 midnight:bg-black transition-colors duration-300">
@@ -35,14 +37,22 @@ export default function LoginForm({
           onChange={(e) => setUsername(e.target.value)}
           placeholder="VTOP Username"
         />
-
-        <input
-          className="w-full border border-gray-400 dark:border-gray-600 midnight:border-gray-700 bg-gray-50 dark:bg-slate-900 midnight:bg-black p-3 rounded-lg text-gray-900 dark:text-gray-100 midnight:text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="VTOP Password"
-        />
+        <div className="relative">
+          <input
+            className="w-full border border-gray-400 dark:border-gray-600 midnight:border-gray-700 bg-gray-50 dark:bg-slate-900 midnight:bg-black p-3 rounded-lg text-gray-900 dark:text-gray-100 midnight:text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="VTOP Password"
+          />
+          <button
+            type="button"
+            className="absolute right-2 rounded-md p-3 top-1/2 transform -translate-y-1/2"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            <Eye className="w-4 h-4 text-gray-500" />
+          </button>
+        </div>
         <select
           className="w-full border border-gray-400 dark:border-gray-600 midnight:border-gray-700 bg-gray-50 dark:bg-slate-900 midnight:bg-black p-3 rounded-lg text-gray-900 dark:text-gray-100 midnight:text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={campus}
