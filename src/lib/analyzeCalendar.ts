@@ -128,7 +128,7 @@ export function analyzeCalendar(calendar: CalendarInput = {}): AnalyzeCalendarRe
     const IMPORTANT_EVENT_NAMES = new Set([
         "cat   i",
         "cat   ii",
-        "lid for lab classes",
+        "lid for lab class",
         "lid for theory classes",
     ]);
 
