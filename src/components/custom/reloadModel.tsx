@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import ReelsScroller from "./ReelScroller";
 import { X } from "lucide-react";
 
 export function ReloadModal({ message, onClose, progressBar }) {
@@ -26,14 +27,7 @@ export function ReloadModal({ message, onClose, progressBar }) {
 
                 {message && (
                     <div className="flex flex-col items-center justify-center gap-3 text-sm">
-                        <video
-                            src="/surfer.mp4"
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            className="w-40 h-auto rounded-lg shadow-lg"
-                        />
+                        <ReelsScroller />
                         <div className="w-36 bg-gray-600/50 rounded-full h-2 overflow-hidden">
                             <div
                                 className="h-2 bg-blue-500 transition-all duration-500 ease-in-out"
