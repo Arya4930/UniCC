@@ -1,3 +1,4 @@
+import { AnalyzeAllCalendarsReturn, AnalyzeCalendarReturn, AnalyzedDay, CalendarEvent, CalendarInput, CalendarResult, ImportantEvent } from "@/types/data/semTT";
 import { eachDayOfInterval, endOfMonth, getDay } from "date-fns";
 
 const HOLIDAY_KEYWORDS = [
@@ -6,11 +7,11 @@ const HOLIDAY_KEYWORDS = [
     "vacation", "term end", "no instructional", "noinstructional",
 ];
 
-function normalize(str = "") {
+function normalize(str = ""): string {
     return String(str).toLowerCase().replace(/[^a-z0-9\s]/g, " ").trim();
 }
 
-function isHolidayEvent(e) {
+function isHolidayEvent(e: CalendarEvent): boolean {
     if (!e) return false;
     const type = String(e.type || "").toLowerCase();
     const text = normalize(e.text || "");
@@ -24,7 +25,7 @@ function isHolidayEvent(e) {
     return false;
 }
 
-function isInstructionalEvent(e) {
+function isInstructionalEvent(e: CalendarEvent): boolean {
     if (!e) return false;
     const type = String(e.type || "").toLowerCase();
     const cat = normalize(e.category || "");
@@ -33,12 +34,12 @@ function isInstructionalEvent(e) {
     return false;
 }
 
-const MONTH_NAME_MAP = {
+const MONTH_NAME_MAP: Record<string, number> = {
     jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
     jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
 };
 
-export function analyzeCalendar(calendar = {}) {
+export function analyzeCalendar(calendar: CalendarInput = {}): AnalyzeCalendarReturn {
     const now = new Date();
 
     // ---- YEAR ----
@@ -46,7 +47,7 @@ export function analyzeCalendar(calendar = {}) {
     if (!Number.isFinite(year)) year = now.getFullYear();
 
     // ---- MONTH ----
-    let monthIndex;
+    let monthIndex: number;
     try {
         const mRaw = calendar.month;
         if (mRaw == null) monthIndex = now.getMonth();
@@ -72,7 +73,7 @@ export function analyzeCalendar(calendar = {}) {
 
     // ---- DATES ----
     let monthStart = new Date(year, monthIndex, 1);
-    let daysInMonth = [];
+    let daysInMonth: Date[] = [];
     try {
         const monthEnd = endOfMonth(monthStart);
         daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
@@ -85,7 +86,7 @@ export function analyzeCalendar(calendar = {}) {
     const weekdayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
     // ---- OUTPUT ----
-    const result = {
+    const result: CalendarResult = {
         month: calendar.month ?? monthStart.toLocaleString(undefined, { month: "long" }),
         year,
         days: [],
@@ -110,7 +111,7 @@ export function analyzeCalendar(calendar = {}) {
         const hasInstructional = events.some(isInstructionalEvent);
         const isEmpty = events.length === 0;
 
-        let dayType = "other";
+        let dayType: AnalyzedDay["type"] = "other";
         if (hasHoliday || isEmpty || (!hasInstructional && events.length > 0)) dayType = "holiday";
         else if (hasInstructional) dayType = "working";
 
@@ -131,7 +132,7 @@ export function analyzeCalendar(calendar = {}) {
         "lid for theory classes",
     ]);
 
-    const importantEvents = new Map();
+    const importantEvents = new Map<string, ImportantEvent>();
 
     for (const day of result.days) {
         for (const ev of day.events) {
@@ -141,7 +142,7 @@ export function analyzeCalendar(calendar = {}) {
                     const monthIndex = [
                         "january", "february", "march", "april", "may", "june",
                         "july", "august", "september", "october", "november", "december"
-                    ].findIndex((m) => result.month.toLowerCase().includes(m));
+                    ].findIndex((m) => String(result.month).toLowerCase().includes(m));
                     importantEvents.set(key, {
                         event: key.split(" ").filter(e => e.trim() !== "").join(" ").toUpperCase(),
                         date: day.date,
@@ -157,17 +158,17 @@ export function analyzeCalendar(calendar = {}) {
     return { result, importantEvents };
 }
 
-export function analyzeAllCalendars(calendars) {
+export function analyzeAllCalendars(calendars: unknown): AnalyzeAllCalendarsReturn {
     if (!calendars) return { results: [], importantEvents: new Map() };
 
-    const calArray = Array.isArray(calendars)
+    const calArray: CalendarInput[] = Array.isArray(calendars)
         ? calendars
-        : calendars.calendars
-            ? calendars.calendars
+        : (calendars as any).calendars
+            ? (calendars as any).calendars
             : [calendars];
 
-    const results = [];
-    const importantEvents = new Map();
+    const results: CalendarResult[] = [];
+    const importantEvents = new Map<string, ImportantEvent>();
 
     for (const cal of calArray) {
         const { result, importantEvents: imp } = analyzeCalendar(cal);

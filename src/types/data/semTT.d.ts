@@ -45,3 +45,50 @@ export type AddHolidayFn = (
 export interface CalendarRequestBody extends RequestBody {
     type: CalendarType;
 }
+
+export type CalendarInput = {
+    year?: number | string;
+    month?: number | string;
+    totalDays?: number;
+    days?: CalendarDay[];
+};
+
+export type AnalyzedDay = {
+    date: number;
+    weekday: string;
+    type: "working" | "holiday" | "other";
+    events: CalendarEvent[];
+};
+
+export type CalendarSummary = {
+    total: number;
+    working: number;
+    holiday: number;
+    other: number;
+};
+
+export type CalendarResult = {
+    month: string | number;
+    year: number;
+    days: AnalyzedDay[];
+    summary: CalendarSummary;
+};
+
+export type ImportantEvent = {
+    event: string;
+    date: number;
+    weekday: string;
+    month: string | number;
+    year: number;
+    formattedDate: Date;
+};
+
+export type AnalyzeCalendarReturn = {
+    result: CalendarResult;
+    importantEvents: Map<string, ImportantEvent>;
+};
+
+export type AnalyzeAllCalendarsReturn = {
+    results: CalendarResult[];
+    importantEvents: Map<string, ImportantEvent>;
+};

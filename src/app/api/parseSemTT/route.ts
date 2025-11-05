@@ -63,18 +63,18 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             const parsed = await parseCalendar(ttRes.data);
             allCalendars.push(parsed);
         }
-        // const addCustomEvent = {
-        //     text: "Crystal GuruVITa",
-        //     type: "Holiday",
-        //     color: "#B22222",
-        //     category: "Crystal GuruVITa"
-        // };
-        // allCalendars.forEach((cal, idx) => {
-        //     const calDate = months[idx] || "";
-        //     if (typeof calDate === "string" && calDate.toUpperCase().includes("-NOV-")) {
-        //         addHolidayToCalendar(cal, 7, addCustomEvent);
-        //     }
-        // });
+        const addCustomEvent = {
+            text: "Crystal GuruVITa",
+            type: "Holiday",
+            color: "#B22222",
+            category: "Crystal GuruVITa"
+        };
+        allCalendars.forEach((cal, idx) => {
+            const calDate = months[idx] || "";
+            if (typeof calDate === "string" && calDate.toUpperCase().includes("-NOV-")) {
+                addHolidayToCalendar(cal, 8, addCustomEvent);
+            }
+        });
 
         return NextResponse.json({
             semesterId,

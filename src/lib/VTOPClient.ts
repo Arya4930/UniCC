@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import https from "https";
 
 const agent = new https.Agent({ rejectUnauthorized: false });
 
-const ChennaiClient = axios.create({
+const ChennaiClient: AxiosInstance = axios.create({
   baseURL: "https://vtopcc.vit.ac.in",
   headers: {
     "User-Agent": "Mozilla/5.0 ...",
@@ -13,6 +13,6 @@ const ChennaiClient = axios.create({
   withCredentials: true,
 });
 
-export default function VTOPClient() {
+export default function VTOPClient(): AxiosInstance {
   return ChennaiClient;
 }
