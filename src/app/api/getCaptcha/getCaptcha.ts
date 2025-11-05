@@ -1,11 +1,8 @@
 import VTOPClient from "@/lib/VTOPClient";
+import { CaptchaResult, CaptchaType } from "@/types/data/login";
 import * as cheerio from "cheerio";
 
-export async function getCaptchaType($) {
-    return $('input#gResponse').length === 1 ? "GRECAPTCHA" : "DEFAULT";
-}
-
-export default async function getCaptcha(campus) {
+export default async function getCaptcha(campus: string): Promise<CaptchaResult> {
     const MAX_RETRIES = 10;
     const client = VTOPClient(campus);
 
@@ -16,7 +13,8 @@ export default async function getCaptcha(campus) {
             const cookies = setupRes.headers["set-cookie"];
             const $ = cheerio.load(setupRes.data);
 
-            const csrf = $("#stdForm input[name=_csrf]").val();
+            const csrfValue = $("#stdForm input[name=_csrf]").val();
+            const csrf = Array.isArray(csrfValue) ? csrfValue[0] : csrfValue;
             if (!csrf) {
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 continue;
@@ -31,13 +29,13 @@ export default async function getCaptcha(campus) {
             const loginPage = await client.get("/vtop/login", { headers: { Cookie: cookies.join("; ") } });
             const $$ = cheerio.load(loginPage.data);
 
-            const captchaType = await getCaptchaType($$);
+            const captchaType: CaptchaType = $('input#gResponse').length === 1 ? "GRECAPTCHA" : "DEFAULT";
 
             if (captchaType === "DEFAULT") {
                 const imgSrc = $$("#captchaBlock img").attr("src");
                 if (!imgSrc) throw new Error("Captcha image source not found.");
 
-                let base64;
+                let base64: string;
                 if (imgSrc.startsWith("data:image")) {
                     base64 = imgSrc;
                 } else {

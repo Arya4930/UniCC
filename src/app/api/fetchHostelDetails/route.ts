@@ -7,7 +7,7 @@ import * as cheerio from "cheerio";
 import { NextResponse, type NextRequest } from "next/server";
 import { URLSearchParams } from "url";
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
         const { cookies, dashboardHtml, campus }: RequestBody = await req.json();
 

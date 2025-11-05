@@ -6,7 +6,7 @@ import { URLSearchParams } from "url";
 import type { CGPA, CurriculumItem, EffectiveGrade } from "@/types/data/grades";
 import { RequestBody } from "@/types/custom";
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
         const { cookies, dashboardHtml, campus }: RequestBody = await req.json();
 

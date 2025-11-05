@@ -1,12 +1,15 @@
 import VTOPClient from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { URLSearchParams } from "url";
 import config from '@/app/config.json'
+import { RequestBody } from "@/types/custom";
+import { CourseItem } from "@/types/data/marks";
+import { CGPA } from "@/types/data/marks";
 
-export async function POST(req) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
-        const { cookies, dashboardHtml, campus } = await req.json();
+        const { cookies, dashboardHtml, campus }: RequestBody = await req.json();
 
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
@@ -40,13 +43,13 @@ export async function POST(req) {
 
         // --- Parse Marks Table ---
         const $$$ = cheerio.load(marksRes.data);
-        const courses = [];
+        const courses: CourseItem[] = [];
 
         $$$("table.customTable > tbody > tr.tableContent").each((i, row) => {
             const cols = $$$(row).find("td");
             if (cols.length < 9) return;
 
-            const courseData = {
+            const courseData: CourseItem = {
                 slNo: cols.eq(0).text().trim(),
                 classNbr: cols.eq(1).text().trim(),
                 courseCode: cols.eq(2).text().trim(),
@@ -97,7 +100,7 @@ export async function POST(req) {
             }
         );
         const $$$$ = cheerio.load(creditsRes.data);
-        const cgpa = {};
+        const cgpa: CGPA = {};
 
         $$$$(".list-group-item").each((_, el) => {
             const label = $$$$("span.card-title", el).text().trim();

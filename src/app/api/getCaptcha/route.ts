@@ -1,8 +1,9 @@
+import { CaptchaResult } from "@/types/data/login";
 import getCaptcha from "./getCaptcha";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   const { campus } = await req.json();
-  const result = await getCaptcha(campus);
+  const result: CaptchaResult = await getCaptcha(campus);
   return NextResponse.json(result);
 }

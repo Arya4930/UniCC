@@ -6,7 +6,7 @@ import config from '@/app/config.json'
 import { RequestBody } from "@/types/custom";
 import { ExamItem, Schedule } from "@/types/data/schedule";
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
         const { cookies, dashboardHtml, campus }: RequestBody = await req.json();
 

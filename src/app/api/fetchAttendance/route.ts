@@ -1,11 +1,13 @@
 import VTOPClient from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { URLSearchParams } from "url";
 import fetchTimetable from "./fetchTimeTable";
 import config from "@/app/config.json"
+import { RequestBody } from "@/types/custom";
+import { attendanceItem, courseItem } from "@/types/data/attendance";
 
-function mergeAttendanceWithTimetable(attendance, timetable) {
+function mergeAttendanceWithTimetable(attendance: attendanceItem[], timetable: courseItem[]): attendanceItem[] {
     return attendance.map(att => {
         const attCourseCode = att.courseCode.split(" ")[0].trim();
 
@@ -34,9 +36,9 @@ function mergeAttendanceWithTimetable(attendance, timetable) {
     });
 }
 
-export async function POST(req) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
-        const { cookies, dashboardHtml, campus } = await req.json();
+        const { cookies, dashboardHtml, campus }: RequestBody = await req.json();
 
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
@@ -65,13 +67,13 @@ export async function POST(req) {
                 },
             }
         );
-        const tt = await fetchTimetable(cookieHeader, dashboardHtml, campus);
+        const courseInfo: courseItem[] = await fetchTimetable(cookieHeader, dashboardHtml, campus);
 
         // --- Parse Attendance Table ---
         const $$$ = cheerio.load(ttRes.data);
-        const attendance = [];
+        const attendance: attendanceItem[] = [];
 
-        $$$("#getStudentDetails table tbody tr").each(async (i, row) => {
+        $$$("#getStudentDetails table tbody tr").each((i, row) => {
             const cols = $$$(row).find("td");
 
             if (cols.length < 10) return; // skip invalid rows
@@ -91,10 +93,10 @@ export async function POST(req) {
                 viewLink: cols.eq(13).find("a").attr("onclick") || null,
             });
         });
-        const mergedAttendance = mergeAttendanceWithTimetable(attendance, tt.courseInfo);
+        const mergedAttendance: attendanceItem[] = mergeAttendanceWithTimetable(attendance, courseInfo);
 
-        async function fetchDetail(course) {
-            if (!course.viewLink) return course;
+        async function fetchDetail(course: attendanceItem): Promise<attendanceItem> {
+            if (!course.viewLink || typeof course.viewLink !== "string") return course;
 
             const match = course.viewLink.match(/processViewAttendanceDetail\('([^']+)','([^']+)'\)/);
             if (!match) return course;
@@ -136,7 +138,7 @@ export async function POST(req) {
             return course;
         }
 
-        const detailedAttendance = await Promise.all(mergedAttendance.map(fetchDetail));
+        const detailedAttendance: attendanceItem[] = await Promise.all(mergedAttendance.map(fetchDetail));
 
 
         return NextResponse.json({ semester: semesterId, attendance: detailedAttendance });

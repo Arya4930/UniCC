@@ -2,8 +2,9 @@ import * as cheerio from "cheerio";
 import VTOPClient from "@/lib/VTOPClient";
 import { URLSearchParams } from "url";
 import config from '@/app/config.json'
+import { courseItem } from "@/types/data/attendance";
 
-export default async function fetchTimetable(cookieHeader, dashboardHtml, campus) {
+export default async function fetchTimetable(cookieHeader: string | string[], dashboardHtml: string, campus: string): Promise<courseItem[]> {
     const $ = cheerio.load(dashboardHtml);
 
     const csrf = $('input[name="_csrf"]').val();
@@ -33,7 +34,7 @@ export default async function fetchTimetable(cookieHeader, dashboardHtml, campus
     const $$$ = cheerio.load(ttRes.data);
 
     // === 1. Parse Course Info Table ===
-    const courseInfo = [];
+    const courseInfo: courseItem[] = [];
     $$$('table.table').each((i, table) => {
         $$$(table)
             .find('tbody tr')
@@ -54,11 +55,5 @@ export default async function fetchTimetable(cookieHeader, dashboardHtml, campus
             });
     });
 
-    // === Save both to JSON ===
-    const finalData = {
-        semester: semesterId,
-        courseInfo,
-    };
-
-    return finalData;
+    return courseInfo;
 }

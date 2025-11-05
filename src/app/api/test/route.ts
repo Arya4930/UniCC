@@ -1,6 +1,5 @@
-export async function GET(request) {
-  return new Response(JSON.stringify({ status: "API is working!" }), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(): Promise<NextResponse> {
+  return NextResponse.json({ text: "API is working" }, { status: 200 })
 }

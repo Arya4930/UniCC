@@ -1,6 +1,6 @@
 import VTOPClient from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { URLSearchParams } from "url";
 import config from "@/app/config.json";
 
@@ -14,7 +14,7 @@ import config from "@/app/config.json";
 // ALL11 - Flexible Research
 // WEI - Weekend Intra Semester
 
-export async function POST(req) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
         const { cookies, dashboardHtml, type, campus } = await req.json();
 
@@ -27,7 +27,7 @@ export async function POST(req) {
         if (!csrf || !authorizedID) throw new Error("Cannot find _csrf or authorizedID");
 
         const semesterId = config.currSemID;
-        let months;
+        let months: string[];
 
         if (semesterId.toString().endsWith("1")) {
             months = ["01-JUL-2025", "01-AUG-2025", "01-SEP-2025", "01-OCT-2025", "01-NOV-2025"];

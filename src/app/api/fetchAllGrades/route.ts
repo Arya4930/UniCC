@@ -2,25 +2,28 @@
 // https://vtopcc.vit.ac.in/vtop/examinations/examGradeView/getGradeViewDetails
 import VTOPClient from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { URLSearchParams } from "url";
 import pLimit from "p-limit";
+import { RequestBody } from "@/types/custom";
+import { GradeItem, GradeResultsMap } from "@/types/data/allgrades";
 
 const limit = pLimit(4);
 
-export async function POST(req) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
-        const { cookies, dashboardHtml, campus } = await req.json();
+        const { cookies, dashboardHtml, campus }: RequestBody = await req.json();
 
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
 
         const csrf = $('input[name="_csrf"]').val();
-        const authorizedID = ($('#authorizedID').val() || $('input[name="authorizedid"]').val())[0];
+        const authorizedID = ($('#authorizedID').val() || $('input[name="authorizedid"]').val());
 
-        const startYear = parseInt(authorizedID.slice(0, 2), 10) + 2000; // e.g. 2024
+        let startYear: number = 2024; 
+        if(typeof authorizedID === "string") startYear = parseInt(authorizedID.slice(0, 2), 10) + 2000; // e.g. 2024
         const currentYear = new Date().getFullYear();
-        const semesters = [];
+        const semesters: string[] = [];
 
         for (let year = startYear; year <= currentYear; year++) {
             semesters.push(`CH${year}${(year + 1).toString().slice(-2)}01`);
@@ -56,7 +59,7 @@ export async function POST(req) {
                 const rows = $$("table.table-bordered tr").slice(2);
                 if (rows.length === 0) return null;
 
-                const grades = [];
+                const grades: GradeItem[] = [];
                 let gpa = null;
 
                 rows.each((i, row) => {
@@ -188,7 +191,7 @@ export async function POST(req) {
             semesters.map((semId) => limit(() => fetchSemesterGrades(semId)))
         );
 
-        const results = {};
+        const results: GradeResultsMap = {};
         semesters.forEach((semId, i) => {
             results[semId] = semesterResults[i].status === "fulfilled" ? semesterResults[i].value : null;
         });
