@@ -52,7 +52,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
 
     const cat1Date = findEventDate("CAT I");
     const cat2Date = findEventDate("CAT II");
-    const lidLabDate = findEventDate("LID FOR LAB CLASSES");
+    const lidLabDate = findEventDate("LID FOR LAB CLASS");
     const lidTheoryDate = findEventDate("LID FOR THEORY CLASSES");
 
     let classesTillCAT1 = 0;
