@@ -8,10 +8,10 @@ export default function StatsCards({
   ODhoursData,
   setODhoursIsOpen,
   marksData,
+  feedbackStatus,
   setGradesDisplayIsOpen,
   CGPAHidden,
   setCGPAHidden,
-  handleFetchGrades
 }) {
   const [attendancePercentageOrString, setAttendancePercentageOrString] = useState("percentage");
   useEffect(() => {
@@ -62,6 +62,52 @@ export default function StatsCards({
             {totalODHours}/40
           </p>
         </div>
+
+        {/* Card 3 - Feedback Status */}
+        {feedbackStatus && <div
+          className={`${cardBase} bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800`}
+          onClick={() => console.log("Feedback Status was clicked")}
+        >
+          <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 midnight:text-gray-200 mb-1">
+            Feedback
+          </h2>
+
+          <div className="flex items-center justify-center gap-3 mt-2 text-center">
+            <div className="flex flex-col items-center">
+              <span className="text-xs text-gray-600 dark:text-gray-400 midnight:text-gray-400">
+                Mid Sem
+              </span>
+              <span
+                className={`text-base font-bold ${feedbackStatus?.MidSem?.Curriculum && feedbackStatus?.MidSem?.Course
+                    ? "text-green-500"
+                    : "text-red-500"
+                  }`}
+              >
+                {feedbackStatus?.MidSem?.Curriculum && feedbackStatus?.MidSem?.Course
+                  ? "Given"
+                  : "Not Given"}
+              </span>
+            </div>
+
+            <div className="h-8 w-[1.5px] bg-gray-300 dark:bg-gray-600 midnight:bg-gray-700 rounded-full" />
+
+            <div className="flex flex-col items-center">
+              <span className="text-xs text-gray-600 dark:text-gray-400 midnight:text-gray-400">
+                End Sem
+              </span>
+              <span
+                className={`text-base font-bold ${feedbackStatus?.EndSem?.Curriculum && feedbackStatus?.EndSem?.Course
+                    ? "text-green-500"
+                    : "text-red-500"
+                  }`}
+              >
+                {feedbackStatus?.EndSem?.Curriculum && feedbackStatus?.EndSem?.Course
+                  ? "Given"
+                  : "Not Given"}
+              </span>
+            </div>
+          </div>
+        </div>}
 
         {/* Card 3 */}
         {marksData.cgpa && <div

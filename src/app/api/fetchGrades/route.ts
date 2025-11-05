@@ -1,10 +1,12 @@
 // https://vtopcc.vit.ac.in/vtop/examinations/examGradeView/StudentGradeHistory
+// https://vtopcc.vit.ac.in/vtop/processViewFeedBackStatus
 import VTOPClient from "@/lib/VTOPClient";
 import * as cheerio from "cheerio";
 import { NextResponse, type NextRequest } from "next/server";
 import { URLSearchParams } from "url";
-import type { CGPA, CurriculumItem, EffectiveGrade } from "@/types/data/grades";
+import type { CGPA, CurriculumItem, EffectiveGrade, FeedbackStatus } from "@/types/data/grades";
 import { RequestBody } from "@/types/custom";
+import config from '@/app/config.json'
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
@@ -91,10 +93,41 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             };
         }
 
+        const semesterId = config.currSemID;
+        const feedbackRes = await client.post(
+            "/vtop/processViewFeedBackStatus",
+            new URLSearchParams({
+                authorizedID,
+                semesterSubId: semesterId,
+                _csrf: csrf,
+                x: Date.now().toString(),
+            }).toString(),
+            {
+                headers: {
+                    Cookie: cookieHeader,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Referer: "https://vtopcc.vit.ac.in/vtop/open/page",
+                },
+            }
+        );
+        const $$$ = cheerio.load(feedbackRes.data);
+        const isGiven = (text: string) => !text.toLowerCase().includes("not");
+        const feedback: FeedbackStatus = {
+            MidSem: {
+                Curriculum: isGiven($$$("tbody tr").eq(0).find("td").eq(1).text()),
+                Course: isGiven($$$("tbody tr").eq(1).find("td").eq(1).text()),
+            },
+            EndSem: {
+                Curriculum: isGiven($$$("tbody tr").eq(0).find("td").eq(2).text()),
+                Course: isGiven($$$("tbody tr").eq(1).find("td").eq(2).text()),
+            },
+        };
+
         return NextResponse.json({
             effectiveGrades,
             curriculum,
             cgpa,
+            feedback,
         });
     } catch (err) {
         console.error(err);

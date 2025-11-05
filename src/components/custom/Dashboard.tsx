@@ -124,13 +124,12 @@ export default function DashboardContent({
           attendancePercentage={attendancePercentage}
           ODhoursData={ODhoursData}
           setODhoursIsOpen={setODhoursIsOpen}
+          feedbackStatus={GradesData.feedback}
           marksData={marksData}
           setGradesDisplayIsOpen={setGradesDisplayIsOpen}
           CGPAHidden={CGPAHidden}
           setCGPAHidden={setCGPAHidden}
-          handleFetchGrades={handleFetchGrades}
         />
-
 
         {ODhoursIsOpen && (
           <ODHoursModal

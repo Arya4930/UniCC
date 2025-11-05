@@ -25,3 +25,13 @@ type GradeCounts = {
 export type CGPA = {
   grades?: GradeCounts;
 }
+
+type feedbackCategoryStatus = {
+  Curriculum: boolean;
+  Course: boolean;
+}
+
+export type FeedbackStatus = {
+  MidSem: feedbackCategoryStatus;
+  EndSem: feedbackCategoryStatus;
+}
