@@ -22,6 +22,10 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
     let category = item.category || "Uncategorized";
     if(category == "Foundation Core - Humanities, Social Sciences and Management (LANGUAGE Basket)") {
       category = "Foreign Language";
+    } else if (category == "Foundation Core - Humanities, Social Sciences and Management (GENERAL Basket)") {
+      category = "HSM Elective";
+    } else if (category == "Foundation Core - Humanities, Social Sciences and Management (EXTRA CURRICULAR Basket)") {
+      category = "Extra curricular activities";
     }
     const credits = parseFloat(item.credits) || 0;
     acc[category] = (acc[category] || 0) + credits;
@@ -126,7 +130,7 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
 
                 <p className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-300 font-medium">
                   {earned.toFixed(1)}
-                  {inProgress > 0 ? ` + ${inProgress.toFixed(1)} -> ${(earned + inProgress).toFixed(1)}` : ""} / {required.toFixed(1)} credits
+                  {inProgress > 0 ? ` + ${inProgress.toFixed(1)} -> ${(earned + inProgress).toFixed(1)}` : ""} / {required.toFixed(1)}
                 </p>
               </div>
             );

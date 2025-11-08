@@ -48,7 +48,7 @@ export default function StatsCards({
         >
           <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 midnight:text-gray-200">Attendance</h2>
           <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mt-2">
-            {attendancePercentage[attendancePercentageOrString]}
+            {attendancePercentage[attendancePercentageOrString] || 0}
           </p>
         </div>
 

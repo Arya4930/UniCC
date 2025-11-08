@@ -78,7 +78,7 @@ export default function CourseCard({ a, onClick, activeDay, isHoliday }) {
                             </span>
                         </p>
                     </CardContent>
-                    {(() => {
+                    {a.totalClasses > 0 && (() => {
                         const attended = a.attendedClasses;
                         const total = a.totalClasses;
                         const percentage = (attended / total) * 100;
