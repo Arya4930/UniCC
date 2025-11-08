@@ -11,6 +11,7 @@ const allVideos = [
     "/reels/surfer.mp4",
     "/reels/registering_for_classes.mp4",
     "/reels/waking_up_10AM_back_home.mp4",
+    "/reels/job-jumpscare-job-application.mp4"
 ];
 
 function shuffleArray<T>(array: T[]): T[] {
