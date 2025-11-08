@@ -8,32 +8,52 @@ import { RequestBody } from "@/types/custom";
 import { attendanceItem, courseItem } from "@/types/data/attendance";
 
 function mergeAttendanceWithTimetable(attendance: attendanceItem[], timetable: courseItem[]): attendanceItem[] {
-    return attendance.map(att => {
-        const attCourseCode = att.courseCode.split(" ")[0].trim();
+    const merged: attendanceItem[] = [];
 
-        const ttEntry = timetable.find(tt => {
-            const ttCourseCode = tt.courseCode;
-            return ttCourseCode === attCourseCode;
-        });
+    timetable.forEach(tt => {
+        const ttCourseCode = tt.courseCode.trim();
+        const attEntry = attendance.find(att =>
+            att.courseCode.split(" ")[0].trim() === ttCourseCode
+        );
 
-        if (ttEntry) {
-            return {
-                ...att,
-                classId: ttEntry.classId,
-                credits: ttEntry.LTPJC?.split(" ")[4] || null,
-                slotVenue: ttEntry.slotVenue
-                    ? (() => {
-                        const cleaned = ttEntry.slotVenue.replace(/\s+/g, " ").trim();
-                        const matches = cleaned.match(/[A-Z]+\d*\s*-\s*\d+/g);
-                        return matches ? matches[matches.length - 1] : null;
-                    })()
-                    : null,
-                category: ttEntry.category,
-            };
+        const cleanedVenue = tt.slotVenue
+            ? (() => {
+                const cleaned = tt.slotVenue.replace(/\s+/g, " ").trim();
+                const matches = cleaned.match(/[A-Z]+\d*\s*-\s*\d+/g);
+                return matches ? matches[matches.length - 1] : null;
+            })()
+            : null;
+
+        if (attEntry) {
+            merged.push({
+                ...attEntry,
+                classId: tt.classId,
+                credits: tt.LTPJC?.split(" ")[4] || null,
+                slotVenue: cleanedVenue,
+                category: tt.category || null,
+            });
         } else {
-            return att;
+            merged.push({
+                slNo: null,
+                courseCode: tt.courseCode,
+                courseTitle: tt.course,
+                courseType: null,
+                slotName: "NILL",
+                faculty: tt.facultyDetails || null,
+                registrationDate: null,
+                attendanceDate: null,
+                attendedClasses: null,
+                totalClasses: null,
+                attendancePercentage: null,
+                viewLink: null,
+                classId: tt.classId,
+                credits: tt.LTPJC?.split(" ")[4] || null,
+                slotVenue: cleanedVenue,
+                category: tt.category || null,
+            });
         }
     });
+    return merged;
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {

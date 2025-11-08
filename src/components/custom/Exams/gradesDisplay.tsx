@@ -1,10 +1,9 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { BookOpen } from "lucide-react";
+import { BookOpen, RefreshCcw } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import NoContentFound from "../NoContentFound";
-import { RefreshCcw } from "lucide-react";
 
-export default function GradesDisplay({ data, handleFetchGrades, marksData }) {
+export default function GradesDisplay({ data, handleFetchGrades, marksData, attendance }) {
   if (!data || !marksData.cgpa) {
     return (
       <div>
@@ -19,6 +18,16 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData }) {
     );
   }
 
+  const ongoingCreditsByCategory = attendance.reduce((acc, item) => {
+    let category = item.category || "Uncategorized";
+    if(category == "Foundation Core - Humanities, Social Sciences and Management (LANGUAGE Basket)") {
+      category = "Foreign Language";
+    }
+    const credits = parseFloat(item.credits) || 0;
+    acc[category] = (acc[category] || 0) + credits;
+    return acc;
+  }, {});
+
   const totalCredits = data.curriculum.find(c =>
     c.basketTitle.toLowerCase().includes("total credits")
   );
@@ -26,6 +35,8 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData }) {
   const otherCurriculum = data.curriculum.filter(
     c => !c.basketTitle.toLowerCase().includes("total credits")
   );
+
+  const totalInProgress = Object.values(ongoingCreditsByCategory).reduce((a, b) => a + b, 0);
 
   return (
     <div className="grid gap-2">
@@ -59,16 +70,29 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData }) {
           {totalCredits && (() => {
             const earned = parseFloat(totalCredits.creditsEarned);
             const required = parseFloat(totalCredits.creditsRequired);
-            const progress = Math.round((earned / required) * 100);
+            const totalWithOngoing = earned + totalInProgress;
+            const progressEarned = (earned / required) * 100;
+            const progressWithOngoing = (totalWithOngoing / required) * 100;
 
             return (
               <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-900 midnight:bg-blue-950 border border-blue-200 dark:border-blue-700 midnight:border-blue-800">
                 <p className="text-lg font-bold text-blue-700 dark:text-blue-400 midnight:text-blue-300">
-                  {totalCredits.basketTitle}
+                  Total Credits
                 </p>
-                <Progress value={progress} className="h-3" />
+
+                <div className="relative h-3 rounded-full overflow-hidden bg-gray-300 dark:bg-gray-700">
+                  <div
+                    className="absolute left-0 top-0 h-full bg-yellow-400/60"
+                    style={{ width: `${progressWithOngoing}%` }}
+                  />
+                  <div
+                    className="absolute left-0 top-0 h-full bg-blue-500 dark:bg-blue-600"
+                    style={{ width: `${progressEarned}%` }}
+                  />
+                </div>
+
                 <p className="text-sm font-medium text-blue-600 dark:text-blue-300 midnight:text-blue-200 mt-1">
-                  {totalCredits.creditsEarned}/{totalCredits.creditsRequired} credits earned
+                  {earned.toFixed(1)} + {totalInProgress.toFixed(1)} -&gt; {(earned + totalInProgress).toFixed(1)} / {required.toFixed(1)} total credits
                 </p>
               </div>
             );
@@ -77,14 +101,55 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData }) {
           {otherCurriculum.map((c, idx) => {
             const earned = parseFloat(c.creditsEarned);
             const required = parseFloat(c.creditsRequired);
-            const progress = Math.round((earned / required) * 100);
+            const inProgress = ongoingCreditsByCategory[c.basketTitle] || 0;
+            const total = earned + inProgress;
+
+            const progressEarned = (earned / required) * 100;
+            const progressWithOngoing = (total / required) * 100;
 
             return (
               <div key={idx}>
-                <p className="font-semibold text-gray-900 dark:text-gray-100 midnight:text-gray-100">{c.basketTitle}</p>
-                <Progress value={progress} className="h-2" />
+                <p className="font-semibold text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+                  {c.basketTitle}
+                </p>
+
+                <div className="relative h-2 rounded-full overflow-hidden bg-gray-300 dark:bg-gray-700">
+                  <div
+                    className="absolute left-0 top-0 h-full bg-yellow-400/60"
+                    style={{ width: `${progressWithOngoing}%` }}
+                  />
+                  <div
+                    className="absolute left-0 top-0 h-full bg-blue-500 dark:bg-blue-600"
+                    style={{ width: `${progressEarned}%` }}
+                  />
+                </div>
+
                 <p className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-300 font-medium">
-                  {c.creditsEarned}/{c.creditsRequired} credits earned
+                  {earned.toFixed(1)}
+                  {inProgress > 0 ? ` + ${inProgress.toFixed(1)} -> ${(earned + inProgress).toFixed(1)}` : ""} / {required.toFixed(1)} credits
+                </p>
+              </div>
+            );
+          })}
+
+          {Object.keys(ongoingCreditsByCategory).map((cat) => {
+            const isKnown = otherCurriculum.some(c => c.basketTitle === cat);
+            if (isKnown) return null;
+
+            const inProgress = ongoingCreditsByCategory[cat];
+            if (!inProgress) return null;
+
+            return (
+              <div key={cat}>
+                <p className="font-semibold text-gray-900 dark:text-gray-100 midnight:text-gray-100">{cat}</p>
+                <div className="relative h-2 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                  <div
+                    className="absolute left-0 top-0 h-full bg-yellow-400/70"
+                    style={{ width: "100%" }}
+                  />
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-300 font-medium">
+                  {inProgress.toFixed(1)} in progress
                 </p>
               </div>
             );

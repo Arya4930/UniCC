@@ -103,6 +103,7 @@ export default function DashboardContent({
       setActiveTab(tabsOrder[currentIndex - 1]);
     }
   };
+  console.log(attendanceData)
 
   return (
     <div
@@ -144,6 +145,7 @@ export default function DashboardContent({
             marksData={marksData}
             onClose={() => setGradesDisplayIsOpen(false)}
             handleFetchGrades={handleFetchGrades}
+            attendance={attendanceData.attendance}
           />
         )}
 
