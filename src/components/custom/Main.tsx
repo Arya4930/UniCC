@@ -44,8 +44,8 @@ export default function LoginPage() {
     let totalClass = 0;
     let attendedClasses = 0;
     attendance.attendance.forEach(course => {
-      totalClass += parseInt(course.totalClasses);
-      attendedClasses += parseInt(course.attendedClasses);
+      totalClass += parseInt(course.totalClasses || 0);
+      attendedClasses += parseInt(course.attendedClasses || 0);
     });
     setattendancePercentage({ "percentage": Math.round(attendedClasses * 10000 / totalClass) / 100, "str": `${attendedClasses}/${totalClass}` });
 
