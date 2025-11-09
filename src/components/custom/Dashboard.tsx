@@ -46,13 +46,16 @@ export default function DashboardContent({
   CGPAHidden,
   setCGPAHidden,
   calendarType,
-  setCalendarType,
-  handleCalendarFetch,
-  reloadLeaveHistory,
-  handleAllGradesFetch,
-  handleHostelDetailsFetch,
-  handleFetchGrades,
-  handleScheduleFetch
+  setCalender,
+  setCalenderType,
+  setIsReloading,
+  setProgressBar,
+  setMessage,
+  loginToVTOP,
+  setAllGradesData,
+  sethostelData,
+  setGradesData,
+  setScheduleData
 }) {
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
@@ -103,7 +106,169 @@ export default function DashboardContent({
       setActiveTab(tabsOrder[currentIndex - 1]);
     }
   };
-  console.log(attendanceData)
+
+  const handleAllGradesFetch = async () => {
+    setIsReloading(true);
+    setProgressBar(10);
+    setMessage("Logging in and fetching data...");
+
+    try {
+      const { cookies, dashboardHtml } = await loginToVTOP();
+
+      const AllGradesRes = await fetch("/api/fetchAllGrades", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+      });
+
+      const AllGradesData = await AllGradesRes.json();
+      setProgressBar((prev) => prev + 40);
+
+      setAllGradesData(AllGradesData);
+      localStorage.setItem("allGradesData", JSON.stringify(AllGradesData));
+
+      setMessage((prev) => prev + "\n✅ All grades reloaded successfully!");
+      setProgressBar(100);
+      setIsReloading(false);
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Calendar fetch failed, check console.");
+      setProgressBar(0);
+    }
+  };
+
+  const reloadLeaveHistory = async () => {
+    try {
+      const { cookies, dashboardHtml } = await loginToVTOP();
+
+      const hostelRes = await fetch("/api/fetchHostelDetails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cookies: cookies,
+          dashboardHtml: dashboardHtml,
+        }),
+      });
+
+      const HostelRes = await hostelRes.json();
+      setProgressBar((prev) => prev + 40);
+
+      sethostelData(HostelRes);
+      localStorage.setItem("hostelData", JSON.stringify(HostelRes));
+
+      setMessage((prev) => prev + "\n✅ Leave history reloaded successfully!");
+      setProgressBar(100);
+      setIsReloading(false);
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Leave history reload failed, check console.");
+      setProgressBar(0);
+    }
+  };
+
+  const handleCalendarFetch = async (FncalendarType) => {
+    try {
+      const { cookies, dashboardHtml } = await loginToVTOP();
+
+      const calenderRes = await fetch("/api/parseSemTT", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cookies: cookies,
+          dashboardHtml: dashboardHtml,
+          type: FncalendarType || "ALL",
+        }),
+      });
+
+      const CalenderRes = await calenderRes.json();
+      setProgressBar((prev) => prev + 40);
+
+      setCalender(CalenderRes);
+      setCalenderType(FncalendarType);
+      localStorage.setItem("calender", JSON.stringify(CalenderRes));
+      localStorage.setItem("calendarType", FncalendarType);
+
+      setMessage((prev) => prev + "\n✅ Calendar reloaded successfully!");
+      setProgressBar(100);
+      setIsReloading(false);
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Calendar fetch failed, check console.");
+      setProgressBar(0);
+    }
+  };
+
+  const handleFetchGrades = async () => {
+    try {
+      const { cookies, dashboardHtml } = await loginToVTOP();
+
+      const gradesRes = await fetch("/api/fetchGrades", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cookies, dashboardHtml }),
+      });
+
+      const gradesData = await gradesRes.json();
+      setProgressBar((prev) => prev + 40);
+
+      setGradesData(gradesData);
+      localStorage.setItem("grades", JSON.stringify(gradesData));
+
+      setMessage((prev) => prev + "\n✅ Grades reloaded successfully!");
+      setProgressBar(100);
+      setIsReloading(false);
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Grades fetch failed, check console.");
+      setProgressBar(0);
+    }
+  };
+
+  const handleHostelDetailsFetch = async () => {
+    try {
+      const { cookies, dashboardHtml } = await loginToVTOP();
+
+      const HostelRes = await fetch("/api/fetchHostelDetails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+      });
+      const HostelData = await HostelRes.json();
+      setProgressBar((prev) => prev + 40);
+      sethostelData(HostelData);
+      localStorage.setItem("hostelData", JSON.stringify(HostelData));
+      setMessage((prev) => prev + "\n✅ Hostel details reloaded successfully!");
+      setProgressBar(100);
+      setIsReloading(false);
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Hostel details fetch failed, check console.");
+      setProgressBar(0);
+    }
+  };
+
+  const handleScheduleFetch = async () => {
+    try {
+      const { cookies, dashboardHtml } = await loginToVTOP();
+
+      const ScheduleRes = await fetch("/api/fetchExamSchedule", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+      });
+      const ScheduleData = await ScheduleRes.json();
+      setProgressBar((prev) => prev + 40);
+      setScheduleData(ScheduleData);
+      localStorage.setItem("schedule", JSON.stringify(ScheduleData));
+      setMessage((prev) => prev + "\n✅ Schedule reloaded successfully!");
+      setProgressBar(100);
+      setIsReloading(false);
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Schedule fetch failed, check console.");
+      setProgressBar(0);
+    }
+  };
 
   return (
     <div

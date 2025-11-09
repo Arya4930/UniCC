@@ -20,15 +20,22 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
 
   const ongoingCreditsByCategory = attendance.reduce((acc, item) => {
     let category = item.category || "Uncategorized";
-    if(category == "Foundation Core - Humanities, Social Sciences and Management (LANGUAGE Basket)") {
+    const credits = parseFloat(item.credits) || 0;
+    let isFoundationExtra = false;
+    if (category == "Foundation Core - Humanities, Social Sciences and Management (LANGUAGE Basket)") {
       category = "Foreign Language";
+      isFoundationExtra = true;
     } else if (category == "Foundation Core - Humanities, Social Sciences and Management (GENERAL Basket)") {
       category = "HSM Elective";
+      isFoundationExtra = true;
     } else if (category == "Foundation Core - Humanities, Social Sciences and Management (EXTRA CURRICULAR Basket)") {
       category = "Extra curricular activities";
     }
-    const credits = parseFloat(item.credits) || 0;
     acc[category] = (acc[category] || 0) + credits;
+    if (isFoundationExtra) {
+      const parentCategory = "Foundation Core - Humanities, Social Sciences and Management";
+      acc[parentCategory] = (acc[parentCategory] || 0) + credits;
+    }
     return acc;
   }, {});
 

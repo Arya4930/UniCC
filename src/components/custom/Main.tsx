@@ -107,160 +107,162 @@ export default function LoginPage() {
     setTimeout(() => setIsLoading(false), 300);
   }, []);
 
-  const handleLogin = async () => {
-    setMessage("Logging in and fetching data...");
+  const loginToVTOP = async () => {
+    setIsReloading(true);
     setProgressBar(10);
+    setMessage("Logging in and fetching leave history...");
 
+    const captchaRes = await fetch("/api/getCaptcha", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
+    if (error) throw new Error("Failed to get CAPTCHA: " + error);
+    const captcha = await solveCaptchaClient(captchaBase64);
+    const loginRes = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username,
+        password,
+        captcha,
+        cookies,
+        csrf,
+      }),
+    });
+
+    const data = await loginRes.json();
+    if (!data.success || !data.dashboardHtml)
+      throw new Error(data.message || "Login failed.");
+
+    setMessage((prev) => prev + "\n✅ Login successful");
+    setProgressBar((prev) => prev + 30);
+
+    return {
+      cookies: data.cookies,
+      dashboardHtml: data.dashboardHtml,
+    };
+  };
+
+  const handleLogin = async () => {
     try {
-      const captchaRes = await fetch("/api/getCaptcha", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" }
-      });
-      const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
+      const { cookies, dashboardHtml } = await loginToVTOP();
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
 
-      if (error) throw new Error("Failed to get CAPTCHA: " + error);
-
-      const captcha = await solveCaptchaClient(captchaBase64);
-
-      const loginRes = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          password,
-          captcha,
-          cookies,
-          csrf,
+      const [
+        attRes,
+        marksRes,
+        gradesRes,
+        ScheduleRes,
+        HostelRes,
+        calenderRes,
+        allGradesRes
+      ] = await Promise.all([
+        fetch("/api/fetchAttendance", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+        }).then(async r => {
+          const j = await r.json();
+          setMessage(prev => prev + "\n✅ Attendance fetched");
+          setProgressBar(prev => prev + 10);
+          return j;
         }),
-      });
 
-      const data = await loginRes.json();
+        fetch("/api/fetchMarks", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+        }).then(async r => {
+          const j = await r.json();
+          setMessage(prev => prev + "\n✅ Marks fetched");
+          setProgressBar(prev => prev + 10);
+          return j;
+        }),
 
-      if (data.success && data.dashboardHtml) {
-        localStorage.setItem("username", username);
-        localStorage.setItem("password", password);
-        setMessage(prev => prev + "\n✅ Login successful");
-        setProgressBar(prev => prev + 20);
+        fetch("/api/fetchGrades", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+        }).then(async r => {
+          const j = await r.json();
+          setMessage(prev => prev + "\n✅ Grades fetched");
+          setProgressBar(prev => prev + 10);
+          return j;
+        }),
 
-        const [
-          attRes,
-          marksRes,
-          gradesRes,
-          ScheduleRes,
-          HostelRes,
-          calenderRes,
-          allGradesRes
-        ] = await Promise.all([
-          fetch("/api/fetchAttendance", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
-          }).then(async r => {
-            const j = await r.json();
-            setMessage(prev => prev + "\n✅ Attendance fetched");
-            setProgressBar(prev => prev + 10);
-            return j;
+        fetch("/api/fetchExamSchedule", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+        }).then(async r => {
+          const j = await r.json();
+          setMessage(prev => prev + "\n✅ Exam schedule fetched");
+          setProgressBar(prev => prev + 10);
+          return j;
+        }),
+
+        fetch("/api/fetchHostelDetails", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+        }).then(async r => {
+          const j = await r.json();
+          setMessage(prev => prev + "\n✅ Hostel details fetched");
+          setProgressBar(prev => prev + 10);
+          return j;
+        }),
+
+        fetch("/api/parseSemTT", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            cookies: cookies,
+            dashboardHtml: dashboardHtml,
+            type: calendarType || "ALL",
           }),
+        }).then(async r => {
+          const j = await r.json();
+          setMessage(prev => prev + "\n✅ Calendar fetched");
+          setProgressBar(prev => prev + 10);
+          return j;
+        }),
+        fetch("/api/fetchAllGrades", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+        }).then(async r => {
+          const j = await r.json();
+          setMessage(prev => prev + "\n✅ All grades fetched");
+          setProgressBar(prev => prev + 10);
+          return j;
+        }),
+      ]);
 
-          fetch("/api/fetchMarks", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
-          }).then(async r => {
-            const j = await r.json();
-            setMessage(prev => prev + "\n✅ Marks fetched");
-            setProgressBar(prev => prev + 10);
-            return j;
-          }),
+      setMessage(prev => prev + "\nFinalizing and saving data...");
 
-          fetch("/api/fetchGrades", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
-          }).then(async r => {
-            const j = await r.json();
-            setMessage(prev => prev + "\n✅ Grades fetched");
-            setProgressBar(prev => prev + 10);
-            return j;
-          }),
+      setAttendanceAndOD(attRes);
+      setMarksData(marksRes);
+      setGradesData(gradesRes);
+      setAllGradesData(allGradesRes);
+      setScheduleData(ScheduleRes);
+      sethostelData(HostelRes);
+      setCalender(calenderRes);
 
-          fetch("/api/fetchExamSchedule", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
-          }).then(async r => {
-            const j = await r.json();
-            setMessage(prev => prev + "\n✅ Exam schedule fetched");
-            setProgressBar(prev => prev + 10);
-            return j;
-          }),
+      localStorage.setItem("attendance", JSON.stringify(attRes));
+      localStorage.setItem("marks", JSON.stringify(marksRes));
+      localStorage.setItem("grades", JSON.stringify(gradesRes));
+      localStorage.setItem("allGrades", JSON.stringify(allGradesRes));
+      localStorage.setItem("schedule", JSON.stringify(ScheduleRes));
+      localStorage.setItem("hostel", JSON.stringify(HostelRes));
+      localStorage.setItem("calender", JSON.stringify(calenderRes));
 
-          fetch("/api/fetchHostelDetails", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
-          }).then(async r => {
-            const j = await r.json();
-            setMessage(prev => prev + "\n✅ Hostel details fetched");
-            setProgressBar(prev => prev + 10);
-            return j;
-          }),
-
-          fetch("/api/parseSemTT", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              cookies: data.cookies,
-              dashboardHtml: data.dashboardHtml,
-              type: calendarType || "ALL",
-            }),
-          }).then(async r => {
-            const j = await r.json();
-            setMessage(prev => prev + "\n✅ Calendar fetched");
-            setProgressBar(prev => prev + 10);
-            return j;
-          }),
-          fetch("/api/fetchAllGrades", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
-          }).then(async r => {
-            const j = await r.json();
-            setMessage(prev => prev + "\n✅ All grades fetched");
-            setProgressBar(prev => prev + 10);
-            return j;
-          }),
-        ]);
-
-        setMessage(prev => prev + "\nFinalizing and saving data...");
-
-        setAttendanceAndOD(attRes);
-        setMarksData(marksRes);
-        setGradesData(gradesRes);
-        setAllGradesData(allGradesRes);
-        setScheduleData(ScheduleRes);
-        sethostelData(HostelRes);
-        setCalender(calenderRes);
-
-        localStorage.setItem("attendance", JSON.stringify(attRes));
-        localStorage.setItem("marks", JSON.stringify(marksRes));
-        localStorage.setItem("grades", JSON.stringify(gradesRes));
-        localStorage.setItem("allGrades", JSON.stringify(allGradesRes));
-        localStorage.setItem("schedule", JSON.stringify(ScheduleRes));
-        localStorage.setItem("hostel", JSON.stringify(HostelRes));
-        localStorage.setItem("calender", JSON.stringify(calenderRes));
-
-        setMessage(prev => prev + "\n✅ All data loaded successfully!");
-        setProgressBar(100);
-        setIsLoggedIn(true);
-        setIsReloading(false);
-      } else {
-        setMessage(
-          data.message ||
-          "Login failed. If you changed your VTOP password recently, please Logout and Login again."
-        );
-        setProgressBar(0);
-      }
+      setMessage(prev => prev + "\n✅ All data loaded successfully!");
+      setProgressBar(100);
+      setIsLoggedIn(true);
+      setIsReloading(false);
     } catch (err) {
       console.error(err);
       setMessage(prev => prev + "\n❌ Login failed, check console.");
@@ -268,454 +270,49 @@ export default function LoginPage() {
     }
   };
 
-  const handleCalendarFetch = async (FncalendarType) => {
-    setIsReloading(true);
-    setProgressBar(10);
-    setMessage("Logging in and fetching data...");
-
-    try {
-      const captchaRes = await fetch("/api/getCaptcha", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-      const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
-
-      if (error) throw new Error("Failed to get CAPTCHA: " + error);
-
-      const captcha = await solveCaptchaClient(captchaBase64);
-
-      const loginRes = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          password,
-          captcha,
-          cookies,
-          csrf,
-        }),
-      });
-
-      const data = await loginRes.json();
-
-      if (data.success && data.dashboardHtml) {
-        setMessage((prev) => prev + "\n✅ Login successful");
-        setProgressBar((prev) => prev + 30);
-
-        const calenderRes = await fetch("/api/parseSemTT", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            cookies: data.cookies,
-            dashboardHtml: data.dashboardHtml,
-            type: FncalendarType || "ALL",
-          }),
-        });
-
-        const CalenderRes = await calenderRes.json();
-        setProgressBar((prev) => prev + 40);
-
-        setCalender(CalenderRes);
-        setCalenderType(FncalendarType);
-        localStorage.setItem("calender", JSON.stringify(CalenderRes));
-        localStorage.setItem("calendarType", FncalendarType);
-
-        setMessage((prev) => prev + "\n✅ Calendar reloaded successfully!");
-        setProgressBar(100);
-        setIsReloading(false);
-        setIsLoggedIn(true);
-      } else {
-        setMessage(
-          data.message ||
-          "Login failed. If you changed your password recently, please logout and login again."
-        );
-        setProgressBar(0);
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("❌ Calendar fetch failed, check console.");
-      setProgressBar(0);
-    }
-  };
-
-  const handleFetchGrades = async () => {
-    setIsReloading(true);
-    setProgressBar(10);
-    setMessage("Logging in and fetching data...");
-    try {
-      const captchaRes = await fetch("/api/getCaptcha", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(),
-      });
-      const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
-      if (error) throw new Error("Failed to get CAPTCHA: " + error);
-      const captcha = await solveCaptchaClient(captchaBase64);
-      const loginRes = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          password,
-          captcha,
-          cookies,
-          csrf,
-        }),
-      });
-      const data = await loginRes.json();
-      if (data.success && data.dashboardHtml) {
-        setMessage((prev) => prev + "\n✅ Login successful");
-        setProgressBar((prev) => prev + 30);
-        const gradesRes = await fetch("/api/fetchGrades", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
-        });
-        const gradesData = await gradesRes.json();
-        setProgressBar((prev) => prev + 40);
-        setGradesData(gradesData);
-        localStorage.setItem("grades", JSON.stringify(gradesData));
-        setMessage((prev) => prev + "\n✅ Grades reloaded successfully!");
-        setProgressBar(100);
-        setIsLoggedIn(true);
-        setIsReloading(false);
-      } else {
-        setMessage(
-          data.message ||
-          "Login failed. If you changed your password recently, please logout and login again."
-        );
-        setProgressBar(0);
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("❌ Grades fetch failed, check console.");
-      setProgressBar(0);
-    }
-  };
-
-  const handleAllGradesFetch = async () => {
-    setIsReloading(true);
-    setProgressBar(10);
-    setMessage("Logging in and fetching data...");
-
-    try {
-      const captchaRes = await fetch("/api/getCaptcha", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-      const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
-
-      if (error) throw new Error("Failed to get CAPTCHA: " + error);
-
-      const captcha = await solveCaptchaClient(captchaBase64);
-
-      const loginRes = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          password,
-          captcha,
-          cookies,
-          csrf,
-        }),
-      });
-
-      const data = await loginRes.json();
-
-      if (data.success && data.dashboardHtml) {
-        setMessage((prev) => prev + "\n✅ Login successful");
-        setProgressBar((prev) => prev + 30);
-
-        const AllGradesRes = await fetch("/api/fetchAllGrades", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
-        });
-
-        const AllGradesData = await AllGradesRes.json();
-        setProgressBar((prev) => prev + 40);
-
-        setAllGradesData(AllGradesData);
-        localStorage.setItem("allGradesData", JSON.stringify(AllGradesData));
-
-        setMessage((prev) => prev + "\n✅ All grades reloaded successfully!");
-        setProgressBar(100);
-        setIsLoggedIn(true);
-        setIsReloading(false);
-      } else {
-        setMessage(
-          data.message ||
-          "Login failed. If you changed your password recently, please logout and login again."
-        );
-        setProgressBar(0);
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("❌ Calendar fetch failed, check console.");
-      setProgressBar(0);
-    }
-  };
-
-  const handleHostelDetailsFetch = async () => {
-    setIsReloading(true);
-    setProgressBar(10);
-    setMessage("Logging in and fetching data...");
-    try {
-      const captchaRes = await fetch("/api/getCaptcha", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-      const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
-      if (error) throw new Error("Failed to get CAPTCHA: " + error);
-      const captcha = await solveCaptchaClient(captchaBase64);
-      const loginRes = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          password,
-          captcha,
-          cookies,
-          csrf,
-        }),
-      });
-      const data = await loginRes.json();
-      if (data.success && data.dashboardHtml) {
-        setMessage((prev) => prev + "\n✅ Login successful");
-        setProgressBar((prev) => prev + 30);
-        const HostelRes = await fetch("/api/fetchHostelDetails", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
-        });
-        const HostelData = await HostelRes.json();
-        setProgressBar((prev) => prev + 40);
-        sethostelData(HostelData);
-        localStorage.setItem("hostelData", JSON.stringify(HostelData));
-        setMessage((prev) => prev + "\n✅ Hostel details reloaded successfully!");
-        setProgressBar(100);
-        setIsLoggedIn(true);
-        setIsReloading(false);
-      } else {
-        setMessage(
-          data.message ||
-          "Login failed. If you changed your password recently, please logout and login again."
-        );
-        setProgressBar(0);
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("❌ Hostel details fetch failed, check console.");
-      setProgressBar(0);
-    }
-  };
-
-  const handleScheduleFetch = async () => {
-    setIsReloading(true);
-    setProgressBar(10);
-    setMessage("Logging in and fetching schedule...");
-    try {
-      const captchaRes = await fetch("/api/getCaptcha", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-      const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
-      if (error) throw new Error("Failed to get CAPTCHA: " + error);
-      const captcha = await solveCaptchaClient(captchaBase64);
-      const loginRes = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          password,
-          captcha,
-          cookies,
-          csrf,
-        }),
-      });
-      const data = await loginRes.json();
-      if (data.success && data.dashboardHtml) {
-        setMessage((prev) => prev + "\n✅ Login successful");
-        setProgressBar((prev) => prev + 30);
-        const ScheduleRes = await fetch("/api/fetchExamSchedule", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
-        });
-        const ScheduleData = await ScheduleRes.json();
-        setProgressBar((prev) => prev + 40);
-        setScheduleData(ScheduleData);
-        localStorage.setItem("schedule", JSON.stringify(ScheduleData));
-        setMessage((prev) => prev + "\n✅ Schedule reloaded successfully!");
-        setProgressBar(100);
-        setIsLoggedIn(true);
-        setIsReloading(false);
-      } else {
-        setMessage(
-          data.message ||
-          "Login failed. If you changed your password recently, please logout and login again."
-        );
-        setProgressBar(0);
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("❌ Schedule fetch failed, check console.");
-      setProgressBar(0);
-    }
-  };
-
-  const reloadLeaveHistory = async () => {
-    setIsReloading(true);
-    setProgressBar(10);
-    setMessage("Logging in and fetching leave history...");
-
-    try {
-      const captchaRes = await fetch("/api/getCaptcha", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(),
-      });
-      const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
-
-      if (error) throw new Error("Failed to get CAPTCHA: " + error);
-
-      const captcha = await solveCaptchaClient(captchaBase64);
-
-      const loginRes = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          password,
-          captcha,
-          cookies,
-          csrf,
-        }),
-      });
-
-      const data = await loginRes.json();
-
-      if (data.success && data.dashboardHtml) {
-        setMessage((prev) => prev + "\n✅ Login successful");
-        setProgressBar((prev) => prev + 30);
-
-        const hostelRes = await fetch("/api/fetchHostelDetails", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            cookies: data.cookies,
-            dashboardHtml: data.dashboardHtml,
-          }),
-        });
-
-        const HostelRes = await hostelRes.json();
-        setProgressBar((prev) => prev + 40);
-
-        sethostelData(HostelRes);
-        localStorage.setItem("hostelData", JSON.stringify(HostelRes));
-
-        setMessage((prev) => prev + "\n✅ Leave history reloaded successfully!");
-        setProgressBar(100);
-      } else {
-        setMessage(
-          data.message ||
-          "Login failed. If you changed your password recently, please logout and login again."
-        );
-        setProgressBar(0);
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("❌ Leave history reload failed, check console.");
-      setProgressBar(0);
-    } finally {
-      setIsReloading(false);
-    }
-  };
-
   // --- Event Handlers ---
   const handleReloadRequest = async () => {
-    setIsReloading(true);
-    setMessage("Logging in and fetching data...");
-    setProgressBar(10);
-
     try {
-      const captchaRes = await fetch("/api/getCaptcha", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(),
-      });
-      const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
+      const { cookies, dashboardHtml } = await loginToVTOP();
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
 
-      if (error) throw new Error("Failed to get CAPTCHA: " + error);
-
-      const captcha = await solveCaptchaClient(captchaBase64);
-
-      const loginRes = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          password,
-          captcha,
-          cookies,
-          csrf,
+      const [
+        attRes,
+        marksRes
+      ] = await Promise.all([
+        fetch("/api/fetchAttendance", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+        }).then(async r => {
+          const j = await r.json();
+          setMessage(prev => prev + "\n✅ Attendance fetched");
+          setProgressBar(prev => prev + 20);
+          return j;
         }),
-      });
+        fetch("/api/fetchMarks", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+        }).then(async r => {
+          const j = await r.json();
+          setMessage(prev => prev + "\n✅ Marks fetched");
+          setProgressBar(prev => prev + 20);
+          return j;
+        })
+      ]);
 
-      const data = await loginRes.json();
+      setAttendanceAndOD(attRes);
+      setMarksData(marksRes);
 
-      if (data.success && data.dashboardHtml) {
-        localStorage.setItem("username", username);
-        localStorage.setItem("password", password);
-        setMessage(prev => prev + "\n✅ Login successful");
-        setProgressBar(prev => prev + 40);
+      localStorage.setItem("attendance", JSON.stringify(attRes));
+      localStorage.setItem("marks", JSON.stringify(marksRes));
 
-        const [
-          attRes,
-          marksRes
-        ] = await Promise.all([
-          fetch("/api/fetchAttendance", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
-          }).then(async r => {
-            const j = await r.json();
-            setMessage(prev => prev + "\n✅ Attendance fetched");
-            setProgressBar(prev => prev + 20);
-            return j;
-          }),
-          fetch("/api/fetchMarks", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: data.cookies, dashboardHtml: data.dashboardHtml }),
-          }).then(async r => {
-            const j = await r.json();
-            setMessage(prev => prev + "\n✅ Marks fetched");
-            setProgressBar(prev => prev + 20);
-            return j;
-          })
-        ]);
-
-        setMessage(prev => prev + "\nFinalizing and saving data...");
-
-        setAttendanceAndOD(attRes);
-        setMarksData(marksRes);
-
-        localStorage.setItem("attendance", JSON.stringify(attRes));
-        localStorage.setItem("marks", JSON.stringify(marksRes));
-
-        setMessage(prev => prev + "\n✅ All data loaded successfully!");
-        setProgressBar(100);
-        setIsLoggedIn(true);
-        setIsReloading(false);
-      } else {
-        setMessage(
-          data.message ||
-          "Login failed. If you changed your VTOP password recently, please Logout and Login again."
-        );
-        setProgressBar(0);
-      }
+      setMessage(prev => prev + "\n✅ All data loaded successfully!");
+      setProgressBar(100);
+      setIsLoggedIn(true);
+      setIsReloading(false);
     } catch (err) {
       console.error(err);
       setMessage(prev => prev + "\n❌ Login failed, check console.");
@@ -748,6 +345,22 @@ export default function LoginPage() {
     }
     handleLogin();
   };
+
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 midnight:bg-black">
@@ -785,7 +398,9 @@ export default function LoginPage() {
 
       {isLoggedIn && (
         <>
-          <OfflineBanner />
+          {isOffline && <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium z-[9999] shadow-md">
+            ⚠️ You’re currently offline. Some features may not work.
+          </div>}
           <DashboardContent
             activeTab={activeTab}
             setActiveTab={setActiveTab}
@@ -815,42 +430,21 @@ export default function LoginPage() {
             CGPAHidden={CGPAHidden}
             setCGPAHidden={setCGPAHidden}
             calendarType={calendarType}
-            setCalendarType={setCalenderType}
-            handleCalendarFetch={handleCalendarFetch}
-            reloadLeaveHistory={reloadLeaveHistory}
-            handleAllGradesFetch={handleAllGradesFetch}
-            handleHostelDetailsFetch={handleHostelDetailsFetch}
-            handleFetchGrades={handleFetchGrades}
-            handleScheduleFetch={handleScheduleFetch}
+            setCalender={setCalender}
+            setCalenderType={setCalenderType}
+            setIsReloading={setIsReloading}
+            setProgressBar={setProgressBar}
+            setMessage={setMessage}
+            loginToVTOP={loginToVTOP}
+            setAllGradesData={setAllGradesData}
+            sethostelData={sethostelData}
+            setGradesData={setGradesData}
+            setScheduleData={setScheduleData}
           />
         </>
       )}
 
       <Footer isLoggedIn={isLoggedIn} />
-    </div>
-  );
-}
-function OfflineBanner() {
-  const [isOffline, setIsOffline] = useState(!navigator.onLine);
-
-  useEffect(() => {
-    const handleOnline = () => setIsOffline(false);
-    const handleOffline = () => setIsOffline(true);
-
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
-
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
-    };
-  }, []);
-
-  if (!isOffline) return null;
-
-  return (
-    <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium z-[9999] shadow-md">
-      ⚠️ You’re currently offline. Some features may not work.
     </div>
   );
 }
