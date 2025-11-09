@@ -1,0 +1,2576 @@
+[
+  {
+    "month": "JULY 2025",
+    "year": 2025,
+    "days": [
+      {
+        "date": 1,
+        "weekday": "Tue",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 2,
+        "weekday": "Wed",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 3,
+        "weekday": "Thu",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 4,
+        "weekday": "Fri",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 5,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 6,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 7,
+        "weekday": "Mon",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 8,
+        "weekday": "Tue",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 9,
+        "weekday": "Wed",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(FID/ Working Day/ Add or Drop)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "FID/ Working Day/ Add or Drop"
+          }
+        ]
+      },
+      {
+        "date": 10,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(FID/ Working Day/ Add or Drop)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "FID/ Working Day/ Add or Drop"
+          }
+        ]
+      },
+      {
+        "date": 11,
+        "weekday": "Fri",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(FID/ Working Day/ Add or Drop)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "FID/ Working Day/ Add or Drop"
+          }
+        ]
+      },
+      {
+        "date": 12,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 13,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 14,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 15,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 16,
+        "weekday": "Wed",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 17,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 18,
+        "weekday": "Fri",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 19,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 20,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 21,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 22,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 23,
+        "weekday": "Wed",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 24,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 25,
+        "weekday": "Fri",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 26,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 27,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 28,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 29,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 30,
+        "weekday": "Wed",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 31,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "total": 31,
+      "working": 17,
+      "holiday": 14,
+      "other": 0
+    }
+  },
+  {
+    "month": "AUGUST 2025",
+    "year": 2025,
+    "days": [
+      {
+        "date": 1,
+        "weekday": "Fri",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 2,
+        "weekday": "Sat",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Instructional Day/ Tuesday Day Order)",
+            "type": "Instructional Day",
+            "color": "#eb556e",
+            "category": "Instructional Day/ Tuesday Day Order"
+          }
+        ]
+      },
+      {
+        "date": 3,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 4,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 5,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 6,
+        "weekday": "Wed",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 7,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 8,
+        "weekday": "Fri",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 9,
+        "weekday": "Sat",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Instructional Day/ Friday Day Order)",
+            "type": "Instructional Day",
+            "color": "#eb556e",
+            "category": "Instructional Day/ Friday Day Order"
+          }
+        ]
+      },
+      {
+        "date": 10,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 11,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 12,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 13,
+        "weekday": "Wed",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 14,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 15,
+        "weekday": "Fri",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "Holiday",
+            "type": "Holiday",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Independence Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Independence Day"
+          }
+        ]
+      },
+      {
+        "date": 16,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - I",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - I)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - I"
+          }
+        ]
+      },
+      {
+        "date": 17,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - I",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - I)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - I"
+          }
+        ]
+      },
+      {
+        "date": 18,
+        "weekday": "Mon",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - I",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - I)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - I"
+          }
+        ]
+      },
+      {
+        "date": 19,
+        "weekday": "Tue",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - I",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - I)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - I"
+          }
+        ]
+      },
+      {
+        "date": 20,
+        "weekday": "Wed",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - I",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - I)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - I"
+          }
+        ]
+      },
+      {
+        "date": 21,
+        "weekday": "Thu",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - I",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - I)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - I"
+          }
+        ]
+      },
+      {
+        "date": 22,
+        "weekday": "Fri",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - I",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - I)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - I"
+          }
+        ]
+      },
+      {
+        "date": 23,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - I",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - I)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - I"
+          }
+        ]
+      },
+      {
+        "date": 24,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 25,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 26,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 27,
+        "weekday": "Wed",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "Holiday",
+            "type": "Holiday",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Vinayakar Chathurthi)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Vinayakar Chathurthi"
+          }
+        ]
+      },
+      {
+        "date": 28,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 29,
+        "weekday": "Fri",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 30,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 31,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      }
+    ],
+    "summary": {
+      "total": 31,
+      "working": 16,
+      "holiday": 15,
+      "other": 0
+    }
+  },
+  {
+    "month": "SEPTEMBER 2025",
+    "year": 2025,
+    "days": [
+      {
+        "date": 1,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 2,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 3,
+        "weekday": "Wed",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 4,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day/ Course Withdraw)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day/ Course Withdraw"
+          }
+        ]
+      },
+      {
+        "date": 5,
+        "weekday": "Fri",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "No Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Meelad-un-Nabi/ Onam)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Meelad-un-Nabi/ Onam"
+          }
+        ]
+      },
+      {
+        "date": 6,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 7,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 8,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day/ Course Withdraw)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day/ Course Withdraw"
+          }
+        ]
+      },
+      {
+        "date": 9,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day/ Course Withdraw)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day/ Course Withdraw"
+          }
+        ]
+      },
+      {
+        "date": 10,
+        "weekday": "Wed",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day/ Course Withdraw)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day/ Course Withdraw"
+          }
+        ]
+      },
+      {
+        "date": 11,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 12,
+        "weekday": "Fri",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 13,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 14,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 15,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 16,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 17,
+        "weekday": "Wed",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 18,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 19,
+        "weekday": "Fri",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 20,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 21,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 22,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 23,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 24,
+        "weekday": "Wed",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 25,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 26,
+        "weekday": "Fri",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 27,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 28,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 29,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 30,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "total": 30,
+      "working": 21,
+      "holiday": 9,
+      "other": 0
+    }
+  },
+  {
+    "month": "OCTOBER 2025",
+    "year": 2025,
+    "days": [
+      {
+        "date": 1,
+        "weekday": "Wed",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "Holiday",
+            "type": "Holiday",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Ayudha Pooja)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Ayudha Pooja"
+          }
+        ]
+      },
+      {
+        "date": 2,
+        "weekday": "Thu",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "Holiday",
+            "type": "Holiday",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Gandhi Jayanthi)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Gandhi Jayanthi"
+          }
+        ]
+      },
+      {
+        "date": 3,
+        "weekday": "Fri",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 4,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - II",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - II)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - II"
+          }
+        ]
+      },
+      {
+        "date": 5,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - II",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - II)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - II"
+          }
+        ]
+      },
+      {
+        "date": 6,
+        "weekday": "Mon",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - II",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - II)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - II"
+          }
+        ]
+      },
+      {
+        "date": 7,
+        "weekday": "Tue",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - II",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - II)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - II"
+          }
+        ]
+      },
+      {
+        "date": 8,
+        "weekday": "Wed",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - II",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - II)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - II"
+          }
+        ]
+      },
+      {
+        "date": 9,
+        "weekday": "Thu",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - II",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - II)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - II"
+          }
+        ]
+      },
+      {
+        "date": 10,
+        "weekday": "Fri",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - II",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - II)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - II"
+          }
+        ]
+      },
+      {
+        "date": 11,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "CAT - II",
+            "type": "Other",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(CAT - II)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "CAT - II"
+          }
+        ]
+      },
+      {
+        "date": 12,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 13,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 14,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 15,
+        "weekday": "Wed",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 16,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 17,
+        "weekday": "Fri",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 18,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "Holiday",
+            "type": "Holiday",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Deepavali Holidays)",
+            "type": "Holiday",
+            "color": "#eb556e",
+            "category": "Deepavali Holidays"
+          }
+        ]
+      },
+      {
+        "date": 19,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "Holiday",
+            "type": "Holiday",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Deepavali Holidays)",
+            "type": "Holiday",
+            "color": "#eb556e",
+            "category": "Deepavali Holidays"
+          }
+        ]
+      },
+      {
+        "date": 20,
+        "weekday": "Mon",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "Holiday",
+            "type": "Holiday",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Deepavali Holidays)",
+            "type": "Holiday",
+            "color": "#eb556e",
+            "category": "Deepavali Holidays"
+          }
+        ]
+      },
+      {
+        "date": 21,
+        "weekday": "Tue",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "Holiday",
+            "type": "Holiday",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Deepavali Holidays)",
+            "type": "Holiday",
+            "color": "#eb556e",
+            "category": "Deepavali Holidays"
+          }
+        ]
+      },
+      {
+        "date": 22,
+        "weekday": "Wed",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "Holiday",
+            "type": "Holiday",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Deepavali Holidays)",
+            "type": "Holiday",
+            "color": "#eb556e",
+            "category": "Deepavali Holidays"
+          }
+        ]
+      },
+      {
+        "date": 23,
+        "weekday": "Thu",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "Holiday",
+            "type": "Holiday",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Deepavali Holidays)",
+            "type": "Holiday",
+            "color": "#eb556e",
+            "category": "Deepavali Holidays"
+          }
+        ]
+      },
+      {
+        "date": 24,
+        "weekday": "Fri",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "Holiday",
+            "type": "Holiday",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Deepavali Holidays)",
+            "type": "Holiday",
+            "color": "#eb556e",
+            "category": "Deepavali Holidays"
+          }
+        ]
+      },
+      {
+        "date": 25,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "Holiday",
+            "type": "Holiday",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Deepavali Holidays)",
+            "type": "Holiday",
+            "color": "#eb556e",
+            "category": "Deepavali Holidays"
+          }
+        ]
+      },
+      {
+        "date": 26,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "Holiday",
+            "type": "Holiday",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Deepavali Holidays)",
+            "type": "Holiday",
+            "color": "#eb556e",
+            "category": "Deepavali Holidays"
+          }
+        ]
+      },
+      {
+        "date": 27,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 28,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 29,
+        "weekday": "Wed",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 30,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 31,
+        "weekday": "Fri",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "No Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(TechnoVIT)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "TechnoVIT"
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "total": 31,
+      "working": 10,
+      "holiday": 21,
+      "other": 0
+    }
+  },
+  {
+    "month": "NOVEMBER 2025",
+    "year": 2025,
+    "days": [
+      {
+        "date": 1,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "No Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(TechnoVIT)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "TechnoVIT"
+          }
+        ]
+      },
+      {
+        "date": 2,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "No Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(TechnoVIT)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "TechnoVIT"
+          }
+        ]
+      },
+      {
+        "date": 3,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 4,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 5,
+        "weekday": "Wed",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 6,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day"
+          }
+        ]
+      },
+      {
+        "date": 7,
+        "weekday": "Fri",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day / LID for Lab Class)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day / LID for Lab Class"
+          }
+        ]
+      },
+      {
+        "date": 8,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": [
+          {
+            "text": "Crystal GuruVITa",
+            "type": "Holiday",
+            "color": "#B22222",
+            "category": "Crystal GuruVITa"
+          }
+        ]
+      },
+      {
+        "date": 9,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 10,
+        "weekday": "Mon",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day/ LAB FAT)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day/ LAB FAT"
+          }
+        ]
+      },
+      {
+        "date": 11,
+        "weekday": "Tue",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day/ LAB FAT)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day/ LAB FAT"
+          }
+        ]
+      },
+      {
+        "date": 12,
+        "weekday": "Wed",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day/ LAB FAT)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day/ LAB FAT"
+          }
+        ]
+      },
+      {
+        "date": 13,
+        "weekday": "Thu",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day/ LAB FAT)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day/ LAB FAT"
+          }
+        ]
+      },
+      {
+        "date": 14,
+        "weekday": "Fri",
+        "type": "working",
+        "events": [
+          {
+            "text": "Instructional Day",
+            "type": "Instructional Day",
+            "color": "green",
+            "category": "General"
+          },
+          {
+            "text": "(Working Day/ LAB FAT/ LID for Theory classes)",
+            "type": "Other",
+            "color": "#eb556e",
+            "category": "Working Day/ LAB FAT/ LID for Theory classes"
+          }
+        ]
+      },
+      {
+        "date": 15,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 16,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 17,
+        "weekday": "Mon",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 18,
+        "weekday": "Tue",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 19,
+        "weekday": "Wed",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 20,
+        "weekday": "Thu",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 21,
+        "weekday": "Fri",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 22,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 23,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 24,
+        "weekday": "Mon",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 25,
+        "weekday": "Tue",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 26,
+        "weekday": "Wed",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 27,
+        "weekday": "Thu",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 28,
+        "weekday": "Fri",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 29,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 30,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      }
+    ],
+    "summary": {
+      "total": 30,
+      "working": 10,
+      "holiday": 20,
+      "other": 0
+    }
+  },
+  {
+    "month": "DECEMBER 2025",
+    "year": 2025,
+    "days": [
+      {
+        "date": 1,
+        "weekday": "Mon",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 2,
+        "weekday": "Tue",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 3,
+        "weekday": "Wed",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 4,
+        "weekday": "Thu",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 5,
+        "weekday": "Fri",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 6,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 7,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 8,
+        "weekday": "Mon",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 9,
+        "weekday": "Tue",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 10,
+        "weekday": "Wed",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 11,
+        "weekday": "Thu",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 12,
+        "weekday": "Fri",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 13,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 14,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 15,
+        "weekday": "Mon",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 16,
+        "weekday": "Tue",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 17,
+        "weekday": "Wed",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 18,
+        "weekday": "Thu",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 19,
+        "weekday": "Fri",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 20,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 21,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 22,
+        "weekday": "Mon",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 23,
+        "weekday": "Tue",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 24,
+        "weekday": "Wed",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 25,
+        "weekday": "Thu",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 26,
+        "weekday": "Fri",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 27,
+        "weekday": "Sat",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 28,
+        "weekday": "Sun",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 29,
+        "weekday": "Mon",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 30,
+        "weekday": "Tue",
+        "type": "holiday",
+        "events": []
+      },
+      {
+        "date": 31,
+        "weekday": "Wed",
+        "type": "holiday",
+        "events": []
+      }
+    ],
+    "summary": {
+      "total": 31,
+      "working": 0,
+      "holiday": 31,
+      "other": 0
+    }
+  }
+]
