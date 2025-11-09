@@ -60,14 +60,23 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
     let classesTillLID = 0;
 
     if (Array.isArray(analyzeCalendars) && analyzeCalendars.length > 0) {
-        if (isLab) {
-            classesTillCAT1 = countTillDate(cat1Date);
-            classesTillCAT2 = countTillDate(cat2Date);
-            classesTillLID = countTillDate(lidLabDate);
-        } else if (isTheory) {
-            classesTillCAT1 = countTillDate(cat1Date);
-            classesTillCAT2 = countTillDate(cat2Date);
-            classesTillLID = countTillDate(lidTheoryDate);
+        const allMonthsAreHolidays = analyzeCalendars.every(
+            (month) => month?.summary?.working === 0
+        );
+        if (!allMonthsAreHolidays) {
+            if (isLab) {
+                classesTillCAT1 = countTillDate(cat1Date);
+                classesTillCAT2 = countTillDate(cat2Date);
+                classesTillLID = countTillDate(lidLabDate);
+            } else if (isTheory) {
+                classesTillCAT1 = countTillDate(cat1Date);
+                classesTillCAT2 = countTillDate(cat2Date);
+                classesTillLID = countTillDate(lidTheoryDate);
+            }
+        } else {
+            classesTillCAT1 = null;
+            classesTillCAT2 = null;
+            classesTillLID = null;
         }
     }
     return (
@@ -150,9 +159,9 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                                 })()}
                             </div>
 
-                            {(classesTillCAT1 >= 0 && classesTillCAT2 >= 0 && classesTillLID >= 0) ? (
+                            {(classesTillCAT1 && classesTillCAT2 && classesTillLID && classesTillCAT1 >= 0 && classesTillCAT2 >= 0 && classesTillLID >= 0) && (
                                 <div className="text-sm">
-                                    {classesTillLID === 0 && a.attendancePercentage < 75 && ( is9Pointer ? (
+                                    {classesTillLID === 0 && a.attendancePercentage < 75 && (is9Pointer ? (
                                         <p className="text-green-500">
                                             You alright cuz 9 ptr
                                         </p>
@@ -164,10 +173,6 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                                     {classesTillCAT2 !== 0 && <p>Classes left before CAT II: <strong>{classesTillCAT2}</strong></p>}
                                     {classesTillLID !== 0 && <p>Classes left before FAT: <strong>{classesTillLID}</strong></p>}
                                 </div>
-                            ) : (
-                                <p className="text-gray-400 dark:text-gray-500 midnight:text-gray-500 text-sm italic">
-                                    No classes left for this subject
-                                </p>
                             )}
                         </div>
 

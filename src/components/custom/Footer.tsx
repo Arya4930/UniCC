@@ -60,7 +60,7 @@ export default function Footer({ isLoggedIn, currSemesterID, setCurrSemesterID, 
 
   return (
     <footer className="bg-transparent text-gray-700 dark:text-gray-300 midnight:text-gray-300 flex items-center justify-center">
-      {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} currSemesterID={currSemesterID} setCurrSemesterID={setCurrSemesterID} handleLogin={handleLogin}/>}
+      {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} currSemesterID={currSemesterID} setCurrSemesterID={setCurrSemesterID} handleLogin={handleLogin} setIsReloading={setIsReloading}/>}
       {showPolicy && <PrivacyPolicyPage handleClose={() => setShowPolicy(false)} />}
       <div className="max-w-7xl mx-auto px-3 py-6 text-center w-full">
         <hr className="border-gray-300 dark:border-gray-700 midnight:border-gray-700 w-11/12 mx-auto mb-6" />
