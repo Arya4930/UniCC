@@ -249,20 +249,14 @@ export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calenda
         const [hRaw, mRaw] = start.split(":");
         let h = Number(hRaw);
         const m = Number(mRaw) || 0;
-        if (h >= 8 && h <= 11) {
-        } else if (h === 12) {
-            h = 12;
-        } else if (h >= 1 && h <= 7) {
-            h += 12;
-        }
+        if (h >= 1 && h <= 7) h += 12;
         startHour = h;
         startMinute = m;
     }
 
     const allDays = calendarMonths.flatMap(monthObj => {
-        const monthStr = monthObj.month?.toString().toLowerCase() || "";
+        const monthStr = monthObj.month?.toLowerCase() || "";
         const year = monthObj.year || new Date().getFullYear();
-
         const foundMonth = monthNames.find(m => monthStr.includes(m));
         const mIndex = foundMonth ? monthNames.indexOf(foundMonth) : -1;
 
@@ -273,16 +267,31 @@ export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calenda
     });
 
     const remainingWorkingDays = allDays.filter((d) => {
-        if (!d || !d.type || d.type.toLowerCase() !== "working") return false;
-        if (!d.fullDate || isNaN(d.fullDate.getTime())) return false;
+        if (!d || !d.fullDate || isNaN(d.fullDate.getTime())) return false;
 
         const classTime = new Date(d.fullDate);
         classTime.setHours(startHour, startMinute, 0, 0);
-
         if (classTime < now) return false;
 
-        const dDay = normalizeDay(d.weekday || "");
-        return subjectDays.includes(dDay);
+        const isWorking = d.type?.toLowerCase() === "working";
+        const hasSpecialEvent = Array.isArray(d.events) && d.events.some(ev =>
+            /working day/i.test(ev.text || ev.category)
+        );
+
+        if (!isWorking && !hasSpecialEvent) return false;
+
+        let effectiveDay = normalizeDay(d.weekday || "");
+        if (hasSpecialEvent) {
+            const special = d.events.find(ev =>
+                /working day/i.test(ev.text || ev.category)
+            );
+            const match = (special?.text || special?.category || "").match(/(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)/i);
+            if (match) {
+                effectiveDay = normalizeDay(match[1]);
+            }
+        }
+
+        return subjectDays.includes(effectiveDay);
     });
 
     return remainingWorkingDays.length;
