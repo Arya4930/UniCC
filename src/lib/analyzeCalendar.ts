@@ -43,7 +43,7 @@ export function analyzeCalendar(calendar: CalendarInput = {}): AnalyzeCalendarRe
     const now = new Date();
 
     // ---- YEAR ----
-    let year = Number(calendar.year);
+    let year = Number(calendar.month.split(" ").pop()) || Number(calendar.year);
     if (!Number.isFinite(year)) year = now.getFullYear();
 
     // ---- MONTH ----
@@ -128,7 +128,7 @@ export function analyzeCalendar(calendar: CalendarInput = {}): AnalyzeCalendarRe
     const IMPORTANT_EVENT_NAMES = new Set([
         "cat   i",
         "cat   ii",
-        "lid for lab class",
+        "lid for laboratory classes",
         "lid for theory classes",
     ]);
 

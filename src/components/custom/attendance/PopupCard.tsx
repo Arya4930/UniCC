@@ -44,7 +44,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
             }),
         }));
 
-        return countRemainingClasses(a.courseCode, a.time, dayCardsMap, filteredMonths, new Date());
+        return countRemainingClasses(a.courseCode, a.time, dayCardsMap, filteredMonths, new Date(analyzeCalendars[0].year, 0, 1));
     };
 
     const isLab = a.courseCode.endsWith("(L)");
@@ -52,7 +52,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
 
     const cat1Date = findEventDate("CAT I");
     const cat2Date = findEventDate("CAT II");
-    const lidLabDate = findEventDate("LID FOR LAB CLASS");
+    const lidLabDate = findEventDate("lid for laboratory classes");
     const lidTheoryDate = findEventDate("LID FOR THEORY CLASSES");
 
     let classesTillCAT1 = 0;
