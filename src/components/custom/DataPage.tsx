@@ -18,6 +18,7 @@ interface DataPageProps {
     currSemesterID: string;
     setCurrSemesterID: (id: string) => void;
     handleLogin: (selectedSemester?: string) => Promise<void>;
+    setIsReloading: (isReloading: boolean) => void;
 }
 
 function LocalStorageItem({ storageKey, value, onDelete }: LocalStorageItemProps) {
@@ -79,12 +80,13 @@ function LocalStorageItem({ storageKey, value, onDelete }: LocalStorageItemProps
     );
 }
 
-export default function DataPage({ handleClose, handleDeleteItem, storageData, currSemesterID, setCurrSemesterID, handleLogin }: DataPageProps) {
+export default function DataPage({ handleClose, handleDeleteItem, storageData, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading }: DataPageProps) {
     const [selectedSemester, setSelectedSemester] = useState<string>(currSemesterID);
     const handleSaveSemester = () => {
         if (!selectedSemester) return;
         setCurrSemesterID(selectedSemester);
         localStorage.setItem("currSemesterID", selectedSemester);
+        setIsReloading(true);
         handleLogin(selectedSemester);
     };
 

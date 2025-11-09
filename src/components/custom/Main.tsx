@@ -452,7 +452,7 @@ export default function LoginPage() {
         </>
       )}
 
-      <Footer isLoggedIn={isLoggedIn} currSemesterID={currSemesterID} setCurrSemesterID={setCurrSemesterID} handleLogin={handleLogin}/>
+      <Footer isLoggedIn={isLoggedIn} currSemesterID={currSemesterID} setCurrSemesterID={setCurrSemesterID} handleLogin={handleLogin} setIsReloading={setIsReloading} />
     </div>
   );
 }

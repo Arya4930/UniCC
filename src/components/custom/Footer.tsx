@@ -12,9 +12,10 @@ type FooterProps = {
   currSemesterID: string;
   setCurrSemesterID: (id: string) => void;
   handleLogin: (selectedSemester?: string) => Promise<void>;
+  setIsReloading: (isReloading: boolean) => void;
 }
 
-export default function Footer({ isLoggedIn, currSemesterID, setCurrSemesterID, handleLogin }: FooterProps) {
+export default function Footer({ isLoggedIn, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading }: FooterProps) {
   const [showStoragePage, setShowStoragePage] = useState<boolean>(false);
   const [storageData, setStorageData] = useState<Record<string, string | null>>({});
   const [showPolicy, setShowPolicy] = useState<boolean>(false);
