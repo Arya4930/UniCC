@@ -21,7 +21,7 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
   const ongoingCreditsByCategory = attendance.reduce((acc, item) => {
     let category = item.category || "Uncategorized";
     const credits = parseFloat(item.credits) || 0;
-    let isFoundationExtra = false;
+    let isFoundationExtra = false, isNGCExtra = false;
     if (category == "Foundation Core - Humanities, Social Sciences and Management (LANGUAGE Basket)") {
       category = "Foreign Language";
       isFoundationExtra = true;
@@ -29,11 +29,16 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
       category = "HSM Elective";
       isFoundationExtra = true;
     } else if (category == "Foundation Core - Humanities, Social Sciences and Management (EXTRA CURRICULAR Basket)") {
+      isNGCExtra = true
       category = "Extra curricular activities";
     }
     acc[category] = (acc[category] || 0) + credits;
     if (isFoundationExtra) {
       const parentCategory = "Foundation Core - Humanities, Social Sciences and Management";
+      acc[parentCategory] = (acc[parentCategory] || 0) + credits;
+    }
+    if(isNGCExtra) {
+      const parentCategory = "Non-graded Core Requirement";
       acc[parentCategory] = (acc[parentCategory] || 0) + credits;
     }
     return acc;
