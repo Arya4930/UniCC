@@ -33,7 +33,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         if (!csrf || !authorizedID) throw new Error("Cannot find _csrf or authorizedID");
         const client = VTOPClient();
 
-        const fetchSemesterGrades = async (semId) => {
+        const fetchSemesterGrades = async (semId: string) => {
             try {
                 const form = new URLSearchParams({
                     authorizedID,

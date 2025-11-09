@@ -9,7 +9,7 @@ import { CGPA } from "@/types/data/marks";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
-        const { cookies, dashboardHtml }: RequestBody = await req.json();
+        const { cookies, dashboardHtml, semesterId }: RequestBody = await req.json();
 
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
@@ -20,8 +20,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         if (!csrf || !authorizedID) throw new Error("Cannot find _csrf or authorizedID");
 
         const client = VTOPClient();
-
-        const semesterId = config.currSemID;
 
         // Fetch the marks data for the selected semester
         const marksRes = await client.post(

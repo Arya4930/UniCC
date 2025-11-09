@@ -5,6 +5,7 @@ import LoginForm from "./loginForm";
 import DashboardContent from "./Dashboard";
 import Footer from "./Footer";
 import { solveCaptchaClient } from "@/lib/solveCaptcha";
+import config from '../../app/config.json'
 
 export default function LoginPage() {
   // --- State Management ---
@@ -33,6 +34,7 @@ export default function LoginPage() {
   const [CGPAHidden, setCGPAHidden] = useState(false);
   const [calendarType, setCalenderType] = useState(null)
   const [progressBar, setProgressBar] = useState(0);
+  const [currSemesterID, setCurrSemesterID] = useState(config.semesterIDs[config.semesterIDs.length - 2]);
 
   useEffect(() => {
     const day = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
@@ -89,6 +91,7 @@ export default function LoginPage() {
     const storedHoste = localStorage.getItem("hostel");
     const calendar = localStorage.getItem("calender");
     const calendarType = localStorage.getItem("calendarType");
+    const currSemesterID = localStorage.getItem("currSemesterID");
 
     storedAttendance = JSON.parse(storedAttendance);
     if (storedAttendance && storedAttendance.attendance) {
@@ -103,12 +106,12 @@ export default function LoginPage() {
     if (storedHoste) sethostelData(JSON.parse(storedHoste));
     if (calendar) setCalender(JSON.parse(calendar));
     if (calendarType) setCalenderType(calendarType);
+    if (currSemesterID) setCurrSemesterID(currSemesterID);
     setIsLoggedIn((storedUsername && storedPassword) ? true : false);
     setTimeout(() => setIsLoading(false), 300);
   }, []);
 
   const loginToVTOP = async () => {
-    setIsReloading(true);
     setProgressBar(10);
     setMessage("Logging in and fetching leave history...");
 
@@ -145,7 +148,7 @@ export default function LoginPage() {
     };
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (currSemesterID = config.semesterIDs[config.semesterIDs.length - 2]) => {
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
       localStorage.setItem("username", username);
@@ -163,7 +166,7 @@ export default function LoginPage() {
         fetch("/api/fetchAttendance", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
         }).then(async r => {
           const j = await r.json();
           setMessage(prev => prev + "\n✅ Attendance fetched");
@@ -174,33 +177,33 @@ export default function LoginPage() {
         fetch("/api/fetchMarks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
         }).then(async r => {
           const j = await r.json();
           setMessage(prev => prev + "\n✅ Marks fetched");
-          setProgressBar(prev => prev + 10);
+          setProgressBar(prev => prev + 5);
           return j;
         }),
 
         fetch("/api/fetchGrades", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
         }).then(async r => {
           const j = await r.json();
           setMessage(prev => prev + "\n✅ Grades fetched");
-          setProgressBar(prev => prev + 10);
+          setProgressBar(prev => prev + 5);
           return j;
         }),
 
         fetch("/api/fetchExamSchedule", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
         }).then(async r => {
           const j = await r.json();
           setMessage(prev => prev + "\n✅ Exam schedule fetched");
-          setProgressBar(prev => prev + 10);
+          setProgressBar(prev => prev + 5);
           return j;
         }),
 
@@ -211,7 +214,7 @@ export default function LoginPage() {
         }).then(async r => {
           const j = await r.json();
           setMessage(prev => prev + "\n✅ Hostel details fetched");
-          setProgressBar(prev => prev + 10);
+          setProgressBar(prev => prev + 5);
           return j;
         }),
 
@@ -222,11 +225,12 @@ export default function LoginPage() {
             cookies: cookies,
             dashboardHtml: dashboardHtml,
             type: calendarType || "ALL",
+            semesterId: currSemesterID
           }),
         }).then(async r => {
           const j = await r.json();
           setMessage(prev => prev + "\n✅ Calendar fetched");
-          setProgressBar(prev => prev + 10);
+          setProgressBar(prev => prev + 5);
           return j;
         }),
         fetch("/api/fetchAllGrades", {
@@ -272,6 +276,7 @@ export default function LoginPage() {
 
   // --- Event Handlers ---
   const handleReloadRequest = async () => {
+    setIsReloading(true);
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
       localStorage.setItem("username", username);
@@ -284,7 +289,7 @@ export default function LoginPage() {
         fetch("/api/fetchAttendance", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
         }).then(async r => {
           const j = await r.json();
           setMessage(prev => prev + "\n✅ Attendance fetched");
@@ -294,7 +299,7 @@ export default function LoginPage() {
         fetch("/api/fetchMarks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID}),
         }).then(async r => {
           const j = await r.json();
           setMessage(prev => prev + "\n✅ Marks fetched");
@@ -335,6 +340,8 @@ export default function LoginPage() {
     localStorage.removeItem("grades");
     localStorage.removeItem("allGrades");
     localStorage.removeItem("schedule");
+    localStorage.removeItem("hostel");
+    localStorage.removeItem("currSemesterID")
     setMessage("");
   };
 
@@ -440,11 +447,12 @@ export default function LoginPage() {
             sethostelData={sethostelData}
             setGradesData={setGradesData}
             setScheduleData={setScheduleData}
+            currSemesterID={currSemesterID}
           />
         </>
       )}
 
-      <Footer isLoggedIn={isLoggedIn} />
+      <Footer isLoggedIn={isLoggedIn} currSemesterID={currSemesterID} setCurrSemesterID={setCurrSemesterID} handleLogin={handleLogin}/>
     </div>
   );
 }

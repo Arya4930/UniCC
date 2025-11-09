@@ -1,16 +1,32 @@
 "use client";
 
-import { X, ChevronDown, ChevronUp } from "lucide-react";
-import { useState } from "react";
+import { X, ChevronDown, ChevronUp, Save } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
+import config from "../../app/config.json";
 
-function LocalStorageItem({ storageKey, value, onDelete }) {
-    const [showValue, setShowValue] = useState(
+interface LocalStorageItemProps {
+    storageKey: string;
+    value: string;
+    onDelete: () => void;
+}
+
+interface DataPageProps {
+    handleClose: () => void;
+    handleDeleteItem: (key: string) => void;
+    storageData: Record<string, string>;
+    currSemesterID: string;
+    setCurrSemesterID: (id: string) => void;
+    handleLogin: (selectedSemester?: string) => Promise<void>;
+}
+
+function LocalStorageItem({ storageKey, value, onDelete }: LocalStorageItemProps) {
+    const [showValue, setShowValue] = useState<boolean>(
         storageKey !== "username" && storageKey !== "password"
     );
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState<boolean>(false);
 
-    let parsedValue = value;
+    let parsedValue: string = value;
     try {
         parsedValue = JSON.stringify(JSON.parse(value), null, 2);
     } catch (e) { }
@@ -63,12 +79,24 @@ function LocalStorageItem({ storageKey, value, onDelete }) {
     );
 }
 
-export default function DataPage({ handleClose, handleDeleteItem, storageData }) {
+export default function DataPage({ handleClose, handleDeleteItem, storageData, currSemesterID, setCurrSemesterID, handleLogin }: DataPageProps) {
+    const [selectedSemester, setSelectedSemester] = useState<string>(currSemesterID);
+    const handleSaveSemester = () => {
+        if (!selectedSemester) return;
+        setCurrSemesterID(selectedSemester);
+        localStorage.setItem("currSemesterID", selectedSemester);
+        handleLogin(selectedSemester);
+    };
+
+    useEffect(() => {
+        setSelectedSemester(currSemesterID);
+    }, [currSemesterID]);
+
     return (
         <div className="fixed inset-0 z-50 bg-gray-100 dark:bg-slate-900 midnight:bg-black bg-opacity-95 flex flex-col items-center justify-start overflow-y-auto p-6">
             <div className="w-full flex justify-between items-center mb-6 max-w-3xl">
                 <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100">
-                    LocalStorage Data
+                    Settings
                 </h2>
                 <Button
                     variant="ghost"
@@ -80,13 +108,50 @@ export default function DataPage({ handleClose, handleDeleteItem, storageData })
                 </Button>
             </div>
 
+            <div className="w-full max-w-3xl flex items-center justify-between gap-3 mb-6">
+                <div className="flex flex-col flex-1">
+                    <label
+                        htmlFor="semesterSelect"
+                        className="text-lg font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100 mb-2"
+                    >
+                        Select Semester
+                    </label>
+
+                    <select
+                        id="semesterSelect"
+                        value={selectedSemester}
+                        onChange={(e) => setSelectedSemester(e.target.value)}
+                        className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-slate-800 midnight:bg-black text-gray-800 dark:text-gray-200 midnight:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        {config.semesterIDs?.map((id: string, index: number) => (
+                            <option key={index} value={id}>
+                                {id.endsWith("1") ? `FALLSEM` : `WINTERSEM`} {id.slice(4, -4)}-{id.slice(6, -2)}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <button
+                    onClick={handleSaveSemester}
+                    disabled={!selectedSemester || selectedSemester === currSemesterID}
+                    className={`mt-8 px-4 py-2 rounded-lg font-medium flex items-center justify-center transition-colors ${!selectedSemester || selectedSemester === currSemesterID
+                        ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                        : "bg-blue-600 hover:bg-blue-700 text-white"
+                        }`}
+                >
+                    <Save className="w-4 h-4 mr-1" />
+                    Save
+                </button>
+            </div>
+
+            <h2 className="max-w-3xl mb-6 text-xl text-left w-full font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100">Locally Stored Data</h2>
             <div className="w-full max-w-3xl space-y-3">
                 {Object.keys(storageData).length === 0 ? (
                     <p className="text-sm text-gray-500 dark:text-gray-400 midnight:text-gray-400 text-center">
                         No data found
                     </p>
                 ) : (
-                    Object.entries(storageData).map(([key, value]) => (
+                    (Object.entries(storageData) as [string, string][]).map(([key, value]) => (
                         <LocalStorageItem
                             key={key}
                             storageKey={key}

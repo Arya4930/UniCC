@@ -4,7 +4,7 @@ import { URLSearchParams } from "url";
 import config from '@/app/config.json'
 import { courseItem } from "@/types/data/attendance";
 
-export default async function fetchTimetable(cookieHeader: string | string[], dashboardHtml: string): Promise<courseItem[]> {
+export default async function fetchTimetable(cookieHeader: string | string[], dashboardHtml: string, semesterId: string): Promise<courseItem[]> {
     const $ = cheerio.load(dashboardHtml);
 
     const csrf = $('input[name="_csrf"]').val();
@@ -12,7 +12,6 @@ export default async function fetchTimetable(cookieHeader: string | string[], da
 
     if (!csrf || !authorizedID) throw new Error("Cannot find _csrf or authorizedID");
 
-    const semesterId = config.currSemID;
     const client = VTOPClient();
     const ttRes = await client.post(
         "/vtop/processViewTimeTable",

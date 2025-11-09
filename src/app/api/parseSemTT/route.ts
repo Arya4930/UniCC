@@ -17,7 +17,7 @@ import { AddHolidayFn, CalendarDay, CalendarEvent, CalendarRequestBody } from "@
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
-        const { cookies, dashboardHtml, type }: CalendarRequestBody = await req.json();
+        const { cookies, dashboardHtml, type, semesterId }: CalendarRequestBody = await req.json();
 
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
@@ -27,7 +27,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
         if (!csrf || !authorizedID) throw new Error("Cannot find _csrf or authorizedID");
 
-        const semesterId = config.currSemID;
         let months: string[];
 
         if (semesterId.toString().endsWith("1")) {

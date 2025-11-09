@@ -10,7 +10,7 @@ import config from '@/app/config.json'
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
-        const { cookies, dashboardHtml }: RequestBody = await req.json();
+        const { cookies, dashboardHtml, semesterId }: RequestBody = await req.json();
 
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
@@ -93,7 +93,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             };
         }
 
-        const semesterId = config.currSemID;
         const feedbackRes = await client.post(
             "/vtop/processViewFeedBackStatus",
             new URLSearchParams({

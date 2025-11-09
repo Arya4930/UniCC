@@ -55,7 +55,8 @@ export default function DashboardContent({
   setAllGradesData,
   sethostelData,
   setGradesData,
-  setScheduleData
+  setScheduleData,
+  currSemesterID
 }) {
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
@@ -109,9 +110,6 @@ export default function DashboardContent({
 
   const handleAllGradesFetch = async () => {
     setIsReloading(true);
-    setProgressBar(10);
-    setMessage("Logging in and fetching data...");
-
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
@@ -137,36 +135,8 @@ export default function DashboardContent({
     }
   };
 
-  const reloadLeaveHistory = async () => {
-    try {
-      const { cookies, dashboardHtml } = await loginToVTOP();
-
-      const hostelRes = await fetch("/api/fetchHostelDetails", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cookies: cookies,
-          dashboardHtml: dashboardHtml,
-        }),
-      });
-
-      const HostelRes = await hostelRes.json();
-      setProgressBar((prev) => prev + 40);
-
-      sethostelData(HostelRes);
-      localStorage.setItem("hostelData", JSON.stringify(HostelRes));
-
-      setMessage((prev) => prev + "\n✅ Leave history reloaded successfully!");
-      setProgressBar(100);
-      setIsReloading(false);
-    } catch (err) {
-      console.error(err);
-      setMessage("❌ Leave history reload failed, check console.");
-      setProgressBar(0);
-    }
-  };
-
   const handleCalendarFetch = async (FncalendarType) => {
+    setIsReloading(true);
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
@@ -177,6 +147,7 @@ export default function DashboardContent({
           cookies: cookies,
           dashboardHtml: dashboardHtml,
           type: FncalendarType || "ALL",
+          semesterId: currSemesterID
         }),
       });
 
@@ -199,13 +170,14 @@ export default function DashboardContent({
   };
 
   const handleFetchGrades = async () => {
+    setIsReloading(true);
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
       const gradesRes = await fetch("/api/fetchGrades", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cookies, dashboardHtml }),
+        body: JSON.stringify({ cookies, dashboardHtml, semesterId: currSemesterID }),
       });
 
       const gradesData = await gradesRes.json();
@@ -225,6 +197,7 @@ export default function DashboardContent({
   };
 
   const handleHostelDetailsFetch = async () => {
+    setIsReloading(true);
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
@@ -248,13 +221,14 @@ export default function DashboardContent({
   };
 
   const handleScheduleFetch = async () => {
+    setIsReloading(true);
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
       const ScheduleRes = await fetch("/api/fetchExamSchedule", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+        body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
       });
       const ScheduleData = await ScheduleRes.json();
       setProgressBar((prev) => prev + 40);
@@ -376,7 +350,7 @@ export default function DashboardContent({
             />
             {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
             {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
-            {HostelActiveSubTab === "leave" && <LeaveDisplay leaveData={hostelData.leaveHistory} reloadLeaveHistory={reloadLeaveHistory} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
+            {HostelActiveSubTab === "leave" && <LeaveDisplay leaveData={hostelData.leaveHistory} handleHostelDetailsFetch={handleHostelDetailsFetch} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
           </div>
         )}
       </div>

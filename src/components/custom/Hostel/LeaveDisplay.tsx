@@ -3,14 +3,14 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
 
-export default function LeaveDisplay({ leaveData, reloadLeaveHistory }) {
+export default function LeaveDisplay({ leaveData, handleHostelDetailsFetch }) {
     const [showHistory, setShowHistory] = useState(false);
 
     if (!leaveData || leaveData.length === 0) {
         return (
             <p className="text-center text-gray-600 dark:text-gray-400 midnight:text-gray-400">
                 No leave history available{" "}
-                <button onClick={reloadLeaveHistory} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                <button onClick={handleHostelDetailsFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
                     <RefreshCcw className={`w-4 h-4`} />
                 </button>
             </p>
@@ -62,7 +62,7 @@ export default function LeaveDisplay({ leaveData, reloadLeaveHistory }) {
     return (
         <div>
             <h1 className="text-xl font-bold mb-2 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                Leave Details <button onClick={reloadLeaveHistory} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                Leave Details <button onClick={handleHostelDetailsFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
                     <RefreshCcw className={`w-4 h-4`} />
                 </button>
             </h1>

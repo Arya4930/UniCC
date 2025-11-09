@@ -7,16 +7,26 @@ import { Button } from "../ui/button";
 import DataPage from "./DataPage";
 import PrivacyPolicyPage from "./PrivacyPolicy";
 
-export default function Footer({ isLoggedIn }) {
-  const [showStoragePage, setShowStoragePage] = useState(false);
-  const [storageData, setStorageData] = useState({});
-  const [showPolicy, setShowPolicy] = useState(false);
+type FooterProps = {
+  isLoggedIn: boolean;
+  currSemesterID: string;
+  setCurrSemesterID: (id: string) => void;
+  handleLogin: (selectedSemester?: string) => Promise<void>;
+}
+
+export default function Footer({ isLoggedIn, currSemesterID, setCurrSemesterID, handleLogin }: FooterProps) {
+  const [showStoragePage, setShowStoragePage] = useState<boolean>(false);
+  const [storageData, setStorageData] = useState<Record<string, string | null>>({});
+  const [showPolicy, setShowPolicy] = useState<boolean>(false);
 
   const openStoragePage = () => {
-    const data = {};
+    const data: Record<string, string> = {};
+
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      data[key] = localStorage.getItem(key);
+      if (!key) continue;
+      const value = localStorage.getItem(key);
+      if (value !== null) data[key] = value;
     }
 
     const sortedEntries = Object.entries(data).sort(
@@ -24,7 +34,8 @@ export default function Footer({ isLoggedIn }) {
     );
 
     const sortedData = Object.fromEntries(sortedEntries);
-    const ordered = {};
+    const ordered: Record<string, string> = {};
+
     if (sortedData.username) ordered.username = sortedData.username;
     if (sortedData.password) ordered.password = sortedData.password;
     for (const key in sortedData) {
@@ -37,8 +48,7 @@ export default function Footer({ isLoggedIn }) {
     setShowStoragePage(true);
   };
 
-
-  const handleDeleteItem = (key) => {
+  const handleDeleteItem = (key: string) => {
     localStorage.removeItem(key);
     setStorageData((prev) => {
       const updated = { ...prev };
@@ -49,7 +59,7 @@ export default function Footer({ isLoggedIn }) {
 
   return (
     <footer className="bg-transparent text-gray-700 dark:text-gray-300 midnight:text-gray-300 flex items-center justify-center">
-      {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} />}
+      {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} currSemesterID={currSemesterID} setCurrSemesterID={setCurrSemesterID} handleLogin={handleLogin}/>}
       {showPolicy && <PrivacyPolicyPage handleClose={() => setShowPolicy(false)} />}
       <div className="max-w-7xl mx-auto px-3 py-6 text-center w-full">
         <hr className="border-gray-300 dark:border-gray-700 midnight:border-gray-700 w-11/12 mx-auto mb-6" />
@@ -95,8 +105,7 @@ export default function Footer({ isLoggedIn }) {
           &copy; {new Date().getFullYear()} Arya Evil Inc. All rights reserved. &nbsp;
           <Button
             variant="ghost"
-            size="xs"
-            className="mt-2 underline text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400"
+            className="mt-2 w-18 h-6 underline text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400"
             onClick={() => setShowPolicy(true)}
           >
             Privacy Policy
