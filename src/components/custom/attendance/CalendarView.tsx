@@ -78,34 +78,65 @@ export default function CalendarView({ calendars, calendarType, handleCalendarFe
 
     const { year, monthIndex } = useMemo(() => {
         const now = new Date();
-        let y = Number(activeCalendar.year);
-        if (!Number.isFinite(y)) y = now.getFullYear();
 
-        let mIndex;
-        try {
-            const mRaw = activeCalendar.month;
-            if (mRaw == null) mIndex = now.getMonth();
-            else if (typeof mRaw === "number") {
-                if (mRaw >= 1 && mRaw <= 12) mIndex = mRaw - 1;
-                else if (mRaw >= 0 && mRaw <= 11) mIndex = mRaw;
-                else mIndex = now.getMonth();
-            } else {
-                const s = String(mRaw).trim();
-                const n = Number(s);
-                if (!Number.isNaN(n)) {
-                    mIndex = n >= 1 && n <= 12 ? n - 1 : now.getMonth();
-                } else {
-                    const parsed = Date.parse(`${s} 1, ${y}`);
-                    mIndex = !Number.isNaN(parsed)
-                        ? new Date(parsed).getMonth()
-                        : MONTH_NAME_MAP[s.toLowerCase().slice(0, 3)] ?? now.getMonth();
-                }
+        const getMonthIndex = (mRaw: unknown, yForParse: number) => {
+            if (mRaw == null) return now.getMonth();
+            if (typeof mRaw === "number") {
+                if (mRaw >= 1 && mRaw <= 12) return mRaw - 1;
+                if (mRaw >= 0 && mRaw <= 11) return mRaw;
+                return now.getMonth();
             }
-        } catch {
-            mIndex = now.getMonth();
+            const s = String(mRaw).trim();
+            const n = Number(s);
+            if (!Number.isNaN(n)) return n >= 1 && n <= 12 ? n - 1 : now.getMonth();
+            const parsed = Date.parse(`${s} 1, ${yForParse}`);
+            if (!Number.isNaN(parsed)) return new Date(parsed).getMonth();
+            return MONTH_NAME_MAP[s.toLowerCase().slice(0, 3)] ?? now.getMonth();
+        };
+
+        let explicitYear = Number(activeCalendar.year);
+        if (!Number.isFinite(explicitYear)) {
+            const mstr = String(activeCalendar.month ?? "");
+            const ym = mstr.match(/\b(19|20)\d{2}\b/);
+            if (ym) explicitYear = parseInt(ym[0], 10);
         }
-        return { year: y, monthIndex: mIndex };
-    }, [activeCalendar.month, activeCalendar.year]);
+
+        let prelimMonthIndex = getMonthIndex(
+            activeCalendar.month,
+            Number.isFinite(explicitYear) ? explicitYear : now.getFullYear()
+        );
+
+        let baseFallYear: number | undefined = undefined;
+        for (const c of Array.isArray(safeCalendars) ? safeCalendars : []) {
+            const mstr = String(c?.month ?? "");
+            const ym = mstr.match(/\b(19|20)\d{2}\b/);
+            const mi =
+                typeof c?.month === "number"
+                    ? c.month >= 1 && c.month <= 12
+                        ? c.month - 1
+                        : c.month
+                    : MONTH_NAME_MAP[mstr.toLowerCase().slice(0, 3)];
+            if (ym && mi != null && mi >= 6 && mi <= 10) {
+                baseFallYear = parseInt(ym[0], 10);
+                break;
+            }
+        }
+
+        let y: number;
+        if (Number.isFinite(explicitYear)) {
+            y = explicitYear!;
+        } else if (baseFallYear != null) {
+            y = prelimMonthIndex <= 4 ? baseFallYear + 1 : baseFallYear;
+        } else {
+            const fallback =
+                prelimMonthIndex <= 4 && now.getMonth() >= 6
+                    ? now.getFullYear() + 1
+                    : now.getFullYear();
+            y = fallback;
+        }
+
+        return { year: y, monthIndex: prelimMonthIndex };
+    }, [activeCalendar.month, activeCalendar.year, safeCalendars]);
 
     if (!safeCalendars.length) {
         return <NoContentFound />;

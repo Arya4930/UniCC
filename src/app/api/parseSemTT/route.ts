@@ -29,10 +29,32 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
         let months: string[];
 
-        if (semesterId.toString().endsWith("1")) {
-            months = ["01-JUL-2025", "01-AUG-2025", "01-SEP-2025", "01-OCT-2025", "01-NOV-2025"];
+        const semCode = semesterId?.slice(-2);
+        const startYear = parseInt(semesterId.slice(2, 6));
+        const nextYear = startYear + 1;
+
+        if (semCode === "01") {
+            months = [
+                `01-JUL-${startYear + 1}`,
+                `01-AUG-${startYear + 1}`,
+                `01-SEP-${startYear + 1}`,
+                `01-OCT-${startYear + 1}`,
+                `01-NOV-${startYear + 1}`,
+            ];
+        } else if (semCode === "05") {
+            months = [
+                `01-DEC-${startYear}`,
+                `01-JAN-${nextYear}`,
+                `01-FEB-${nextYear}`,
+                `01-MAR-${nextYear}`,
+                `01-APR-${nextYear}`,
+            ];
         } else {
-            months = ["01-JAN-2026", "01-FEB-2026", "01-MAR-2026", "01-APR-2026", "01-MAY-2026"];
+            months = [
+                `01-JUN-${nextYear}`,
+                `01-JUL-${nextYear}`,
+                `01-AUG-${nextYear}`,
+            ];
         }
 
         const allCalendars = [];
