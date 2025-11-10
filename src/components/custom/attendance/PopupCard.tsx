@@ -185,63 +185,63 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                             }
                         }
                     })()}
-                
 
-                {(classesTillCAT1 && classesTillCAT2 && classesTillLID) && (
-                    <div className="text-sm space-y-2 mt-3 border-b-2">
-                        {classesTillCAT1.length > 0 && (
-                            <div>
-                                <button
-                                    onClick={() => toggleDropdown("CAT1")}
-                                    className="flex items-center justify-between pb-3 w-full text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
-                                >
-                                    <span>Classes left before CAT I: <strong>{classesTillCAT1.length}</strong></span>
-                                    {openDropdown === "CAT1" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                                </button>
 
-                                {openDropdown === "CAT1" && (
-                                    <div className="p-2 bg-gray-50 dark:bg-slate-800 midnight:bg-black">
-                                        <UpcomingClassesList classes={classesTillCAT1} />
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                        {classesTillCAT2.length > 0 && (
-                            <div>
-                                <button
-                                    onClick={() => toggleDropdown("CAT2")}
-                                    className="flex items-center justify-between w-full pb-3 text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
-                                >
-                                    <span>Classes left before CAT II: <strong>{classesTillCAT2.length}</strong></span>
-                                    {openDropdown === "CAT2" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                                </button>
+                    {(classesTillCAT1 && classesTillCAT2 && classesTillLID) && (
+                        <div className="text-sm space-y-2 mt-3 border-b-2">
+                            {classesTillCAT1.length > 0 && (
+                                <div>
+                                    <button
+                                        onClick={() => toggleDropdown("CAT1")}
+                                        className="flex items-center justify-between pb-3 w-full text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
+                                    >
+                                        <span>Classes left before CAT I: <strong>{classesTillCAT1.length}</strong></span>
+                                        {openDropdown === "CAT1" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                                    </button>
 
-                                {openDropdown === "CAT2" && (
-                                    <div className="p-2 bg-gray-50 dark:bg-slate-800 midnight:bg-black">
-                                        <UpcomingClassesList classes={classesTillCAT2} />
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                        {classesTillLID.length > 0 && (
-                            <div>
-                                <button
-                                    onClick={() => toggleDropdown("LID")}
-                                    className="flex items-center justify-between pb-3 w-full text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
-                                >
-                                    <span>Classes left before FAT: <strong>{classesTillLID.length}</strong></span>
-                                    {openDropdown === "LID" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                                </button>
+                                    {openDropdown === "CAT1" && (
+                                        <div className="p-2 bg-gray-50 dark:bg-slate-800 midnight:bg-black">
+                                            <UpcomingClassesList classes={classesTillCAT1} attendedClasses={a.attendedClasses} totalClasses={a.totalClasses} />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                            {classesTillCAT2.length > 0 && (
+                                <div>
+                                    <button
+                                        onClick={() => toggleDropdown("CAT2")}
+                                        className="flex items-center justify-between w-full pb-3 text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
+                                    >
+                                        <span>Classes left before CAT II: <strong>{classesTillCAT2.length}</strong></span>
+                                        {openDropdown === "CAT2" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                                    </button>
 
-                                {openDropdown === "LID" && (
-                                    <div className="p-2 bg-gray-50 dark:bg-slate-800 midnight:bg-black">
-                                        <UpcomingClassesList classes={classesTillLID} />
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
-                )}
+                                    {openDropdown === "CAT2" && (
+                                        <div className="p-2 bg-gray-50 dark:bg-slate-800 midnight:bg-black">
+                                            <UpcomingClassesList classes={classesTillCAT2} attendedClasses={a.attendedClasses} totalClasses={a.totalClasses} />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                            {classesTillLID.length > 0 && (
+                                <div>
+                                    <button
+                                        onClick={() => toggleDropdown("LID")}
+                                        className="flex items-center justify-between pb-3 w-full text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
+                                    >
+                                        <span>Classes left before FAT: <strong>{classesTillLID.length}</strong></span>
+                                        {openDropdown === "LID" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                                    </button>
+
+                                    {openDropdown === "LID" && (
+                                        <div className="p-2 bg-gray-50 dark:bg-slate-800 midnight:bg-black">
+                                            <UpcomingClassesList classes={classesTillLID} attendedClasses={a.attendedClasses} totalClasses={a.totalClasses} />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex-1 pr-1 mt-2">
@@ -363,7 +363,9 @@ export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calenda
     return remainingWorkingDays;
 }
 
-function UpcomingClassesList({ classes }) {
+function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0 }) {
+    const [notAttending, setNotAttending] = useState([]);
+
     if (!classes || classes.length === 0) {
         return (
             <p className="text-gray-500 dark:text-gray-400 midnight:text-gray-500 text-xs text-center">
@@ -372,37 +374,81 @@ function UpcomingClassesList({ classes }) {
         );
     }
 
+    const toggleAttendance = (index) => {
+        setNotAttending((prev) =>
+            prev.includes(index)
+                ? prev.filter((i) => i !== index)
+                : [...prev, index]
+        );
+    };
+
+    const upcomingCount = classes.length;
+    const missedCount = notAttending.length;
+    const attendCount = upcomingCount - missedCount;
+
+    const predictedAttended = parseInt(attendedClasses) + attendCount;
+    const predictedTotal = parseInt(totalClasses) + upcomingCount;
+    const predictedPercent = ((predictedAttended / predictedTotal) * 100).toFixed(1);
+    console.log(predictedAttended, predictedTotal);
+
     return (
-        <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 text-xs">
-            {classes.map((day, i) => {
-                const d = new Date(day.fullDate);
-                const dateStr = d.toLocaleDateString("en-IN", {
-                    day: "numeric",
-                    month: "short",
-                });
-                const weekday = d.toLocaleDateString("en-IN", { weekday: "short" });
+        <div className="space-y-2">
+            <div className="flex items-center justify-between text-xs font-medium bg-gray-100 dark:bg-slate-800 midnight:bg-gray-900 p-2 rounded-lg border border-gray-200 dark:border-gray-700 midnight:border-gray-800">
+                <span className="text-green-600 dark:text-green-400">
+                    Attending: <strong>{attendCount}</strong>
+                </span>
+                <span className="text-red-500 dark:text-red-400">
+                    Not Attending: <strong>{missedCount}</strong>
+                </span>
+                <span
+                    className={`font-semibold ${predictedPercent >= 75
+                            ? "text-green-600 dark:text-green-400"
+                            : "text-red-500 dark:text-red-400"
+                        }`}
+                >
+                    Predicted: {predictedPercent}%
+                </span>
+            </div>
 
-                // highlight next class or today
-                const isToday =
-                    d.toDateString() === new Date().toDateString() ||
-                    (i === 0 && d > new Date());
+            <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 text-xs">
+                {classes.map((day, i) => {
+                    const d = new Date(day.fullDate);
+                    const dateStr = d.toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                    });
+                    const weekday = d.toLocaleDateString("en-IN", { weekday: "short" });
+                    const isSkipped = notAttending.includes(i);
 
-                return (
-                    <div
-                        key={i}
-                        className={`flex flex-col items-center justify-center rounded-xl border p-2 shadow-sm transition-all duration-200 bg-white dark:bg-slate-900 midnight:bg-gray-950 border-gray-200 dark:border-gray-700 midnight:border-gray-800`}
-                    >
-                        <span
-                            className={`font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-200`}
+                    return (
+                        <div
+                            key={i}
+                            onClick={() => toggleAttendance(i)}
+                            className={`flex flex-col items-center justify-center rounded-xl border p-2 shadow-sm transition-all duration-200 cursor-pointer select-none ${isSkipped
+                                    ? "bg-red-100 dark:bg-red-900/40 midnight:bg-red-950 border-red-300 dark:border-red-700 midnight:border-red-800"
+                                    : "bg-white dark:bg-slate-900 midnight:bg-gray-950 border-gray-200 dark:border-gray-700 midnight:border-gray-800"
+                                } hover:scale-[1.03]`}
                         >
-                            {dateStr}
-                        </span>
-                        <span className="text-[10px] text-gray-500 dark:text-gray-400 midnight:text-gray-500">
-                            {weekday}
-                        </span>
-                    </div>
-                );
-            })}
+                            <span
+                                className={`font-semibold ${isSkipped
+                                        ? "text-red-700 dark:text-red-300 midnight:text-red-400"
+                                        : "text-gray-800 dark:text-gray-200 midnight:text-gray-200"
+                                    }`}
+                            >
+                                {dateStr}
+                            </span>
+                            <span
+                                className={`text-[10px] ${isSkipped
+                                        ? "text-red-500 dark:text-red-400 midnight:text-red-400"
+                                        : "text-gray-500 dark:text-gray-400 midnight:text-gray-500"
+                                    }`}
+                            >
+                                {weekday}
+                            </span>
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 }
