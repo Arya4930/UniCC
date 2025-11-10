@@ -267,10 +267,13 @@ export default function LoginPage() {
       setProgressBar(100);
       setIsLoggedIn(true);
       setIsReloading(false);
+
+      return true;
     } catch (err) {
       console.error(err);
       setMessage(prev => prev + "\n❌ Login failed, check console.");
       setProgressBar(0);
+      throw err;
     }
   };
 

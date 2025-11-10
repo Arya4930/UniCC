@@ -159,7 +159,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                                 })()}
                             </div>
 
-                            {/* {(classesTillCAT1 && classesTillCAT2 && classesTillLID && classesTillCAT1 >= 0 && classesTillCAT2 >= 0 && classesTillLID >= 0) && (
+                            {(classesTillCAT1 !== null && classesTillCAT2 !== null && classesTillLID !== null && classesTillCAT1 >= 0 && classesTillCAT2 >= 0 && classesTillLID >= 0) && (
                                 <div className="text-sm">
                                     {classesTillLID === 0 && a.attendancePercentage < 75 && (is9Pointer ? (
                                         <p className="text-green-500">
@@ -173,7 +173,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                                     {classesTillCAT2 !== 0 && <p>Classes left before CAT II: <strong>{classesTillCAT2}</strong></p>}
                                     {classesTillLID !== 0 && <p>Classes left before FAT: <strong>{classesTillLID}</strong></p>}
                                 </div>
-                            )} */}
+                            )}
                         </div>
 
                         <div className="w-24 h-24 flex-shrink-0 flex flex-col items-center justify-center">
@@ -236,8 +236,6 @@ export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calenda
     const normalizeDay = (d) => d.slice(0, 3).toUpperCase();
     const subjectDays = daysWithSubject.map(normalizeDay);
 
-    const now = new Date(fromDate);
-
     const monthNames = [
         "january", "february", "march", "april", "may", "june",
         "july", "august", "september", "october", "november", "december"
@@ -266,23 +264,56 @@ export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calenda
         const foundMonth = monthNames.find(m => monthStr.includes(m));
         const mIndex = foundMonth ? monthNames.indexOf(foundMonth) : -1;
 
-        return (monthObj.days || []).map(day => ({
-            ...day,
-            fullDate: mIndex === -1 ? null : new Date(year, mIndex, day.date)
-        }));
+        return (monthObj.days || []).map(day => {
+            const fullDate = mIndex === -1 ? null : new Date(year, mIndex, day.date);
+            const weekday = fullDate
+                ? fullDate.toLocaleString("en-US", { weekday: "short" })
+                : "";
+
+            return { ...day, fullDate, weekday };
+        });
     });
 
     const remainingWorkingDays = allDays.filter((d) => {
-        if (!d || !d.type || d.type.toLowerCase() !== "working") return false;
-        if (!d.fullDate || isNaN(d.fullDate.getTime())) return false;
+        if (!d || !d.fullDate || isNaN(d.fullDate.getTime())) return false;
+
+        const isWorkingDay =
+            d.type?.toLowerCase() === "working" ||
+            (d.events?.some(ev =>
+                ev.text?.toLowerCase().includes("instructional") ||
+                ev.text?.toLowerCase().includes("working")
+            ));
+
+        if (!isWorkingDay) return false;
+
+        let effectiveDay = normalizeDay(d.weekday || "");
+        if (effectiveDay === "SAT" && Array.isArray(d.events)) {
+            const dayOrderMap = {
+                "monday": "MON",
+                "tuesday": "TUE",
+                "wednesday": "WED",
+                "thursday": "THU",
+                "friday": "FRI",
+            };
+
+            const found = d.events.find(ev =>
+                /monday|tuesday|wednesday|thursday|friday/i.test(ev.category || ev.text)
+            );
+
+            if (found) {
+                const match = found.category?.match(/(Monday|Tuesday|Wednesday|Thursday|Friday)/i) ||
+                              found.text?.match(/(Monday|Tuesday|Wednesday|Thursday|Friday)/i);
+                if (match) effectiveDay = dayOrderMap[match[1].toLowerCase()];
+            }
+        }
+
+        if (!subjectDays.includes(effectiveDay)) return false;
 
         const classTime = new Date(d.fullDate);
         classTime.setHours(startHour, startMinute, 0, 0);
+        if (classTime < fromDate) return false;
 
-        if (classTime < now) return false;
-
-        const dDay = normalizeDay(d.weekday || "");
-        return subjectDays.includes(dDay);
+        return true;
     });
 
     return remainingWorkingDays.length;

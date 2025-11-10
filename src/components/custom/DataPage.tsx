@@ -82,12 +82,12 @@ function LocalStorageItem({ storageKey, value, onDelete }: LocalStorageItemProps
 
 export default function DataPage({ handleClose, handleDeleteItem, storageData, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading }: DataPageProps) {
     const [selectedSemester, setSelectedSemester] = useState<string>(currSemesterID);
-    const handleSaveSemester = () => {
+    const handleSaveSemester = async () => {
         if (!selectedSemester) return;
+        setIsReloading(true);
+        await handleLogin(selectedSemester);
         setCurrSemesterID(selectedSemester);
         localStorage.setItem("currSemesterID", selectedSemester);
-        setIsReloading(true);
-        handleLogin(selectedSemester);
     };
 
     useEffect(() => {
