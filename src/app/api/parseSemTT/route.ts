@@ -40,7 +40,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                 `01-SEP-${startYear}`,
                 `01-OCT-${startYear}`,
                 `01-NOV-${startYear}`,
-                `01-DEC-${startYear}`,
             ];
         } else if (semCode === "05") {
             months = [

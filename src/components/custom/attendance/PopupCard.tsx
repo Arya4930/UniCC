@@ -1,5 +1,7 @@
-import { useEffect } from "react";
-import { Building2, Clock } from "lucide-react"
+"use client"
+
+import { useEffect, useState } from "react";
+import { Building2, Clock, ChevronDown, ChevronUp, CalendarDays } from "lucide-react"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
@@ -79,6 +81,8 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
             classesTillLID = null;
         }
     }
+    const [openDropdown, setOpenDropdown] = useState(null);
+    const toggleDropdown = (key) => setOpenDropdown(openDropdown === key ? null : key);
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
             <div className="bg-gray-100 dark:bg-gray-800 midnight:bg-black rounded-2xl shadow-2xl p-5 w-[90%] max-w-md relative max-h-[90vh] overflow-hidden flex flex-col overflow-y-auto">
@@ -124,56 +128,6 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                                     </span>
                                 </p>
                             </div>
-
-                            <div className="pt-1">
-                                {(() => {
-                                    const attended = a.attendedClasses;
-                                    const total = a.totalClasses;
-                                    const percentage = (attended / total) * 100;
-
-                                    if (percentage < 75) {
-                                        const needed = Math.ceil((0.75 * total - attended) / (1 - 0.75));
-                                        return (
-                                            <p className="text-red-500 dark:text-red-400 midnight:text-red-400 text-sm">
-                                                Need to attend <strong>{lab ? needed / 2 : needed}</strong> more{" "}
-                                                {lab ? "lab" : "class"} to reach 75%.
-                                            </p>
-                                        );
-                                    } else {
-                                        const canMiss = Math.floor(attended / 0.75 - total);
-                                        if (canMiss === 0) {
-                                            return (
-                                                <p className="text-yellow-500 dark:text-yellow-400 midnight:text-yellow-400 text-sm">
-                                                    You are on the edge! Attend the next {lab ? "lab" : "class"}.
-                                                </p>
-                                            );
-                                        } else {
-                                            return (
-                                                <p className="text-green-500 dark:text-green-400 midnight:text-green-400 text-sm">
-                                                    Can miss <strong>{lab ? canMiss / 2 : canMiss}</strong>{" "}
-                                                    {lab ? "lab" : "class"} and stay above 75%.
-                                                </p>
-                                            );
-                                        }
-                                    }
-                                })()}
-                            </div>
-
-                            {(classesTillCAT1 !== null && classesTillCAT2 !== null && classesTillLID !== null && classesTillCAT1 >= 0 && classesTillCAT2 >= 0 && classesTillLID >= 0) && (
-                                <div className="text-sm">
-                                    {classesTillLID === 0 && a.attendancePercentage < 75 && (is9Pointer ? (
-                                        <p className="text-green-500">
-                                            You alright cuz 9 ptr
-                                        </p>
-                                    ) : (
-                                        <p className="text-red-500">
-                                            Debarred
-                                        </p>))}
-                                    {classesTillCAT1 !== 0 && <p>Classes left before CAT I: <strong>{classesTillCAT1}</strong></p>}
-                                    {classesTillCAT2 !== 0 && <p>Classes left before CAT II: <strong>{classesTillCAT2}</strong></p>}
-                                    {classesTillLID !== 0 && <p>Classes left before FAT: <strong>{classesTillLID}</strong></p>}
-                                </div>
-                            )}
                         </div>
 
                         <div className="w-24 h-24 flex-shrink-0 flex flex-col items-center justify-center">
@@ -188,7 +142,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                                                 ? "#FACC15"
                                                 : "#2df04aff",
                                     textColor: "currentColor",
-                                    trailColor: "#CBD5E1",
+                                    trailColor: "#a3c6f0ff",
                                     strokeLinecap: "round",
                                     pathTransitionDuration: 0.5,
                                 })}
@@ -199,6 +153,95 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                         </div>
                     </div>
                 </div>
+                <div className="pt-1">
+                    {(() => {
+                        const attended = a.attendedClasses;
+                        const total = a.totalClasses;
+                        const percentage = (attended / total) * 100;
+
+                        if (percentage < 75) {
+                            const needed = Math.ceil((0.75 * total - attended) / (1 - 0.75));
+                            return (
+                                <p className="text-red-500 dark:text-red-400 midnight:text-red-400 text-sm">
+                                    Need to attend <strong>{lab ? needed / 2 : needed}</strong> more{" "}
+                                    {lab ? "lab" : "class"} to reach 75%.
+                                </p>
+                            );
+                        } else {
+                            const canMiss = Math.floor(attended / 0.75 - total);
+                            if (canMiss === 0) {
+                                return (
+                                    <p className="text-yellow-500 dark:text-yellow-400 midnight:text-yellow-400 text-sm">
+                                        You are on the edge! Attend the next {lab ? "lab" : "class"}.
+                                    </p>
+                                );
+                            } else {
+                                return (
+                                    <p className="text-green-500 dark:text-green-400 midnight:text-green-400 text-sm">
+                                        Can miss <strong>{lab ? canMiss / 2 : canMiss}</strong>{" "}
+                                        {lab ? "lab" : "class"} and stay above 75%.
+                                    </p>
+                                );
+                            }
+                        }
+                    })()}
+                </div>
+
+                {(classesTillCAT1 && classesTillCAT2 && classesTillLID) && (
+                    <div className="text-sm space-y-2 mt-2">
+                        {classesTillCAT1.length > 0 && (
+                            <div>
+                                <button
+                                    onClick={() => toggleDropdown("CAT1")}
+                                    className="flex items-center justify-between w-full p-2 text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
+                                >
+                                    <span>Classes left before CAT I: <strong>{classesTillCAT1.length}</strong></span>
+                                    {openDropdown === "CAT1" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                                </button>
+
+                                {openDropdown === "CAT1" && (
+                                    <div className="p-2 bg-gray-50 dark:bg-slate-800 midnight:bg-black">
+                                        <UpcomingClassesList classes={classesTillCAT1} />
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        {classesTillCAT2.length > 0 && (
+                            <div>
+                                <button
+                                    onClick={() => toggleDropdown("CAT2")}
+                                    className="flex items-center justify-between w-full p-2 text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
+                                >
+                                    <span>Classes left before CAT II: <strong>{classesTillCAT2.length}</strong></span>
+                                    {openDropdown === "CAT2" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                                </button>
+
+                                {openDropdown === "CAT2" && (
+                                    <div className="p-2 bg-gray-50 dark:bg-slate-800 midnight:bg-black">
+                                        <UpcomingClassesList classes={classesTillCAT2} />
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        {classesTillLID.length > 0 && (
+                            <div>
+                                <button
+                                    onClick={() => toggleDropdown("LID")}
+                                    className="flex items-center justify-between w-full p-2 text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
+                                >
+                                    <span>Classes left before FAT: <strong>{classesTillLID.length}</strong></span>
+                                    {openDropdown === "LID" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                                </button>
+
+                                {openDropdown === "LID" && (
+                                    <div className="p-2 bg-gray-50 dark:bg-slate-800 midnight:bg-black">
+                                        <UpcomingClassesList classes={classesTillLID} />
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                )}
 
                 <div className="flex-1 pr-1">
                     <ul className="list-disc list-inside text-xs space-y-1">
@@ -302,7 +345,7 @@ export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calenda
 
             if (found) {
                 const match = found.category?.match(/(Monday|Tuesday|Wednesday|Thursday|Friday)/i) ||
-                              found.text?.match(/(Monday|Tuesday|Wednesday|Thursday|Friday)/i);
+                    found.text?.match(/(Monday|Tuesday|Wednesday|Thursday|Friday)/i);
                 if (match) effectiveDay = dayOrderMap[match[1].toLowerCase()];
             }
         }
@@ -316,5 +359,49 @@ export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calenda
         return true;
     });
 
-    return remainingWorkingDays.length;
+    return remainingWorkingDays;
+}
+
+function UpcomingClassesList({ classes }) {
+    if (!classes || classes.length === 0) {
+        return (
+            <p className="text-gray-500 dark:text-gray-400 midnight:text-gray-500 text-xs text-center">
+                No upcoming classes 🎉
+            </p>
+        );
+    }
+
+    return (
+        <div className="grid grid-cols-5 sm:grid-cols-6 gap-2 text-xs">
+            {classes.map((day, i) => {
+                const d = new Date(day.fullDate);
+                const dateStr = d.toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                });
+                const weekday = d.toLocaleDateString("en-IN", { weekday: "short" });
+
+                // highlight next class or today
+                const isToday =
+                    d.toDateString() === new Date().toDateString() ||
+                    (i === 0 && d > new Date());
+
+                return (
+                    <div
+                        key={i}
+                        className={`flex flex-col items-center justify-center rounded-xl border p-2 shadow-sm transition-all duration-200 bg-white dark:bg-slate-900 midnight:bg-gray-950 border-gray-200 dark:border-gray-700 midnight:border-gray-800`}
+                    >
+                        <span
+                            className={`font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-200`}
+                        >
+                            {dateStr}
+                        </span>
+                        <span className="text-[10px] text-gray-500 dark:text-gray-400 midnight:text-gray-500">
+                            {weekday}
+                        </span>
+                    </div>
+                );
+            })}
+        </div>
+    );
 }
