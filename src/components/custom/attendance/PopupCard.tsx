@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import "react-circular-progressbar/dist/styles.css"
 
-export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, analyzeCalendars, importantEvents, is9Pointer }) {
+export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalendars, importantEvents }) {
     const lab = a.slotName.split('')[0] === "L";
 
     useEffect(() => {
@@ -187,7 +187,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                     })()}
 
 
-                    {(classesTillCAT1 && classesTillCAT2 && classesTillLID) && (
+                    {(classesTillCAT1 && classesTillCAT2 && classesTillLID && classesTillLID.length > 0) ? (
                         <div className="text-sm space-y-3 mt-3 border-t border-b border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-2">
                             {[
                                 { key: "CAT1", label: "Classes left before CAT I", data: classesTillCAT1 },
@@ -197,9 +197,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                                 data.length > 0 && (
                                     <div
                                         key={key}
-                                        className="w-full bg-gray-100 dark:bg-gray-800 midnight:bg-gray-950 
-                                            border border-gray-300 dark:border-gray-700 midnight:border-gray-800 
-                                            rounded-lg overflow-hidden transition-all duration-200"
+                                        className="w-full rounded-lg overflow-hidden transition-all duration-200"
                                     >
                                         <button
                                             onClick={() => toggleDropdown(key)}
@@ -228,7 +226,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                                 )
                             ))}
                         </div>
-                    )}
+                    ) : null}
 
                 </div>
 
