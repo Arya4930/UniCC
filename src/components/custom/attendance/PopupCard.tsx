@@ -373,7 +373,7 @@ function UpcomingClassesList({ classes }) {
     }
 
     return (
-        <div className="grid grid-cols-5 sm:grid-cols-6 gap-2 text-xs">
+        <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 text-xs">
             {classes.map((day, i) => {
                 const d = new Date(day.fullDate);
                 const dateStr = d.toLocaleDateString("en-IN", {
