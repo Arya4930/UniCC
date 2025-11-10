@@ -130,35 +130,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
         <h1 className="text-lg font-semibold text-gray-800 dark:text-gray-100 midnight:text-gray-100">
           Weekly Attendance
         </h1>
-        <Button
-          onClick={() => setShowPredictor(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg shadow dark:bg-blue-700 dark:hover:bg-blue-800 midnight:bg-blue-800 midnight:hover:bg-blue-700 transition-all"
-        >
-          Predict Attendance
-        </Button>
       </div>
-
-      {showPredictor && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex justify-center items-center">
-          <div className="relative w-[95%] max-w-4xl max-h-[95vh] overflow-y-auto bg-gray-100 dark:bg-slate-800 midnight:bg-black rounded-2xl shadow-2xl p-5">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setShowPredictor(false)}
-              className="absolute top-3 right-3 hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900"
-            >
-              <X size={22} className="text-gray-700 dark:text-gray-200 midnight:text-gray-200" />
-            </Button>
-
-            <OverallAttendancePredictor
-              attendanceData={data.attendance}
-              analyzeCalendars={results}
-              dayCardsMap={dayCardsMap}
-              importantEvents={importantEvents}
-            />
-          </div>
-        </div>
-      )}
 
       <div className="flex gap-2 mb-3 justify-center flex-wrap">
         {daysWithClasses.map((d) => (
@@ -197,6 +169,39 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
           </div>
         ))}
       </div>
+      <div className="flex justify-center">
+        <Button
+          onClick={() => setShowPredictor(true)}
+          className="max-w-[200px] bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg shadow 
+               dark:bg-blue-700 dark:hover:bg-blue-800 
+               midnight:bg-blue-800 midnight:hover:bg-blue-700 
+               transition-all"
+        >
+          Predict Attendance
+        </Button>
+      </div>
+
+      {showPredictor && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex justify-center items-center">
+          <div className="relative w-[95%] max-w-4xl max-h-[95vh] overflow-y-auto bg-gray-100 dark:bg-slate-800 midnight:bg-black rounded-2xl shadow-2xl p-5">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowPredictor(false)}
+              className="absolute top-3 right-3 hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900"
+            >
+              <X size={22} className="text-gray-700 dark:text-gray-200 midnight:text-gray-200" />
+            </Button>
+
+            <OverallAttendancePredictor
+              attendanceData={data.attendance}
+              analyzeCalendars={results}
+              dayCardsMap={dayCardsMap}
+              importantEvents={importantEvents}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
