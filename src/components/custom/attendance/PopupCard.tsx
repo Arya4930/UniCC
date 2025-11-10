@@ -188,60 +188,48 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
 
 
                     {(classesTillCAT1 && classesTillCAT2 && classesTillLID) && (
-                        <div className="text-sm space-y-2 mt-3 border-b-2">
-                            {classesTillCAT1.length > 0 && (
-                                <div>
-                                    <button
-                                        onClick={() => toggleDropdown("CAT1")}
-                                        className="flex items-center justify-between pb-3 w-full text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
+                        <div className="text-sm space-y-3 mt-3 border-t border-b border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-2">
+                            {[
+                                { key: "CAT1", label: "Classes left before CAT I", data: classesTillCAT1 },
+                                { key: "CAT2", label: "Classes left before CAT II", data: classesTillCAT2 },
+                                { key: "LID", label: "Classes left before FAT", data: classesTillLID },
+                            ].map(({ key, label, data }) => (
+                                data.length > 0 && (
+                                    <div
+                                        key={key}
+                                        className="w-full bg-gray-100 dark:bg-gray-800 midnight:bg-gray-950 
+                                            border border-gray-300 dark:border-gray-700 midnight:border-gray-800 
+                                            rounded-lg overflow-hidden transition-all duration-200"
                                     >
-                                        <span>Classes left before CAT I: <strong>{classesTillCAT1.length}</strong></span>
-                                        {openDropdown === "CAT1" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                                    </button>
+                                        <button
+                                            onClick={() => toggleDropdown(key)}
+                                            className="flex items-center justify-between w-full px-3 py-2 text-left 
+                                                font-medium text-gray-800 dark:text-gray-200 midnight:text-gray-200 
+                                                hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 
+                                                transition-colors"
+                                        >
+                                            <span>{label}: <strong>{data.length}</strong></span>
+                                            {openDropdown === key ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                                        </button>
 
-                                    {openDropdown === "CAT1" && (
-                                        <div className="p-2 bg-gray-50 dark:bg-slate-800 midnight:bg-black">
-                                            <UpcomingClassesList classes={classesTillCAT1} attendedClasses={a.attendedClasses} totalClasses={a.totalClasses} />
+                                        <div
+                                            className={`transition-all duration-300 ease-in-out ${openDropdown === key ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+                                                } overflow-hidden`}
+                                        >
+                                            <div className="px-3 pb-3 bg-gray-50 dark:bg-slate-800 midnight:bg-black rounded-b-lg">
+                                                <UpcomingClassesList
+                                                    classes={data}
+                                                    attendedClasses={a.attendedClasses}
+                                                    totalClasses={a.totalClasses}
+                                                />
+                                            </div>
                                         </div>
-                                    )}
-                                </div>
-                            )}
-                            {classesTillCAT2.length > 0 && (
-                                <div>
-                                    <button
-                                        onClick={() => toggleDropdown("CAT2")}
-                                        className="flex items-center justify-between w-full pb-3 text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
-                                    >
-                                        <span>Classes left before CAT II: <strong>{classesTillCAT2.length}</strong></span>
-                                        {openDropdown === "CAT2" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                                    </button>
-
-                                    {openDropdown === "CAT2" && (
-                                        <div className="p-2 bg-gray-50 dark:bg-slate-800 midnight:bg-black">
-                                            <UpcomingClassesList classes={classesTillCAT2} attendedClasses={a.attendedClasses} totalClasses={a.totalClasses} />
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                            {classesTillLID.length > 0 && (
-                                <div>
-                                    <button
-                                        onClick={() => toggleDropdown("LID")}
-                                        className="flex items-center justify-between pb-3 w-full text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
-                                    >
-                                        <span>Classes left before FAT: <strong>{classesTillLID.length}</strong></span>
-                                        {openDropdown === "LID" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                                    </button>
-
-                                    {openDropdown === "LID" && (
-                                        <div className="p-2 bg-gray-50 dark:bg-slate-800 midnight:bg-black">
-                                            <UpcomingClassesList classes={classesTillLID} attendedClasses={a.attendedClasses} totalClasses={a.totalClasses} />
-                                        </div>
-                                    )}
-                                </div>
-                            )}
+                                    </div>
+                                )
+                            ))}
                         </div>
                     )}
+
                 </div>
 
                 <div className="flex-1 pr-1 mt-2">
@@ -389,17 +377,14 @@ function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0 })
     const predictedAttended = parseInt(attendedClasses) + attendCount;
     const predictedTotal = parseInt(totalClasses) + upcomingCount;
     const predictedPercent = ((predictedAttended / predictedTotal) * 100).toFixed(1);
-    console.log(predictedAttended, predictedTotal);
 
     return (
-        <div className="space-y-2">
-            <div className="flex items-center justify-between text-xs font-medium bg-gray-100 dark:bg-slate-800 midnight:bg-gray-900 p-2 rounded-lg border border-gray-200 dark:border-gray-700 midnight:border-gray-800">
-                <span className="text-green-600 dark:text-green-400">
-                    Attending: <strong>{attendCount}</strong>
-                </span>
-                <span className="text-red-500 dark:text-red-400">
-                    Not Attending: <strong>{missedCount}</strong>
-                </span>
+        <div className="space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-medium 
+                      bg-gray-100 dark:bg-slate-800 midnight:bg-gray-900 
+                      px-3 mt-2 py-2 rounded-md border border-gray-200 dark:border-gray-700 midnight:border-gray-800">
+                <span className="text-green-600 dark:text-green-400">Attending: <strong>{attendCount}</strong></span>
+                <span className="text-red-500 dark:text-red-400">Not Attending: <strong>{missedCount}</strong></span>
                 <span
                     className={`font-semibold ${predictedPercent >= 75
                             ? "text-green-600 dark:text-green-400"
@@ -424,10 +409,14 @@ function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0 })
                         <div
                             key={i}
                             onClick={() => toggleAttendance(i)}
-                            className={`flex flex-col items-center justify-center rounded-xl border p-2 shadow-sm transition-all duration-200 cursor-pointer select-none ${isSkipped
-                                    ? "bg-red-100 dark:bg-red-900/40 midnight:bg-red-950 border-red-300 dark:border-red-700 midnight:border-red-800"
-                                    : "bg-white dark:bg-slate-900 midnight:bg-gray-950 border-gray-200 dark:border-gray-700 midnight:border-gray-800"
-                                } hover:scale-[1.03]`}
+                            className={`flex flex-col items-center justify-center 
+                          rounded-lg border p-2 shadow-sm 
+                          cursor-pointer select-none transform-gpu
+                          transition-all duration-200 ease-in-out
+                          ${isSkipped
+                                    ? "bg-red-100 dark:bg-red-900/40 midnight:bg-red-950 border-red-300 dark:border-red-700 midnight:border-red-800 scale-[0.98]"
+                                    : "bg-white dark:bg-slate-900 midnight:bg-gray-950 border-gray-200 dark:border-gray-700 midnight:border-gray-800 hover:scale-[1.02] hover:shadow-md"
+                                }`}
                         >
                             <span
                                 className={`font-semibold ${isSkipped
