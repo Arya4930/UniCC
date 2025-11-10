@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
 
-export default function OverallAttendanceSimulator({
+export default function OverallAttendancePredictor({
   attendanceData,
   analyzeCalendars,
   dayCardsMap,
@@ -134,9 +134,8 @@ export default function OverallAttendanceSimulator({
 
   return (
     <div className="bg-gray-100 dark:bg-slate-800 midnight:bg-black p-5 rounded-2xl shadow-lg transition-all duration-300">
-      {/* Top Controls */}
+      <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 midnight:text-gray-100 mb-2">Overall Attendance Predictor (Beta Feature)</h2>
       <div className="flex flex-wrap items-center justify-between mb-4 gap-3">
-        {/* Mode Buttons */}
         <div className="flex items-center gap-2">
           {["CAT1", "CAT2", "LID"].map((type) => (
             <Button
@@ -158,7 +157,6 @@ export default function OverallAttendanceSimulator({
           ))}
         </div>
 
-        {/* Month Navigation */}
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
@@ -182,7 +180,6 @@ export default function OverallAttendanceSimulator({
             <ChevronRight />
           </Button>
 
-          {/* Reset Button */}
           <Button
             variant="ghost"
             size="sm"
@@ -195,7 +192,6 @@ export default function OverallAttendanceSimulator({
         </div>
       </div>
 
-      {/* Calendar Days */}
       <div className="grid grid-cols-7 gap-2 mb-5">
         {visibleDays.map((d, i) => {
           const isSelected = selectedDates.some(
@@ -222,12 +218,10 @@ export default function OverallAttendanceSimulator({
         })}
       </div>
 
-      {/* Prediction Summary */}
       <p className="font-semibold text-center text-blue-600 dark:text-blue-400 midnight:text-blue-400 mb-3">
         Predicted Overall Attendance ({mode}): {overallAvg}%
       </p>
 
-      {/* Course Predictions */}
       <div className="max-h-64 overflow-y-auto space-y-2 text-sm rounded-lg bg-white dark:bg-slate-900 midnight:bg-gray-950 p-3 shadow-inner">
         {predictions.map((p, i) => (
           <div

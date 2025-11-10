@@ -4,7 +4,7 @@ import { analyzeAllCalendars } from "@/lib/analyzeCalendar";
 import PopupCard from "./PopupCard";
 import config from '@/app/config.json'
 import NoContentFound from "../NoContentFound";
-import OverallAttendanceSimulator from "./OverallAttendanceSimulator";
+import OverallAttendancePredictor from "./overallAttendancePredictor";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 
@@ -150,7 +150,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
               <X size={22} className="text-gray-700 dark:text-gray-200 midnight:text-gray-200" />
             </Button>
 
-            <OverallAttendanceSimulator
+            <OverallAttendancePredictor
               attendanceData={data.attendance}
               analyzeCalendars={results}
               dayCardsMap={dayCardsMap}
