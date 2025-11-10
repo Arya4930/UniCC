@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { Building2, Clock, ChevronDown, ChevronUp, CalendarDays } from "lucide-react"
+import { Building2, Clock, ChevronDown, ChevronUp } from "lucide-react"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
@@ -153,7 +153,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                         </div>
                     </div>
                 </div>
-                <div className="pt-1">
+                <div>
                     {(() => {
                         const attended = a.attendedClasses;
                         const total = a.totalClasses;
@@ -185,15 +185,15 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                             }
                         }
                     })()}
-                </div>
+                
 
                 {(classesTillCAT1 && classesTillCAT2 && classesTillLID) && (
-                    <div className="text-sm space-y-2 mt-2">
+                    <div className="text-sm space-y-2 mt-3 border-b-2">
                         {classesTillCAT1.length > 0 && (
                             <div>
                                 <button
                                     onClick={() => toggleDropdown("CAT1")}
-                                    className="flex items-center justify-between w-full p-2 text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
+                                    className="flex items-center justify-between pb-3 w-full text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
                                 >
                                     <span>Classes left before CAT I: <strong>{classesTillCAT1.length}</strong></span>
                                     {openDropdown === "CAT1" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
@@ -210,7 +210,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                             <div>
                                 <button
                                     onClick={() => toggleDropdown("CAT2")}
-                                    className="flex items-center justify-between w-full p-2 text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
+                                    className="flex items-center justify-between w-full pb-3 text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
                                 >
                                     <span>Classes left before CAT II: <strong>{classesTillCAT2.length}</strong></span>
                                     {openDropdown === "CAT2" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
@@ -227,7 +227,7 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                             <div>
                                 <button
                                     onClick={() => toggleDropdown("LID")}
-                                    className="flex items-center justify-between w-full p-2 text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
+                                    className="flex items-center justify-between pb-3 w-full text-left hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-t-lg"
                                 >
                                     <span>Classes left before FAT: <strong>{classesTillLID.length}</strong></span>
                                     {openDropdown === "LID" ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
@@ -242,8 +242,9 @@ export default function PopupCard({ a, setExpandedIdx, activeDay, dayCardsMap, a
                         )}
                     </div>
                 )}
+                </div>
 
-                <div className="flex-1 pr-1">
+                <div className="flex-1 pr-1 mt-2">
                     <ul className="list-disc list-inside text-xs space-y-1">
                         {a.viewLink?.map((d, i) => (
                             <li
