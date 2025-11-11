@@ -2,8 +2,8 @@
 
 import { X, ChevronDown, ChevronUp, Save } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Button } from "../ui/button";
-import config from "../../app/config.json";
+import { Button } from "../../ui/button";
+import config from "../../../app/config.json";
 
 interface LocalStorageItemProps {
     storageKey: string;

@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { Github, Settings, Link } from "lucide-react";
-import { ModeToggle } from "./toggle";
-import { Button } from "../ui/button";
-import DataPage from "./DataPage";
+import { ModeToggle } from "../toggle";
+import { Button } from "../../ui/button";
+import DataPage from "./SettingsPage";
 import PrivacyPolicyPage from "./PrivacyPolicy";
+import TermsOfServicePage from "./TermsOfService";
 
 type FooterProps = {
   isLoggedIn: boolean;
@@ -19,6 +20,7 @@ export default function Footer({ isLoggedIn, currSemesterID, setCurrSemesterID, 
   const [showStoragePage, setShowStoragePage] = useState<boolean>(false);
   const [storageData, setStorageData] = useState<Record<string, string | null>>({});
   const [showPolicy, setShowPolicy] = useState<boolean>(false);
+  const [showTOS, setShowTOS] = useState<boolean>(false);
 
   const openStoragePage = () => {
     const data: Record<string, string> = {};
@@ -60,8 +62,9 @@ export default function Footer({ isLoggedIn, currSemesterID, setCurrSemesterID, 
 
   return (
     <footer className="bg-transparent text-gray-700 dark:text-gray-300 midnight:text-gray-300 flex items-center justify-center">
-      {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} currSemesterID={currSemesterID} setCurrSemesterID={setCurrSemesterID} handleLogin={handleLogin} setIsReloading={setIsReloading}/>}
+      {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} currSemesterID={currSemesterID} setCurrSemesterID={setCurrSemesterID} handleLogin={handleLogin} setIsReloading={setIsReloading} />}
       {showPolicy && <PrivacyPolicyPage handleClose={() => setShowPolicy(false)} />}
+      {showTOS && <TermsOfServicePage handleClose={() => setShowTOS(false)} />}
       <div className="max-w-7xl mx-auto px-3 py-6 text-center w-full">
         <hr className="border-gray-300 dark:border-gray-700 midnight:border-gray-700 w-11/12 mx-auto mb-6" />
 
@@ -104,14 +107,23 @@ export default function Footer({ isLoggedIn, currSemesterID, setCurrSemesterID, 
 
         <span className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400 block">
           &copy; {new Date().getFullYear()} Arya Evil Inc. All rights reserved. &nbsp;
+        </span>
+        <div>
           <Button
             variant="ghost"
             className="mt-2 w-18 h-6 underline text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400"
             onClick={() => setShowPolicy(true)}
           >
             Privacy Policy
+          </Button> • 
+          <Button
+            variant="ghost"
+            className="mt-2 ml-1 w-22 h-6 underline text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400"
+            onClick={() => setShowTOS(true)}
+          >
+            Terms of Service
           </Button>
-        </span>
+        </div>
       </div>
     </footer>
   );

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { ReloadModal } from "./reloadModel";
 import LoginForm from "./loginForm";
 import DashboardContent from "./Dashboard";
-import Footer from "./Footer";
+import Footer from "./footer/Footer";
 import { solveCaptchaClient } from "@/lib/solveCaptcha";
 import config from '../../app/config.json'
 import { attendanceRes, ODListItem, ODListRaw } from "@/types/data/attendance";

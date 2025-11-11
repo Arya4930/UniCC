@@ -1,7 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
 export default function PrivacyPolicyPage({ handleClose }) {
     return (
@@ -35,13 +35,22 @@ export default function PrivacyPolicyPage({ handleClose }) {
                 </p>
 
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100 mt-4">
-                    Analytics
+                    Cookies & Analytics
                 </h3>
                 <p>
-                    This app uses <strong>Vercel Analytics</strong> and <strong>Google Analytics</strong> to collect
-                    anonymous usage metrics such as page views and general interaction data. These analytics help
-                    improve app performance and reliability. No personally identifiable data is included in these
-                    reports.
+                    <strong>Uni CC</strong> uses <strong>Vercel Analytics</strong> and <strong>Google Analytics</strong>
+                    to gather <em>anonymous, aggregate data</em> such as page visits, device types, and general
+                    interaction information. These analytics help improve the app’s performance and user experience.
+                </p>
+                <p>
+                    This data does <strong>not</strong> include any personally identifiable information such as names,
+                    login credentials, or academic records. The analytics cookies are handled entirely by
+                    <strong> Google </strong> and <strong>Vercel</strong> under their respective privacy policies.
+                </p>
+                <p>
+                    Uni CC does not track users, create profiles, sell data, or share analytics with any third party.
+                    These analytics are used purely for <strong>educational and experimental</strong> purposes and can be
+                    cleared anytime by removing browser cookies.
                 </p>
 
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100 mt-4">
@@ -62,15 +71,28 @@ export default function PrivacyPolicyPage({ handleClose }) {
                 </p>
 
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100 mt-4">
+                    Open Source
+                </h3>
+                <p>
+                    <strong>Uni CC</strong> is an <strong>open-source project</strong> created for learning and
+                    experimentation purposes. The source code is publicly available, and anyone is welcome to
+                    explore, modify, or contribute improvements through the project’s GitHub repository.
+                </p>
+                <p>
+                    Contributions are voluntary and governed by the project’s open-source license. No data collected
+                    by contributors or modifications affects user privacy or transmits information externally.
+                </p>
+
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100 mt-4">
                     Contact
                 </h3>
                 <p>
                     For any concerns or questions about this Privacy Policy, you can reach out to the developer at
-                    <strong> aryaevilinc@proton.me</strong>.
+                    <strong> aryapanwar493@gmail.com</strong>.
                 </p>
 
                 <p className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400 mt-6">
-                    Last updated: {new Date().toLocaleDateString()}
+                    Last updated: 11 Nov, 2025
                 </p>
             </div>
         </div>
