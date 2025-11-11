@@ -8,7 +8,7 @@ export default function OverallAttendancePredictor({
   attendanceData,
   analyzeCalendars,
   dayCardsMap,
-  importantEvents,
+  impDates,
 }) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -19,19 +19,6 @@ export default function OverallAttendancePredictor({
 
   const [selectedDates, setSelectedDates] = useState([]);
   const [mode, setMode] = useState("LID"); // CAT1, CAT2, LID
-
-  const findEventDate = (eventName) => {
-    const ev = [...importantEvents.values()].find(
-      (e) => e.event.toLowerCase() === eventName.toLowerCase()
-    );
-    if (!ev) return null;
-    return new Date(ev.formattedDate);
-  };
-
-  const CAT1Date = findEventDate("CAT I");
-  const CAT2Date = findEventDate("CAT II");
-  const lidLabDate = findEventDate("lid for laboratory classes");
-  const lidTheoryDate = findEventDate("lid for theory classes");
 
   const allWorkingDays = useMemo(() => {
     if (!Array.isArray(analyzeCalendars)) return [];
@@ -96,9 +83,9 @@ export default function OverallAttendancePredictor({
         const isLab = c.courseCode.endsWith("(L)");
 
         let cutoffDate = null;
-        if (mode === "CAT1") cutoffDate = CAT1Date;
-        else if (mode === "CAT2") cutoffDate = CAT2Date;
-        else if (mode === "LID") cutoffDate = isLab ? lidLabDate : lidTheoryDate;
+        if (mode === "CAT1") cutoffDate = impDates.cat1Date;
+        else if (mode === "CAT2") cutoffDate = impDates.cat2Date;
+        else if (mode === "LID") cutoffDate = isLab ? impDates.lidLabDate : impDates.lidTheoryDate;
 
         const filteredDays = allWorkingDays.filter(
           (d) => !cutoffDate || d.date <= cutoffDate
@@ -132,16 +119,15 @@ export default function OverallAttendancePredictor({
     allWorkingDays,
     dayCardsMap,
     mode,
-    CAT1Date,
-    CAT2Date,
-    lidLabDate,
-    lidTheoryDate,
+    impDates
   ]);
 
   const overallAvg = (
     predictions.reduce((sum, p) => sum + parseFloat(p.predictedPercent), 0) /
     (predictions.length || 1)
   ).toFixed(1);
+
+  const buttonOptions = [impDates.cat1Date > new Date() ? "CAT1" : null, impDates.cat2Date > new Date() ? "CAT2" : null, impDates.lidLabDate > new Date() || impDates.lidTheoryDate > new Date() ? "LID" : null].filter(Boolean);
 
   return (
     <div className="bg-gray-100 dark:bg-slate-800 midnight:bg-black p-5 rounded-2xl shadow-lg transition-all duration-300">
@@ -151,7 +137,7 @@ export default function OverallAttendancePredictor({
 
       <div className="flex flex-wrap items-center justify-between mb-4 gap-3">
         <div className="flex items-center gap-2">
-          {["CAT1", "CAT2", "LID"].map((type) => (
+          {buttonOptions.map((type) => (
             <Button
               key={type}
               variant={mode === type ? "default" : "outline"}

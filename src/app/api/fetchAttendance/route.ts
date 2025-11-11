@@ -106,8 +106,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                 faculty: cols.eq(5).text().replace(/\s+/g, " ").trim(),
                 registrationDate: cols.eq(7).text().trim(),
                 attendanceDate: cols.eq(8).text().trim(),
-                attendedClasses: cols.eq(9).text().trim(),
-                totalClasses: cols.eq(10).text().trim(),
+                attendedClasses: parseInt(cols.eq(9).text().trim()),
+                totalClasses: parseInt(cols.eq(10).text().trim()),
                 attendancePercentage: cols.eq(11).text().trim(),
                 viewLink: cols.eq(13).find("a").attr("onclick") || null,
             });

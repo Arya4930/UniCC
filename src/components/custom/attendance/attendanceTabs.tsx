@@ -6,7 +6,7 @@ import config from '@/app/config.json'
 import NoContentFound from "../NoContentFound";
 import OverallAttendancePredictor from "./overallAttendancePredictor";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { Hash, X } from "lucide-react";
 
 export default function AttendanceTabs({ data, activeDay, setActiveDay, calendars }) {
   const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
@@ -124,6 +124,20 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
 
   if (daysWithClasses.length === 0) return <NoContentFound />;
 
+  const findEventDate = (eventName) => {
+    const ev = [...importantEvents.values()].find(
+      (e) => e.event.toLowerCase() === eventName.toLowerCase()
+    );
+    if (!ev) return null;
+    return ev.formattedDate;
+  };
+  const impDates = {
+    cat1Date: findEventDate("CAT I"),
+    cat2Date: findEventDate("CAT II"),
+    lidLabDate: findEventDate("lid for laboratory classes"),
+    lidTheoryDate: findEventDate("LID FOR THEORY CLASSES"),
+  };
+
   return (
     <div className="grid gap-4">
       <div className="flex flex-col items-center gap-3 mb-3">
@@ -163,7 +177,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
                 setExpandedIdx={setExpandedIdx}
                 dayCardsMap={dayCardsMap}
                 analyzeCalendars={results}
-                importantEvents={importantEvents}
+                impDates={impDates}
               />
             )}
           </div>
@@ -197,7 +211,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
               attendanceData={data.attendance}
               analyzeCalendars={results}
               dayCardsMap={dayCardsMap}
-              importantEvents={importantEvents}
+              impDates={impDates}
             />
           </div>
         </div>

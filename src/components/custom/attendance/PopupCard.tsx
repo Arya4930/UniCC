@@ -7,7 +7,22 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import "react-circular-progressbar/dist/styles.css"
 
-export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalendars, importantEvents }) {
+type CalendarEvent = {
+  text: string;
+  type: "working" | "holiday";
+  color: string;
+  category?: string;
+};
+
+type RemainingClassDay = {
+  date: number;
+  weekday: string;
+  type: string; 
+  events?: CalendarEvent[];
+  fullDate: Date;
+};
+
+export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalendars, impDates }) {
     const lab = a.slotName.split('')[0] === "L";
 
     useEffect(() => {
@@ -16,14 +31,6 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
             document.body.style.overflow = "";
         };
     }, []);
-
-    const findEventDate = (eventName) => {
-        const ev = [...importantEvents.values()].find(
-            (e) => e.event.toLowerCase() === eventName.toLowerCase()
-        );
-        if (!ev) return null;
-        return ev.formattedDate;
-    };
 
     const countTillDate = (endDate) => {
         if (!endDate) return 0;
@@ -52,14 +59,9 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
     const isLab = a.courseCode.endsWith("(L)");
     const isTheory = a.courseCode.endsWith("(T)");
 
-    const cat1Date = findEventDate("CAT I");
-    const cat2Date = findEventDate("CAT II");
-    const lidLabDate = findEventDate("lid for laboratory classes");
-    const lidTheoryDate = findEventDate("LID FOR THEORY CLASSES");
-
-    let classesTillCAT1 = 0;
-    let classesTillCAT2 = 0;
-    let classesTillLID = 0;
+    let classesTillCAT1 = null;
+    let classesTillCAT2 = null;
+    let classesTillLID = null;
 
     if (Array.isArray(analyzeCalendars) && analyzeCalendars.length > 0) {
         const allMonthsAreHolidays = analyzeCalendars.every(
@@ -67,18 +69,14 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
         );
         if (!allMonthsAreHolidays) {
             if (isLab) {
-                classesTillCAT1 = countTillDate(cat1Date);
-                classesTillCAT2 = countTillDate(cat2Date);
-                classesTillLID = countTillDate(lidLabDate);
+                classesTillCAT1 = countTillDate(impDates.cat1Date);
+                classesTillCAT2 = countTillDate(impDates.cat2Date);
+                classesTillLID = countTillDate(impDates.lidLabDate);
             } else if (isTheory) {
-                classesTillCAT1 = countTillDate(cat1Date);
-                classesTillCAT2 = countTillDate(cat2Date);
-                classesTillLID = countTillDate(lidTheoryDate);
+                classesTillCAT1 = countTillDate(impDates.cat1Date);
+                classesTillCAT2 = countTillDate(impDates.cat2Date);
+                classesTillLID = countTillDate(impDates.lidTheoryDate);
             }
-        } else {
-            classesTillCAT1 = null;
-            classesTillCAT2 = null;
-            classesTillLID = null;
         }
     }
     const [openDropdown, setOpenDropdown] = useState(null);
@@ -255,13 +253,13 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
     );
 }
 
-export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calendarMonths, fromDate = new Date()) {
-    if (!courseCode || !dayCardsMap || !calendarMonths) return 0;
+export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calendarMonths, fromDate = new Date()): RemainingClassDay[] | null {
+    if (!courseCode || !dayCardsMap || !calendarMonths) return null;
 
     const daysWithSubject = Object.keys(dayCardsMap).filter(day =>
         dayCardsMap[day].some(c => c.courseCode === courseCode)
     );
-    if (daysWithSubject.length === 0) return 0;
+    if (daysWithSubject.length === 0) return null;
 
     const normalizeDay = (d) => d.slice(0, 3).toUpperCase();
     const subjectDays = daysWithSubject.map(normalizeDay);
@@ -368,13 +366,13 @@ function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0 })
         );
     };
 
-    const upcomingCount = classes.length;
-    const missedCount = notAttending.length;
-    const attendCount = upcomingCount - missedCount;
+    const upcomingCount: number = classes.length;
+    const missedCount: number = notAttending.length;
+    const attendCount: number = upcomingCount - missedCount;
 
-    const predictedAttended = parseInt(attendedClasses) + attendCount;
-    const predictedTotal = parseInt(totalClasses) + upcomingCount;
-    const predictedPercent = ((predictedAttended / predictedTotal) * 100).toFixed(1);
+    const predictedAttended = attendedClasses + attendCount;
+    const predictedTotal = totalClasses + upcomingCount;
+    const predictedPercent: number = parseFloat(((predictedAttended / predictedTotal) * 100).toFixed(1));
 
     return (
         <div className="space-y-3">

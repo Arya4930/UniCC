@@ -17,7 +17,7 @@ interface DataPageProps {
     storageData: Record<string, string>;
     currSemesterID: string;
     setCurrSemesterID: (id: string) => void;
-    handleLogin: (selectedSemester?: string) => Promise<void>;
+    handleLogin: (selectedSemester?: string) => Promise<boolean>;
     setIsReloading: (isReloading: boolean) => void;
 }
 

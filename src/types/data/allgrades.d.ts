@@ -40,3 +40,9 @@ export type GradeResultsMap = Record<string, SemesterGradeResult>;
 export type SettledSemesterResult =
     | { status: "fulfilled"; value: SemesterGradeResult }
     | { status: "rejected"; reason: any };
+
+export type AllGradesRes = {
+    semesterId?: string;
+    grades?: GradeResultsMap;
+    error?: string;
+};

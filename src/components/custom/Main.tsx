@@ -6,52 +6,54 @@ import DashboardContent from "./Dashboard";
 import Footer from "./Footer";
 import { solveCaptchaClient } from "@/lib/solveCaptcha";
 import config from '../../app/config.json'
+import { attendanceRes, ODListItem, ODListRaw } from "@/types/data/attendance";
+import { AllGradesRes } from "@/types/data/allgrades";
 
 export default function LoginPage() {
   // --- State Management ---
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [attendanceData, setAttendanceData] = useState({});
-  const [marksData, setMarksData] = useState({});
-  const [GradesData, setGradesData] = useState({});
-  const [AllGradesData, setAllGradesData] = useState({});
-  const [ScheduleData, setScheduleData] = useState({});
-  const [hostelData, sethostelData] = useState({});
-  const [Calender, setCalender] = useState({});
-  const [activeDay, setActiveDay] = useState("");
-  const [isReloading, setIsReloading] = useState(false);
-  const [activeTab, setActiveTab] = useState("attendance");
-  const [attendancePercentage, setattendancePercentage] = useState({});
-  const [ODhoursData, setODhoursData] = useState({});
-  const [ODhoursIsOpen, setODhoursIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [GradesDisplayIsOpen, setGradesDisplayIsOpen] = useState(false);
-  const [activeSubTab, setActiveSubTab] = useState("marks");
-  const [HostelActiveSubTab, setHostelActiveSubTab] = useState("mess");
-  const [activeAttendanceSubTab, setActiveAttendanceSubTab] = useState("attendance");
-  const [isLoading, setIsLoading] = useState(true);
-  const [CGPAHidden, setCGPAHidden] = useState(false);
-  const [calendarType, setCalenderType] = useState(null)
-  const [progressBar, setProgressBar] = useState(0);
-  const [currSemesterID, setCurrSemesterID] = useState(config.semesterIDs[config.semesterIDs.length - 2]);
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [attendanceData, setAttendanceData] = useState<attendanceRes | null>({});
+  const [marksData, setMarksData] = useState<object>({});
+  const [GradesData, setGradesData] = useState<object>({});
+  const [AllGradesData, setAllGradesData] = useState<AllGradesRes>({});
+  const [ScheduleData, setScheduleData] = useState<object>({});
+  const [hostelData, sethostelData] = useState<object>({});
+  const [Calender, setCalender] = useState<object>({});
+  const [activeDay, setActiveDay] = useState<string>("");
+  const [isReloading, setIsReloading] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<string>("attendance");
+  const [attendancePercentage, setattendancePercentage] = useState<object>({});
+  const [ODhoursData, setODhoursData] = useState<object>({});
+  const [ODhoursIsOpen, setODhoursIsOpen] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [GradesDisplayIsOpen, setGradesDisplayIsOpen] = useState<boolean>(false);
+  const [activeSubTab, setActiveSubTab] = useState<string>("marks");
+  const [HostelActiveSubTab, setHostelActiveSubTab] = useState<string>("mess");
+  const [activeAttendanceSubTab, setActiveAttendanceSubTab] = useState<string>("attendance");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [CGPAHidden, setCGPAHidden] = useState<boolean>(false);
+  const [calendarType, setCalenderType] = useState<string | null>(null)
+  const [progressBar, setProgressBar] = useState<number>(0);
+  const [currSemesterID, setCurrSemesterID] = useState<string>(config.semesterIDs[config.semesterIDs.length - 2]);
 
   useEffect(() => {
     const day = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
     setActiveDay(day);
   }, []);
 
-  function setAttendanceAndOD(attendance) {
+  function setAttendanceAndOD(attendance: attendanceRes): void {
     setAttendanceData(attendance);
     let totalClass = 0;
     let attendedClasses = 0;
-    attendance.attendance.forEach(course => {
-      totalClass += parseInt(course.totalClasses || 0);
-      attendedClasses += parseInt(course.attendedClasses || 0);
+    attendance.attendance?.forEach(course => {
+      totalClass += course.totalClasses || 0;
+      attendedClasses += course.attendedClasses || 0;
     });
     setattendancePercentage({ "percentage": Math.round(attendedClasses * 10000 / totalClass) / 100, "str": `${attendedClasses}/${totalClass}` });
 
-    let ODList = {};
+    let ODList: ODListRaw = {};
     attendance.attendance.forEach(course => {
       if (!course.viewLink || !Array.isArray(course.viewLink)) return;
 
@@ -69,19 +71,19 @@ export default function LoginPage() {
         }
       });
     });
-    ODList = Object.entries(ODList)
+    const formattedList: ODListItem[] = Object.entries(ODList)
       .map(([date, courses]) => ({
         date,
         courses,
         total: courses.reduce((sum, c) => sum + c.hours, 0)
       }))
-      .sort((a, b) => new Date(a.date) - new Date(b.date));
-    setODhoursData(ODList);
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    setODhoursData(formattedList);
   }
 
   // --- Effects ---
   useEffect(() => {
-    let storedAttendance = localStorage.getItem("attendance");
+    const storedAttendance = localStorage.getItem("attendance");
     const storedMarks = localStorage.getItem("marks");
     const storedGrades = localStorage.getItem("grades");
     const storedAllGrades = localStorage.getItem("allGrades");
@@ -93,9 +95,9 @@ export default function LoginPage() {
     const calendarType = localStorage.getItem("calendarType");
     const currSemesterID = localStorage.getItem("currSemesterID");
 
-    storedAttendance = JSON.parse(storedAttendance);
-    if (storedAttendance && storedAttendance.attendance) {
-      setAttendanceAndOD(storedAttendance);
+    const parsedStoredAttendance: attendanceRes | null = storedAttendance ? JSON.parse(storedAttendance) : null;
+    if (parsedStoredAttendance && parsedStoredAttendance.attendance) {
+      setAttendanceAndOD(parsedStoredAttendance);
     }
     if (storedMarks) setMarksData(JSON.parse(storedMarks));
     if (storedUsername) setUsername(storedUsername);
@@ -302,7 +304,7 @@ export default function LoginPage() {
         fetch("/api/fetchMarks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID}),
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
         }).then(async r => {
           const j = await r.json();
           setMessage(prev => prev + "\n✅ Marks fetched");
@@ -455,7 +457,13 @@ export default function LoginPage() {
         </>
       )}
 
-      <Footer isLoggedIn={isLoggedIn} currSemesterID={currSemesterID} setCurrSemesterID={setCurrSemesterID} handleLogin={handleLogin} setIsReloading={setIsReloading} />
+      <Footer
+        isLoggedIn={isLoggedIn}
+        currSemesterID={currSemesterID}
+        setCurrSemesterID={setCurrSemesterID}
+        handleLogin={handleLogin}
+        setIsReloading={setIsReloading}
+      />
     </div>
   );
 }

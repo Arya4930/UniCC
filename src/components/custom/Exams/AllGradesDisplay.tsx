@@ -134,7 +134,7 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
                                             <table className="w-full border border-gray-300 dark:border-gray-600 midnight:border-gray-700">
                                                 <thead className="bg-gray-800 text-white dark:bg-slate-700 midnight:bg-gray-900">
                                                     <tr>
-                                                        {Object.keys(course.range).map((grade) => (
+                                                        {Object.keys(course.range as Record<string, string | number>).map((grade) => (
                                                             <th key={grade} className="border p-2 text-center">
                                                                 {grade}
                                                             </th>
@@ -143,7 +143,7 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        {Object.values(course.range).map((range, idx) => (
+                                                        {Object.values(course.range as Record<string, string | number>).map((range, idx) => (
                                                             <td
                                                                 key={idx}
                                                                 className="border p-2 text-center text-gray-800 dark:text-gray-200 midnight:text-gray-200"

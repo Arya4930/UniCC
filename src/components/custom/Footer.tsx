@@ -11,7 +11,7 @@ type FooterProps = {
   isLoggedIn: boolean;
   currSemesterID: string;
   setCurrSemesterID: (id: string) => void;
-  handleLogin: (selectedSemester?: string) => Promise<void>;
+  handleLogin: (selectedSemester?: string) => Promise<boolean>;
   setIsReloading: (isReloading: boolean) => void;
 }
 
