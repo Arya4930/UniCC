@@ -6,7 +6,7 @@ import config from '@/app/config.json'
 import NoContentFound from "../NoContentFound";
 import OverallAttendancePredictor from "./overallAttendancePredictor";
 import { Button } from "@/components/ui/button";
-import { Hash, X } from "lucide-react";
+import { Hash, X, BadgeQuestionMark } from "lucide-react";
 
 export default function AttendanceTabs({ data, activeDay, setActiveDay, calendars }) {
   const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
@@ -140,11 +140,12 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
 
   return (
     <div className="grid gap-4">
-      <div className="flex flex-col items-center gap-3 mb-3">
-        <h1 className="text-lg font-semibold text-gray-800 dark:text-gray-100 midnight:text-gray-100">
-          Weekly Attendance
-        </h1>
-      </div>
+      <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+        Weekly Attendance {" "}
+        <button onClick={() => setShowPredictor(true)} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+          <BadgeQuestionMark className={`w-4 h-4`} />
+        </button>
+      </h1>
 
       <div className="flex gap-2 mb-3 justify-center flex-wrap">
         {daysWithClasses.map((d) => (
@@ -182,17 +183,6 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
             )}
           </div>
         ))}
-      </div>
-      <div className="flex justify-center">
-        <Button
-          onClick={() => setShowPredictor(true)}
-          className="max-w-[200px] bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg shadow 
-               dark:bg-blue-700 dark:hover:bg-blue-800 
-               midnight:bg-blue-800 midnight:hover:bg-blue-700 
-               transition-all"
-        >
-          Predict Attendance
-        </Button>
       </div>
 
       {showPredictor && (
