@@ -16,8 +16,9 @@ export default function OverallAttendancePredictor({
       document.body.style.overflow = "";
     };
   }, []);
+
   const [selectedDates, setSelectedDates] = useState([]);
-  const [mode, setMode] = useState("LID");
+  const [mode, setMode] = useState("LID"); // CAT1, CAT2, LID
 
   const findEventDate = (eventName) => {
     const ev = [...importantEvents.values()].find(
@@ -29,24 +30,15 @@ export default function OverallAttendancePredictor({
 
   const CAT1Date = findEventDate("CAT I");
   const CAT2Date = findEventDate("CAT II");
-  const LIDDate = findEventDate("lid for laboratory classes");
+  const lidLabDate = findEventDate("lid for laboratory classes");
+  const lidTheoryDate = findEventDate("lid for theory classes");
 
   const allWorkingDays = useMemo(() => {
     if (!Array.isArray(analyzeCalendars)) return [];
 
     const monthNames = [
-      "january",
-      "february",
-      "march",
-      "april",
-      "may",
-      "june",
-      "july",
-      "august",
-      "september",
-      "october",
-      "november",
-      "december",
+      "january", "february", "march", "april", "may", "june",
+      "july", "august", "september", "october", "november", "december"
     ];
 
     const today = new Date();
@@ -63,11 +55,6 @@ export default function OverallAttendancePredictor({
         .map((d) => {
           const dateObj = mIndex === -1 ? null : new Date(year, mIndex, d.date);
           if (!dateObj || dateObj < today) return null;
-
-          if (mode === "CAT1" && CAT1Date && dateObj > CAT1Date) return null;
-          if (mode === "CAT2" && CAT2Date && dateObj > CAT2Date) return null;
-          if (mode === "LID" && LIDDate && dateObj > LIDDate) return null;
-
           return {
             date: dateObj,
             weekday: d.weekday,
@@ -77,9 +64,10 @@ export default function OverallAttendancePredictor({
         })
         .filter(Boolean);
     });
-  }, [analyzeCalendars, mode]);
+  }, [analyzeCalendars]);
 
   const [monthIdx, setMonthIdx] = useState(0);
+
   const monthsAvailable = Array.from(
     new Set(allWorkingDays.map((d) => `${d.month} ${d.year}`))
   );
@@ -105,10 +93,21 @@ export default function OverallAttendancePredictor({
       .map((c) => {
         const attended = parseInt(c.attendedClasses);
         const total = parseInt(c.totalClasses);
+        const isLab = c.courseCode.endsWith("(L)");
+
+        let cutoffDate = null;
+        if (mode === "CAT1") cutoffDate = CAT1Date;
+        else if (mode === "CAT2") cutoffDate = CAT2Date;
+        else if (mode === "LID") cutoffDate = isLab ? lidLabDate : lidTheoryDate;
+
+        const filteredDays = allWorkingDays.filter(
+          (d) => !cutoffDate || d.date <= cutoffDate
+        );
+
         const futureClasses = countFutureClassesForCourse(
           c.courseCode,
           dayCardsMap,
-          allWorkingDays
+          filteredDays
         );
         const missed = countMissedClassesForCourse(
           c.courseCode,
@@ -116,16 +115,28 @@ export default function OverallAttendancePredictor({
           selectedDates
         );
 
-        const predictedAttended = attended + (futureClasses - missed);
-        const predictedTotal = total + futureClasses;
+        const effectiveFuture = isLab ? futureClasses * 2 : futureClasses;
+        const effectiveMissed = effectiveFuture > 0 ? (isLab ? missed * 2 : missed) : 0;
+
+        const predictedAttended = attended + (effectiveFuture - effectiveMissed);
+        const predictedTotal = total + effectiveFuture;
         const predictedPercent = (
-          (predictedAttended / predictedTotal) *
-          100
+          (predictedAttended / predictedTotal) * 100
         ).toFixed(1);
 
         return { ...c, predictedAttended, predictedTotal, predictedPercent };
       });
-  }, [selectedDates, attendanceData, allWorkingDays, dayCardsMap]);
+  }, [
+    selectedDates,
+    attendanceData,
+    allWorkingDays,
+    dayCardsMap,
+    mode,
+    CAT1Date,
+    CAT2Date,
+    lidLabDate,
+    lidTheoryDate,
+  ]);
 
   const overallAvg = (
     predictions.reduce((sum, p) => sum + parseFloat(p.predictedPercent), 0) /
@@ -134,7 +145,10 @@ export default function OverallAttendancePredictor({
 
   return (
     <div className="bg-gray-100 dark:bg-slate-800 midnight:bg-black p-5 rounded-2xl shadow-lg transition-all duration-300">
-      <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 midnight:text-gray-100 mb-2">Overall Attendance Predictor (Beta Feature)</h2>
+      <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 midnight:text-gray-100 mb-2">
+        Overall Attendance Predictor (Beta Feature)
+      </h2>
+
       <div className="flex flex-wrap items-center justify-between mb-4 gap-3">
         <div className="flex items-center gap-2">
           {["CAT1", "CAT2", "LID"].map((type) => (
@@ -144,8 +158,8 @@ export default function OverallAttendancePredictor({
               size="sm"
               onClick={() => setMode(type)}
               className={`text-xs ${mode === type
-                ? "bg-blue-600 text-white dark:bg-blue-700"
-                : "bg-gray-200 dark:bg-slate-700 midnight:bg-gray-900 text-gray-700 dark:text-gray-200 midnight:text-gray-200 hover:bg-blue-200 dark:hover:bg-blue-800 midnight:hover:bg-gray-800"
+                  ? "bg-blue-600 text-white dark:bg-blue-700"
+                  : "bg-gray-200 dark:bg-slate-700 midnight:bg-gray-900 text-gray-700 dark:text-gray-200 midnight:text-gray-200 hover:bg-blue-200 dark:hover:bg-blue-800 midnight:hover:bg-gray-800"
                 }`}
             >
               {type === "CAT1"
@@ -241,10 +255,10 @@ export default function OverallAttendancePredictor({
             </span>
             <span
               className={`font-semibold ${p.predictedPercent < 75
-                ? "text-red-500"
-                : p.predictedPercent < 85
-                  ? "text-yellow-400"
-                  : "text-green-400"
+                  ? "text-red-500"
+                  : p.predictedPercent < 85
+                    ? "text-yellow-400"
+                    : "text-green-400"
                 }`}
             >
               {p.predictedAttended}/{p.predictedTotal} ({p.predictedPercent}%)

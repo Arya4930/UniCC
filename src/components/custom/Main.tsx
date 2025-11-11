@@ -344,7 +344,7 @@ export default function LoginPage() {
     localStorage.removeItem("allGrades");
     localStorage.removeItem("schedule");
     localStorage.removeItem("hostel");
-    localStorage.removeItem("currSemesterID")
+    localStorage.removeItem("currSemesterID");
     setMessage("");
   };
 
