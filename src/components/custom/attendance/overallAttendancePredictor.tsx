@@ -218,6 +218,7 @@ export default function OverallAttendancePredictor({
           const formatted = d.date.getDate();
           const weekday = d.date.toLocaleDateString("en-US", { weekday: "short" });
           const isToday = d.date.toDateString() === new Date().toDateString();
+          if(isToday) dateStates[d.date.getTime()] = 2;
 
           return (
             <div
