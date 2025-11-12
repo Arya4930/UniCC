@@ -18,6 +18,7 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
     );
   }
 
+  let extra = 0;
   const ongoingCreditsByCategory = attendance.reduce((acc, item) => {
     let category = item.category || "Uncategorized";
     const credits = parseFloat(item.credits) || 0;
@@ -36,10 +37,12 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
     if (isFoundationExtra) {
       const parentCategory = "Foundation Core - Humanities, Social Sciences and Management";
       acc[parentCategory] = (acc[parentCategory] || 0) + credits;
+      extra += credits;
     }
     if(isNGCExtra) {
       const parentCategory = "Non-graded Core Requirement";
       acc[parentCategory] = (acc[parentCategory] || 0) + credits;
+      extra += credits;
     }
     return acc;
   }, {});
@@ -48,11 +51,11 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
     c.basketTitle.toLowerCase().includes("total credits")
   );
 
-  const otherCurriculum = data.curriculum.filter(
+  const Curriculum = data.curriculum.filter(
     c => !c.basketTitle.toLowerCase().includes("total credits")
   );
 
-  const totalInProgress = Object.values(ongoingCreditsByCategory).reduce((a, b) => a + b, 0);
+  const totalInProgress = Object.values(ongoingCreditsByCategory).reduce((a, b) => a + b, 0) - extra;
 
   return (
     <div className="grid gap-2">
@@ -114,7 +117,7 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
             );
           })()}
 
-          {otherCurriculum.map((c, idx) => {
+          {Curriculum.map((c, idx) => {
             const earned = parseFloat(c.creditsEarned);
             const required = parseFloat(c.creditsRequired);
             const inProgress = ongoingCreditsByCategory[c.basketTitle] || 0;
@@ -143,29 +146,6 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
                 <p className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-300 font-medium">
                   {earned.toFixed(1)}
                   {inProgress > 0 ? ` + ${inProgress.toFixed(1)} -> ${(earned + inProgress).toFixed(1)}` : ""} / {required.toFixed(1)}
-                </p>
-              </div>
-            );
-          })}
-
-          {Object.keys(ongoingCreditsByCategory).map((cat) => {
-            const isKnown = otherCurriculum.some(c => c.basketTitle === cat);
-            if (isKnown) return null;
-
-            const inProgress = ongoingCreditsByCategory[cat];
-            if (!inProgress) return null;
-
-            return (
-              <div key={cat}>
-                <p className="font-semibold text-gray-900 dark:text-gray-100 midnight:text-gray-100">{cat}</p>
-                <div className="relative h-2 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
-                  <div
-                    className="absolute left-0 top-0 h-full bg-yellow-400/70"
-                    style={{ width: "100%" }}
-                  />
-                </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-300 font-medium">
-                  {inProgress.toFixed(1)} in progress
                 </p>
               </div>
             );
