@@ -47,6 +47,7 @@ export default function OverallAttendancePredictor({
             weekday: d.weekday,
             month: monthObj.month,
             year: monthObj.year,
+            events: d.events || [],
           };
         })
         .filter(Boolean);
@@ -76,7 +77,7 @@ export default function OverallAttendancePredictor({
 
   const predictions = useMemo(() => {
     return attendanceData
-      .filter((c) => c.totalClasses && c.attendedClasses)
+      .filter((c) => c.slotName != "NILL")
       .map((c) => {
         const attended = parseInt(c.attendedClasses);
         const total = parseInt(c.totalClasses);
@@ -99,7 +100,9 @@ export default function OverallAttendancePredictor({
         const missed = countMissedClassesForCourse(
           c.courseCode,
           dayCardsMap,
-          selectedDates
+          selectedDates,
+          filteredDays,
+          cutoffDate
         );
 
         const effectiveFuture = isLab ? futureClasses * 2 : futureClasses;
@@ -122,10 +125,10 @@ export default function OverallAttendancePredictor({
     impDates
   ]);
 
-  const overallAvg = (
-    predictions.reduce((sum, p) => sum + parseFloat(p.predictedPercent), 0) /
-    (predictions.length || 1)
-  ).toFixed(1);
+  const totalAttended = predictions.reduce((sum, p) => sum + (parseInt(p.predictedAttended) || 0), 0);
+  const totalClasses = predictions.reduce((sum, p) => sum + (parseInt(p.predictedTotal) || 0), 0);
+
+  const overallAvg = totalClasses > 0 ? ((totalAttended / totalClasses) * 100).toFixed(1) : "0.0";
 
   const buttonOptions = [impDates.cat1Date > new Date() ? "CAT1" : null, impDates.cat2Date > new Date() ? "CAT2" : null, impDates.lidLabDate > new Date() || impDates.lidTheoryDate > new Date() ? "LID" : null].filter(Boolean);
 
@@ -144,8 +147,8 @@ export default function OverallAttendancePredictor({
               size="sm"
               onClick={() => setMode(type)}
               className={`text-xs ${mode === type
-                  ? "bg-blue-600 text-white dark:bg-blue-700"
-                  : "bg-gray-200 dark:bg-slate-700 midnight:bg-gray-900 text-gray-700 dark:text-gray-200 midnight:text-gray-200 hover:bg-blue-200 dark:hover:bg-blue-800 midnight:hover:bg-gray-800"
+                ? "bg-blue-600 text-white dark:bg-blue-700"
+                : "bg-gray-200 dark:bg-slate-700 midnight:bg-gray-900 text-gray-700 dark:text-gray-200 midnight:text-gray-200 hover:bg-blue-200 dark:hover:bg-blue-800 midnight:hover:bg-gray-800"
                 }`}
             >
               {type === "CAT1"
@@ -192,27 +195,38 @@ export default function OverallAttendancePredictor({
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-2 mb-5">
+      <div className="grid grid-cols-5 gap-2 mb-5">
         {visibleDays.map((d, i) => {
           const isSelected = selectedDates.some(
             (s) => s.getTime() === d.date.getTime()
           );
           const formatted = d.date.getDate();
+          const weekday = d.date.toLocaleDateString("en-US", { weekday: "short" });
           const isToday = d.date.toDateString() === new Date().toDateString();
 
           return (
             <div
               key={i}
               onClick={() => toggleDate(d.date)}
-              className={`cursor-pointer p-2 rounded-lg text-center font-medium transition-all duration-150
-                ${isSelected
+              className={`cursor-pointer flex flex-col items-center justify-center gap-1 p-2 rounded-lg text-center font-medium transition-all duration-150
+          ${isSelected
                   ? "bg-red-500 text-white scale-105"
                   : isToday
                     ? "bg-blue-500 text-white font-bold"
                     : "bg-white dark:bg-slate-900 midnight:bg-gray-950 text-gray-700 dark:text-gray-200 midnight:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-900/30 midnight:hover:bg-gray-800"
                 }`}
             >
-              {formatted}
+              <span className="text-base">{formatted}</span>
+              <span
+                className={`text-[10px] uppercase ${isSelected
+                    ? "text-white"
+                    : isToday
+                      ? "text-white"
+                      : "text-gray-500 dark:text-gray-400 midnight:text-gray-400"
+                  }`}
+              >
+                {weekday}
+              </span>
             </div>
           );
         })}
@@ -241,10 +255,10 @@ export default function OverallAttendancePredictor({
             </span>
             <span
               className={`font-semibold ${p.predictedPercent < 75
-                  ? "text-red-500"
-                  : p.predictedPercent < 85
-                    ? "text-yellow-400"
-                    : "text-green-400"
+                ? "text-red-500"
+                : p.predictedPercent < 85
+                  ? "text-yellow-400"
+                  : "text-green-400"
                 }`}
             >
               {p.predictedAttended}/{p.predictedTotal} ({p.predictedPercent}%)
@@ -256,28 +270,103 @@ export default function OverallAttendancePredictor({
   );
 }
 
-/* Helper Functions */
-function normalizeDay(d) {
-  return d.slice(0, 3).toUpperCase();
-}
-
 function countFutureClassesForCourse(courseCode, dayCardsMap, allWorkingDays) {
+  if (!courseCode || !dayCardsMap || !Array.isArray(allWorkingDays)) return 0;
+
+  const normalizeDay = (d) => d.slice(0, 3).toUpperCase();
+
   const subjectDays = Object.keys(dayCardsMap).filter((day) =>
     dayCardsMap[day].some((c) => c.courseCode === courseCode)
   );
-  return allWorkingDays.filter((d) =>
-    subjectDays.includes(normalizeDay(d.weekday || ""))
-  ).length;
+  if (subjectDays.length === 0) return 0;
+
+  const subjectDaysShort = subjectDays.map(normalizeDay);
+
+  const dayOrderMap = {
+    monday: "MON",
+    tuesday: "TUE",
+    wednesday: "WED",
+    thursday: "THU",
+    friday: "FRI",
+  };
+
+  const remainingWorkingDays = allWorkingDays.filter((d) => {
+    if (!d || !d.date || isNaN(d.date.getTime?.())) return false;
+
+    let effectiveDay = normalizeDay(d.weekday || "");
+
+    if (effectiveDay === "SAT" && Array.isArray(d.events) && d.events.length > 0) {
+      const found = d.events.find((ev) =>
+        /(monday|tuesday|wednesday|thursday|friday)/i.test(ev.text || ev.category || "")
+      );
+
+      if (found) {
+        const match = (found.text || found.category || "").match(
+          /(Monday|Tuesday|Wednesday|Thursday|Friday)/i
+        );
+        if (match && match[1]) {
+          const mapped = dayOrderMap[match[1].toLowerCase()];
+          if (mapped) effectiveDay = mapped;
+        }
+      }
+    }
+
+    return subjectDaysShort.includes(effectiveDay);
+  });
+
+  return remainingWorkingDays.length;
 }
 
-function countMissedClassesForCourse(courseCode, dayCardsMap, selectedDates) {
+function countMissedClassesForCourse(
+  courseCode,
+  dayCardsMap,
+  selectedDates,
+  allWorkingDays,
+  cutoffDate
+) {
+  if (!courseCode || !dayCardsMap || !Array.isArray(selectedDates)) return 0;
+
+  const normalizeDay = (d) => d.slice(0, 3).toUpperCase();
+
   const subjectDays = Object.keys(dayCardsMap).filter((day) =>
     dayCardsMap[day].some((c) => c.courseCode === courseCode)
   );
-  return selectedDates.filter((date) => {
-    const weekday = normalizeDay(
-      date.toLocaleDateString("en-US", { weekday: "short" })
-    );
-    return subjectDays.includes(weekday);
-  }).length;
+  if (subjectDays.length === 0) return 0;
+
+  const subjectDaysShort = subjectDays.map(normalizeDay);
+  const dayOrderMap = { monday: "MON", tuesday: "TUE", wednesday: "WED", thursday: "THU", friday: "FRI" };
+
+  const ymd = (d) => {
+    const dd = new Date(d); dd.setHours(0, 0, 0, 0);
+    return `${dd.getFullYear()}-${dd.getMonth() + 1}-${dd.getDate()}`;
+  };
+
+  const effectiveMap = new Map();
+  for (const d of allWorkingDays) {
+    if (!d?.date) continue;
+    let effectiveDay = normalizeDay(d.weekday || "");
+    if (effectiveDay === "SAT" && Array.isArray(d.events) && d.events.length > 0) {
+      const found = d.events.find((ev) =>
+        /(monday|tuesday|wednesday|thursday|friday)/i.test(ev.text || ev.category || "")
+      );
+      if (found) {
+        const match = (found.text || found.category || "").match(/(Monday|Tuesday|Wednesday|Thursday|Friday)/i);
+        if (match && match[1]) {
+          const mapped = dayOrderMap[match[1].toLowerCase()];
+          if (mapped) effectiveDay = mapped;
+        }
+      }
+    }
+    effectiveMap.set(ymd(d.date), effectiveDay);
+  }
+
+  let missed = 0;
+  for (const s of selectedDates) {
+    const key = ymd(s);
+    const eff = effectiveMap.get(key);
+    if (!eff) continue;
+    if (cutoffDate && s > cutoffDate) continue;
+    if (subjectDaysShort.includes(eff)) missed++;
+  }
+  return missed;
 }
