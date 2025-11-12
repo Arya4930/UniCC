@@ -60,9 +60,28 @@ export default function OverallAttendancePredictor({
     new Set(allWorkingDays.map((d) => `${d.month} ${d.year}`))
   );
   const currentMonth = monthsAvailable[monthIdx];
-  const visibleDays = allWorkingDays.filter(
-    (d) => `${d.month} ${d.year}` === currentMonth
-  );
+  const cutoffDate =
+    mode === "CAT1"
+      ? impDates.cat1Date
+      : mode === "CAT2"
+        ? impDates.cat2Date
+        : mode === "LID"
+          ? new Date(
+            Math.max(
+              impDates.lidLabDate?.getTime?.() || 0,
+              impDates.lidTheoryDate?.getTime?.() || 0
+            )
+          )
+          : null;
+
+  const visibleDays = allWorkingDays.filter((d) => {
+    if (!d || !d.date) return false;
+
+    const sameMonth = `${d.month} ${d.year}` === currentMonth;
+    if (!sameMonth) return false;
+    if (cutoffDate && d.date > cutoffDate) return false;
+    return true;
+  });
 
   const toggleDate = (date) => {
     const time = date.getTime();
@@ -82,11 +101,6 @@ export default function OverallAttendancePredictor({
         const attended = parseInt(c.attendedClasses);
         const total = parseInt(c.totalClasses);
         const isLab = c.courseCode.endsWith("(L)");
-
-        let cutoffDate = null;
-        if (mode === "CAT1") cutoffDate = impDates.cat1Date;
-        else if (mode === "CAT2") cutoffDate = impDates.cat2Date;
-        else if (mode === "LID") cutoffDate = isLab ? impDates.lidLabDate : impDates.lidTheoryDate;
 
         const filteredDays = allWorkingDays.filter(
           (d) => !cutoffDate || d.date <= cutoffDate
@@ -219,10 +233,10 @@ export default function OverallAttendancePredictor({
               <span className="text-base">{formatted}</span>
               <span
                 className={`text-[10px] uppercase ${isSelected
+                  ? "text-white"
+                  : isToday
                     ? "text-white"
-                    : isToday
-                      ? "text-white"
-                      : "text-gray-500 dark:text-gray-400 midnight:text-gray-400"
+                    : "text-gray-500 dark:text-gray-400 midnight:text-gray-400"
                   }`}
               >
                 {weekday}
