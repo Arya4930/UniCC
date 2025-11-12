@@ -15,7 +15,7 @@ export default function GradesModal({ GradesData, onClose, handleFetchGrades, ma
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="rounded-2xl shadow-lg w-11/12 max-w-md max-h-[90vh] overflow-y-auto relative bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800">
+      <div className="rounded-2xl shadow-lg w-11/12 max-w-md md:max-w-5xl max-h-[90vh] overflow-y-auto relative bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800">
         <GradesDisplay data={GradesData} handleFetchGrades={handleFetchGrades} marksData={marksData} attendance={attendance} />
         <Button
           variant="ghost"

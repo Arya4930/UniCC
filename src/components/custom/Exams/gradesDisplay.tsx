@@ -62,7 +62,7 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
             <RefreshCcw className={`w-4 h-4`} />
           </button></CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-4 gap-2 text-center text-sm">
+        <CardContent className="grid grid-cols-4 md:grid-cols-8 gap-2 text-center text-sm">
           {Object.entries(data.cgpa.grades as Record<string, number>).map(([grade, count]) => (
             <div
               key={grade}
@@ -115,39 +115,46 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
             <h3 className="font-semibold text-gray-900 dark:text-gray-100 midnight:text-gray-100">
               Curriculum
             </h3>
-            {normalCurriculum.map((c, idx) => {
-              const earned = parseFloat(c.creditsEarned);
-              const required = parseFloat(c.creditsRequired);
-              const inProgress = ongoingCreditsByCategory[c.basketTitle] || 0;
-              const total = earned + inProgress;
-              const progressEarned = (earned / required) * 100;
-              const progressWithOngoing = (total / required) * 100;
+            <div className="relative">
+              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[1px] bg-gray-300 dark:bg-gray-700 midnight:bg-gray-800 transform -translate-x-1/2" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
+                {normalCurriculum.map((c, idx) => {
+                  const earned = parseFloat(c.creditsEarned);
+                  const required = parseFloat(c.creditsRequired);
+                  const inProgress = ongoingCreditsByCategory[c.basketTitle] || 0;
+                  const total = earned + inProgress;
+                  const progressEarned = (earned / required) * 100;
+                  const progressWithOngoing = (total / required) * 100;
 
-              return (
-                <div key={idx}>
-                  <p className="font-medium text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                    {c.basketTitle}
-                  </p>
-                  <div className="relative h-2 rounded-full overflow-hidden bg-gray-300 dark:bg-gray-700">
-                    <div
-                      className="absolute left-0 top-0 h-full bg-yellow-400/60"
-                      style={{ width: `${progressWithOngoing}%` }}
-                    />
-                    <div
-                      className="absolute left-0 top-0 h-full bg-blue-500 dark:bg-blue-600"
-                      style={{ width: `${progressEarned}%` }}
-                    />
-                  </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-300 font-medium">
-                    {earned.toFixed(1)}
-                    {inProgress > 0
-                      ? ` + ${inProgress.toFixed(1)} → ${(earned + inProgress).toFixed(1)}`
-                      : ""}{" "}
-                    / {required.toFixed(1)}
-                  </p>
-                </div>
-              );
-            })}
+                  return (
+                    <div key={idx} className="p-2 space-y-1">
+                      <p className="font-medium text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+                        {c.basketTitle}
+                      </p>
+
+                      <div className="relative h-2 rounded-full overflow-hidden bg-gray-300 dark:bg-gray-700">
+                        <div
+                          className="absolute left-0 top-0 h-full bg-yellow-400/60"
+                          style={{ width: `${progressWithOngoing}%` }}
+                        />
+                        <div
+                          className="absolute left-0 top-0 h-full bg-blue-500 dark:bg-blue-600"
+                          style={{ width: `${progressEarned}%` }}
+                        />
+                      </div>
+
+                      <p className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-300 font-medium">
+                        {earned.toFixed(1)}
+                        {inProgress > 0
+                          ? ` + ${inProgress.toFixed(1)} → ${(earned + inProgress).toFixed(1)}`
+                          : ""}{" "}
+                        / {required.toFixed(1)}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
           {specialCurriculum.length > 0 && (
