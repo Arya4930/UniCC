@@ -247,6 +247,21 @@ export default function OverallAttendancePredictor({
         })}
       </div>
 
+      <div className="flex items-center justify-center gap-4 mb-3 text-xs font-medium text-gray-700 dark:text-gray-300 midnight:text-gray-300">
+        <div className="flex items-center gap-1">
+          <div className="w-4 h-4 border-2 border-dashed border-gray-500 rounded-sm"></div>
+          <span>Attending</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <div className="w-4 h-4 bg-red-500 rounded-sm"></div>
+          <span>Not Attending</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <div className="w-4 h-4 bg-gray-500 opacity-70 rounded-sm"></div>
+          <span>Ignored</span>
+        </div>
+      </div>
+
       <p className="font-semibold text-center text-blue-600 dark:text-blue-400 midnight:text-blue-400 mb-3">
         Predicted Overall Attendance ({mode}): {overallAvg}%
       </p>
