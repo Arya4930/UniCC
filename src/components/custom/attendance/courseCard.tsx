@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Building2, Clock } from "lucide-react"
+import { Building2, Clock, TrendingUp, TrendingDown, AlertTriangle } from "lucide-react"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import "react-circular-progressbar/dist/styles.css"
 import { useState, useEffect } from "react"
@@ -40,97 +40,113 @@ export default function CourseCard({ a, onClick, activeDay, isHoliday }) {
         setOngoing(isOngoing());
     }, [a.time, activeDay]);
 
+    const calculateBuffer = () => {
+        const attended = a.attendedClasses;
+        const total = a.totalClasses;
+        const percentage = (attended / total) * 100;
+
+        if (percentage < 75) {
+            const needed = Math.ceil((0.75 * total - attended) / (1 - 0.75));
+            return { value: -(lab ? needed / 2 : needed), status: "danger" };
+        } else {
+            const canMiss = Math.floor(attended / 0.75 - total);
+            if (canMiss === 0) {
+                return { value: 0, status: "warning" };
+            } else {
+                return { value: (lab ? canMiss / 2 : canMiss), status: "safe" };
+            }
+        }
+    };
+
+    const buffer = calculateBuffer();
+
     return (
         <Card
             onClick={onClick}
-            className={`p-4 rounded-lg shadow-sm transition-shadow duration-300 cursor-pointer ${(ongoing && !isHoliday)
-                ? "ring-2 ring-yellow-200 shadow-lg bg-yellow-50 dark:bg-yellow-900/40 midnight:bg-yellow-900/40"
-                : "hover:shadow-md dark:hover:shadow-lg midnight:hover:shadow-lg"
+            className={`group relative overflow-hidden rounded-2xl shadow-sm transition-all duration-300 cursor-pointer border
+                ${(ongoing && !isHoliday)
+                    ? "ring-2 ring-amber-400 shadow-lg bg-gradient-to-br from-amber-50 to-white dark:from-amber-950/30 dark:to-slate-900 midnight:from-amber-950/20 midnight:to-black"
+                    : "hover:shadow-lg hover:-translate-y-1 border-slate-200 dark:border-slate-700 midnight:border-gray-800"
                 }`}
         >
-            <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-2 flex-grow">
-                    <CardHeader className="p-0">
-                        <CardTitle className="text-lg font-semibold text-gray-800 dark:text-gray-100 midnight:text-gray-100">
+            {/* Ongoing indicator */}
+            {(ongoing && !isHoliday) && (
+                <div className="absolute top-0 right-0 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                    Live
+                </div>
+            )}
+
+            <div className="flex justify-between items-start p-4 gap-4">
+                <div className="flex flex-col gap-3 flex-grow min-w-0">
+                    <CardHeader className="p-0 space-y-1">
+                        <CardTitle className="text-base font-semibold text-slate-800 dark:text-slate-100 midnight:text-slate-100 truncate">
                             {a.courseTitle}
                         </CardTitle>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 midnight:text-gray-400">
-                            {a.slotName}
-                        </p>
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 midnight:bg-gray-900 text-slate-600 dark:text-slate-300 midnight:text-slate-300">
+                                {a.slotName}
+                            </span>
+                        </div>
                     </CardHeader>
 
-                    <CardContent className="p-0 text-sm text-gray-600 dark:text-gray-300 midnight:text-gray-300 space-y-1">
+                    <CardContent className="p-0 text-sm text-slate-600 dark:text-slate-300 midnight:text-slate-300 space-y-2">
                         <div className="flex items-center gap-2">
-                            <Building2 size={16} className="text-gray-500 dark:text-gray-400 midnight:text-gray-400" />
-                            <span>{a.slotVenue}</span>
+                            <Building2 size={14} className="text-slate-400 flex-shrink-0" />
+                            <span className="truncate">{a.slotVenue}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <Clock size={16} className="text-gray-500 dark:text-gray-400 midnight:text-gray-400" />
+                            <Clock size={14} className="text-slate-400 flex-shrink-0" />
                             <span>{a.time}</span>
                         </div>
-                        <p>
-                            <strong>Faculty:</strong> {a.faculty}
-                        </p>
-                        <p>
-                            <strong>Classes Attended:</strong>{" "}
-                            <span className="font-semibold">
-                                {a.attendedClasses}/{a.totalClasses}
-                            </span>
-                        </p>
-                    </CardContent>
-                    {a.totalClasses > 0 && (() => {
-                        const attended = a.attendedClasses;
-                        const total = a.totalClasses;
-                        const percentage = (attended / total) * 100;
 
-                        if (percentage < 75) {
-                            const needed = Math.ceil((0.75 * total - attended) / (1 - 0.75));
-                            return (
-                                <p className="text-red-500 dark:text-red-400 midnight:text-red-400 text-sm">
-                                    Need to attend <strong>{lab ? needed / 2 : needed}</strong> more {lab ? "lab" : "class"}
-                                    {needed > 1 && (lab ? "s" : "es")} to reach 75%.
-                                </p>
-                            );
-                        } else {
-                            const canMiss = Math.floor(attended / 0.75 - total);
-                            if (canMiss === 0) {
-                                return (
-                                    <p className="text-yellow-500 dark:text-yellow-400 midnight:text-yellow-400 text-sm">
-                                        You are on the edge! Attend the next {lab ? "lab" : "class"}.
-                                    </p>
-                                );
-                            } else {
-                                return (
-                                    <p className="text-green-500 dark:text-green-400 midnight:text-green-400 text-sm">
-                                        Can miss <strong>{lab ? canMiss / 2 : canMiss}</strong> {lab ? "lab" : "class"}
-                                        {canMiss !== 1 && (lab ? "s" : "es")} and stay above 75%.
-                                    </p>
-                                );
-                            }
-                        }
-                    })()}
+                        {/* Compact attendance info */}
+                        <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-700 midnight:border-gray-800">
+                            <span className="text-xs font-medium">
+                                {a.attendedClasses}/{a.totalClasses} classes
+                            </span>
+
+                            {/* Buffer indicator */}
+                            {buffer.status === "danger" && (
+                                <div className="flex items-center gap-1 text-red-500 font-semibold text-sm">
+                                    <TrendingDown size={16} />
+                                    <span>{Math.abs(buffer.value)}</span>
+                                </div>
+                            )}
+                            {buffer.status === "warning" && (
+                                <div className="flex items-center gap-1 text-amber-500 font-semibold text-sm">
+                                    <AlertTriangle size={16} />
+                                    <span>0</span>
+                                </div>
+                            )}
+                            {buffer.status === "safe" && (
+                                <div className="flex items-center gap-1 text-green-500 font-semibold text-sm">
+                                    <TrendingUp size={16} />
+                                    <span>+{buffer.value}</span>
+                                </div>
+                            )}
+                        </div>
+                    </CardContent>
                 </div>
 
-                <div className="w-28 h-28 flex-shrink-0 flex flex-col items-center justify-center ml-4">
+                {/* Circular progress */}
+                <div className="w-20 h-20 flex-shrink-0">
                     <CircularProgressbar
                         value={a.attendancePercentage}
                         text={`${a.attendancePercentage}%`}
                         styles={buildStyles({
                             pathColor:
                                 a.attendancePercentage < 75
-                                    ? "#EF4444"
+                                    ? "#ef4444"
                                     : a.attendancePercentage < 85
-                                        ? "#FACC15"
-                                        : "#2df04aff",
+                                        ? "#f59e0b"
+                                        : "#10b981",
                             textColor: "currentColor",
-                            trailColor: "#CBD5E1",
+                            trailColor: "#e2e8f0",
                             strokeLinecap: "round",
                             pathTransitionDuration: 0.5,
+                            textSize: "24px",
                         })}
                     />
-                    <p className="text-center text-xs font-semibold mt-2 text-gray-700 dark:text-gray-300 midnight:text-gray-300">
-                        Attendance
-                    </p>
                 </div>
             </div>
         </Card>

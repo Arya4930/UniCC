@@ -8,8 +8,8 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
     if (!data || !data.grades) {
         return (
             <div>
-                <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                    Academic Grades <button onClick={handleAllGradesFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                <h1 className="text-xl font-bold mb-4 text-center text-slate-900 dark:text-slate-100 midnight:text-slate-100">
+                    Academic Grades <button onClick={handleAllGradesFetch} className="mt-2 px-4 py-2 rounded-lg bg-slate-600 hover:bg-slate-700 text-white font-medium transition-colors">
                         <RefreshCcw className={`w-4 h-4`} />
                     </button>
                 </h1>
@@ -22,8 +22,8 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
     if (semesterKeys.length === 0) {
         return (
             <div>
-                <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                    Academic Grades <button onClick={handleAllGradesFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                <h1 className="text-xl font-bold mb-4 text-center text-slate-900 dark:text-slate-100 midnight:text-slate-100">
+                    Academic Grades <button onClick={handleAllGradesFetch} className="mt-2 px-4 py-2 rounded-lg bg-slate-600 hover:bg-slate-700 text-white font-medium transition-colors">
                         <RefreshCcw className={`w-4 h-4`} />
                     </button>
                 </h1>
@@ -45,17 +45,23 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
         return Number(numericValue.toFixed(2)).toString();
     };
 
+    const handleBackdropClick = (e) => {
+        if (e.target === e.currentTarget) {
+            setOpenCourse(null);
+        }
+    };
+
     return (
         <div className="py-2">
-            <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                Academic Grades <button onClick={handleAllGradesFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+            <h1 className="text-xl font-bold mb-4 text-center text-slate-900 dark:text-slate-100 midnight:text-slate-100">
+                Academic Grades <button onClick={handleAllGradesFetch} className="mt-2 px-4 py-2 rounded-lg bg-slate-600 hover:bg-slate-700 text-white font-medium transition-colors">
                     <RefreshCcw className={`w-4 h-4`} />
                 </button>
             </h1>
 
             <div
                 data-scrollable
-                className="flex w-full overflow-x-auto mb-4"
+                className="flex w-full overflow-x-auto mb-4 rounded-lg border border-slate-200 dark:border-slate-700 midnight:border-gray-800"
             >
                 {semesterKeys.map((sem) => (
                     <button
@@ -65,8 +71,8 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
                             setOpenCourse(null);
                         }}
                         className={`flex-1 min-w-[120px] text-center py-2 text-sm font-medium transition-colors ${activeSem === sem
-                            ? "bg-blue-600 text-white midnight:bg-blue-700"
-                            : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600 midnight:bg-black midnight:text-gray-300 midnight:hover:bg-gray-900"
+                            ? "bg-slate-600 text-white dark:bg-slate-700 midnight:bg-slate-800"
+                            : "bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 midnight:bg-gray-900 midnight:text-slate-300 midnight:hover:bg-gray-800"
                             }`}
                     >
                         {sem.endsWith("1") ? `FALLSEM` : `WINTERSEM`} {sem.slice(4, -4)}-{sem.slice(6, -2)}
@@ -84,41 +90,44 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 px-2">
                 {gradeList.map((course, idx) => (
-                    <div
-                        key={course.courseId || course.courseCode || idx}
-                        className="p-4 rounded-lg shadow bg-white dark:bg-slate-800 midnight:bg-black midnight:outline midnight:outline-1 midnight:outline-gray-800 cursor-pointer"
-                        onClick={() => setOpenCourse(course.courseId)}
-                    >
-                        <div className="flex justify-between items-start gap-3">
-                            <div className="flex-1 min-w-0">
-                                <span className="font-medium text-gray-800 dark:text-gray-200 midnight:text-gray-200 text-sm sm:text-base break-words block">
-                                    {course.courseCode} - {course.courseTitle}
-                                </span>
+                    <div key={course.courseId || course.courseCode || idx}>
+                        <div
+                            className="group p-4 rounded-2xl shadow-sm bg-white dark:bg-slate-800 midnight:bg-black border border-slate-200 dark:border-slate-700 midnight:border-gray-800 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                            onClick={() => setOpenCourse(course.courseId)}
+                        >
+                            <div className="flex justify-between items-start gap-3">
+                                <div className="flex-1 min-w-0">
+                                    <span className="font-medium text-slate-800 dark:text-slate-200 midnight:text-slate-200 text-sm block mb-1">
+                                        {course.courseCode}
+                                    </span>
+                                    <span className="text-xs text-slate-600 dark:text-slate-400 midnight:text-slate-400 block line-clamp-2">
+                                        {course.courseTitle}
+                                    </span>
 
-                                <div className="px-3 py-1 inline-flex items-center justify-center bg-gray-200 dark:bg-slate-700 midnight:bg-gray-900 text-black dark:text-gray-300 midnight:text-gray-300 text-xs rounded-full outline outline-1 outline-gray-700 dark:outline-gray-500 midnight:outline-gray-700 mt-2">
-                                    {course.courseType}
+                                    <div className="flex items-center gap-2 mt-3">
+                                        <span className="text-xs font-medium px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-700 midnight:bg-gray-900 text-slate-600 dark:text-slate-300 midnight:text-slate-300">
+                                            {course.courseType}
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="flex flex-col items-end flex-shrink-0 gap-2 text-sm text-right">
-                                <div className="px-3 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-medium whitespace-nowrap">
-                                    Grade: {course.grade}
-                                </div>
-                                <div className="px-3 py-1 rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 font-medium whitespace-nowrap">
-                                    Total: {course.grandTotal}
+                                <div className="flex flex-col items-end flex-shrink-0 gap-2">
+                                    <div className="px-3 py-1 rounded-full bg-slate-600 text-white font-bold text-lg">
+                                        {course.grade}
+                                    </div>
+                                    <div className="text-xs text-slate-500 dark:text-slate-400 midnight:text-slate-400">
+                                        {course.grandTotal}
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         {openCourse === course.courseId && (
                             <div
-                                data-scrollable
-                                className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50"
+                                className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-4"
+                                onClick={handleBackdropClick}
                             >
-                                <div
-                                    className="bg-white dark:bg-slate-800 midnight:bg-black rounded-xl shadow-lg p-6 max-w-3xl w-[95%] relative max-h-[90vh] overflow-y-auto"
-                                    onClick={(e) => e.stopPropagation()}
-                                >
+                                <div className="bg-white dark:bg-slate-900 midnight:bg-black rounded-3xl shadow-2xl w-full max-w-3xl relative max-h-[90vh] overflow-hidden flex flex-col border border-slate-200 dark:border-slate-700 midnight:border-gray-800">
                                     <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100 midnight:text-gray-100">
                                         {course.courseCode} – {course.courseTitle}
                                     </h2>

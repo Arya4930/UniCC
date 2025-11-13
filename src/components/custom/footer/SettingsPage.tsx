@@ -95,18 +95,18 @@ export default function DataPage({ handleClose, handleDeleteItem, storageData, c
     }, [currSemesterID]);
 
     return (
-        <div className="fixed inset-0 z-50 bg-gray-100 dark:bg-slate-900 midnight:bg-black bg-opacity-95 flex flex-col items-center justify-start overflow-y-auto p-6">
+        <div className="fixed inset-0 z-50 bg-white/95 dark:bg-slate-900/95 midnight:bg-black/95 backdrop-blur-sm flex flex-col items-center justify-start overflow-y-auto p-6">
             <div className="w-full flex justify-between items-center mb-6 max-w-3xl">
-                <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100">
+                <h2 className="text-2xl font-semibold text-slate-800 dark:text-slate-200 midnight:text-slate-100">
                     Settings
                 </h2>
                 <Button
                     variant="ghost"
                     size="icon"
                     onClick={handleClose}
-                    className="cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-800 midnight:hover:bg-gray-900"
+                    className="cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 midnight:hover:bg-gray-900"
                 >
-                    <X size={22} className="text-gray-600 dark:text-gray-300 midnight:text-gray-200" />
+                    <X size={22} className="text-slate-600 dark:text-slate-300 midnight:text-slate-200" />
                 </Button>
             </div>
 
@@ -114,7 +114,7 @@ export default function DataPage({ handleClose, handleDeleteItem, storageData, c
                 <div className="flex flex-col flex-1">
                     <label
                         htmlFor="semesterSelect"
-                        className="text-lg font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100 mb-2"
+                        className="text-lg font-semibold text-slate-800 dark:text-slate-200 midnight:text-slate-100 mb-2"
                     >
                         Select Semester
                     </label>
@@ -123,7 +123,7 @@ export default function DataPage({ handleClose, handleDeleteItem, storageData, c
                         id="semesterSelect"
                         value={selectedSemester}
                         onChange={(e) => setSelectedSemester(e.target.value)}
-                        className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-slate-800 midnight:bg-black text-gray-800 dark:text-gray-200 midnight:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="px-4 py-2 border border-slate-300 dark:border-slate-700 midnight:border-gray-800 rounded-lg bg-white dark:bg-slate-800 midnight:bg-black text-slate-800 dark:text-slate-200 midnight:text-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400"
                     >
                         {config.semesterIDs?.map((id: string, index: number) => (
                             <option key={index} value={id}>
@@ -137,8 +137,8 @@ export default function DataPage({ handleClose, handleDeleteItem, storageData, c
                     onClick={handleSaveSemester}
                     disabled={!selectedSemester || selectedSemester === currSemesterID}
                     className={`mt-8 px-4 py-2 rounded-lg font-medium flex items-center justify-center transition-colors ${!selectedSemester || selectedSemester === currSemesterID
-                        ? "bg-gray-400 text-gray-200 cursor-not-allowed"
-                        : "bg-blue-600 hover:bg-blue-700 text-white"
+                        ? "bg-slate-300 text-slate-500 cursor-not-allowed dark:bg-slate-700 dark:text-slate-500"
+                        : "bg-slate-600 hover:bg-slate-700 text-white dark:bg-slate-700 dark:hover:bg-slate-600"
                         }`}
                 >
                     <Save className="w-4 h-4 mr-1" />

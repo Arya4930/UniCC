@@ -5,22 +5,22 @@ import { Button } from "../../ui/button";
 
 export default function PrivacyPolicyPage({ handleClose }) {
     return (
-        <div className="fixed inset-0 z-50 bg-gray-100 dark:bg-slate-900 midnight:bg-black bg-opacity-95 flex flex-col items-center justify-start overflow-y-auto p-6">
+        <div className="fixed inset-0 z-50 bg-white/95 dark:bg-slate-900/95 midnight:bg-black/95 backdrop-blur-sm flex flex-col items-center justify-start overflow-y-auto p-6">
             <div className="w-full flex justify-between items-center mb-6 max-w-3xl">
-                <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100">
+                <h2 className="text-2xl font-semibold text-slate-800 dark:text-slate-200 midnight:text-slate-100">
                     Privacy Policy
                 </h2>
                 <Button
                     variant="ghost"
                     size="icon"
                     onClick={handleClose}
-                    className="cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-800 midnight:hover:bg-gray-900"
+                    className="cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 midnight:hover:bg-gray-900"
                 >
-                    <X size={22} className="text-gray-600 dark:text-gray-300 midnight:text-gray-200" />
+                    <X size={22} className="text-slate-600 dark:text-slate-300 midnight:text-slate-200" />
                 </Button>
             </div>
 
-            <div className="w-full max-w-3xl space-y-4 text-gray-700 dark:text-gray-300 midnight:text-gray-200 text-sm leading-relaxed">
+            <div className="w-full max-w-3xl space-y-4 text-slate-700 dark:text-slate-300 midnight:text-slate-200 text-sm leading-relaxed">
                 <p>
                     This Privacy Policy describes how <strong>Uni CC</strong> handles data when you use the app.
                 </p>

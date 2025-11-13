@@ -16,6 +16,7 @@ import { useState } from "react";
 import { useRef } from "react";
 import LeaveDisplay from "./Hostel/LeaveDisplay";
 import AllGradesDisplay from "./Exams/AllGradesDisplay";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "../ui/tabs";
 
 export default function DashboardContent({
   activeTab,
@@ -245,113 +246,129 @@ export default function DashboardContent({
   };
 
   return (
-    <div
-      className="w-full max-w-md md:max-w-full mx-auto overflow-hidden"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      <NavigationTabs
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        handleLogOutRequest={handleLogOutRequest}
-        handleReloadRequest={handleReloadRequest}
-        hostelData={hostelData}
-      />
+    <div className="w-full max-w-7xl mx-auto px-4">
+      <div className="py-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <div className="flex items-center justify-between mb-6">
+            <TabsList className="bg-white dark:bg-slate-800 midnight:bg-gray-900 shadow-sm rounded-full p-1 border border-slate-200 dark:border-slate-700 midnight:border-gray-800">
+              <TabsTrigger value="attendance" className="rounded-full px-6 data-[state=active]:bg-slate-600 data-[state=active]:text-white">
+                Attendance
+              </TabsTrigger>
+              <TabsTrigger value="exams" className="rounded-full px-6 data-[state=active]:bg-slate-600 data-[state=active]:text-white">
+                Exams
+              </TabsTrigger>
+              <TabsTrigger value="hostel" className="rounded-full px-6 data-[state=active]:bg-slate-600 data-[state=active]:text-white">
+                Hostel
+              </TabsTrigger>
+            </TabsList>
+            
+            <div className="flex gap-2">
+              <button
+                onClick={handleReloadRequest}
+                className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 midnight:hover:bg-gray-800 transition-colors"
+                aria-label="Reload"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </button>
+              <button
+                onClick={handleLogOutRequest}
+                className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 midnight:hover:bg-gray-800 transition-colors"
+                aria-label="Logout"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </button>
+            </div>
+          </div>
 
-      <div className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-screen text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
-        <StatsCards
-          attendancePercentage={attendancePercentage}
-          ODhoursData={ODhoursData}
-          setODhoursIsOpen={setODhoursIsOpen}
-          feedbackStatus={GradesData.feedback}
-          marksData={marksData}
-          setGradesDisplayIsOpen={setGradesDisplayIsOpen}
-          CGPAHidden={CGPAHidden}
-          setCGPAHidden={setCGPAHidden}
-        />
-
-        {ODhoursIsOpen && (
-          <ODHoursModal
-            ODhoursData={ODhoursData}
-            onClose={() => setODhoursIsOpen(false)}
-          />
-        )}
-
-        {GradesDisplayIsOpen && (
-          <GradesModal
-            GradesData={GradesData}
-            marksData={marksData}
-            onClose={() => setGradesDisplayIsOpen(false)}
-            handleFetchGrades={handleFetchGrades}
-            attendance={attendanceData.attendance}
-          />
-        )}
-
-        {activeTab === "attendance" && attendanceData?.attendance && (
-          <div className="animate-fadeIn">
-            <AttendanceSubTabs
-              activeSubTab={activeAttendanceSubTab}
-              setActiveAttendanceSubTab={setActiveAttendanceSubTab}
+          <div className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-screen rounded-3xl p-4">
+            <StatsCards
+              attendancePercentage={attendancePercentage}
+              ODhoursData={ODhoursData}
+              setODhoursIsOpen={setODhoursIsOpen}
+              feedbackStatus={GradesData.feedback}
+              marksData={marksData}
+              setGradesDisplayIsOpen={setGradesDisplayIsOpen}
+              CGPAHidden={CGPAHidden}
+              setCGPAHidden={setCGPAHidden}
             />
 
-            {activeAttendanceSubTab === "attendance" && (
-              <>
-                {!calendarType && (
-                  <CalendarTabWrapper
-                    calendarType={calendarType}
-                    handleCalendarFetch={handleCalendarFetch}
+            {ODhoursIsOpen && (
+              <ODHoursModal
+                ODhoursData={ODhoursData}
+                onClose={() => setODhoursIsOpen(false)}
+              />
+            )}
+
+            {GradesDisplayIsOpen && (
+              <GradesModal
+                GradesData={GradesData}
+                marksData={marksData}
+                onClose={() => setGradesDisplayIsOpen(false)}
+                handleFetchGrades={handleFetchGrades}
+                attendance={attendanceData.attendance}
+              />
+            )}
+
+            <TabsContent value="attendance">
+              {attendanceData?.attendance && (
+                <div className="animate-fadeIn space-y-6">
+                  <AttendanceSubTabs
+                    activeSubTab={activeAttendanceSubTab}
+                    setActiveAttendanceSubTab={setActiveAttendanceSubTab}
                   />
-                )}
-                <AttendanceTabs
-                  data={attendanceData}
-                  activeDay={activeDay}
-                  setActiveDay={setActiveDay}
-                  calendars={calendarData.calendars}
-                />
-              </>
-            )}
 
-            {activeAttendanceSubTab === "calendar" && (
-              <>
-                <CalendarView
-                  calendars={calendarData.calendars}
-                  calendarType={calendarType}
-                  handleCalendarFetch={handleCalendarFetch}
-                />
-                <CalendarTabWrapper
-                  calendarType={calendarType}
-                  handleCalendarFetch={handleCalendarFetch}
-                />
-              </>
-            )}
-          </div>
-        )}
+                  {activeAttendanceSubTab === "attendance" && (
+                    <AttendanceTabs
+                      data={attendanceData}
+                      activeDay={activeDay}
+                      setActiveDay={setActiveDay}
+                      calendars={calendarData.calendars}
+                    />
+                  )}
 
-        {activeTab === "exams" && marksData && (
-          <div className="animate-fadeIn">
-            <ExamsSubTabs
-              activeSubTab={activeSubTab}
-              setActiveSubTab={setActiveSubTab}
-            />
-            {activeSubTab === "marks" && <MarksDisplay data={marksData} />}
-            {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} handleScheduleFetch={handleScheduleFetch} />}
-            {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} />}
-          </div>
-        )}
+                  {activeAttendanceSubTab === "calendar" && (
+                    <CalendarView
+                      calendars={calendarData.calendars}
+                      calendarType={calendarType}
+                      handleCalendarFetch={handleCalendarFetch}
+                    />
+                  )}
+                </div>
+              )}
+            </TabsContent>
 
-        {activeTab === "hostel" && (
-          <div className="animate-fadeIn">
-            <HostelSubTabs
-              HostelActiveSubTab={HostelActiveSubTab}
-              setHostelActiveSubTab={setHostelActiveSubTab}
-              hostelData={hostelData}
-            />
-            {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
-            {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
-            {HostelActiveSubTab === "leave" && <LeaveDisplay leaveData={hostelData.leaveHistory} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
+            <TabsContent value="exams">
+              {marksData && (
+                <div className="animate-fadeIn space-y-6">
+                  <ExamsSubTabs
+                    activeSubTab={activeSubTab}
+                    setActiveSubTab={setActiveSubTab}
+                  />
+                  {activeSubTab === "marks" && <MarksDisplay data={marksData} />}
+                  {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} handleScheduleFetch={handleScheduleFetch} />}
+                  {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} />}
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="hostel">
+              <div className="animate-fadeIn space-y-6">
+                <HostelSubTabs
+                  HostelActiveSubTab={HostelActiveSubTab}
+                  setHostelActiveSubTab={setHostelActiveSubTab}
+                  hostelData={hostelData}
+                />
+                {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
+                {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
+                {HostelActiveSubTab === "leave" && <LeaveDisplay leaveData={hostelData.leaveHistory} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
+              </div>
+            </TabsContent>
           </div>
-        )}
+        </Tabs>
       </div>
     </div>
   );
@@ -377,17 +394,17 @@ function CalendarTabWrapper({ calendarType, handleCalendarFetch }) {
 
   return (
     <div className="flex flex-col items-center justify-center gap-5 p-6 text-center">
-      <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100">
+      <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 midnight:text-slate-100">
         Select Calendar Type
       </h2>
 
       <select
         value={selectedType}
         onChange={(e) => setSelectedType(e.target.value)}
-        className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 
-                   dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100
-                   midnight:bg-[#0f172a] midnight:text-gray-100
-                   focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+        className="px-4 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 
+                   dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100
+                   midnight:bg-black midnight:text-slate-100 midnight:border-gray-800
+                   focus:outline-none focus:ring-2 focus:ring-slate-400 transition"
       >
         {Object.entries(CALENDAR_TYPES).map(([value, label]) => (
           <option key={value} value={value}>
@@ -398,9 +415,9 @@ function CalendarTabWrapper({ calendarType, handleCalendarFetch }) {
 
       <button
         onClick={handleSubmitCalendarType}
-        className="px-6 py-2 rounded-md font-medium text-white bg-blue-600 hover:bg-blue-700 
-                   dark:bg-blue-500 dark:hover:bg-blue-600
-                   data-[theme=midnight]:bg-blue-500 data-[theme=midnight]:hover:bg-blue-600
+        className="px-6 py-2 rounded-md font-medium text-white bg-slate-600 hover:bg-slate-700 
+                   dark:bg-slate-700 dark:hover:bg-slate-600
+                   midnight:bg-slate-800 midnight:hover:bg-slate-700
                    transition-colors duration-150"
       >
         Submit

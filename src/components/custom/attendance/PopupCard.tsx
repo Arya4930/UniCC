@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { Building2, Clock, ChevronDown, ChevronUp } from "lucide-react"
+import { Building2, Clock, ChevronDown, ChevronUp, TrendingUp, TrendingDown, AlertTriangle, User, Hash } from "lucide-react"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
@@ -33,7 +33,7 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
     }, []);
 
     const countTillDate = (endDate) => {
-        if (!endDate) return 0;
+        if (!endDate) return null;
         const endMid = new Date(endDate);
         endMid.setHours(23, 59, 59, 999);
 
@@ -61,192 +61,251 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
 
     let classesTillCAT1 = null;
     let classesTillCAT2 = null;
-    let classesTillLID = null;
+    let classesTillFAT = null;
 
     if (Array.isArray(analyzeCalendars) && analyzeCalendars.length > 0) {
         const allMonthsAreHolidays = analyzeCalendars.every(
             (month) => month?.summary?.working === 0
         );
         if (!allMonthsAreHolidays) {
+            classesTillCAT1 = countTillDate(impDates.cat1Date);
+            classesTillCAT2 = countTillDate(impDates.cat2Date);
+            
+            // For FAT, use appropriate date based on course type
             if (isLab) {
-                classesTillCAT1 = countTillDate(impDates.cat1Date);
-                classesTillCAT2 = countTillDate(impDates.cat2Date);
-                classesTillLID = countTillDate(impDates.lidLabDate);
+                classesTillFAT = countTillDate(impDates.lidLabDate);
             } else if (isTheory) {
-                classesTillCAT1 = countTillDate(impDates.cat1Date);
-                classesTillCAT2 = countTillDate(impDates.cat2Date);
-                classesTillLID = countTillDate(impDates.lidTheoryDate);
+                classesTillFAT = countTillDate(impDates.lidTheoryDate);
             }
         }
     }
+
+    const calculateBuffer = () => {
+        const attended = a.attendedClasses;
+        const total = a.totalClasses;
+        const percentage = (attended / total) * 100;
+
+        if (percentage < 75) {
+            const needed = Math.ceil((0.75 * total - attended) / (1 - 0.75));
+            return { 
+                value: -(lab ? needed / 2 : needed), 
+                status: "danger", 
+                text: `Attend ${lab ? needed / 2 : needed} more to reach 75%` 
+            };
+        } else {
+            const canMiss = Math.floor(attended / 0.75 - total);
+            if (canMiss === 0) {
+                return { 
+                    value: 0, 
+                    status: "warning", 
+                    text: "On the edge! Attend next class" 
+                };
+            } else {
+                return { 
+                    value: (lab ? canMiss / 2 : canMiss), 
+                    status: "safe", 
+                    // text: `Can miss ${lab ? canMiss / 2 : canMiss} and stay above 75%` 
+                };
+            }
+        }
+    };
+
+    const buffer = calculateBuffer();
     const [openDropdown, setOpenDropdown] = useState(null);
     const toggleDropdown = (key) => setOpenDropdown(openDropdown === key ? null : key);
+
+    // Filter out sections with no data or zero classes
+    const upcomingSections = [
+        { key: "CAT1", label: "Before CAT I", data: classesTillCAT1 },
+        { key: "CAT2", label: "Before CAT II", data: classesTillCAT2 },
+        { key: "FAT", label: "Before FAT", data: classesTillFAT },
+    ].filter(section => section.data && Array.isArray(section.data) && section.data.length > 0);
+
+    const handleBackdropClick = (e) => {
+        if (e.target === e.currentTarget) {
+            setExpandedIdx(null);
+        }
+    };
+
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
-            <div className="bg-gray-100 dark:bg-gray-800 midnight:bg-black rounded-2xl shadow-2xl p-5 w-[90%] max-w-md relative max-h-[90vh] overflow-hidden flex flex-col overflow-y-auto">
+        <div 
+            className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-4"
+            onClick={handleBackdropClick}
+        >
+            <div className="bg-white dark:bg-slate-900 midnight:bg-black rounded-3xl shadow-2xl w-full max-w-md relative max-h-[90vh] overflow-hidden flex flex-col border border-slate-200 dark:border-slate-700 midnight:border-gray-800">
                 <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => setExpandedIdx(null)}
-                    className="top-2 right-2 absolute cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-800 midnight:hover:bg-gray-900"
+                    className="top-4 right-4 absolute cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 midnight:hover:bg-gray-900 rounded-full z-10"
                 >
-                    <X size={22} className="text-gray-600 dark:text-gray-300 midnight:text-gray-200" />
+                    <X size={20} className="text-slate-600 dark:text-slate-300 midnight:text-slate-200" />
                 </Button>
 
-                <div
-                    className="rounded-xl mb-4 transition-all duration-300"
-                >
-                    <div className="flex justify-between items-start gap-4">
-                        <div className="flex flex-col gap-2 flex-grow">
-                            <div className="p-0">
-                                <div className="text-base font-semibold text-gray-800 dark:text-gray-100 midnight:text-gray-100">
-                                    {a.courseTitle}
-                                </div>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 midnight:text-gray-400">
-                                    {a.slotName}
-                                </p>
-                            </div>
-
-                            <div className="p-0 text-sm text-gray-600 dark:text-gray-300 midnight:text-gray-300 space-y-1">
-                                <div className="flex items-center gap-2">
-                                    <Building2 size={16} className="text-gray-500 dark:text-gray-400" />
-                                    <span>{a.slotVenue}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Clock size={16} className="text-gray-500 dark:text-gray-400" />
-                                    <span>{a.time}</span>
-                                </div>
-                                <p><strong>Faculty:</strong> {a.faculty}</p>
-                                <p><strong>Course Code:</strong> {a.courseCode.slice(0, -3)}</p>
-                                <p><strong>Credits:</strong> {a.credits}</p>
-                                <p>
-                                    <strong>Classes Attended:</strong>{" "}
-                                    <span className="font-semibold">
-                                        {a.attendedClasses}/{a.totalClasses}
-                                    </span>
-                                </p>
-                            </div>
+                {/* Header with gradient */}
+                <div className="relative bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-900 midnight:from-gray-900 midnight:to-black p-6 pb-20">
+                    <div className="space-y-2">
+                        <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 midnight:text-slate-100 pr-8 leading-tight">
+                            {a.courseTitle}
+                        </h2>
+                        <div className="flex flex-wrap gap-2">
+                            <span className="text-xs font-medium px-3 py-1 rounded-full bg-white dark:bg-slate-800 midnight:bg-gray-900 text-slate-600 dark:text-slate-300 midnight:text-slate-300 border border-slate-200 dark:border-slate-700 midnight:border-gray-800">
+                                {a.slotName}
+                            </span>
+                            <span className="text-xs font-medium px-3 py-1 rounded-full bg-white dark:bg-slate-800 midnight:bg-gray-900 text-slate-600 dark:text-slate-300 midnight:text-slate-300 border border-slate-200 dark:border-slate-700 midnight:border-gray-800">
+                                {a.credits} Credits
+                            </span>
+                            <span className="text-xs font-medium px-3 py-1 rounded-full bg-white dark:bg-slate-800 midnight:bg-gray-900 text-slate-600 dark:text-slate-300 midnight:text-slate-300 border border-slate-200 dark:border-slate-700 midnight:border-gray-800">
+                                {isLab ? "Lab" : "Theory"}
+                            </span>
                         </div>
+                    </div>
 
-                        <div className="w-24 h-24 flex-shrink-0 flex flex-col items-center justify-center">
-                            <CircularProgressbar
-                                value={a.attendancePercentage}
-                                text={`${a.attendancePercentage}%`}
-                                styles={buildStyles({
-                                    pathColor:
-                                        a.attendancePercentage < 75
-                                            ? "#EF4444"
-                                            : a.attendancePercentage < 85
-                                                ? "#FACC15"
-                                                : "#2df04aff",
-                                    textColor: "currentColor",
-                                    trailColor: "#a3c6f0ff",
-                                    strokeLinecap: "round",
-                                    pathTransitionDuration: 0.5,
-                                })}
-                            />
-                            <p className="text-center text-xs font-semibold mt-1 text-gray-700 dark:text-gray-300 midnight:text-gray-300">
-                                Attendance
-                            </p>
+                    {/* Floating progress card */}
+                    <div className="absolute -bottom-12 left-6 right-6 bg-white dark:bg-slate-800 midnight:bg-gray-900 rounded-2xl shadow-lg p-4 border border-slate-200 dark:border-slate-700 midnight:border-gray-800">
+                        <div className="flex items-center gap-4">
+                            <div className="flex-1 space-y-2">
+                                <div className="flex items-center gap-2">
+                                    {buffer.status === "danger" && (
+                                        <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-red-50 dark:bg-red-950/30 midnight:bg-red-950/20 text-red-600 dark:text-red-400 font-semibold text-sm">
+                                            <TrendingDown size={14} />
+                                            <span>{Math.abs(buffer.value)}</span>
+                                        </div>
+                                    )}
+                                    {buffer.status === "warning" && (
+                                        <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-amber-50 dark:bg-amber-950/30 midnight:bg-amber-950/20 text-amber-600 dark:text-amber-400 font-semibold text-sm">
+                                            <AlertTriangle size={14} />
+                                            <span>0</span>
+                                        </div>
+                                    )}
+                                    {buffer.status === "safe" && (
+                                        <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-green-50 dark:bg-green-950/30 midnight:bg-green-950/20 text-green-600 dark:text-green-400 font-semibold text-md">
+                                            <TrendingUp size={18} />
+                                            <span>+{buffer.value}</span>
+                                        </div>
+                                    )}
+                                </div>
+                                <p className={`text-sm font-medium ${
+                                    buffer.status === "danger" ? "text-red-600 dark:text-red-400" :
+                                    buffer.status === "warning" ? "text-amber-600 dark:text-amber-400" :
+                                    "text-green-600 dark:text-green-400"
+                                }`}>
+                                    {buffer.text}
+                                </p>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 midnight:text-slate-400">
+                                    {a.attendedClasses} / {a.totalClasses} {isLab ? "labs" : "classes"} attended
+                                </p>
+                            </div>
+                            <div className="w-20 h-20 flex-shrink-0">
+                                <CircularProgressbar
+                                    value={a.attendancePercentage}
+                                    text={`${a.attendancePercentage}%`}
+                                    styles={buildStyles({
+                                        pathColor: buffer.status === "danger" ? "#ef4444" : buffer.status === "warning" ? "#f59e0b" : "#10b981",
+                                        textColor: buffer.status === "danger" ? "#dc2626" : buffer.status === "warning" ? "#d97706" : "#059669",
+                                        trailColor: "#e2e8f0",
+                                        strokeLinecap: "round",
+                                        textSize: "24px",
+                                    })}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div>
-                    {(() => {
-                        const attended = a.attendedClasses;
-                        const total = a.totalClasses;
-                        const percentage = (attended / total) * 100;
 
-                        if (percentage < 75) {
-                            const needed = Math.ceil((0.75 * total - attended) / (1 - 0.75));
-                            return (
-                                <p className="text-red-500 dark:text-red-400 midnight:text-red-400 text-sm">
-                                    Need to attend <strong>{lab ? needed / 2 : needed}</strong> more{" "}
-                                    {lab ? "lab" : "class"} to reach 75%.
-                                </p>
-                            );
-                        } else {
-                            const canMiss = Math.floor(attended / 0.75 - total);
-                            if (canMiss === 0) {
-                                return (
-                                    <p className="text-yellow-500 dark:text-yellow-400 midnight:text-yellow-400 text-sm">
-                                        You are on the edge! Attend the next {lab ? "lab" : "class"}.
-                                    </p>
-                                );
-                            } else {
-                                return (
-                                    <p className="text-green-500 dark:text-green-400 midnight:text-green-400 text-sm">
-                                        Can miss <strong>{lab ? canMiss / 2 : canMiss}</strong>{" "}
-                                        {lab ? "lab" : "class"} and stay above 75%.
-                                    </p>
-                                );
-                            }
-                        }
-                    })()}
+                {/* Content */}
+                <div className="flex-1 overflow-y-auto p-6 pt-16 space-y-4">
+                    {/* Details grid */}
+                    <div className="grid grid-cols-2 gap-3">
+                        <div className="flex items-start gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-800 midnight:bg-gray-900">
+                            <Building2 size={16} className="text-slate-400 mt-0.5 flex-shrink-0" />
+                            <div className="min-w-0">
+                                <p className="text-xs text-slate-500 dark:text-slate-400 midnight:text-slate-400">Venue</p>
+                                <p className="text-sm font-medium text-slate-700 dark:text-slate-200 midnight:text-slate-200 truncate">{a.slotVenue}</p>
+                            </div>
+                        </div>
+                        <div className="flex items-start gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-800 midnight:bg-gray-900">
+                            <Clock size={16} className="text-slate-400 mt-0.5 flex-shrink-0" />
+                            <div className="min-w-0">
+                                <p className="text-xs text-slate-500 dark:text-slate-400 midnight:text-slate-400">Time</p>
+                                <p className="text-sm font-medium text-slate-700 dark:text-slate-200 midnight:text-slate-200">{a.time}</p>
+                            </div>
+                        </div>
+                        <div className="flex items-start gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-800 midnight:bg-gray-900 col-span-2">
+                            <User size={16} className="text-slate-400 mt-0.5 flex-shrink-0" />
+                            <div className="min-w-0 flex-1">
+                                <p className="text-xs text-slate-500 dark:text-slate-400 midnight:text-slate-400">Faculty</p>
+                                <p className="text-sm font-medium text-slate-700 dark:text-slate-200 midnight:text-slate-200 truncate">{a.faculty}</p>
+                            </div>
+                        </div>
+                        <div className="flex items-start gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-800 midnight:bg-gray-900 col-span-2">
+                            <Hash size={16} className="text-slate-400 mt-0.5 flex-shrink-0" />
+                            <div className="min-w-0">
+                                <p className="text-xs text-slate-500 dark:text-slate-400 midnight:text-slate-400">Course Code</p>
+                                <p className="text-sm font-medium text-slate-700 dark:text-slate-200 midnight:text-slate-200">{a.courseCode.slice(0, -3)}</p>
+                            </div>
+                        </div>
+                    </div>
 
-
-                    {(classesTillCAT1 && classesTillCAT2 && classesTillLID && classesTillLID.length > 0) ? (
-                        <div className="text-sm space-y-3 mt-3 border-t border-b border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-2">
-                            {[
-                                { key: "CAT1", label: "Classes left before CAT I", data: classesTillCAT1 },
-                                { key: "CAT2", label: "Classes left before CAT II", data: classesTillCAT2 },
-                                { key: "LID", label: "Classes left before FAT", data: classesTillLID },
-                            ].map(({ key, label, data }) => (
-                                data.length > 0 && (
-                                    <div
-                                        key={key}
-                                        className="w-full rounded-lg overflow-hidden transition-all duration-200"
+                    {/* Upcoming classes dropdowns */}
+                    {upcomingSections.length > 0 && (
+                        <div className="space-y-2">
+                            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 midnight:text-slate-200">Upcoming {isLab ? "Labs" : "Classes"}</h3>
+                            {upcomingSections.map(({ key, label, data }) => (
+                                <div
+                                    key={key}
+                                    className="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 midnight:border-gray-800"
+                                >
+                                    <button
+                                        onClick={() => toggleDropdown(key)}
+                                        className="flex items-center justify-between w-full px-4 py-3 text-left font-medium text-slate-800 dark:text-slate-200 midnight:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 midnight:hover:bg-gray-900 transition-colors"
                                     >
-                                        <button
-                                            onClick={() => toggleDropdown(key)}
-                                            className="flex items-center justify-between w-full px-3 py-2 text-left 
-                                                font-medium text-gray-800 dark:text-gray-200 midnight:text-gray-200 
-                                                hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 
-                                                transition-colors"
-                                        >
-                                            <span>{label}: <strong>{data.length}</strong></span>
-                                            {openDropdown === key ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                                        </button>
+                                        <span className="text-sm">{label}: <strong>{data.length}</strong></span>
+                                        {openDropdown === key ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                                    </button>
 
-                                        <div
-                                            className={`transition-all duration-300 ease-in-out ${openDropdown === key ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
-                                                } overflow-hidden`}
-                                        >
-                                            <div className="px-3 pb-3 bg-gray-50 dark:bg-slate-800 midnight:bg-black rounded-b-lg">
-                                                <UpcomingClassesList
-                                                    classes={data}
-                                                    attendedClasses={a.attendedClasses}
-                                                    totalClasses={a.totalClasses}
-                                                />
-                                            </div>
+                                    <div
+                                        className={`transition-all duration-300 ease-in-out ${
+                                            openDropdown === key ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+                                        } overflow-hidden`}
+                                    >
+                                        <div className="px-4 pb-4 bg-slate-50 dark:bg-slate-800/50 midnight:bg-gray-900/50">
+                                            <UpcomingClassesList
+                                                classes={data}
+                                                attendedClasses={a.attendedClasses}
+                                                totalClasses={a.totalClasses}
+                                                isLab={isLab}
+                                            />
                                         </div>
                                     </div>
-                                )
+                                </div>
                             ))}
                         </div>
-                    ) : null}
+                    )}
 
-                </div>
-
-                <div className="flex-1 pr-1 mt-2">
-                    <ul className="list-disc list-inside text-xs space-y-1">
-                        {a.viewLink?.map((d, i) => (
-                            <li
-                                key={i}
-                                className={
-                                    d.status.toLowerCase() === "absent"
-                                        ? "text-red-500"
-                                        : d.status.toLowerCase() === "present"
-                                            ? "text-green-500"
-                                            : d.status.toLowerCase() === "on duty"
-                                                ? "text-yellow-500"
-                                                : "text-gray-700 dark:text-gray-300 midnight:text-gray-300"
-                                }
-                            >
-                                {d.date} – {d.status}
-                            </li>
-                        ))}
-                    </ul>
+                    {/* Attendance history */}
+                    <div className="space-y-2">
+                        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 midnight:text-slate-200">Recent Attendance</h3>
+                        <div className="space-y-1 max-h-48 overflow-y-auto">
+                            {a.viewLink?.map((d, i) => (
+                                <div
+                                    key={i}
+                                    className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs ${
+                                        d.status.toLowerCase() === "absent"
+                                            ? "bg-red-50 dark:bg-red-950/20 midnight:bg-red-950/10 text-red-700 dark:text-red-400"
+                                            : d.status.toLowerCase() === "present"
+                                                ? "bg-green-50 dark:bg-green-950/20 midnight:bg-green-950/10 text-green-700 dark:text-green-400"
+                                                : d.status.toLowerCase() === "on duty"
+                                                    ? "bg-amber-50 dark:bg-amber-950/20 midnight:bg-amber-950/10 text-amber-700 dark:text-amber-400"
+                                                    : "bg-slate-50 dark:bg-slate-800 midnight:bg-gray-900 text-slate-700 dark:text-slate-300 midnight:text-slate-300"
+                                    }`}
+                                >
+                                    <span className="font-medium">{d.date}</span>
+                                    <span className="font-semibold">{d.status}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -347,13 +406,13 @@ export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calenda
     return remainingWorkingDays;
 }
 
-function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0 }) {
+function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0, isLab = false }) {
     const [notAttending, setNotAttending] = useState([]);
 
     if (!classes || classes.length === 0) {
         return (
-            <p className="text-gray-500 dark:text-gray-400 midnight:text-gray-500 text-xs text-center">
-                No upcoming classes 🎉
+            <p className="text-slate-500 dark:text-slate-400 midnight:text-slate-500 text-xs text-center py-4">
+                No upcoming {isLab ? "labs" : "classes"} 🎉
             </p>
         );
     }
@@ -366,71 +425,66 @@ function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0 })
         );
     };
 
-    const upcomingCount: number = classes.length;
-    const missedCount: number = notAttending.length;
-    const attendCount: number = upcomingCount - missedCount;
+    const upcomingCount = classes.length;
+    const missedCount = notAttending.length;
+    const attendCount = upcomingCount - missedCount;
 
     const predictedAttended = attendedClasses + attendCount;
     const predictedTotal = totalClasses + upcomingCount;
-    const predictedPercent: number = parseFloat(((predictedAttended / predictedTotal) * 100).toFixed(1));
+    const predictedPercent = parseFloat(((predictedAttended / predictedTotal) * 100).toFixed(1));
 
     return (
-        <div className="space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-medium 
-                      bg-gray-100 dark:bg-slate-800 midnight:bg-gray-900 
-                      px-3 mt-2 py-2 rounded-md border border-gray-200 dark:border-gray-700 midnight:border-gray-800">
-                <span className="text-green-600 dark:text-green-400">Attending: <strong>{attendCount}</strong></span>
-                <span className="text-red-500 dark:text-red-400">Not Attending: <strong>{missedCount}</strong></span>
-                <span
-                    className={`font-semibold ${predictedPercent >= 75
-                            ? "text-green-600 dark:text-green-400"
-                            : "text-red-500 dark:text-red-400"
-                        }`}
-                >
-                    Predicted: {predictedPercent}%
+        <div className="space-y-3 pt-3">
+            <div className="flex items-center justify-between text-xs font-medium px-3 py-2 rounded-lg bg-white dark:bg-slate-900 midnight:bg-black border border-slate-200 dark:border-slate-700 midnight:border-gray-800">
+                <div className="flex items-center gap-4">
+                    <span className="text-green-600 dark:text-green-400">
+                        <TrendingUp size={12} className="inline mr-1" />
+                        {attendCount}
+                    </span>
+                    <span className="text-red-500 dark:text-red-400">
+                        <TrendingDown size={12} className="inline mr-1" />
+                        {missedCount}
+                    </span>
+                </div>
+                <span className={`font-semibold ${
+                    predictedPercent >= 75 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"
+                }`}>
+                    → {predictedPercent}%
                 </span>
             </div>
 
-            <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 text-xs">
+            <div className="grid grid-cols-5 gap-2">
                 {classes.map((day, i) => {
                     const d = new Date(day.fullDate);
-                    const dateStr = d.toLocaleDateString("en-IN", {
-                        day: "numeric",
-                        month: "short",
-                    });
-                    const weekday = d.toLocaleDateString("en-IN", { weekday: "short" });
+                    const dateStr = d.getDate();
+                    const monthStr = d.toLocaleDateString("en-IN", { month: "short" });
                     const isSkipped = notAttending.includes(i);
 
                     return (
-                        <div
+                        <button
                             key={i}
                             onClick={() => toggleAttendance(i)}
-                            className={`flex flex-col items-center justify-center 
-                          rounded-lg border p-2 shadow-sm 
-                          cursor-pointer select-none transform-gpu
-                          transition-all duration-200 ease-in-out
-                          ${isSkipped
-                                    ? "bg-red-100 dark:bg-red-900/40 midnight:bg-red-950 border-red-300 dark:border-red-700 midnight:border-red-800 scale-[0.98]"
-                                    : "bg-white dark:bg-slate-900 midnight:bg-gray-950 border-gray-200 dark:border-gray-700 midnight:border-gray-800 hover:scale-[1.02] hover:shadow-md"
-                                }`}
+                            className={`relative flex flex-col items-center justify-center rounded-xl p-2 text-center cursor-pointer transition-all duration-200 ${
+                                isSkipped
+                                    ? "bg-red-100 dark:bg-red-950/40 midnight:bg-red-950/20 border-2 border-red-300 dark:border-red-700 midnight:border-red-800"
+                                    : "bg-white dark:bg-slate-900 midnight:bg-gray-950 border-2 border-slate-200 dark:border-slate-700 midnight:border-gray-800 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md"
+                            }`}
                         >
-                            <span
-                                className={`font-semibold ${isSkipped
-                                        ? "text-red-700 dark:text-red-300 midnight:text-red-400"
-                                        : "text-gray-800 dark:text-gray-200 midnight:text-gray-200"
-                                    }`}
-                            >
+                            <span className={`text-base font-bold ${
+                                isSkipped
+                                    ? "text-red-700 dark:text-red-300 midnight:text-red-400"
+                                    : "text-slate-800 dark:text-slate-200 midnight:text-slate-200"
+                            }`}>
                                 {dateStr}
                             </span>
-                            <span
-                                className={`text-[10px] ${isSkipped
-                                        ? "text-red-500 dark:text-red-400 midnight:text-red-400"
-                                        : "text-gray-500 dark:text-gray-400 midnight:text-gray-500"
-                                    }`}
-                            >
-                                {weekday}
+                            <span className={`text-[9px] ${
+                                isSkipped
+                                    ? "text-red-500 dark:text-red-400"
+                                    : "text-slate-500 dark:text-slate-400"
+                            }`}>
+                                {monthStr}
                             </span>
-                        </div>
+                        </button>
                     );
                 })}
             </div>

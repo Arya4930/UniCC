@@ -139,31 +139,45 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
   };
 
   return (
-    <div className="grid gap-4">
-      <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-        Weekly Attendance {" "}
-        <button onClick={() => setShowPredictor(true)} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-          <BadgeQuestionMark className={`w-4 h-4`} />
+    <div className="space-y-6">
+      {/* Modern header */}
+      <div className="text-center space-y-4">
+        <div className="flex items-center justify-center gap-3">
+          <div className="h-1 w-12 bg-gradient-to-r from-transparent to-slate-600 dark:to-slate-400 rounded-full" />
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 midnight:text-slate-100">
+            Weekly Schedule
+          </h1>
+          <div className="h-1 w-12 bg-gradient-to-l from-transparent to-slate-600 dark:to-slate-400 rounded-full" />
+        </div>
+        
+        <button 
+          onClick={() => setShowPredictor(true)} 
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 midnight:bg-gray-900 midnight:hover:bg-gray-800 text-slate-700 dark:text-slate-200 midnight:text-slate-200 font-medium transition-colors text-sm"
+        >
+          <BadgeQuestionMark className="w-4 h-4" />
+          Attendance Predictor
         </button>
-      </h1>
+      </div>
 
-      <div className="flex gap-2 mb-3 justify-center flex-wrap">
+      {/* Days navigation */}
+      <div className="flex gap-2 justify-center flex-wrap px-2">
         {daysWithClasses.map((d) => (
           <button
             key={d}
             onClick={() => setActiveDay(d)}
-            className={`px-4 py-2 rounded-md text-sm md:text-base font-medium transition-colors duration-150
-              ${activeDay === d
-                ? "bg-blue-600 text-white midnight:bg-blue-700"
-                : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 midnight:bg-black midnight:text-gray-200 midnight:hover:bg-gray-800 midnight:outline midnight:outline-1 midnight:outline-gray-800"
-              }`}
+            className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 ${
+              activeDay === d
+                ? "bg-slate-700 text-white shadow-lg scale-105 dark:bg-slate-600 midnight:bg-slate-800"
+                : "bg-white text-slate-700 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 midnight:bg-gray-900 midnight:text-slate-200 midnight:hover:bg-gray-800 border border-slate-200 dark:border-slate-700 midnight:border-gray-800"
+            }`}
           >
             {d}
           </button>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 p-2">
+      {/* Cards grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-2">
         {dayCardsMap[activeDay]?.map((a, idx) => (
           <div key={idx}>
             <CourseCard
@@ -185,16 +199,17 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
         ))}
       </div>
 
+      {/* Predictor modal */}
       {showPredictor && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex justify-center items-center">
-          <div className="relative w-[95%] max-w-4xl max-h-[95vh] overflow-y-auto bg-gray-100 dark:bg-slate-800 midnight:bg-black rounded-2xl shadow-2xl p-5">
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex justify-center items-center p-4">
+          <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-50 dark:bg-slate-900 midnight:bg-black rounded-3xl shadow-2xl">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setShowPredictor(false)}
-              className="absolute top-3 right-3 hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900"
+              className="absolute top-4 right-4 z-10 hover:bg-slate-200 dark:hover:bg-slate-800 midnight:hover:bg-gray-900 rounded-full"
             >
-              <X size={22} className="text-gray-700 dark:text-gray-200 midnight:text-gray-200" />
+              <X size={22} className="text-slate-700 dark:text-slate-200 midnight:text-slate-200" />
             </Button>
 
             <OverallAttendancePredictor

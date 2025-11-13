@@ -54,6 +54,7 @@ const MONTH_NAME_MAP = {
 };
 
 export default function CalendarView({ calendars, calendarType, handleCalendarFetch }) {
+    const [selectedType, setSelectedType] = useState(calendarType || "ALL");
     const safeCalendars = useMemo(() => {
         if (!calendars) return [];
         if (Array.isArray(calendars)) return calendars;
@@ -104,8 +105,43 @@ export default function CalendarView({ calendars, calendarType, handleCalendarFe
     }, [activeCalendar.month]);
 
 
+    function handleSubmitCalendarType() {
+        handleCalendarFetch(selectedType);
+    }
+
     if (!safeCalendars.length) {
-        return <NoContentFound />;
+        return (
+            <div className="flex flex-col items-center justify-center gap-5 p-6 text-center">
+                <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 midnight:text-slate-100">
+                    Select Calendar Type
+                </h2>
+
+                <select
+                    value={selectedType}
+                    onChange={(e) => setSelectedType(e.target.value)}
+                    className="px-4 py-2 rounded-xl border border-slate-300 bg-white text-slate-900 
+                               dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100
+                               midnight:bg-black midnight:text-slate-100 midnight:border-gray-800
+                               focus:outline-none focus:ring-2 focus:ring-slate-400 transition"
+                >
+                    {Object.entries(CALENDAR_TYPES).map(([value, label]) => (
+                        <option key={value} value={value}>
+                            {label}
+                        </option>
+                    ))}
+                </select>
+
+                <button
+                    onClick={handleSubmitCalendarType}
+                    className="px-6 py-2 rounded-xl font-medium text-white bg-slate-600 hover:bg-slate-700 
+                               dark:bg-slate-700 dark:hover:bg-slate-600
+                               midnight:bg-slate-800 midnight:hover:bg-slate-700
+                               transition-colors duration-150"
+                >
+                    Load Calendar
+                </button>
+            </div>
+        );
     }
 
     let monthStart = new Date(year, monthIndex, 1);
@@ -123,137 +159,197 @@ export default function CalendarView({ calendars, calendarType, handleCalendarFe
     const blanks = Array.from({ length: blanksCount }, (_, i) => i);
 
     return (
-        <div className="flex flex-col gap-4">
-            <h1 className="text-lg font-semibold mb-3 text-center text-gray-800 dark:text-gray-100 midnight:text-gray-100">
-                Academic Calendar ({CALENDAR_TYPES[calendarType || "ALL"]}) <button onClick={() => handleCalendarFetch(calendarType || "ALL")} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-                    <RefreshCcw className={`w-4 h-4`} />
+        <div className="flex flex-col gap-6">
+            {/* Calendar Type Selector - No background */}
+            <div className="flex items-center justify-center gap-3 p-4">
+                <select
+                    value={selectedType}
+                    onChange={(e) => setSelectedType(e.target.value)}
+                    className="px-4 py-2 rounded-xl border border-slate-300 bg-white text-slate-900 
+                               dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100
+                               midnight:bg-black midnight:text-slate-100 midnight:border-gray-800
+                               focus:outline-none focus:ring-2 focus:ring-slate-400 transition"
+                >
+                    {Object.entries(CALENDAR_TYPES).map(([value, label]) => (
+                        <option key={value} value={value}>
+                            {label}
+                        </option>
+                    ))}
+                </select>
+
+                <button
+                    onClick={handleSubmitCalendarType}
+                    className="px-4 py-2 rounded-xl font-medium text-white bg-slate-600 hover:bg-slate-700 
+                               dark:bg-slate-700 dark:hover:bg-slate-600
+                               midnight:bg-slate-800 midnight:hover:bg-slate-700
+                               transition-colors duration-150"
+                >
+                    Change Type
                 </button>
-            </h1>
+
+                <button 
+                    onClick={() => handleCalendarFetch(calendarType || "ALL")} 
+                    className="px-4 py-2 rounded-xl bg-slate-600 hover:bg-slate-700 text-white font-medium transition-colors"
+                >
+                    <RefreshCcw className="w-4 h-4" />
+                </button>
+            </div>
+
+            {/* Header */}
+            <div className="text-center space-y-4">
+                <div className="flex items-center justify-center gap-3">
+                    <div className="h-1 w-12 bg-gradient-to-r from-transparent to-slate-600 dark:to-slate-400 rounded-full" />
+                    <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 midnight:text-slate-100">
+                        Academic Calendar
+                    </h1>
+                    <div className="h-1 w-12 bg-gradient-to-l from-transparent to-slate-600 dark:to-slate-400 rounded-full" />
+                </div>
+                <p className="text-sm text-slate-600 dark:text-slate-400 midnight:text-slate-400">
+                    {CALENDAR_TYPES[calendarType || "ALL"]}
+                </p>
+            </div>
+
+            {/* Month Navigation */}
             <div className="flex gap-2 mb-3 justify-center flex-wrap">
                 {safeCalendars.map((calendar, idx) => (
                     <button
                         key={calendar.id}
                         onClick={() => setActiveIdx(idx)}
-                        className={`px-4 py-2 rounded-md text-sm md:text-base font-medium transition-colors duration-150 ${idx === activeIdx
-                            ? "bg-blue-600 text-white dark:bg-blue-700 midnight:bg-blue-800"
-                            : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 midnight:bg-black midnight:text-gray-200 midnight:hover:bg-gray-800 midnight:outline midnight:outline-1 midnight:outline-gray-800"
-                            }`}
+                        className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 ${
+                            idx === activeIdx
+                                ? "bg-slate-700 text-white shadow-lg scale-105 dark:bg-slate-600 midnight:bg-slate-800"
+                                : "bg-white text-slate-700 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 midnight:bg-gray-900 midnight:text-slate-200 midnight:hover:bg-gray-800 border border-slate-200 dark:border-slate-700 midnight:border-gray-800"
+                        }`}
                     >
                         {calendar.month ?? "Month"} {calendar.year ?? ""}
                     </button>
                 ))}
             </div>
 
+            {/* Calendar Grid */}
             <div data-scrollable key={activeIdx} className="w-full">
-                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-800 dark:text-gray-100 midnight:text-gray-200">
-                    {activeCalendar.month ?? monthStart.toLocaleString(undefined, { month: "long" })}
-                </h2>
-
-                <div className="overflow-x-auto">
-                    <div className="w-full min-w-[950px] grid grid-cols-7 text-center border-collapse">
-                        {weekdays.map((day) => (
-                            <div
-                                key={day}
-                                className="font-semibold py-2 border-b text-gray-700 dark:text-gray-200 midnight:text-gray-100 bg-gray-100 dark:bg-gray-800 midnight:bg-gray-900"
-                            >
-                                {day}
-                            </div>
-                        ))}
-
-                        {blanks.map((_, i) => (
-                            <div key={`blank-${i}`} className="h-36" />
-                        ))}
-
-                        {daysInMonth.map((dateObj) => {
-                            const date = dateObj.getDate();
-                            const dayInfo = Array.isArray(activeCalendar.days)
-                                ? activeCalendar.days.find((d) => Number(d.date) === date)
-                                : undefined;
-                            const events = dayInfo?.events || [];
-
-                            const hasHoliday = events.some(isHolidayEvent);
-                            const hasInstructional = events.some(isInstructionalEvent);
-                            const isEmpty = events.length === 0;
-
-                            const semiHolidayEvents = ["CAT - I", "CAT - II", "TechnoVIT", "Vibrance"];
-                            const hasSemiHoliday = events.some(e =>
-                                semiHolidayEvents.some(keyword =>
-                                    (e.text || "").toLowerCase().includes(keyword.toLowerCase()) ||
-                                    (e.category || "").toLowerCase().includes(keyword.toLowerCase())
-                                )
-                            );
-
-                            let dayType = "other";
-                            if (hasSemiHoliday) dayType = "semiholiday";
-                            else if (hasHoliday || isEmpty || (!hasInstructional && events.length > 0)) dayType = "holiday";
-                            else if (hasInstructional) dayType = "instructional";
-
-                            const bgClass =
-                                dayType === "holiday"
-                                    ? "bg-red-50 dark:bg-red-900/30 midnight:bg-red-900/30"
-                                    : dayType === "instructional"
-                                        ? "bg-green-50 dark:bg-green-900/30 midnight:bg-green-900/30"
-                                        : dayType === "semiholiday"
-                                            ? "bg-yellow-50 dark:bg-yellow-900/30 midnight:bg-yellow-900/30"
-                                            : "bg-gray-50 dark:bg-gray-900/30 midnight:bg-gray-900/30";
-
-                            return (
+                <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700 midnight:border-gray-800 shadow-lg">
+                    <div className="w-full min-w-[950px]">
+                        {/* Weekday Headers */}
+                        <div className="grid grid-cols-7 bg-gradient-to-r from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-900 midnight:from-gray-900 midnight:to-black">
+                            {weekdays.map((day) => (
                                 <div
-                                    key={date}
-                                    className={`relative flex flex-col items-start justify-start p-3 h-42 ${bgClass} shadow-sm`}
+                                    key={day}
+                                    className="font-semibold py-3 text-center text-slate-700 dark:text-slate-200 midnight:text-slate-100 border-r border-slate-200 dark:border-slate-700 midnight:border-gray-800 last:border-r-0"
                                 >
-                                    <div className="w-full flex items-center justify-between">
-                                        <div className="text-lg font-bold text-left text-gray-800 dark:text-gray-100 midnight:text-gray-200">
-                                            {date}
-                                        </div>
-                                        <div
-                                            className={`text-xs font-semibold px-2 py-0.5 rounded ${dayType === "holiday"
-                                                ? "bg-red-200 text-red-800 dark:bg-red-800 dark:text-red-100 midnight:bg-red-900 midnight:text-red-200"
-                                                : dayType === "instructional"
-                                                    ? "bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-100 midnight:bg-green-900 midnight:text-green-200"
-                                                    : dayType === "semiholiday"
-                                                        ? "bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100 midnight:bg-yellow-900 midnight:text-yellow-200"
-                                                        : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-100 midnight:bg-gray-800 midnight:text-gray-200"
-                                                }`}
-                                        >
-                                            {dayType === "holiday"
-                                                ? "Holiday"
-                                                : dayType === "instructional"
-                                                    ? "Working"
-                                                    : dayType === "semiholiday"
-                                                        ? "On Campus"
-                                                        : "Other"}
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-2 w-full text-left overflow-y-auto max-h-32">
-                                        {events.length > 0 && (
-                                            <ul className="mt-2 space-y-1 text-xs text-gray-600 dark:text-gray-300 midnight:text-gray-200">
-                                                {events.slice(1).map((e, i) => {
-                                                    const tagClass = isHolidayEvent(e)
-                                                        ? "bg-red-100 text-red-800 border-red-200 dark:bg-red-800/40 dark:text-red-200 midnight:bg-red-950/40 midnight:text-red-300"
-                                                        : isInstructionalEvent(e)
-                                                            ? "bg-green-100 text-green-800 border-green-200 dark:bg-green-800/40 dark:text-green-200 midnight:bg-green-950/40 midnight:text-green-300"
-                                                            : "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-800/40 dark:text-yellow-200 midnight:bg-yellow-950/40 midnight:text-yellow-300";
-                                                    const label = e.category && e.category !== "General" ? e.category : e.text;
-                                                    const parts = String(label).split("/").map(p => p.trim()).filter(Boolean);
-                                                    return parts.map((p, j) => (
-                                                        <li
-                                                            key={`${i}-${j}`}
-                                                            className={`inline-block px-2 py-1 rounded border ${tagClass} mr-1 mb-1`}
-                                                            title={e.text}
-                                                        >
-                                                            {p.replace(/^\(|\)$/g, "")}
-                                                        </li>
-                                                    ));
-                                                })}
-                                            </ul>
-                                        )}
-                                    </div>
+                                    {day}
                                 </div>
-                            );
-                        })}
+                            ))}
+                        </div>
+
+                        {/* Calendar Days */}
+                        <div className="grid grid-cols-7 bg-white dark:bg-slate-900 midnight:bg-black">
+                            {blanks.map((_, i) => (
+                                <div 
+                                    key={`blank-${i}`} 
+                                    className="h-32 border-r border-b border-slate-200 dark:border-slate-700 midnight:border-gray-800 bg-slate-50 dark:bg-slate-800/50 midnight:bg-gray-900/50"
+                                />
+                            ))}
+
+                            {daysInMonth.map((dateObj) => {
+                                const date = dateObj.getDate();
+                                const dayInfo = Array.isArray(activeCalendar.days)
+                                    ? activeCalendar.days.find((d) => Number(d.date) === date)
+                                    : undefined;
+                                const events = dayInfo?.events || [];
+
+                                const hasHoliday = events.some(isHolidayEvent);
+                                const hasInstructional = events.some(isInstructionalEvent);
+                                const isEmpty = events.length === 0;
+
+                                const semiHolidayEvents = ["CAT - I", "CAT - II", "TechnoVIT", "Vibrance"];
+                                const hasSemiHoliday = events.some(e =>
+                                    semiHolidayEvents.some(keyword =>
+                                        (e.text || "").toLowerCase().includes(keyword.toLowerCase()) ||
+                                        (e.category || "").toLowerCase().includes(keyword.toLowerCase())
+                                    )
+                                );
+
+                                let dayType = "other";
+                                if (hasSemiHoliday) dayType = "semiholiday";
+                                else if (hasHoliday || isEmpty || (!hasInstructional && events.length > 0)) dayType = "holiday";
+                                else if (hasInstructional) dayType = "instructional";
+
+                                const bgClass =
+                                    dayType === "holiday"
+                                        ? "bg-red-50 dark:bg-red-950/20 midnight:bg-red-950/10"
+                                        : dayType === "instructional"
+                                        ? "bg-green-50 dark:bg-green-950/20 midnight:bg-green-950/10"
+                                        : dayType === "semiholiday"
+                                        ? "bg-amber-50 dark:bg-amber-950/20 midnight:bg-amber-950/10"
+                                        : "bg-white dark:bg-slate-900 midnight:bg-black";
+
+                                return (
+                                    <div
+                                        key={date}
+                                        className={`relative flex flex-col p-3 h-40 border-r border-b border-slate-200 dark:border-slate-700 midnight:border-gray-800 ${bgClass} hover:shadow-lg transition-all duration-200 group overflow-hidden`}
+                                    >
+                                        <div className="flex items-start justify-between mb-2">
+                                            <span className="text-lg font-bold text-slate-800 dark:text-slate-100 midnight:text-slate-100">
+                                                {date}
+                                            </span>
+                                            <span
+                                                className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                                                    dayType === "holiday"
+                                                        ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300"
+                                                        : dayType === "instructional"
+                                                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                                                        : dayType === "semiholiday"
+                                                        ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
+                                                        : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                                                }`}
+                                            >
+                                                {dayType === "holiday" ? "Holiday" : dayType === "instructional" ? "Working" : dayType === "semiholiday" ? "On Campus" : "Other"}
+                                            </span>
+                                        </div>
+
+                                        <div className="flex-1 overflow-y-auto space-y-1">
+                                            {events.map((e, i) => {
+                                                const tagClass = isHolidayEvent(e)
+                                                    ? "bg-red-50 text-red-700 border border-red-200 dark:bg-red-900/20 dark:text-red-300 dark:border-red-800/30"
+                                                    : isInstructionalEvent(e)
+                                                    ? "bg-green-50 text-green-700 border border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800/30"
+                                                    : "bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-900/20 dark:text-amber-300 dark:border-amber-800/30";
+                                                
+                                                const label = e.category && e.category !== "General" ? e.category : e.text;
+                                                
+                                                return (
+                                                    <div
+                                                        key={i}
+                                                        className={`text-[10px] px-2 py-0.5 rounded ${tagClass} break-words leading-tight`}
+                                                        title={e.text}
+                                                    >
+                                                        {label}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            {/* Legend */}
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
+                <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700/50" />
+                    <span className="text-slate-700 dark:text-slate-300">Working Day</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700/50" />
+                    <span className="text-slate-700 dark:text-slate-300">Holiday</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-amber-100 dark:bg-amber-900/30 border border-amber-300 dark:border-amber-700/50" />
+                    <span className="text-slate-700 dark:text-slate-300">On Campus</span>
                 </div>
             </div>
         </div>

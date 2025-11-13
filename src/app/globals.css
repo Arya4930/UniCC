@@ -182,6 +182,15 @@
   background-color: #d1d5db; /* lighter gray on hover (gray-300) */
 }
 
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 @keyframes fadeIn {
   from { opacity: 0 }
   to { opacity: 1 }

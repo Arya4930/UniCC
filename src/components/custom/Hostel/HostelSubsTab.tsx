@@ -5,60 +5,44 @@ export default function HostelSubTabs({
   setHostelActiveSubTab,
   hostelData
 }) {
-  const parseDate = (dateStr) => {
-    const parts = dateStr.split(/[-/ ]/);
-    if (parts.length === 3) {
-      const [day, monthStr, year] = parts;
-      const month = new Date(`${monthStr} 1, 2000`).getMonth();
-      return new Date(year, month, parseInt(day));
-    }
-    return new Date(dateStr);
-  };
-
-  const now = new Date();
-  const activeLeaves = hostelData.leaveHistory?.filter((leave) => {
-    const from = parseDate(leave.from);
-    const to = parseDate(leave.to);
-    const daysSinceEnd = (now - to) / (1000 * 60 * 60 * 24);
-    return (
-      (from <= now && now <= to) ||
-      from > now ||
-      (daysSinceEnd > 0 && daysSinceEnd <= 3)
-    );
-  });
-
   return (
-    <div className="flex w-full mb-4">
-      <button
-        onClick={() => setHostelActiveSubTab("mess")}
-        className={`flex-1 py-2 text-sm font-medium transition-colors ${HostelActiveSubTab === "mess"
-          ? "bg-blue-600 text-white"
-          : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600 midnight:bg-black midnight:text-gray-300 midnight:hover:bg-gray-900"
-          }`}
-      >
-        Mess
-      </button>
-
-      <button
-        onClick={() => setHostelActiveSubTab("laundry")}
-        className={`flex-1 py-2 text-sm font-medium transition-colors ${HostelActiveSubTab === "laundry"
-          ? "bg-blue-600 text-white"
-          : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600 midnight:bg-black midnight:text-gray-300 midnight:hover:bg-gray-900"
-          }`}
-      >
-        Laundry
-      </button>
-      {activeLeaves && activeLeaves.length > 0 && hostelData.leaveHistory && (
+    <div className="flex justify-center mb-4">
+      <div className="inline-flex rounded-full p-1 bg-white dark:bg-slate-800 midnight:bg-gray-900 border border-slate-200 dark:border-slate-700 midnight:border-gray-800 shadow-sm">
         <button
-          onClick={() => setHostelActiveSubTab("leave")}
-          className={`flex-1 py-2 text-sm font-medium transition-colors ${HostelActiveSubTab === "leave"
-            ? "bg-blue-600 text-white"
-            : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600 midnight:bg-black midnight:text-gray-300 midnight:hover:bg-gray-900"
-            }`}
+          onClick={() => setHostelActiveSubTab("mess")}
+          className={`px-6 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
+            HostelActiveSubTab === "mess"
+              ? "bg-slate-600 text-white shadow-sm dark:bg-slate-700 midnight:bg-slate-800"
+              : "text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100 midnight:text-slate-300 midnight:hover:text-slate-100"
+          }`}
         >
-          Leave
+          Mess
         </button>
-      )}
+
+        <button
+          onClick={() => setHostelActiveSubTab("laundry")}
+          className={`px-6 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
+            HostelActiveSubTab === "laundry"
+              ? "bg-slate-600 text-white shadow-sm dark:bg-slate-700 midnight:bg-slate-800"
+              : "text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100 midnight:text-slate-300 midnight:hover:text-slate-100"
+          }`}
+        >
+          Laundry
+        </button>
+
+        {hostelData?.leaveHistory && hostelData.leaveHistory.length > 0 && (
+          <button
+            onClick={() => setHostelActiveSubTab("leave")}
+            className={`px-6 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
+              HostelActiveSubTab === "leave"
+                ? "bg-slate-600 text-white shadow-sm dark:bg-slate-700 midnight:bg-slate-800"
+                : "text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100 midnight:text-slate-300 midnight:hover:text-slate-100"
+            }`}
+          >
+            Leave
+          </button>
+        )}
+      </div>
     </div>
   );
 }

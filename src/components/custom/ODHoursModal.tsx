@@ -14,17 +14,17 @@ export default function ODHoursModal({ ODhoursData, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="rounded-2xl shadow-lg w-11/12 max-w-md max-h-[90vh] overflow-y-auto relative bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800">
+      <div className="rounded-3xl shadow-2xl w-11/12 max-w-md max-h-[90vh] overflow-hidden relative bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800">
         <Button
           variant="ghost"
           size="icon"
           onClick={onClose}
-          className="top-4 right-4 absolute cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-800 midnight:hover:bg-gray-900"
+          className="top-4 right-4 absolute cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900 rounded-full"
         >
           <X size={22} className="text-gray-600 dark:text-gray-300 midnight:text-gray-200" />
         </Button>
 
-        <div className="p-6 pb-4">
+        <div className="p-6 pb-4 overflow-y-auto max-h-[90vh]">
           <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 midnight:text-gray-100">
             OD Hours Info
           </h3>

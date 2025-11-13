@@ -150,8 +150,8 @@ export default function OverallAttendancePredictor({
   const buttonOptions = [impDates.cat1Date > new Date() ? "CAT1" : null, impDates.cat2Date > new Date() ? "CAT2" : null, impDates.lidLabDate > new Date() || impDates.lidTheoryDate > new Date() ? "LID" : null].filter(Boolean);
 
   return (
-    <div className="bg-gray-100 dark:bg-slate-800 midnight:bg-black p-5 rounded-2xl shadow-lg transition-all duration-300">
-      <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 midnight:text-gray-100 mb-2">
+    <div className="bg-slate-100 dark:bg-slate-800 midnight:bg-black p-5 rounded-2xl shadow-lg transition-all duration-300 border border-slate-200 dark:border-slate-700 midnight:border-gray-800">
+      <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 midnight:text-slate-100 mb-2">
         Overall Attendance Predictor (Beta Feature)
       </h2>
 
@@ -164,8 +164,8 @@ export default function OverallAttendancePredictor({
               size="sm"
               onClick={() => setMode(type)}
               className={`text-xs ${mode === type
-                ? "bg-blue-600 text-white dark:bg-blue-700"
-                : "bg-gray-200 dark:bg-slate-700 midnight:bg-gray-900 text-gray-700 dark:text-gray-200 midnight:text-gray-200 hover:bg-blue-200 dark:hover:bg-blue-800 midnight:hover:bg-gray-800"
+                ? "bg-slate-600 text-white dark:bg-slate-700 midnight:bg-slate-800"
+                : "bg-slate-100 dark:bg-slate-800 midnight:bg-gray-900 text-slate-700 dark:text-slate-200 midnight:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-800 border-slate-300 dark:border-slate-600 midnight:border-gray-700"
                 }`}
             >
               {type === "CAT1"
@@ -186,7 +186,7 @@ export default function OverallAttendancePredictor({
           >
             <ChevronLeft />
           </Button>
-          <p className="font-semibold text-gray-800 dark:text-gray-100 midnight:text-gray-100 text-center">
+          <p className="font-semibold text-slate-800 dark:text-slate-100 midnight:text-slate-100 text-center">
             {currentMonth?.slice(0, -4) || ""}
           </p>
           <Button
@@ -262,7 +262,7 @@ export default function OverallAttendancePredictor({
         </div>
       </div>
 
-      <p className="font-semibold text-center text-blue-600 dark:text-blue-400 midnight:text-blue-400 mb-3">
+      <p className="font-semibold text-center text-slate-700 dark:text-slate-300 midnight:text-slate-300 mb-3">
         Predicted Overall Attendance ({mode}): {overallAvg}%
       </p>
 

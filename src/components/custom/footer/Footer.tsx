@@ -61,15 +61,15 @@ export default function Footer({ isLoggedIn, currSemesterID, setCurrSemesterID, 
   };
 
   return (
-    <footer className="bg-transparent text-gray-700 dark:text-gray-300 midnight:text-gray-300 flex items-center justify-center">
+    <footer className="bg-transparent text-slate-700 dark:text-slate-300 midnight:text-slate-300 flex items-center justify-center">
       {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} currSemesterID={currSemesterID} setCurrSemesterID={setCurrSemesterID} handleLogin={handleLogin} setIsReloading={setIsReloading} />}
       {showPolicy && <PrivacyPolicyPage handleClose={() => setShowPolicy(false)} />}
       {showTOS && <TermsOfServicePage handleClose={() => setShowTOS(false)} />}
       <div className="max-w-7xl mx-auto px-3 py-6 text-center w-full">
-        <hr className="border-gray-300 dark:border-gray-700 midnight:border-gray-700 w-11/12 mx-auto mb-6" />
+        <hr className="border-slate-300 dark:border-slate-700 midnight:border-gray-700 w-11/12 mx-auto mb-6" />
 
         <div className="flex items-center justify-center gap-2 mb-4">
-          <Button variant="outline" size="icon" asChild>
+          <Button variant="outline" size="icon" asChild className="border-slate-300 dark:border-slate-600 midnight:border-gray-700">
             <a
               href="https://github.com/Arya4930/UniCC"
               target="_blank"
@@ -77,11 +77,11 @@ export default function Footer({ isLoggedIn, currSemesterID, setCurrSemesterID, 
             >
               <Github
                 size={20}
-                className="text-gray-600 dark:text-gray-300 midnight:text-gray-300"
+                className="text-slate-600 dark:text-slate-300 midnight:text-slate-300"
               />
             </a>
           </Button>
-          <Button variant="outline" size="icon" asChild>
+          <Button variant="outline" size="icon" asChild className="border-slate-300 dark:border-slate-600 midnight:border-gray-700">
             <a
               href="https://arya22.vercel.app/"
               target="_blank"
@@ -89,36 +89,35 @@ export default function Footer({ isLoggedIn, currSemesterID, setCurrSemesterID, 
             >
               <Link
                 size={20}
-                className="text-gray-600 dark:text-gray-300 midnight:text-gray-300"
+                className="text-slate-600 dark:text-slate-300 midnight:text-slate-300"
               />
             </a>
           </Button>
 
           <p className="text-sm font-medium tracking-wide px-5">
             Made for No reason<br></br>By My heart{" "}
-            {/* <span className="ml-2 text-xs text-gray-400">v0.1.3</span> */}
           </p>
 
-          <Button variant="outline" size="icon" onClick={openStoragePage}>
+          <Button variant="outline" size="icon" onClick={openStoragePage} className="border-slate-300 dark:border-slate-600 midnight:border-gray-700">
             <Settings className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:-rotate-90" />
           </Button>
           <ModeToggle />
         </div>
 
-        <span className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400 block">
+        <span className="text-xs text-slate-500 dark:text-slate-400 midnight:text-slate-400 block">
           &copy; {new Date().getFullYear()} Arya Evil Inc. All rights reserved. &nbsp;
         </span>
         <div>
           <Button
             variant="ghost"
-            className="mt-2 w-18 h-6 underline text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400"
+            className="mt-2 w-18 h-6 underline text-xs text-slate-500 dark:text-slate-400 midnight:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 midnight:hover:bg-gray-900"
             onClick={() => setShowPolicy(true)}
           >
             Privacy Policy
           </Button> • 
           <Button
             variant="ghost"
-            className="mt-2 ml-1 w-22 h-6 underline text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400"
+            className="mt-2 ml-1 w-22 h-6 underline text-xs text-slate-500 dark:text-slate-400 midnight:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 midnight:hover:bg-gray-900"
             onClick={() => setShowTOS(true)}
           >
             Terms of Service

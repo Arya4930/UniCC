@@ -1,39 +1,36 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { X, ChevronRight } from "lucide-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import Image from "next/image";
 import NoContentFound from "../NoContentFound";
 
 export default function MarksDisplay({ data }) {
   const [openCourse, setOpenCourse] = useState(null);
 
-  const toggleCourse = (slNo) => {
-    setOpenCourse(openCourse === slNo ? null : slNo);
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      setOpenCourse(null);
+    }
   };
 
   if (!data || !data.marks || data.marks.length === 0) {
-    return (
-      <NoContentFound />
-    );
+    return <NoContentFound />;
   }
 
   return (
     <div className="p-2">
-      <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+      <h1 className="text-xl font-bold mb-4 text-center text-slate-900 dark:text-slate-100 midnight:text-slate-100">
         Academic Marks
       </h1>
 
-      {/* Grid for cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {data.marks.map((course, idx) => {
           const formatNumber = (num) => {
             const numericValue = Number(num);
-            if (num == null || isNaN(numericValue)) {
-              return "-";
-            }
+            if (num == null || isNaN(numericValue)) return "-";
             return Number(numericValue.toFixed(2)).toString();
           };
+          
           const totals = course.assessments.reduce(
             (acc, asm) => {
               acc.max += Number(asm.maxMark) || 0;
@@ -45,116 +42,115 @@ export default function MarksDisplay({ data }) {
             { max: 0, scored: 0, weightPercent: 0, weighted: 0 }
           );
 
+          const percentage = (totals.weighted / totals.weightPercent) * 100 || 0;
+
           return (
-            <div
-              key={idx}
-              className="p-4 rounded-lg shadow bg-white dark:bg-slate-800 midnight:bg-black midnight:outline midnight:outline-1 midnight:outline-gray-800 cursor-pointer"
-              onClick={() => toggleCourse(course.slNo)}
-            >
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col items-start">
-                  <span className="font-medium text-gray-800 dark:text-gray-200 midnight:text-gray-200 text-sm sm:text-base max-w-xs break-words">
-                    {course.courseCode} - {course.courseTitle}
-                  </span>
-
-                  <div className="px-3 py-1 flex items-center justify-center bg-gray-200 dark:bg-slate-700 midnight:bg-gray-900 text-black dark:text-gray-300 midnight:text-gray-300 text-xs rounded-full outline outline-1 outline-gray-700 dark:outline-gray-500 midnight:outline-gray-700 mt-2">
-                    {course.courseType}
+            <div key={idx}>
+              <div
+                className="group relative p-4 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer bg-white dark:bg-slate-800 midnight:bg-black border border-slate-200 dark:border-slate-700 midnight:border-gray-800 hover:shadow-lg hover:-translate-y-1"
+                onClick={() => setOpenCourse(course.slNo)}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-slate-800 dark:text-slate-200 midnight:text-slate-200 text-sm mb-1 truncate">
+                      {course.courseCode}
+                    </h3>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 midnight:text-slate-400 line-clamp-2 mb-3">
+                      {course.courseTitle}
+                    </p>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-700 midnight:bg-gray-900 text-slate-600 dark:text-slate-300 midnight:text-slate-300">
+                        {course.courseType}
+                      </span>
+                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
+                    </div>
                   </div>
-                </div>
 
-                <div className="w-20 h-20 flex-shrink-0 flex flex-col items-center justify-center ml-4">
-                  <CircularProgressbar
-                    value={(totals.weighted / totals.weightPercent) * 100 || 0}
-                    text={`${formatNumber(totals.weighted)}/${formatNumber(
-                      totals.weightPercent
-                    )}`}
-                    styles={buildStyles({
-                      pathColor: "#00ff11ff",
-                      textColor: "currentColor",
-                      trailColor: "#E5E7EB",
-                      strokeLinecap: "round",
-                      textSize: "1.2em",
-                      textFontWeight: "bold",
-                      pathTransitionDuration: 0.5,
-                    })}
-                  />
+                  <div className="w-16 h-16 flex-shrink-0">
+                    <CircularProgressbar
+                      value={percentage}
+                      text={`${formatNumber(totals.weighted)}`}
+                      styles={buildStyles({
+                        pathColor: percentage >= 75 ? "#10b981" : percentage >= 50 ? "#f59e0b" : "#ef4444",
+                        textColor: "currentColor",
+                        trailColor: "#e2e8f0",
+                        strokeLinecap: "round",
+                        textSize: "24px",
+                      })}
+                    />
+                  </div>
                 </div>
               </div>
 
-              {/* Full page modal */}
               {openCourse === course.slNo && (
-                <div data-scrollable className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
-                  <div className="bg-white dark:bg-slate-800 midnight:bg-black rounded-xl shadow-lg p-6 max-w-3xl w-[95%] relative max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-                    <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                      {course.courseCode} – {course.courseTitle}
-                    </h2>
-                    <p className="mb-1">
-                      <strong>Faculty:</strong> {course.faculty}
-                    </p>
-                    <p className="mb-3">
-                      <strong>Slot:</strong> {course.slot}
-                    </p>
-
-                    <div className="overflow-x-auto">
-                      <table className="w-full border mt-2 border-gray-300 dark:border-gray-600 midnight:border-gray-700">
-                        <thead className="bg-gray-800 text-white dark:bg-slate-700 midnight:bg-gray-900">
-                          <tr>
-                            <th className="border p-2 text-left">Test</th>
-                            <th className="border p-2">Max</th>
-                            <th className="border p-2">Scored</th>
-                            <th className="border p-2">Weight %</th>
-                            <th className="border p-2">Weighted</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {course.assessments.map((asm, asmIdx) => (
-                            <tr
-                              key={asmIdx}
-                              className="border-gray-300 dark:border-gray-600 midnight:border-gray-700"
-                            >
-                              <td className="border p-2">{asm.title}</td>
-                              <td className="border p-2">
-                                {formatNumber(asm.maxMark)}
-                              </td>
-                              <td className="border p-2">
-                                {formatNumber(asm.scoredMark)}
-                              </td>
-                              <td className="border p-2">
-                                {formatNumber(asm.weightagePercent)}
-                              </td>
-                              <td className="border p-2">
-                                {formatNumber(asm.weightageMark)}
-                              </td>
-                            </tr>
-                          ))}
-
-                          <tr className="font-bold border-t border-gray-400 dark:border-gray-500 midnight:border-gray-600">
-                            <td className="border p-2">Total</td>
-                            <td className="border p-2">
-                              {formatNumber(totals.max)}
-                            </td>
-                            <td className="border p-2">
-                              {formatNumber(totals.scored)}
-                            </td>
-                            <td className="border p-2">
-                              {formatNumber(totals.weightPercent)}
-                            </td>
-                            <td className="border p-2">
-                              {formatNumber(totals.weighted)}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-
+                <div
+                  className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-4"
+                  onClick={handleBackdropClick}
+                >
+                  <div className="bg-white dark:bg-slate-900 midnight:bg-black rounded-3xl shadow-2xl w-full max-w-3xl relative max-h-[90vh] overflow-hidden flex flex-col border border-slate-200 dark:border-slate-700 midnight:border-gray-800">
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={() => setOpenCourse(null)}
-                      className="top-2 right-2 absolute cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-800 midnight:hover:bg-gray-900"
+                      className="top-4 right-4 absolute cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 midnight:hover:bg-gray-900 rounded-full z-10"
                     >
-                      <X size={22} className="text-gray-600 dark:text-gray-300 midnight:text-gray-200" />
+                      <X size={20} className="text-slate-600 dark:text-slate-300 midnight:text-slate-200" />
                     </Button>
+
+                    <div className="relative bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-900 midnight:from-gray-900 midnight:to-black p-6">
+                      <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 midnight:text-slate-100 pr-8 leading-tight mb-2">
+                        {course.courseTitle}
+                      </h2>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="text-xs font-medium px-3 py-1 rounded-full bg-white dark:bg-slate-800 midnight:bg-gray-900 text-slate-600 dark:text-slate-300 midnight:text-slate-300 border border-slate-200 dark:border-slate-700 midnight:border-gray-800">
+                          {course.courseCode}
+                        </span>
+                        <span className="text-xs font-medium px-3 py-1 rounded-full bg-white dark:bg-slate-800 midnight:bg-gray-900 text-slate-600 dark:text-slate-300 midnight:text-slate-300 border border-slate-200 dark:border-slate-700 midnight:border-gray-800">
+                          {course.faculty}
+                        </span>
+                        <span className="text-xs font-medium px-3 py-1 rounded-full bg-white dark:bg-slate-800 midnight:bg-gray-900 text-slate-600 dark:text-slate-300 midnight:text-slate-300 border border-slate-200 dark:border-slate-700 midnight:border-gray-800">
+                          Slot: {course.slot}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex-1 overflow-y-auto p-6 space-y-4">
+                      <div className="space-y-2">
+                        {course.assessments.map((asm, asmIdx) => (
+                          <div
+                            key={asmIdx}
+                            className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 midnight:bg-gray-900"
+                          >
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-slate-800 dark:text-slate-200 midnight:text-slate-200">
+                                {asm.title}
+                              </p>
+                              <p className="text-xs text-slate-500 dark:text-slate-400 midnight:text-slate-400">
+                                {formatNumber(asm.scoredMark)} / {formatNumber(asm.maxMark)} marks
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-sm font-bold text-slate-700 dark:text-slate-200 midnight:text-slate-200">
+                                {formatNumber(asm.weightageMark)}
+                              </p>
+                              <p className="text-xs text-slate-500 dark:text-slate-400 midnight:text-slate-400">
+                                / {formatNumber(asm.weightagePercent)}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-slate-100 to-slate-50 dark:from-slate-700 dark:to-slate-800 midnight:from-gray-800 midnight:to-gray-900 border-t-2 border-slate-300 dark:border-slate-600 midnight:border-gray-700">
+                        <span className="text-base font-bold text-slate-800 dark:text-slate-200 midnight:text-slate-200">
+                          Total
+                        </span>
+                        <span className="text-xl font-bold text-slate-700 dark:text-slate-200 midnight:text-slate-200">
+                          {formatNumber(totals.weighted)} / {formatNumber(totals.weightPercent)}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
