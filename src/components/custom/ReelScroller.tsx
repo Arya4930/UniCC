@@ -8,10 +8,11 @@ import { useRef, useState, useMemo } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
 const allVideos = [
-    "/reels/surfer.mp4",
-    "/reels/registering_for_classes.mp4",
-    "/reels/waking_up_10AM_back_home.mp4",
-    "/reels/job-jumpscare-job-application.mp4"
+    "/reels/reel_1.mp4",
+    "/reels/reel_2.mp4",
+    "/reels/reel_3.mp4",
+    "/reels/reel_4.mp4",
+    "/reels/reel_5.mp4",
 ];
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -44,6 +45,7 @@ export default function ReelsScroller() {
                 speed={800}
                 mousewheel
                 modules={[Mousewheel]}
+                loop={true}
                 slidesPerView={1}
                 spaceBetween={20}
                 className="w-56 h-[400px] rounded-2xl shadow-2xl overflow-hidden bg-black"
