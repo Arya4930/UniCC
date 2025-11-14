@@ -56,7 +56,9 @@ export default function DashboardContent({
   sethostelData,
   setGradesData,
   setScheduleData,
-  currSemesterID
+  currSemesterID,
+  setCurrSemesterID,
+  handleLogin
 }) {
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
@@ -256,7 +258,10 @@ export default function DashboardContent({
         setActiveTab={setActiveTab}
         handleLogOutRequest={handleLogOutRequest}
         handleReloadRequest={handleReloadRequest}
-        hostelData={hostelData}
+        currSemesterID={currSemesterID}
+        setCurrSemesterID={setCurrSemesterID}
+        handleLogin={handleLogin}
+        setIsReloading={setIsReloading}
       />
 
       <div className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-screen text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">

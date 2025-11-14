@@ -453,6 +453,8 @@ export default function LoginPage() {
             setGradesData={setGradesData}
             setScheduleData={setScheduleData}
             currSemesterID={currSemesterID}
+            setCurrSemesterID={setCurrSemesterID}
+            handleLogin={handleLogin}
           />
         </>
       )}
@@ -460,9 +462,6 @@ export default function LoginPage() {
       <Footer
         isLoggedIn={isLoggedIn}
         currSemesterID={currSemesterID}
-        setCurrSemesterID={setCurrSemesterID}
-        handleLogin={handleLogin}
-        setIsReloading={setIsReloading}
       />
     </div>
   );

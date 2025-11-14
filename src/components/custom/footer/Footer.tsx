@@ -1,22 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { Github, Settings, Link } from "lucide-react";
-import { ModeToggle } from "../toggle";
+import { Github, Settings, Link, Database } from "lucide-react";
+import { IconToggle } from "../toggle";
 import { Button } from "../../ui/button";
-import DataPage from "./SettingsPage";
+import DataPage from "./DataPage";
 import PrivacyPolicyPage from "./PrivacyPolicy";
 import TermsOfServicePage from "./TermsOfService";
 
 type FooterProps = {
   isLoggedIn: boolean;
   currSemesterID: string;
-  setCurrSemesterID: (id: string) => void;
-  handleLogin: (selectedSemester?: string) => Promise<boolean>;
-  setIsReloading: (isReloading: boolean) => void;
 }
 
-export default function Footer({ isLoggedIn, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading }: FooterProps) {
+export default function Footer({ isLoggedIn, currSemesterID }: FooterProps) {
   const [showStoragePage, setShowStoragePage] = useState<boolean>(false);
   const [storageData, setStorageData] = useState<Record<string, string | null>>({});
   const [showPolicy, setShowPolicy] = useState<boolean>(false);
@@ -62,7 +59,7 @@ export default function Footer({ isLoggedIn, currSemesterID, setCurrSemesterID, 
 
   return (
     <footer className="bg-transparent text-gray-700 dark:text-gray-300 midnight:text-gray-300 flex items-center justify-center">
-      {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} currSemesterID={currSemesterID} setCurrSemesterID={setCurrSemesterID} handleLogin={handleLogin} setIsReloading={setIsReloading} />}
+      {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} currSemesterID={currSemesterID} />}
       {showPolicy && <PrivacyPolicyPage handleClose={() => setShowPolicy(false)} />}
       {showTOS && <TermsOfServicePage handleClose={() => setShowTOS(false)} />}
       <div className="max-w-7xl mx-auto px-3 py-6 text-center w-full">
@@ -100,9 +97,9 @@ export default function Footer({ isLoggedIn, currSemesterID, setCurrSemesterID, 
           </p>
 
           <Button variant="outline" size="icon" onClick={openStoragePage}>
-            <Settings className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:-rotate-90" />
+            <Database className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:-rotate-90" />
           </Button>
-          <ModeToggle />
+          <IconToggle />
         </div>
 
         <span className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400 block">

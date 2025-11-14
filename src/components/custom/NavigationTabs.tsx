@@ -1,16 +1,20 @@
 "use client";
 import { useState } from "react";
-import { LogOut, RefreshCcw } from "lucide-react";
-import { ModeToggle } from "./toggle";
+import { LogOut, RefreshCcw, Settings } from "lucide-react";
+import SettingsPage from "./SettingsPage";
 
 export default function NavigationTabs({
   activeTab,
   setActiveTab,
   handleLogOutRequest,
   handleReloadRequest,
-  hostelData
+  currSemesterID, 
+  setCurrSemesterID, 
+  handleLogin, 
+  setIsReloading
 }) {
   const [isSpinning, setIsSpinning] = useState(false);
+  const [showSettingsPage, setShowSettingsPage] = useState<boolean>(false);
 
   const handleReloadClick = async () => {
     setIsSpinning(true);
@@ -25,11 +29,19 @@ export default function NavigationTabs({
 
   return (
     <div data-scrollable className="flex w-full shadow-sm pb-4 dark:bg-slate-900 midnight:bg-black">
+      {showSettingsPage && <SettingsPage 
+        handleClose={() => setShowSettingsPage(false)}
+        currSemesterID={currSemesterID} 
+        setCurrSemesterID={setCurrSemesterID} 
+        handleLogin={handleLogin} 
+        setIsReloading={setIsReloading}
+        handleLogOutRequest={handleLogOutRequest}
+      />}
       <button
-        onClick={handleLogOutRequest}
-        className="w-12 flex items-center justify-center bg-red-500 hover:cursor-pointer text-white text-sm font-medium hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 midnight:bg-red-700 midnight:hover:bg-red-800 transition-colors"
+        onClick={() => setShowSettingsPage(true)}
+        className="w-12 flex items-center justify-center bg-gray-400 hover:cursor-pointer text-white text-sm font-medium hover:bg-gray-500 dark:bg-gray-500 dark:hover:bg-gray-600 midnight:bg-gray-600 midnight:hover:bg-gray-700 transition-colors"
       >
-        <LogOut className="w-4 h-4" />
+        <Settings className="w-5 h-5" />
       </button>
 
       <button
