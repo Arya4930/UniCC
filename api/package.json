@@ -20,7 +20,6 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "p-limit": "^7.2.0",
-    "dev": "ts-node-dev --respawn --transpile-only server.ts",
     "build": "tsc",
     "start": "node dist/server.js"
   },
