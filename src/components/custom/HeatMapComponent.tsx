@@ -101,12 +101,12 @@ export default function ReloadActivityHeatmap() {
             }}
             panelColors={{
               0: "#e8f1ff",
-              5: "#c6dbff",
-              10: "#99c2ff",
-              15: "#6aa8ff",
-              20: "#3d8eff",
-              30: "#106dff",
-              40: "#0846a3",
+              3: "#c6dbff",
+              6: "#99c2ff",
+              9: "#6aa8ff",
+              12: "#3d8eff",
+              15: "#106dff",
+              20: "#0846a3",
             }}
           />
         </div>
