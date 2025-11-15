@@ -6,7 +6,6 @@ import { useState, useEffect, useRef } from "react";
 
 export default function ReloadActivityHeatmap() {
   const tree = loadActivityTree();
-  tree.increment();
   const data = tree.toHeatMap();
 
   const oneYearAgo = new Date();
