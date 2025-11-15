@@ -28,37 +28,32 @@ export default function ReloadActivityHeatmap() {
     content: "",
   });
 
-  function handleRectEnter(e: React.MouseEvent, dayData: any) {
-    const content =
-      (dayData?.value ?? dayData?.count)
-        ? `${dayData.value ?? dayData.count} reloads on ${dayData.date}`
-        : `No reloads on ${dayData.date}`;
-
+  function showTooltip(x: number, y: number, content: string) {
     setTooltip({
       visible: true,
-      x: e.pageX + 14,
-      y: e.pageY - 20,
+      x,
+      y,
       content,
     });
   }
 
-  function handleRectMove(e: React.MouseEvent) {
-    setTooltip((t) => ({
-      ...t,
-      x: e.pageX + 14,
-      y: e.pageY - 20,
-    }));
-  }
-
-  function handleRectLeave() {
+  function hideTooltip() {
     setTooltip((t) => ({ ...t, visible: false }));
   }
+
+  useEffect(() => {
+    const handler = () => hideTooltip();
+    window.addEventListener("touchstart", handler);
+    return () => window.removeEventListener("touchstart", handler);
+  }, []);
 
   return (
     <div>
       <h2 className="text-xl font-semibold mb-4">
-        Reload Activity <span className="text-xs text-gray-500">(Yes, this exists for no reason)</span>
+        Reload Activity{" "}
+        <span className="text-xs text-gray-500">(Yes, this exists for no reason)</span>
       </h2>
+
       <div
         ref={scrollRef}
         className="w-full overflow-x-auto"
@@ -75,30 +70,36 @@ export default function ReloadActivityHeatmap() {
             value={data}
             startDate={oneYearAgo}
             width={720}
-            style={{
-              color: "#adbac7",
-              "--rhm-rect-active": "#3d8eff",
-              display: "block",
-              margin: "0 auto",
-            }}
             rectProps={{
               rx: 3,
               ry: 3,
               cursor: "pointer",
             }}
-            legendCellSize={12}
-            legendCellGap={3}
-            legendRender={(props) => (
-              <rect {...props} y={props.y + 12} rx={3} ry={3} />
-            )}
-            rectRender={(props, dayData) => (
-              <rect
-                {...props}
-                onMouseEnter={(e) => handleRectEnter(e as any, dayData)}
-                onMouseMove={(e) => handleRectMove(e as any)}
-                onMouseLeave={handleRectLeave}
-              />
-            )}
+            rectRender={(props, dayData) => {
+              const value = dayData?.value ?? dayData?.count ?? 0;
+              const content =
+                value === 0
+                  ? `No reloads on ${dayData.date}`
+                  : `${value} reloads on ${dayData.date}`;
+
+              return (
+                <rect
+                  {...props}
+                  onMouseEnter={(e) => {
+                    showTooltip(e.pageX + 14, e.pageY - 20, content);
+                  }}
+                  onMouseMove={(e) => {
+                    showTooltip(e.pageX - 80, e.pageY - 45, content);
+                  }}
+                  onMouseLeave={hideTooltip}
+                  onTouchStart={(e) => {
+                    const touch = e.touches[0];
+                    showTooltip(touch.pageX - 80, touch.pageY - 45, content);
+                    e.stopPropagation();
+                  }}
+                />
+              );
+            }}
             panelColors={{
               0: "#e8f1ff",
               5: "#c6dbff",
@@ -122,12 +123,12 @@ export default function ReloadActivityHeatmap() {
             background: "rgba(18,22,26,0.95)",
             color: "#e6edf3",
             padding: "6px 10px",
-            borderRadius: 6,
+            borderRadius: 8,
             boxShadow: "0 6px 18px rgba(0,0,0,0.5)",
             fontSize: 13,
             zIndex: 9999,
             whiteSpace: "nowrap",
-            border: "1px solid rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.03)",
           }}
         >
           {tooltip.content}
