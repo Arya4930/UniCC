@@ -28,10 +28,15 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals.push("@napi-rs/canvas");
+    }
+    return config;
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
-  turbopack: false
 };
 
 export default withSerwist(nextConfig);
