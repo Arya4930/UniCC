@@ -8,6 +8,7 @@ import { solveCaptchaClient } from "@/lib/solveCaptcha";
 import config from '../../app/config.json'
 import { attendanceRes, ODListItem, ODListRaw } from "@/types/data/attendance";
 import { AllGradesRes } from "@/types/data/allgrades";
+import { loadActivityTree, saveActivityTree } from "@/lib/activit-tree";
 
 export default function LoginPage() {
   // --- State Management ---
@@ -270,6 +271,10 @@ export default function LoginPage() {
       setIsLoggedIn(true);
       setIsReloading(false);
 
+      const tree = loadActivityTree();
+      tree.increment();
+      saveActivityTree(tree);
+
       return true;
     } catch (err) {
       console.error(err);
@@ -323,6 +328,10 @@ export default function LoginPage() {
       setProgressBar(100);
       setIsLoggedIn(true);
       setIsReloading(false);
+
+      const tree = loadActivityTree();
+      tree.increment();
+      saveActivityTree(tree);
     } catch (err) {
       console.error(err);
       setMessage(prev => prev + "\n❌ Login failed, check console.");
@@ -334,19 +343,26 @@ export default function LoginPage() {
     setIsLoggedIn(false);
     setUsername("");
     setPassword("");
-    localStorage.removeItem("username");
-    localStorage.removeItem("password");
+
+    const keysToKeep = ["theme", "CGPAHidden", "activityTree"];
+
+    const saved: Record<string, string | null> = {};
+    keysToKeep.forEach((key) => {
+      saved[key] = localStorage.getItem(key);
+    });
+
+    localStorage.clear();
+
+    keysToKeep.forEach((key) => {
+      if (saved[key] !== null) {
+        localStorage.setItem(key, saved[key]!);
+      }
+    });
+
     setAttendanceData({});
     setMarksData({});
     setGradesData({});
     setScheduleData({});
-    localStorage.removeItem("attendance");
-    localStorage.removeItem("marks");
-    localStorage.removeItem("grades");
-    localStorage.removeItem("allGrades");
-    localStorage.removeItem("schedule");
-    localStorage.removeItem("hostel");
-    localStorage.removeItem("currSemesterID");
     setMessage("");
   };
 

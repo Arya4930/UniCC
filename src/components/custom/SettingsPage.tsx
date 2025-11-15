@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import config from "../../app/config.json";
 import { DropdownToggle } from "./toggle";
+import HeatMapComponent from "./HeatMapComponent";
 
 export default function SettingsPage({ handleClose, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading, handleLogOutRequest }) {
     const [selectedSemester, setSelectedSemester] = useState<string>(currSemesterID);
@@ -73,6 +74,9 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
             </div>
             <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-5">
                 <DropdownToggle />
+            </div>
+            <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-5">
+                <HeatMapComponent />
             </div>
             <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 pt-5">
                 <button
