@@ -95,7 +95,7 @@ export default function TermsOfServicePage({ handleClose }) {
                 </h3>
                 <p>
                     For any concerns, questions, or feedback related to this app or these Terms of Service,
-                    you can contact the developer at <strong>aryaevilinc@proton.me</strong>.
+                    you can contact the developer at <strong>aryapanwar493@gmail.com</strong>.
                 </p>
 
                 <p className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400 mt-6">
