@@ -115,7 +115,7 @@ export default function DashboardContent({
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
-      const AllGradesRes = await fetch("/api/fetchAllGrades", {
+      const AllGradesRes = await fetch("https://uniccapi2.aryaslocalserver.online/api/all-grades", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
@@ -142,7 +142,7 @@ export default function DashboardContent({
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
-      const calenderRes = await fetch("/api/parseSemTT", {
+      const calenderRes = await fetch("https://uniccapi2.aryaslocalserver.online/api/calendar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -176,7 +176,7 @@ export default function DashboardContent({
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
-      const gradesRes = await fetch("/api/fetchGrades", {
+      const gradesRes = await fetch("https://uniccapi2.aryaslocalserver.online/api/grades", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cookies, dashboardHtml, semesterId: currSemesterID }),
@@ -203,7 +203,7 @@ export default function DashboardContent({
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
-      const HostelRes = await fetch("/api/fetchHostelDetails", {
+      const HostelRes = await fetch("https://uniccapi2.aryaslocalserver.online/api/hostel", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
@@ -227,7 +227,7 @@ export default function DashboardContent({
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
-      const ScheduleRes = await fetch("/api/fetchExamSchedule", {
+      const ScheduleRes = await fetch("https://uniccapi2.aryaslocalserver.online/api/schedule", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
