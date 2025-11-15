@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import NoContentFound from "../NoContentFound";
 import { RefreshCcw } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function ExamSchedule({ data, handleScheduleFetch }) {
   if (!data) {
@@ -22,10 +23,14 @@ export default function ExamSchedule({ data, handleScheduleFetch }) {
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const isIOS =
-    typeof navigator !== "undefined" &&
-    /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-    !window.MSStream;
+  const [isIOS, setIsIOS] = useState(false);
+
+  useEffect(() => {
+    setIsIOS(
+      /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+      !window.MSStream
+    );
+  }, []);
 
 
   const parseExamDate = (dateStr) => {
