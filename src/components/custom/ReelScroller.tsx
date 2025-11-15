@@ -9,10 +9,6 @@ import { Volume2, VolumeX } from "lucide-react";
 
 const allVideos = [
     "/reels/reel_1.mp4",
-    "/reels/reel_2.mp4",
-    "/reels/reel_3.mp4",
-    "/reels/reel_4.mp4",
-    "/reels/reel_5.mp4",
 ];
 
 function shuffleArray<T>(array: T[]): T[] {
