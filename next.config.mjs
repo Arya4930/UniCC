@@ -30,7 +30,8 @@ const nextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
-  }
+  },
+  turbopack: false
 };
 
 export default withSerwist(nextConfig);
