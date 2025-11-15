@@ -116,7 +116,7 @@ export default function LoginPage() {
 
   const loginToVTOP = async () => {
     setProgressBar(10);
-    setMessage("Logging in and fetching leave history...");
+    setMessage("Logging in and fetching Data....");
 
     const captchaRes = await fetch("https://uniccapi2.aryaslocalserver.online/api/captcha", {
       method: "POST",
