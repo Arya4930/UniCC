@@ -164,7 +164,7 @@ export default function LoginPage() {
         ScheduleRes,
         HostelRes,
         calenderRes,
-        allGradesRes
+        // allGradesRes
       ] = await Promise.all([
         fetch("https://uniccapi2.aryaslocalserver.online/api/attendance", {
           method: "POST",
@@ -235,17 +235,17 @@ export default function LoginPage() {
           setMessage(prev => prev + "\n✅ Calendar fetched");
           setProgressBar(prev => prev + 5);
           return j;
-        }),
-        fetch("https://uniccapi2.aryaslocalserver.online/api/all-grades", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
-        }).then(async r => {
-          const j = await r.json();
-          setMessage(prev => prev + "\n✅ All grades fetched");
-          setProgressBar(prev => prev + 10);
-          return j;
-        }),
+        })
+        // fetch("https://uniccapi2.aryaslocalserver.online/api/all-grades", {
+        //   method: "POST",
+        //   headers: { "Content-Type": "application/json" },
+        //   body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+        // }).then(async r => {
+        //   const j = await r.json();
+        //   setMessage(prev => prev + "\n✅ All grades fetched");
+        //   setProgressBar(prev => prev + 10);
+        //   return j;
+        // }),
       ]);
 
       setMessage(prev => prev + "\nFinalizing and saving data...");
@@ -253,7 +253,7 @@ export default function LoginPage() {
       setAttendanceAndOD(attRes);
       setMarksData(marksRes);
       setGradesData(gradesRes);
-      setAllGradesData(allGradesRes);
+      // setAllGradesData(allGradesRes);
       setScheduleData(ScheduleRes);
       sethostelData(HostelRes);
       setCalender(calenderRes);
@@ -261,7 +261,7 @@ export default function LoginPage() {
       localStorage.setItem("attendance", JSON.stringify(attRes));
       localStorage.setItem("marks", JSON.stringify(marksRes));
       localStorage.setItem("grades", JSON.stringify(gradesRes));
-      localStorage.setItem("allGrades", JSON.stringify(allGradesRes));
+      // localStorage.setItem("allGrades", JSON.stringify(allGradesRes));
       localStorage.setItem("schedule", JSON.stringify(ScheduleRes));
       localStorage.setItem("hostel", JSON.stringify(HostelRes));
       localStorage.setItem("calender", JSON.stringify(calenderRes));

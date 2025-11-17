@@ -61,6 +61,7 @@
     "@types/web-push": "^3.6.4",
     "eslint": "^9",
     "eslint-config-next": "16.0.0",
+    "gh-pages": "^6.3.0",
     "serwist": "latest",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.8",
