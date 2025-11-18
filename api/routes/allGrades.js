@@ -40,11 +40,9 @@ const express_1 = __importStar(require("express"));
 const VTOPClient_1 = __importDefault(require("../VTOPClient"));
 const cheerio = __importStar(require("cheerio"));
 const url_1 = require("url");
-const p_limit_1 = __importDefault(require("p-limit"));
 const custom_1 = require("../types/custom");
 const allgrades_1 = require("../types/data/allgrades");
 const router = express_1.default.Router();
-const limit = (0, p_limit_1.default)(4);
 router.post("/", async (req, res) => {
     try {
         const { cookies, dashboardHtml } = req.body;
@@ -52,19 +50,85 @@ router.post("/", async (req, res) => {
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
         const csrf = $('input[name="_csrf"]').val();
         const authorizedID = $('#authorizedID').val() || $('input[name="authorizedid"]').val();
+        if (!csrf || !authorizedID)
+            throw new Error("Cannot find _csrf or authorizedID");
         let startYear = 2024;
-        if (typeof authorizedID === "string")
+        if (typeof authorizedID === "string") {
             startYear = parseInt(authorizedID.slice(0, 2), 10) + 2000;
+        }
         const currentYear = new Date().getFullYear();
         const semesters = [];
         for (let year = startYear; year <= currentYear; year++) {
-            semesters.push(`CH${year}${(year + 1).toString().slice(-2)}01`);
-            semesters.push(`CH${year}${(year + 1).toString().slice(-2)}05`);
+            const next = (year + 1).toString().slice(-2);
+            semesters.push(`CH${year}${next}01`);
+            semesters.push(`CH${year}${next}05`);
         }
-        if (!csrf || !authorizedID)
-            throw new Error("Cannot find _csrf or authorizedID");
         const client = (0, VTOPClient_1.default)();
-        const fetchSemesterGrades = async (semId) => {
+        async function fetchGradeDetail(grade, semId) {
+            if (!grade.courseId) {
+                grade.details = null;
+                return grade;
+            }
+            try {
+                const form = new url_1.URLSearchParams({
+                    authorizedID,
+                    semesterSubId: semId,
+                    courseId: grade.courseId,
+                    _csrf: csrf,
+                    x: new Date().toUTCString(),
+                }).toString();
+                const detailRes = await client.post("/vtop/examinations/examGradeView/getGradeViewDetails", form, {
+                    headers: {
+                        Cookie: cookieHeader,
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        Referer: "https://vtopcc.vit.ac.in/vtop/examinations/examGradeView/StudentGradeView",
+                    },
+                });
+                const $$$ = cheerio.load(detailRes.data);
+                const rangeTable = $$$("table.table-striped")
+                    .filter((_, el) => $$$(el).text().includes("Range of Grades"))
+                    .first();
+                if (rangeTable.length) {
+                    const cells = rangeTable.find("tr").eq(2).find("td span");
+                    if (cells.length >= 7) {
+                        grade.range = {
+                            S: $$$(cells[0]).text().trim(),
+                            A: $$$(cells[2]).text().trim(),
+                            B: $$$(cells[3]).text().trim(),
+                            C: $$$(cells[4]).text().trim(),
+                            D: $$$(cells[5]).text().trim(),
+                            E: $$$(cells[6]).text().trim(),
+                            F: $$$(cells[7]).text().trim(),
+                        };
+                    }
+                }
+                const detailTable = $$$("table.table-striped")
+                    .filter((_, el) => $$$(el).text().includes("Mark Title"))
+                    .first();
+                const breakdown = [];
+                detailTable.find("tr").slice(2, -1).each((_, row) => {
+                    const tds = $$$(row).find("td, output");
+                    if (tds.length < 7)
+                        return;
+                    const clean = (i) => $$$(tds[i]).text().replace(/\s+/g, " ").trim();
+                    breakdown.push({
+                        slNo: clean(0),
+                        component: clean(2),
+                        maxMark: clean(4),
+                        weightagePercent: clean(6),
+                        status: clean(8),
+                        scoredMark: clean(10),
+                        weightageMark: clean(12),
+                    });
+                });
+                grade.details = breakdown.length ? breakdown : null;
+            }
+            catch {
+                grade.details = null;
+            }
+            return grade;
+        }
+        async function fetchSemester(semId) {
             try {
                 const form = new url_1.URLSearchParams({
                     authorizedID,
@@ -72,7 +136,7 @@ router.post("/", async (req, res) => {
                     _csrf: csrf,
                     x: Date.now().toString(),
                 }).toString();
-                const resGrades = await client.post("/vtop/examinations/examGradeView/doStudentGradeView", form.toString(), {
+                const resGrades = await client.post("/vtop/examinations/examGradeView/doStudentGradeView", form, {
                     headers: {
                         Cookie: cookieHeader,
                         "Content-Type": "application/x-www-form-urlencoded",
@@ -83,23 +147,23 @@ router.post("/", async (req, res) => {
                 const rows = $$("table.table-bordered tr").slice(2);
                 if (rows.length === 0)
                     return null;
-                const grades = [];
                 let gpa = null;
-                rows.each((i, row) => {
+                const grades = [];
+                rows.each((_, row) => {
                     const cols = $$(row).find("td");
                     if ($$(row).attr("align") === "center") {
-                        const text = $$(row).text().trim();
-                        const match = text.match(/GPA\s*:\s*([\d.]+)/i);
+                        const txt = $$(row).text().trim();
+                        const match = txt.match(/GPA\s*:\s*([\d.]+)/i);
                         if (match)
                             gpa = match[1];
                         return;
                     }
                     if (cols.length < 11)
                         return;
-                    const button = cols
+                    const btn = cols
                         .eq(11)
                         .find('button[onclick^="javascript:getGradeViewDetails"]');
-                    const onclick = button.attr("onclick");
+                    const onclick = btn.attr("onclick");
                     const courseId = onclick?.match(/getGradeViewDetails\('([^']+)'\)/)?.[1] || null;
                     grades.push({
                         slNo: cols.eq(0).text().trim(),
@@ -111,101 +175,20 @@ router.post("/", async (req, res) => {
                         courseId,
                     });
                 });
-                const detailedGrades = await Promise.allSettled(grades.map((grade) => limit(async () => {
-                    if (!grade.courseId) {
-                        grade.details = null;
-                        return grade;
-                    }
-                    try {
-                        const detailsForm = new url_1.URLSearchParams({
-                            authorizedID,
-                            semesterSubId: semId,
-                            courseId: grade.courseId,
-                            _csrf: csrf,
-                            x: new Date().toUTCString(),
-                        }).toString();
-                        const detailRes = await client.post("/vtop/examinations/examGradeView/getGradeViewDetails", detailsForm.toString(), {
-                            headers: {
-                                Cookie: cookieHeader,
-                                "Content-Type": "application/x-www-form-urlencoded",
-                                Referer: "https://vtopcc.vit.ac.in/vtop/examinations/examGradeView/StudentGradeView",
-                            },
-                        });
-                        const $$$$ = cheerio.load(detailRes.data);
-                        const rangeTable = $$$$("table.table-striped")
-                            .filter((_, el) => $$$$(el).text().includes("Range of Grades"))
-                            .first();
-                        let gradeRange = null;
-                        if (rangeTable.length) {
-                            const rows = rangeTable.find("tr");
-                            const cells = rows.eq(2).find("td span");
-                            if (cells.length >= 7) {
-                                gradeRange = {
-                                    S: $$$$(cells[0]).text().trim(),
-                                    A: $$$$(cells[2]).text().trim(),
-                                    B: $$$$(cells[3]).text().trim(),
-                                    C: $$$$(cells[4]).text().trim(),
-                                    D: $$$$(cells[5]).text().trim(),
-                                    E: $$$$(cells[6]).text().trim(),
-                                    F: $$$$(cells[7]).text().trim(),
-                                };
-                            }
-                        }
-                        const detailTable = $$$$("table.table-striped")
-                            .filter((_, el) => $$$$(el).text().includes("Mark Title"))
-                            .first();
-                        const breakdown = [];
-                        detailTable
-                            .find("tr")
-                            .slice(2, -1)
-                            .each((_, row) => {
-                            const tds = $$$$(row).find("td, output");
-                            if (tds.length < 7)
-                                return;
-                            const clean = (i) => $$$$(tds[i])
-                                .text()
-                                .replace(/\s+/g, " ")
-                                .trim();
-                            breakdown.push({
-                                slNo: clean(0),
-                                component: clean(2),
-                                maxMark: clean(4),
-                                weightagePercent: clean(6),
-                                status: clean(8),
-                                scoredMark: clean(10),
-                                weightageMark: clean(12),
-                            });
-                        });
-                        grade.details = breakdown.length ? breakdown : null;
-                        grade.range = gradeRange;
-                        return grade;
-                    }
-                    catch {
-                        grade.details = null;
-                        return grade;
-                    }
-                })));
-                return {
-                    gpa,
-                    grades: detailedGrades
-                        .map((r) => (r.status === "fulfilled" ? r.value : null))
-                        .filter(Boolean),
-                };
+                const detailed = await Promise.all(grades.map((g) => fetchGradeDetail(g, semId)));
+                return { gpa, grades: detailed };
             }
             catch (err) {
-                console.warn(`Error fetching ${semId}:`, err.message);
+                console.warn(`Error fetching semester ${semId}:`, err);
                 return null;
             }
-        };
-        const semesterResults = await Promise.allSettled(semesters.map((semId) => limit(() => fetchSemesterGrades(semId))));
-        const results = {};
+        }
+        const resultsArray = await Promise.all(semesters.map(fetchSemester));
+        const output = {};
         semesters.forEach((semId, i) => {
-            results[semId] =
-                semesterResults[i].status === "fulfilled"
-                    ? semesterResults[i].value
-                    : null;
+            output[semId] = resultsArray[i];
         });
-        return res.status(200).json({ grades: results });
+        return res.status(200).json({ grades: output });
     }
     catch (err) {
         console.error(err);

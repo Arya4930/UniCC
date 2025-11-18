@@ -10,6 +10,11 @@ import { attendanceRes, ODListItem, ODListRaw } from "@/types/data/attendance";
 import { AllGradesRes } from "@/types/data/allgrades";
 import { loadActivityTree, saveActivityTree } from "@/lib/activit-tree";
 
+export const API_BASE =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3001"
+    : "https://uniccapi2.aryaslocalserver.online";
+
 export default function LoginPage() {
   // --- State Management ---
   const [username, setUsername] = useState<string>("");
@@ -118,7 +123,7 @@ export default function LoginPage() {
     setProgressBar(10);
     setMessage("Logging in and fetching Data....");
 
-    const captchaRes = await fetch("https://uniccapi2.aryaslocalserver.online/api/captcha", {
+    const captchaRes = await fetch(`${API_BASE}/api/captcha`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     });
@@ -126,7 +131,7 @@ export default function LoginPage() {
     const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
     if (error) throw new Error("Failed to get CAPTCHA: " + error);
     const captcha = await solveCaptchaClient(captchaBase64);
-    const loginRes = await fetch("https://uniccapi2.aryaslocalserver.online/api/login", {
+    const loginRes = await fetch(`${API_BASE}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -166,7 +171,7 @@ export default function LoginPage() {
         calenderRes,
         // allGradesRes
       ] = await Promise.all([
-        fetch("https://uniccapi2.aryaslocalserver.online/api/attendance", {
+        fetch(`${API_BASE}/api/attendance`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
@@ -177,7 +182,7 @@ export default function LoginPage() {
           return j;
         }),
 
-        fetch("https://uniccapi2.aryaslocalserver.online/api/marks", {
+        fetch(`${API_BASE}/api/marks`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
@@ -188,7 +193,7 @@ export default function LoginPage() {
           return j;
         }),
 
-        fetch("https://uniccapi2.aryaslocalserver.online/api/grades", {
+        fetch(`${API_BASE}/api/grades`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
@@ -199,7 +204,7 @@ export default function LoginPage() {
           return j;
         }),
 
-        fetch("https://uniccapi2.aryaslocalserver.online/api/schedule", {
+        fetch(`${API_BASE}/api/schedule`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
@@ -210,7 +215,7 @@ export default function LoginPage() {
           return j;
         }),
 
-        fetch("https://uniccapi2.aryaslocalserver.online/api/hostel", {
+        fetch(`${API_BASE}/api/hostel`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
@@ -221,7 +226,7 @@ export default function LoginPage() {
           return j;
         }),
 
-        fetch("https://uniccapi2.aryaslocalserver.online/api/calendar", {
+        fetch(`${API_BASE}/api/calendar`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -236,7 +241,7 @@ export default function LoginPage() {
           setProgressBar(prev => prev + 5);
           return j;
         })
-        // fetch("https://uniccapi2.aryaslocalserver.online/api/all-grades", {
+        // fetch(`${API_BASE}/api/all-grades`, {
         //   method: "POST",
         //   headers: { "Content-Type": "application/json" },
         //   body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
@@ -296,7 +301,7 @@ export default function LoginPage() {
         attRes,
         marksRes
       ] = await Promise.all([
-        fetch("https://uniccapi2.aryaslocalserver.online/api/attendance", {
+        fetch(`${API_BASE}/api/attendance`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
@@ -306,7 +311,7 @@ export default function LoginPage() {
           setProgressBar(prev => prev + 20);
           return j;
         }),
-        fetch("https://uniccapi2.aryaslocalserver.online/api/marks", {
+        fetch(`${API_BASE}/api/marks`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),

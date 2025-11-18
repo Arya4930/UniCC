@@ -34,7 +34,7 @@ app.use("/api/schedule", scheduleRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/all-grades", allGradesRoutes);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Express TS server running on port ${PORT}`);
 });

@@ -66,7 +66,7 @@ app.use("/api/grades", grades_1.default);
 app.use("/api/schedule", schedule_1.default);
 app.use("/api/attendance", attendance_1.default);
 app.use("/api/all-grades", allGrades_1.default);
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Express TS server running on port ${PORT}`);
 });

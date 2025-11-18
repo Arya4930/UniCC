@@ -16,6 +16,7 @@ import { useState } from "react";
 import { useRef } from "react";
 import LeaveDisplay from "./Hostel/LeaveDisplay";
 import AllGradesDisplay from "./Exams/AllGradesDisplay";
+import { API_BASE } from "./Main";
 
 export default function DashboardContent({
   activeTab,
@@ -115,7 +116,7 @@ export default function DashboardContent({
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
-      const AllGradesRes = await fetch("https://uniccapi2.aryaslocalserver.online/api/all-grades", {
+      const AllGradesRes = await fetch(`${API_BASE}/api/all-grades`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
@@ -132,7 +133,7 @@ export default function DashboardContent({
       setIsReloading(false);
     } catch (err) {
       console.error(err);
-      setMessage("❌ Calendar fetch failed, check console.");
+      setMessage("❌ All Grades fetch failed, check console.");
       setProgressBar(0);
     }
   };
@@ -142,7 +143,7 @@ export default function DashboardContent({
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
-      const calenderRes = await fetch("https://uniccapi2.aryaslocalserver.online/api/calendar", {
+      const calenderRes = await fetch(`${API_BASE}/api/calendar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -176,7 +177,7 @@ export default function DashboardContent({
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
-      const gradesRes = await fetch("https://uniccapi2.aryaslocalserver.online/api/grades", {
+      const gradesRes = await fetch(`${API_BASE}/api/grades`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cookies, dashboardHtml, semesterId: currSemesterID }),
@@ -203,7 +204,7 @@ export default function DashboardContent({
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
-      const HostelRes = await fetch("https://uniccapi2.aryaslocalserver.online/api/hostel", {
+      const HostelRes = await fetch(`${API_BASE}/api/hostel`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
@@ -227,7 +228,7 @@ export default function DashboardContent({
     try {
       const { cookies, dashboardHtml } = await loginToVTOP();
 
-      const ScheduleRes = await fetch("https://uniccapi2.aryaslocalserver.online/api/schedule", {
+      const ScheduleRes = await fetch(`${API_BASE}/api/schedule`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
