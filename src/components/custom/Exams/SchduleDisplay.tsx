@@ -120,13 +120,73 @@ export default function ExamSchedule({ data, handleScheduleFetch }) {
     return URL.createObjectURL(blob);
   };
 
+  const todayExams = Object.entries(data.Schedule)
+    .flatMap(([examType, subjects]) =>
+      subjects.filter((subj) => {
+        const examDate = parseExamDate(subj.examDate);
+        return examDate && examDate.getTime() === today.getTime();
+      }).map((subj) => ({ ...subj, examType }))
+    );
+
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-2">
       <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
         Exam Schedule <button onClick={handleScheduleFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
           <RefreshCcw className={`w-4 h-4`} />
         </button>
       </h1>
+
+      {todayExams.length > 0 && (
+        <div className="bg-green-100 dark:bg-green-700/40 midnight:bg-green-800/40 
+                  rounded-xl p-4 shadow mb-6 border border-green-300 
+                  dark:border-green-600 midnight:border-green-700">
+
+          <div className="space-y-6">
+            {todayExams.map((exam, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-2 lg:grid-cols-3 gap-4
+                     bg-white/40 dark:bg-black/20 midnight:bg-black/20
+                     p-4 rounded-lg border border-green-200 
+                     dark:border-green-600/40 midnight:border-green-700/40"
+              >
+                <div>
+                  <p className="font-semibold">Course:</p>
+                  <p>{exam.courseCode} — {exam.courseTitle}</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold">Exam Time:</p>
+                  <p>{exam.examTime}</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold">Session:</p>
+                  <p>{exam.examSession}</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold">Reporting Time:</p>
+                  <p>{exam.reportingTime}</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold">Venue:</p>
+                  <p>{exam.venue}</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold">Seat:</p>
+                  <p>{exam.seatLocation}, #{exam.seatNo}</p>
+                </div>
+
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {Object.entries(data.Schedule).map(([examType, subjects]) => {
         const hasCalendarData = subjects.some((s) => s.examSession && s.reportingTime);
         const icsUrl = hasCalendarData ? generateICSFile(subjects, examType) : null;
