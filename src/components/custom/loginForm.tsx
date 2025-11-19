@@ -17,9 +17,14 @@ export default function LoginForm({
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full px-4 bg-gray-100 dark:bg-slate-900 midnight:bg-black transition-colors duration-300">
       {/* App name */}
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 midnight:text-gray-100 mb-8">
-        Uni CC
-      </h1>
+      <div className="text-center mb-8 space-y-2">
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 midnight:text-gray-100">
+          Uni&nbsp;CC
+        </h1>
+        <p className="text-gray-700 dark:text-gray-300 midnight:text-gray-400 max-w-md mx-auto">
+          Showing data from VTOP in a clean and simple way.
+        </p>
+      </div>
 
       <form
         onSubmit={handleFormSubmit}
@@ -74,6 +79,12 @@ export default function LoginForm({
           </div>
         )}
       </form>
+      <div className="text-center mt-6">
+        <p className="text-xs text-gray-500 dark:text-gray-500 midnight:text-gray-600 max-w-sm mx-auto">
+          Not affiliated with VIT or VTOP. For educational use only.<br />
+          Please read the Privacy Policy & Terms of Service before using the app.
+        </p>
+      </div>
     </div>
   );
 }

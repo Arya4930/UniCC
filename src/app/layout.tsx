@@ -36,7 +36,7 @@ const geistMono = Geist_Mono({
 });
 
 const APP_NAME = "Uni CC";
-const APP_DESCRIPTION = "Taking data from VTOP and displaying it in a clean and simple way.";
+const APP_DESCRIPTION = "Showing data from VTOP in a clean and simple way.";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
@@ -70,7 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="midnight"
           enableSystem
           disableTransitionOnChange
           value={{ light: "light", dark: "dark", midnight: "midnight" }}

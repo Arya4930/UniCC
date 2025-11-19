@@ -97,7 +97,7 @@ export default function Footer({ isLoggedIn, currSemesterID }: FooterProps) {
           </p>
 
           <Button variant="outline" size="icon" onClick={openStoragePage}>
-            <Database className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:-rotate-90" />
+            <Database className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all" />
           </Button>
           <IconToggle />
         </div>
