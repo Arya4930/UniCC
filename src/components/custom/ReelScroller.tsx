@@ -8,7 +8,10 @@ import { useRef, useState, useMemo } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
 const allVideos = [
-    "/reels/reel_1.mp4",
+    "https://uniccassets.aryaslocalserver.online/reels/reel_1.mp4",
+    "https://uniccassets.aryaslocalserver.online/reels/reel_2.mp4",
+    "https://uniccassets.aryaslocalserver.online/reels/reel_3.mp4",
+    "https://uniccassets.aryaslocalserver.online/reels/reel_5.mp4"
 ];
 
 function shuffleArray<T>(array: T[]): T[] {
