@@ -30,6 +30,16 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
     }
     acc[category] = (acc[category] || 0) + credits;
 
+    const hssm = "Foundation Core - Humanities, Social Sciences and Management";
+    const ngcr = "Non-graded Core Requirement";
+
+    if (category === "Foreign Language" || category === "HSM Elective") {
+      acc[hssm] = (acc[hssm] || 0) + credits;
+    }
+    if (category === "Extra curricular activities") {
+      acc[ngcr] = (acc[ngcr] || 0) + credits;
+    }
+
     return acc;
   }, {});
 
@@ -51,8 +61,16 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
     (c) => specialBaskets.some((b) => c.basketTitle.toLowerCase().includes(b.toLowerCase()))
   );
 
-  const totalInProgress = Object.values(ongoingCreditsByCategory).reduce((a, b) => a + b, 0);
+  const totalInProgressRaw = Object.values(ongoingCreditsByCategory).reduce(
+    (a, b) => a + b,
+    0
+  );
 
+  const specialInProgress = specialBaskets.reduce((sum, basket) => {
+    return sum + (ongoingCreditsByCategory[basket] || 0);
+  }, 0);
+
+  const totalInProgress = totalInProgressRaw - specialInProgress;
 
   return (
     <div>

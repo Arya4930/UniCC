@@ -48,3 +48,4 @@ public/swe-worker*
 certificates
 .open-next
 .wrangler
+api/dist
