@@ -299,7 +299,8 @@ export default function LoginPage() {
 
       const [
         attRes,
-        marksRes
+        marksRes,
+        scheduleRes
       ] = await Promise.all([
         fetch(`${API_BASE}/api/attendance`, {
           method: "POST",
@@ -320,14 +321,26 @@ export default function LoginPage() {
           setMessage(prev => prev + "\n✅ Marks fetched");
           setProgressBar(prev => prev + 20);
           return j;
-        })
+        }),
+        fetch(`${API_BASE}/api/schedule`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
+        }).then(async r => {
+          const j = await r.json();
+          setMessage(prev => prev + "\n✅ Exam schedule fetched");
+          setProgressBar(prev => prev + 20);
+          return j;
+        }),
       ]);
 
       setAttendanceAndOD(attRes);
       setMarksData(marksRes);
+      setScheduleData(scheduleRes);
 
       localStorage.setItem("attendance", JSON.stringify(attRes));
       localStorage.setItem("marks", JSON.stringify(marksRes));
+      localStorage.setItem("schedule", JSON.stringify(scheduleRes));
 
       setMessage(prev => prev + "\n✅ All data loaded successfully!");
       setProgressBar(100);
