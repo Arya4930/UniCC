@@ -65,7 +65,9 @@ router.post("/", async (req: Request, res: Response) => {
                 "/vtop/processViewCalendar",
                 new URLSearchParams({
                     authorizedID: String(authorizedID),
-                    semesterSubId: semesterId ?? "",
+                    semSubId: semesterId ?? "",
+                    calDate: calDate,
+                    classGroupId: type,
                     _csrf: String(csrf),
                     x: Date.now().toString(),
                 }).toString(),
@@ -83,22 +85,22 @@ router.post("/", async (req: Request, res: Response) => {
         }
 
         // Add your custom event (Nov 8)
-        const addCustomEvent = {
-            text: "Crystal GuruVITa",
-            type: "Holiday",
-            color: "#B22222",
-            category: "Crystal GuruVITa",
-        };
+        // const addCustomEvent = {
+        //     text: "Crystal GuruVITa",
+        //     type: "Holiday",
+        //     color: "#B22222",
+        //     category: "Crystal GuruVITa",
+        // };
 
-        allCalendars.forEach((cal, idx) => {
-            const calDate = months[idx] || "";
-            if (
-                typeof calDate === "string" &&
-                calDate.toUpperCase().includes("-NOV-")
-            ) {
-                addHolidayToCalendar(cal, 8, addCustomEvent);
-            }
-        });
+        // allCalendars.forEach((cal, idx) => {
+        //     const calDate = months[idx] || "";
+        //     if (
+        //         typeof calDate === "string" &&
+        //         calDate.toUpperCase().includes("-NOV-")
+        //     ) {
+        //         addHolidayToCalendar(cal, 8, addCustomEvent);
+        //     }
+        // });
 
         return res.status(200).json({
             semesterId,
