@@ -99,7 +99,7 @@ export default function LoginPage() {
     const storedHoste = localStorage.getItem("hostel");
     const calendar = localStorage.getItem("calender");
     const calendarType = localStorage.getItem("calendarType");
-    const currSemesterID = localStorage.getItem("currSemesterID");
+    const storedCurrSemesterID = localStorage.getItem("currSemesterID");
 
     const parsedStoredAttendance: attendanceRes | null = storedAttendance ? JSON.parse(storedAttendance) : null;
     if (parsedStoredAttendance && parsedStoredAttendance.attendance) {
@@ -114,7 +114,7 @@ export default function LoginPage() {
     if (storedHoste) sethostelData(JSON.parse(storedHoste));
     if (calendar) setCalender(JSON.parse(calendar));
     if (calendarType) setCalenderType(calendarType);
-    if (currSemesterID) setCurrSemesterID(currSemesterID);
+    if (storedCurrSemesterID) setCurrSemesterID(storedCurrSemesterID);
     setIsLoggedIn((storedUsername && storedPassword) ? true : false);
     setTimeout(() => setIsLoading(false), 300);
   }, []);
