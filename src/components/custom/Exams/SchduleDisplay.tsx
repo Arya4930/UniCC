@@ -178,7 +178,9 @@ export default function ExamSchedule({ data, handleScheduleFetch }) {
 
                 <div>
                   <p className="font-semibold">Seat:</p>
-                  <p>{exam.seatLocation}, #{exam.seatNo}</p>
+                  <p>{exam.seatLocation === "-" && exam.seatNo && exam.seatNo !== "-"
+                            ? calculateSeatLocation(exam.seatNo, exam.courseTitle)
+                            : exam.seatLocation}, #{exam.seatNo}</p>
                 </div>
 
               </div>
@@ -262,7 +264,9 @@ export default function ExamSchedule({ data, handleScheduleFetch }) {
                           {subj.venue}
                         </TableCell>
                         <TableCell className="text-center text-slate-900 dark:text-slate-200 midnight:text-gray-100">
-                          {subj.seatLocation}
+                          {subj.seatLocation === "-" && subj.seatNo && subj.seatNo !== "-"
+                            ? calculateSeatLocation(subj.seatNo, subj.courseTitle)
+                            : subj.seatLocation}
                         </TableCell>
                         <TableCell className="text-center text-slate-900 dark:text-slate-200 midnight:text-gray-100">
                           {subj.slot}
@@ -290,4 +294,23 @@ export default function ExamSchedule({ data, handleScheduleFetch }) {
       })}
     </div>
   );
+}
+
+function calculateSeatLocation(seatNo: string, courseTitle: string): string {
+  const n = Number(seatNo);
+  if (isNaN(n) || n <= 0) return "-";
+  if(courseTitle.startsWith("Qualitative") || courseTitle.startsWith("Quantitative") || courseTitle.startsWith("French") || courseTitle.startsWith("German") || courseTitle.startsWith("Spanish") || courseTitle.startsWith("Japanese")) {
+    return "-";
+  }
+
+  const groupIndex = Math.floor((n - 1) / 18);
+  const C1 = groupIndex * 2 + 1;
+  const C2 = C1 + 1;
+
+  const pos = (n - 1) % 18;
+  const row = Math.floor(pos / 2) + 1;
+
+  const col = (pos % 2 === 0) ? C1 : C2;
+
+  return `R${row}C${col}`;
 }
