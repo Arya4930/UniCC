@@ -68,7 +68,7 @@ export default function ReloadActivityHeatmap() {
         <div
           ref={scrollRef}
           className="w-full overflow-x-auto"
-          style={{ direction: "rtl", paddingBottom: 8 }}
+          style={{ direction: "rtl" }}
         >
           <div
             className="inline-block"
@@ -113,12 +113,12 @@ export default function ReloadActivityHeatmap() {
               }}
               panelColors={{
                 0: "#e8f1ff",
-                3: "#c6dbff",
-                6: "#99c2ff",
-                9: "#6aa8ff",
-                12: "#3d8eff",
-                15: "#106dff",
-                20: "#0846a3",
+                1: "#c6dbff",
+                2: "#99c2ff",
+                3: "#6aa8ff",
+                5: "#3d8eff",
+                7: "#106dff",
+                10: "#0846a3",
               }}
             />
           </div>
