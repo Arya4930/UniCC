@@ -2,9 +2,11 @@
 
 import { loadActivityTree } from "@/lib/activit-tree";
 import HeatMap from "@uiw/react-heat-map";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
 export default function ReloadActivityHeatmap() {
+  const [open, setOpen] = useState(false);
   const tree = loadActivityTree();
   const data = tree.toHeatMap();
 
@@ -48,67 +50,78 @@ export default function ReloadActivityHeatmap() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">
-        Reload Activity{" "}
-        <span className="text-xs text-gray-500">(Yes, this exists for no reason)</span>
-      </h2>
-
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between text-left text-xl font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100 hover:cursor-pointer"
+      >
+        <span>Reload Activity{" "}<span className="text-xs text-gray-500">(Yes, this exists for no reason)</span></span>
+        {open ? (
+          <ChevronDown className="w-5 h-5" />
+        ) : (
+          <ChevronRight className="w-5 h-5" />
+        )}
+      </button>
       <div
-        ref={scrollRef}
-        className="w-full overflow-x-auto"
-        style={{ direction: "rtl", paddingBottom: 8 }}
+        className={`transition-all overflow-hidden ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          }`}
       >
         <div
-          className="inline-block"
-          style={{
-            direction: "ltr",
-            minWidth: 750,
-          }}
+          ref={scrollRef}
+          className="w-full overflow-x-auto"
+          style={{ direction: "rtl", paddingBottom: 8 }}
         >
-          <HeatMap
-            value={data}
-            startDate={oneYearAgo}
-            width={720}
-            rectProps={{
-              rx: 3,
-              ry: 3,
-              cursor: "pointer",
+          <div
+            className="inline-block"
+            style={{
+              direction: "ltr",
+              minWidth: 750,
             }}
-            rectRender={(props, dayData) => {
-              const value = dayData?.value ?? dayData?.count ?? 0;
-              const content =
-                value === 0
-                  ? `No reloads on ${dayData.date}`
-                  : `${value} reloads on ${dayData.date}`;
+          >
+            <HeatMap
+              value={data}
+              startDate={oneYearAgo}
+              width={720}
+              rectProps={{
+                rx: 3,
+                ry: 3,
+                cursor: "pointer",
+              }}
+              rectRender={(props, dayData) => {
+                const value = dayData?.value ?? dayData?.count ?? 0;
+                const content =
+                  value === 0
+                    ? `No reloads on ${dayData.date}`
+                    : `${value} reloads on ${dayData.date}`;
 
-              return (
-                <rect
-                  {...props}
-                  onMouseEnter={(e) => {
-                    showTooltip(e.pageX + 14, e.pageY - 20, content);
-                  }}
-                  onMouseMove={(e) => {
-                    showTooltip(e.pageX - 80, e.pageY - 45, content);
-                  }}
-                  onMouseLeave={hideTooltip}
-                  onTouchStart={(e) => {
-                    const touch = e.touches[0];
-                    showTooltip(touch.pageX - 80, touch.pageY - 45, content);
-                    e.stopPropagation();
-                  }}
-                />
-              );
-            }}
-            panelColors={{
-              0: "#e8f1ff",
-              3: "#c6dbff",
-              6: "#99c2ff",
-              9: "#6aa8ff",
-              12: "#3d8eff",
-              15: "#106dff",
-              20: "#0846a3",
-            }}
-          />
+                return (
+                  <rect
+                    {...props}
+                    onMouseEnter={(e) => {
+                      showTooltip(e.pageX + 14, e.pageY - 20, content);
+                    }}
+                    onMouseMove={(e) => {
+                      showTooltip(e.pageX - 80, e.pageY - 45, content);
+                    }}
+                    onMouseLeave={hideTooltip}
+                    onTouchStart={(e) => {
+                      const touch = e.touches[0];
+                      showTooltip(touch.pageX - 80, touch.pageY - 45, content);
+                      e.stopPropagation();
+                    }}
+                  />
+                );
+              }}
+              panelColors={{
+                0: "#e8f1ff",
+                3: "#c6dbff",
+                6: "#99c2ff",
+                9: "#6aa8ff",
+                12: "#3d8eff",
+                15: "#106dff",
+                20: "#0846a3",
+              }}
+            />
+          </div>
         </div>
       </div>
 
