@@ -1,5 +1,5 @@
 "use client";
-import NavigationTabs from "./NavigationTabs";
+import NavigationTabs from "./header/NavigationTabs";
 import StatsCards from "./statCards";
 import ODHoursModal from "./ODHoursModal";
 import GradesModal from "./Exams/GradesModal";

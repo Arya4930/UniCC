@@ -6,12 +6,14 @@ import config from '@/app/config.json'
 import NoContentFound from "../NoContentFound";
 import OverallAttendancePredictor from "./overallAttendancePredictor";
 import { Button } from "@/components/ui/button";
-import { Hash, X, BadgeQuestionMark } from "lucide-react";
+import { Hash, X, BadgeQuestionMark, Calendar } from "lucide-react";
+import TimetableGrid from "./TimetableGrid";
 
 export default function AttendanceTabs({ data, activeDay, setActiveDay, calendars }) {
   const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
   const [expandedIdx, setExpandedIdx] = useState(null);
   const [showPredictor, setShowPredictor] = useState(false);
+  const [showTimetable, setShowTimetable] = useState(false);
   const slotMap = config.slotMap;
 
   const dayCardsMap = {};
@@ -141,7 +143,10 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
   return (
     <div className="grid gap-4">
       <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-        Weekly Attendance {" "}
+        <button onClick={() => setShowTimetable(true)} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+          <Calendar className={`w-4 h-4`} />
+        </button>
+        {" "} Weekly Attendance {" "}
         <button onClick={() => setShowPredictor(true)} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
           <BadgeQuestionMark className={`w-4 h-4`} />
         </button>
@@ -203,6 +208,22 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
               dayCardsMap={dayCardsMap}
               impDates={impDates}
             />
+          </div>
+        </div>
+      )}
+      {showTimetable && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex justify-center items-center">
+          <div className="relative w-[95%] max-h-[95vh] overflow-y-auto bg-gray-100 dark:bg-slate-800 midnight:bg-black rounded-2xl shadow-2xl p-5">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowTimetable(false)}
+              className="absolute top-3 right-3 hover:bg-gray-200 dark:hover:bg-slate-700 midnight:hover:bg-gray-900"
+            >
+              <X size={22} className="text-gray-700 dark:text-gray-200 midnight:text-gray-200" />
+            </Button>
+
+            <TimetableGrid attendance={data.attendance} />
           </div>
         </div>
       )}

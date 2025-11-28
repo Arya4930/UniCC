@@ -2,9 +2,9 @@
 
 import { X, Save, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Button } from "../ui/button";
-import config from "../../app/config.json";
-import { DropdownToggle } from "./toggle";
+import { Button } from "../../ui/button";
+import config from "../../../app/config.json";
+import { DropdownToggle } from "../toggle";
 import HeatMapComponent from "./HeatMapComponent";
 import Links from "./Links";
 

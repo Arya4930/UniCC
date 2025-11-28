@@ -150,9 +150,9 @@ export default function OverallAttendancePredictor({
   const buttonOptions = [impDates.cat1Date > new Date() ? "CAT1" : null, impDates.cat2Date > new Date() ? "CAT2" : null, impDates.lidLabDate > new Date() || impDates.lidTheoryDate > new Date() ? "LID" : null].filter(Boolean);
 
   return (
-    <div className="bg-gray-100 dark:bg-slate-800 midnight:bg-black p-5 rounded-2xl shadow-lg transition-all duration-300">
+    <div data-scrollable className="bg-gray-100 dark:bg-slate-800 midnight:bg-black p-5 rounded-2xl shadow-lg transition-all duration-300">
       <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 midnight:text-gray-100 mb-2">
-        Overall Attendance Predictor (Beta Feature)
+        Overall Attendance Predictor
       </h2>
 
       <div className="flex flex-wrap items-center justify-between mb-4 gap-3">
