@@ -14,7 +14,13 @@ const router: Router = express.Router();
 
 router.post("/", async (req: Request, res: Response) => {
     try {
-        const { cookies, dashboardHtml, type, semesterId }: CalendarRequestBody = req.body;
+        let { cookies, dashboardHtml, type, semesterId }: CalendarRequestBody = req.body;
+
+        if (semesterId?.toString().endsWith("05")) {
+            if (type !== "ALL" && type !== "ALL02" && type !== "ALL05") {
+                type = "ALL";
+            }
+        }
 
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;

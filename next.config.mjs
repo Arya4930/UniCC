@@ -27,6 +27,7 @@ const nextConfig = {
         hostname: 'lh3.googleusercontent.com',
       },
     ],
+    unoptimized: true
   },
   webpack: (config, { isServer }) => {
     if (isServer) {

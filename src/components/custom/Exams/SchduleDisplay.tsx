@@ -7,15 +7,14 @@ import { RefreshCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function ExamSchedule({ data, handleScheduleFetch }) {
-  if (!data) {
+  if (Object.keys(data.Schedule).length === 0) {
     return (
       <div>
-        <p className="text-center text-gray-600 dark:text-gray-300 midnight:text-gray-200">
-          No Exam Schedule Available.{" "}
-          <button onClick={handleScheduleFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+        <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+          Exam Schedule <button onClick={handleScheduleFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
             <RefreshCcw className={`w-4 h-4`} />
           </button>
-        </p>
+        </h1>
         <NoContentFound />
       </div>
     );
@@ -179,8 +178,8 @@ export default function ExamSchedule({ data, handleScheduleFetch }) {
                 <div>
                   <p className="font-semibold">Seat:</p>
                   <p>{exam.seatLocation === "-" && exam.seatNo && exam.seatNo !== "-"
-                            ? calculateSeatLocation(exam.seatNo, exam.courseTitle)
-                            : exam.seatLocation}, #{exam.seatNo}</p>
+                    ? calculateSeatLocation(exam.seatNo, exam.courseTitle)
+                    : exam.seatLocation}, #{exam.seatNo}</p>
                 </div>
 
               </div>
@@ -299,7 +298,7 @@ export default function ExamSchedule({ data, handleScheduleFetch }) {
 function calculateSeatLocation(seatNo: string, courseTitle: string): string {
   const n = Number(seatNo);
   if (isNaN(n) || n <= 0) return "-";
-  if(courseTitle.startsWith("Qualitative") || courseTitle.startsWith("Quantitative") || courseTitle.startsWith("French") || courseTitle.startsWith("German") || courseTitle.startsWith("Spanish") || courseTitle.startsWith("Japanese")) {
+  if (courseTitle.startsWith("Qualitative") || courseTitle.startsWith("Quantitative") || courseTitle.startsWith("French") || courseTitle.startsWith("German") || courseTitle.startsWith("Spanish") || courseTitle.startsWith("Japanese")) {
     return "-";
   }
 
