@@ -11,6 +11,8 @@ import gradesRoutes from "./routes/grades";
 import scheduleRoutes from "./routes/schedule";
 import attendanceRoutes from "./routes/attendance";
 import allGradesRoutes from "./routes/allGrades";
+import UploadFile from "./routes/files/UploadFile";
+import fetchFiles from "./routes/files/fetchFiles";
 
 const app: Application = express();
 
@@ -32,6 +34,8 @@ app.use("/api/grades", gradesRoutes);
 app.use("/api/schedule", scheduleRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/all-grades", allGradesRoutes);
+app.use("/api/files/upload/:userID", UploadFile);
+app.use("/api/files/fetch/:userID", fetchFiles);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

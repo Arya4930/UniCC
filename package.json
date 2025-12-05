@@ -3,9 +3,9 @@
   "version": "0.3.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack --experimental-https",
+    "dev": "next dev --webpack --experimental-https -p 3001",
     "build": "next build --webpack",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "eslint",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",

@@ -12,14 +12,21 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node --transpile-only src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "cleanup": "node dist/cleanupExpiredFiles.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.943.0",
     "axios": "^1.13.2",
     "cheerio": "^1.1.2",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "p-limit": "^7.2.0"
+    "mongoose": "^9.0.1",
+    "multer": "^2.0.2",
+    "node-cron": "^4.2.1",
+    "p-limit": "^7.2.0",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
