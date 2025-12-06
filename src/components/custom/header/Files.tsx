@@ -167,30 +167,35 @@ export default function Files() {
                                         <li
                                             key={index}
                                             className="flex items-center justify-between gap-3 
-                                                   px-3 py-2 rounded-lg transition
-                                                   bg-gray-200 dark:bg-slate-800 midnight:bg-gray-900
-                                                   hover:bg-gray-300 dark:hover:bg-slate-700 midnight:hover:bg-gray-800"
+               px-3 py-2 rounded-lg transition
+               bg-gray-200 dark:bg-slate-800 midnight:bg-gray-900
+               hover:bg-gray-300 dark:hover:bg-slate-700 midnight:hover:bg-gray-800"
                                         >
-                                            <div className="flex items-center gap-3">
+                                            <div className="flex items-start gap-3 flex-1">
                                                 {getFileIcon(file.extension)}
 
-                                                <span className="text-sm text-gray-800 dark:text-gray-200 midnight:text-gray-100">
-                                                    {filename}
-                                                </span>
-
-                                                <span className="text-[11px] font-medium px-2 py-0.5 rounded-md
-                                                bg-gray-300 dark:bg-gray-700 midnight:bg-gray-800
-                                                text-gray-700 dark:text-gray-200 midnight:text-gray-200">
-                                                    {formatSize(file.size)}
-                                                </span>
-
-                                                {timeLeft !== "Expired" && (
-                                                    <span className="text-[11px] font-medium px-2 py-0.5 rounded-md
-                                                                bg-blue-200 dark:bg-blue-900 midnight:bg-blue-900
-                                                                text-blue-700 dark:text-blue-300 midnight:text-blue-300">
-                                                        {timeLeft} left
+                                                <div className="flex flex-col">
+                                                    <span className="text-sm font-medium text-gray-800 dark:text-gray-200 midnight:text-gray-100 
+                                                                truncate max-w-[140px] sm:max-w-[220px] md:max-w-[260px]">
+                                                        {filename}
                                                     </span>
-                                                )}
+
+                                                    <div className="flex gap-2 mt-1 flex-wrap">
+                                                        <span className="text-[10px] font-medium px-2 py-0.5 rounded-md
+                                                            bg-gray-300 dark:bg-gray-700 midnight:bg-gray-800
+                                                            text-gray-700 dark:text-gray-200 midnight:text-gray-200">
+                                                            {formatSize(file.size)}
+                                                        </span>
+
+                                                        {timeLeft !== "Expired" && (
+                                                            <span className="text-[10px] font-medium px-2 py-0.5 rounded-md
+                                                                    bg-blue-200 dark:bg-blue-900 midnight:bg-blue-900
+                                                                    text-blue-700 dark:text-blue-300 midnight:text-blue-300">
+                                                                {timeLeft}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div className="flex items-center gap-3">
@@ -199,7 +204,7 @@ export default function Files() {
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="p-1 rounded-md border border-transparent hover:border-blue-500 
-                                                           text-blue-600 dark:text-blue-400 midnight:text-blue-300"
+                                                            text-blue-600 dark:text-blue-400 midnight:text-blue-300"
                                                 >
                                                     <Download className="w-5 h-5" />
                                                 </a>
@@ -208,7 +213,7 @@ export default function Files() {
                                                     onClick={() => deleteFile(file.fileID)}
                                                     disabled={deletingFileID === file.fileID}
                                                     className={`p-1 rounded-md border transition
-                                                    ${deletingFileID === file.fileID
+                                                        ${deletingFileID === file.fileID
                                                             ? "opacity-50 cursor-not-allowed border-gray-500"
                                                             : "text-red-600 dark:text-red-400 midnight:text-red-400 border-red-500 hover:bg-red-200 dark:hover:bg-red-700 midnight:hover:bg-red-800"
                                                         }`}
