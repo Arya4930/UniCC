@@ -6,6 +6,7 @@ import User from '../../models/Users';
 import { UploadFileToS3 } from '../../s3';
 import { v4 as uuidv4 } from 'uuid';
 import { connectDB } from '../../mongodb';
+import { maskUserID } from '../../mask';
 
 const router: Router = express.Router({ mergeParams: true });
 const upload = multer();
@@ -18,14 +19,16 @@ router.post("/", upload.single("file"), async (req, res) => {
         await connectDB();
 
         const { userID } = req.params;
+        const maskedID = maskUserID(userID);
         const file = req.file;
         if (!file) return res.status(400).json({ error: "No file uploaded" });
 
         const isAdmin = ADMINS.includes(userID);
 
-        let user = await User.findOne({ UserID: userID });
+        let user = await User.findOne({ UserID: maskedID });
+        
         if (!user) {
-            user = await User.create({ UserID: userID, files: [] });
+            user = await User.create({ UserID: maskedID, files: [] });
         }
 
         const currentStorage = user.files.reduce((acc, f) => acc + f.size, 0);
@@ -35,7 +38,7 @@ router.post("/", upload.single("file"), async (req, res) => {
 
         const extension = path.extname(file.originalname);
         const cleanName = path.basename(file.originalname, extension);
-        const uniqueKey = `${userID}/${uuidv4()}-${cleanName}${extension}`;
+        const uniqueKey = `${maskedID}/${uuidv4()}-${cleanName}${extension}`;
 
         await UploadFileToS3(file as any, uniqueKey);
 

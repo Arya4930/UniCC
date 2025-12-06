@@ -131,7 +131,7 @@ export default function Files() {
                             maxFiles={10}
                             onDrop={handleDrop}
                             onError={console.error}
-                            className="w-full h-[28px] mb-4"
+                            className="w-full h-[28px] my-3"
                         >
                             <DropzoneEmptyState />
                             <DropzoneContent />

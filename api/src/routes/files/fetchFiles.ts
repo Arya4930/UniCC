@@ -2,6 +2,7 @@ import express from 'express';
 import type { Router } from 'express';
 import User from '../../models/Users';
 import { connectDB } from '../../mongodb';
+import { maskUserID } from '../../mask';
 
 const router: Router = express.Router({ mergeParams: true });
 
@@ -9,11 +10,12 @@ router.get("/", async (req, res) => {
     try {
         await connectDB();
         const { userID } = req.params;
+        const maskedID = maskUserID(userID);
 
-        let user = await User.findOne({ UserID: userID });
+        let user = await User.findOne({ UserID: maskedID });
 
         if (!user) {
-            user = await User.create({ UserID: userID, files: [] });
+            user = await User.create({ UserID: maskedID, files: [] });
             return res.json([]);
         }
 

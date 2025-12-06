@@ -10,6 +10,12 @@ import {
     DropzoneEmptyState,
 } from "@/components/ui/shadcn-io/dropzone";
 import { API_BASE } from "@/components/custom/Main";
+import { metadata } from "../layout";
+
+export metadata = {
+    title: "Upload Files - Unicc",
+    description: "Upload Now, access later",
+};
 
 export default function UploadPage() {
     const [userID, setUserID] = useState("");

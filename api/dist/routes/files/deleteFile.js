@@ -7,12 +7,14 @@ const express_1 = __importDefault(require("express"));
 const mongodb_1 = require("../../mongodb");
 const Users_1 = __importDefault(require("../../models/Users"));
 const s3_1 = require("../../s3");
+const mask_1 = require("../../mask");
 const router = express_1.default.Router({ mergeParams: true });
 router.delete("/", async (req, res) => {
     try {
         await (0, mongodb_1.connectDB)();
         const { userID, fileID } = req.params;
-        const user = await Users_1.default.findOne({ UserID: userID });
+        const maskedID = (0, mask_1.maskUserID)(userID);
+        const user = await Users_1.default.findOne({ UserID: maskedID });
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }

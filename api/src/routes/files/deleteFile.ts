@@ -3,6 +3,7 @@ import express from "express";
 import { connectDB } from "../../mongodb";
 import User from "../../models/Users";
 import { DeleteFromS3 } from "../../s3";
+import { maskUserID } from "../../mask";
 
 const router: Router = express.Router({ mergeParams: true });
 
@@ -11,7 +12,9 @@ router.delete("/", async (req, res) => {
         await connectDB();
         const { userID, fileID } = req.params;
 
-        const user = await User.findOne({ UserID: userID });
+        const maskedID = maskUserID(userID);
+
+        const user = await User.findOne({ UserID: maskedID });
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }

@@ -6,14 +6,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const Users_1 = __importDefault(require("../../models/Users"));
 const mongodb_1 = require("../../mongodb");
+const mask_1 = require("../../mask");
 const router = express_1.default.Router({ mergeParams: true });
 router.get("/", async (req, res) => {
     try {
         await (0, mongodb_1.connectDB)();
         const { userID } = req.params;
-        let user = await Users_1.default.findOne({ UserID: userID });
+        const maskedID = (0, mask_1.maskUserID)(userID);
+        let user = await Users_1.default.findOne({ UserID: maskedID });
         if (!user) {
-            user = await Users_1.default.create({ UserID: userID, files: [] });
+            user = await Users_1.default.create({ UserID: maskedID, files: [] });
             return res.json([]);
         }
         const now = new Date();
