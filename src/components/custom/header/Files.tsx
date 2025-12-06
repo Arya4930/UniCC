@@ -100,7 +100,7 @@ export default function Files() {
         <div>
             <button
                 onClick={() => setOpen(!open)}
-                className="w-full flex items-center justify-between mb-3 font-semibold 
+                className="w-full flex items-center justify-between font-semibold 
                        text-xl text-gray-800 dark:text-gray-200 midnight:text-gray-100"
             >
                 <span>Uploaded Files</span>
