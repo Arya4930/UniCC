@@ -43,9 +43,10 @@ export default function CourseCard({ a, onClick, activeDay, isHoliday }) {
     return (
         <Card
             onClick={onClick}
-            className={`p-4 rounded-lg shadow-sm transition-shadow duration-300 cursor-pointer ${(ongoing && !isHoliday)
-                ? "ring-2 ring-yellow-200 shadow-lg bg-yellow-50 dark:bg-yellow-900/40 midnight:bg-yellow-900/40"
-                : "hover:shadow-md dark:hover:shadow-lg midnight:hover:shadow-lg"
+            className={`p-4 rounded-lg shadow-sm transition-shadow duration-300 cursor-pointer h-full flex flex-col justify-between
+                ${(ongoing && !isHoliday)
+                    ? "ring-2 ring-yellow-200 shadow-lg bg-yellow-50 dark:bg-yellow-900/40 midnight:bg-yellow-900/40"
+                    : "hover:shadow-md dark:hover:shadow-lg midnight:hover:shadow-lg"
                 }`}
         >
             <div className="flex justify-between items-center">
