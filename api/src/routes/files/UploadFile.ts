@@ -10,7 +10,8 @@ import { connectDB } from '../../mongodb';
 const router: Router = express.Router({ mergeParams: true });
 const upload = multer();
 
-const MAX_STORAGE = 1 * 1024 * 1024; // 1 MB
+const MAX_STORAGE = 5 * 1024 * 1024;
+const ADMINS = (process.env.ADMINS || "").split(",").map(id => id.trim());
 
 router.post("/", upload.single("file"), async (req, res) => {
     try {
@@ -18,8 +19,9 @@ router.post("/", upload.single("file"), async (req, res) => {
 
         const { userID } = req.params;
         const file = req.file;
-
         if (!file) return res.status(400).json({ error: "No file uploaded" });
+
+        const isAdmin = ADMINS.includes(userID);
 
         let user = await User.findOne({ UserID: userID });
         if (!user) {
@@ -27,8 +29,7 @@ router.post("/", upload.single("file"), async (req, res) => {
         }
 
         const currentStorage = user.files.reduce((acc, f) => acc + f.size, 0);
-
-        if (currentStorage + file.size > MAX_STORAGE) {
+        if (!isAdmin && currentStorage + file.size > MAX_STORAGE) {
             return res.status(400).json({ error: "Storage limit exceeded" });
         }
 
@@ -38,7 +39,9 @@ router.post("/", upload.single("file"), async (req, res) => {
 
         await UploadFileToS3(file as any, uniqueKey);
 
-        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        const expiresAt = isAdmin
+            ? new Date("2099-12-31T23:59:59Z")
+            : new Date(Date.now() + 24 * 60 * 60 * 1000);
 
         const newFile = {
             fileID: uniqueKey,
@@ -55,6 +58,7 @@ router.post("/", upload.single("file"), async (req, res) => {
             message: "File uploaded successfully",
             file: newFile,
             storageUsed: currentStorage + file.size,
+            isAdmin
         });
 
     } catch (err) {

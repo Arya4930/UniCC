@@ -13,6 +13,7 @@ import attendanceRoutes from "./routes/attendance";
 import allGradesRoutes from "./routes/allGrades";
 import UploadFile from "./routes/files/UploadFile";
 import fetchFiles from "./routes/files/fetchFiles";
+import deleteFile from "./routes/files/deleteFile";
 
 const app: Application = express();
 
@@ -36,6 +37,7 @@ app.use("/api/attendance", attendanceRoutes);
 app.use("/api/all-grades", allGradesRoutes);
 app.use("/api/files/upload/:userID", UploadFile);
 app.use("/api/files/fetch/:userID", fetchFiles);
+app.use("/api/files/delete/:userID/:fileID", deleteFile);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

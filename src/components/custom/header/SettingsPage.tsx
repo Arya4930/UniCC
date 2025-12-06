@@ -7,6 +7,7 @@ import config from "../../../app/config.json";
 import { DropdownToggle } from "../toggle";
 import HeatMapComponent from "./HeatMapComponent";
 import Links from "./Links";
+import Files from "./Files";
 
 export default function SettingsPage({ handleClose, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading, handleLogOutRequest }) {
     const [selectedSemester, setSelectedSemester] = useState<string>(currSemesterID);
@@ -76,8 +77,11 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
             <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-4">
                 <DropdownToggle />
             </div>
-            <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-4">
+            {/* <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-4">
                 <HeatMapComponent />
+            </div> */}
+            <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-4">
+                <Files />
             </div>
             <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-4">
                 <Links />
