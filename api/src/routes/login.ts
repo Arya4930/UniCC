@@ -1,18 +1,13 @@
 import express, { Request, Response } from "express";
-import VTOPClient from "../../VTOPClient";
-import { LoginRequestBody, CaptchaResult } from "../../types/data/login";
+import VTOPClient from "../VTOPClient";
+import { LoginRequestBody } from "../types/data/login";
 import type { Router } from "express";
-import { getCaptcha } from "./captcha";
-import { solveCaptchaServer } from "./solveCaptcha";
 
 const router: Router = express.Router();
 
 router.post("/", async (req: Request, res: Response) => {
     try {
-        const { username, password }: LoginRequestBody = req.body;
-        const { captchaBase64, cookies, csrf, error }: CaptchaResult = await getCaptcha();
-
-        const captcha = await solveCaptchaServer(captchaBase64);
+        const { username, password, captcha, cookies, csrf }: LoginRequestBody = req.body;
 
         const client = VTOPClient();
 

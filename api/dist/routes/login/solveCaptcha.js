@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.solveCaptchaServer = solveCaptchaServer;
 // utils/solveCaptchaClient.js
-const bitmaps_1 = require("./bitmaps");
+const bitmaps_1 = require("../../../../src/lib/bitmaps");
 const canvas_1 = require("canvas");
 function getImageBlocks(pixelData, width, height) {
     const saturate = new Array(pixelData.length / 4);

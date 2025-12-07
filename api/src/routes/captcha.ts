@@ -1,8 +1,24 @@
-import { CaptchaResult, CaptchaType } from "../../types/data/login";
-import VTOPClient from "../../VTOPClient";
+import express, { Request, Response } from "express";
+import { CaptchaResult, CaptchaType } from "../types/data/login";
+import VTOPClient from "../VTOPClient";
 import * as cheerio from "cheerio";
+import type { Router } from "express";
 
-export async function getCaptcha(): Promise<CaptchaResult> {
+const router: Router = express.Router();
+
+router.post("/", async (req: Request, res: Response) => {
+    try {
+        const result: CaptchaResult = await getCaptcha();
+        return res.status(200).json(result);
+    } catch (err: any) {
+        console.error(err);
+        return res.status(500).json({ error: err.message });
+    }
+});
+
+export default router;
+
+async function getCaptcha(): Promise<CaptchaResult> {
     const MAX_RETRIES = 10;
     const client = VTOPClient();
 

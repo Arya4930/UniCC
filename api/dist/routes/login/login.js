@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const VTOPClient_1 = __importDefault(require("../../VTOPClient"));
-const captcha_1 = require("./captcha");
-const solveCaptcha_1 = require("./solveCaptcha");
+const captcha_1 = require("../captcha");
+const solveCaptcha_1 = require("../solveCaptcha");
 const router = express_1.default.Router();
 router.post("/", async (req, res) => {
     try {
