@@ -15,7 +15,6 @@ router.get("/", async (req, res) => {
         let user = await User.findOne({ UserID: maskedID });
 
         if (!user) {
-            user = await User.create({ UserID: maskedID, files: [] });
             return res.json([]);
         }
 

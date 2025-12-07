@@ -15,7 +15,6 @@ router.get("/", async (req, res) => {
         const maskedID = (0, mask_1.maskUserID)(userID);
         let user = await Users_1.default.findOne({ UserID: maskedID });
         if (!user) {
-            user = await Users_1.default.create({ UserID: maskedID, files: [] });
             return res.json([]);
         }
         const now = new Date();
