@@ -169,7 +169,7 @@ export default function Files() {
                                         return parts.join(" ");
                                     };
                                     const timeLeft = formatTimeLeft(file.expiresAt);
-                                    const uploading = file.isUploading || false;
+                                    const uploading: boolean = file.isUploading || false;
 
                                     return (
                                         <li
@@ -215,22 +215,31 @@ export default function Files() {
                                             </div>
 
                                             <div className="flex items-center gap-3">
-                                                <button
-                                                    disabled={uploading}
-                                                    className={`${uploading ? "opacity-30 cursor-not-allowed" : "hover:border-blue-500"}`}
-                                                >
-                                                    <Download className="w-5 h-5" />
-                                                </button>
+                                                {uploading && (
+                                                    <div>
+                                                        <a
+                                                            href={getDownloadUrl(file.fileID)}
 
-                                                <button
-                                                    onClick={() => !uploading && deleteFile(file.fileID)}
-                                                    disabled={uploading || deletingFileID === file.fileID}
-                                                    className={`transition p-1 rounded-md border 
-                                                        ${uploading ? "opacity-30 cursor-not-allowed" : "hover:bg-red-200"}`
-                                                    }
-                                                >
-                                                    <Trash2 className="w-5 h-5" />
-                                                </button>
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="p-1 rounded-md border border-transparent hover:border-blue-500 
+                                                            text-blue-600 dark:text-blue-400 midnight:text-blue-300"
+                                                        >
+                                                            <Download className="w-5 h-5" />
+                                                        </a>
+
+                                                        <button
+                                                            onClick={() => deleteFile(file.fileID)}
+                                                            disabled={deletingFileID === file.fileID}
+                                                            className={`p-1 rounded-md border transition
+                                                        ${deletingFileID === file.fileID
+                                                                    ? "opacity-50 cursor-not-allowed border-gray-500"
+                                                                    : "text-red-600 dark:text-red-400 midnight:text-red-400 border-red-500 hover:bg-red-200 dark:hover:bg-red-700 midnight:hover:bg-red-800"
+                                                                }`}
+                                                        >
+                                                            <Trash2 className="w-5 h-5" />
+                                                        </button>
+                                                    </div>)}
                                             </div>
                                         </li>
                                     );
