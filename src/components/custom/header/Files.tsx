@@ -195,27 +195,19 @@ export default function Files() {
                                                             {formatSize(file.size)}
                                                         </span>
 
-                                                        {uploading ? (
+                                                        {timeLeft !== "Expired" && (
                                                             <span className="text-[10px] font-medium px-2 py-0.5 rounded-md
-                                                        bg-yellow-200 dark:bg-yellow-800 midnight:bg-yellow-900
-                                                        text-yellow-700 dark:text-yellow-300 midnight:text-yellow-300">
-                                                                Uploading…
-                                                            </span>
-                                                        ) : (
-                                                            timeLeft !== "Expired" && (
-                                                                <span className="text-[10px] font-medium px-2 py-0.5 rounded-md
                                                         bg-blue-200 dark:bg-blue-900 midnight:bg-blue-900
                                                         text-blue-700 dark:text-blue-300 midnight:text-blue-300">
-                                                                    {timeLeft}
-                                                                </span>
-                                                            )
+                                                                {uploading ? "Uploading…" : timeLeft}
+                                                            </span>
                                                         )}
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div className="flex items-center gap-3">
-                                                {uploading && (
+                                                {!uploading && (
                                                     <div>
                                                         <a
                                                             href={getDownloadUrl(file.fileID)}
