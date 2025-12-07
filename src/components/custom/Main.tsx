@@ -131,41 +131,53 @@ export default function LoginPage() {
     setTimeout(() => setIsLoading(false), 300);
   }, []);
 
-  const loginToVTOP = async () => {
-    setProgressBar(10);
-    setMessage("Logging in and fetching Data....");
+  const loginToVTOP = async (retry = false) => {
+    try {
+      setProgressBar(10);
+      setMessage("Logging in and fetching data...");
 
-    const captchaRes = await fetch(`${API_BASE}/api/captcha`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    });
+      const captchaRes = await fetch(`${API_BASE}/api/captcha`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
 
-    const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
-    if (error) throw new Error("Failed to get CAPTCHA: " + error);
-    const captcha = await solveCaptchaClient(captchaBase64);
-    const loginRes = await fetch(`${API_BASE}/api/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username,
-        password,
-        captcha,
-        cookies,
-        csrf,
-      }),
-    });
+      const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
+      if (error) throw new Error("Failed to get CAPTCHA: " + error);
 
-    const data = await loginRes.json();
-    if (!data.success || !data.dashboardHtml)
-      throw new Error(data.message || "Login failed.");
+      const captcha = await solveCaptchaClient(captchaBase64);
 
-    setMessage((prev) => prev + "\n✅ Login successful");
-    setProgressBar((prev) => prev + 30);
+      const loginRes = await fetch(`${API_BASE}/api/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          password,
+          captcha,
+          cookies,
+          csrf,
+        }),
+      });
 
-    return {
-      cookies: data.cookies,
-      dashboardHtml: data.dashboardHtml,
-    };
+      const data = await loginRes.json();
+
+      if (data.message?.includes("Invalid Captcha") && !retry) {
+        console.warn("Invalid Captcha. Retrying once...");
+        return await loginToVTOP(true);
+      }
+
+      if (!data.success || !data.dashboardHtml)
+        throw new Error(data.message || "Login failed.");
+
+      setMessage((prev) => prev + "\n✅ Login successful");
+      setProgressBar((prev) => prev + 30);
+
+      return {
+        cookies: data.cookies,
+        dashboardHtml: data.dashboardHtml,
+      };
+    } catch (err: any) {
+      throw err;
+    }
   };
 
   const handleLogin = async (currSemesterID = config.semesterIDs[config.semesterIDs.length - 2]) => {
