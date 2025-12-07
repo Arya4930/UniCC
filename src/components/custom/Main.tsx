@@ -43,10 +43,22 @@ export default function LoginPage() {
   const [calendarType, setCalenderType] = useState<string | null>(null)
   const [progressBar, setProgressBar] = useState<number>(0);
   const [currSemesterID, setCurrSemesterID] = useState<string>(config.semesterIDs[config.semesterIDs.length - 2]);
+  const [isAPIworking, setIsAPIworking] = useState<boolean>(false);
 
   useEffect(() => {
     const day = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
     setActiveDay(day);
+
+    const checkAPIStatus = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/status`);
+        const data = await res.json();
+        setIsAPIworking(data.text === "API is working" ? false : true);
+      } catch (err) {
+        setIsAPIworking(true);
+      }
+    }
+    checkAPIStatus();
   }, []);
 
   function setAttendanceAndOD(attendance: attendanceRes): void {
@@ -436,6 +448,11 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 midnight:bg-black flex flex-col text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
+      {isAPIworking && !isOffline && (
+        <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium z-[9999] shadow-md">
+          ⚠️ All API services are currently down due to maintenance. Please check back later. ⚠️
+        </div>
+      )}
       {isReloading && (
         <ReloadModal
           message={message}
