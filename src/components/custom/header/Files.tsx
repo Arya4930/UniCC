@@ -73,7 +73,15 @@ export default function Files() {
         const uid = localStorage.getItem("username") || "";
         if (!uid) return;
 
-        setFiles(prev => [...prev, ...incomingFiles]);
+        const tempFiles = incomingFiles.map(f => ({
+            fileID: `temp-${f.name}`,
+            name: f.name,
+            size: f.size,
+            extension: f.name.split('.').pop() || "",
+            expiresAt: new Date().toISOString()
+        }));
+
+        setFiles(prev => [...prev, ...tempFiles]);
 
         for (const file of incomingFiles) {
             const formData = new FormData();
@@ -86,7 +94,6 @@ export default function Files() {
                 );
 
                 if (!res.ok) throw new Error("Upload failed");
-                console.log("Uploaded:", file.name);
             } catch (err) {
                 console.error(err);
             }
@@ -162,6 +169,7 @@ export default function Files() {
                                         return parts.join(" ");
                                     };
                                     const timeLeft = formatTimeLeft(file.expiresAt);
+                                    const uploading = file.isUploading || false;
 
                                     return (
                                         <li
@@ -187,36 +195,39 @@ export default function Files() {
                                                             {formatSize(file.size)}
                                                         </span>
 
-                                                        {timeLeft !== "Expired" && (
+                                                        {uploading ? (
                                                             <span className="text-[10px] font-medium px-2 py-0.5 rounded-md
-                                                                    bg-blue-200 dark:bg-blue-900 midnight:bg-blue-900
-                                                                    text-blue-700 dark:text-blue-300 midnight:text-blue-300">
-                                                                {timeLeft}
+                                                        bg-yellow-200 dark:bg-yellow-800 midnight:bg-yellow-900
+                                                        text-yellow-700 dark:text-yellow-300 midnight:text-yellow-300">
+                                                                Uploading…
                                                             </span>
+                                                        ) : (
+                                                            timeLeft !== "Expired" && (
+                                                                <span className="text-[10px] font-medium px-2 py-0.5 rounded-md
+                                                        bg-blue-200 dark:bg-blue-900 midnight:bg-blue-900
+                                                        text-blue-700 dark:text-blue-300 midnight:text-blue-300">
+                                                                    {timeLeft}
+                                                                </span>
+                                                            )
                                                         )}
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div className="flex items-center gap-3">
-                                                <a
-                                                    href={getDownloadUrl(file.fileID)}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="p-1 rounded-md border border-transparent hover:border-blue-500 
-                                                            text-blue-600 dark:text-blue-400 midnight:text-blue-300"
+                                                <button
+                                                    disabled={uploading}
+                                                    className={`${uploading ? "opacity-30 cursor-not-allowed" : "hover:border-blue-500"}`}
                                                 >
                                                     <Download className="w-5 h-5" />
-                                                </a>
+                                                </button>
 
                                                 <button
-                                                    onClick={() => deleteFile(file.fileID)}
-                                                    disabled={deletingFileID === file.fileID}
-                                                    className={`p-1 rounded-md border transition
-                                                        ${deletingFileID === file.fileID
-                                                            ? "opacity-50 cursor-not-allowed border-gray-500"
-                                                            : "text-red-600 dark:text-red-400 midnight:text-red-400 border-red-500 hover:bg-red-200 dark:hover:bg-red-700 midnight:hover:bg-red-800"
-                                                        }`}
+                                                    onClick={() => !uploading && deleteFile(file.fileID)}
+                                                    disabled={uploading || deletingFileID === file.fileID}
+                                                    className={`transition p-1 rounded-md border 
+                                                        ${uploading ? "opacity-30 cursor-not-allowed" : "hover:bg-red-200"}`
+                                                    }
                                                 >
                                                     <Trash2 className="w-5 h-5" />
                                                 </button>
