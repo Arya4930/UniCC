@@ -78,7 +78,8 @@ export default function Files() {
             name: f.name,
             size: f.size,
             extension: f.name.split('.').pop() || "",
-            expiresAt: new Date().toISOString()
+            expiresAt: new Date().toISOString(),
+            isUploading: true
         }));
 
         setFiles(prev => [...prev, ...tempFiles]);
@@ -169,7 +170,6 @@ export default function Files() {
                                         return parts.join(" ");
                                     };
                                     const timeLeft = formatTimeLeft(file.expiresAt);
-                                    const uploading: boolean = file.isUploading || false;
 
                                     return (
                                         <li
@@ -195,11 +195,11 @@ export default function Files() {
                                                             {formatSize(file.size)}
                                                         </span>
 
-                                                        {timeLeft !== "Expired" && (
+                                                        {(timeLeft !== "Expired" || file.isUploading) && (
                                                             <span className="text-[10px] font-medium px-2 py-0.5 rounded-md
                                                         bg-blue-200 dark:bg-blue-900 midnight:bg-blue-900
                                                         text-blue-700 dark:text-blue-300 midnight:text-blue-300">
-                                                                {uploading ? "Uploading…" : timeLeft}
+                                                                {file.isUploading ? "Uploading…" : timeLeft}
                                                             </span>
                                                         )}
                                                     </div>
@@ -207,8 +207,8 @@ export default function Files() {
                                             </div>
 
                                             <div className="flex items-center gap-3">
-                                                {!uploading && (
-                                                    <div>
+                                                {!file.isUploading && (
+                                                    <>
                                                         <a
                                                             href={getDownloadUrl(file.fileID)}
 
@@ -231,7 +231,7 @@ export default function Files() {
                                                         >
                                                             <Trash2 className="w-5 h-5" />
                                                         </button>
-                                                    </div>)}
+                                                    </>)}
                                             </div>
                                         </li>
                                     );
