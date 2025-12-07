@@ -1,10 +1,10 @@
 import express, { Application } from "express";
 import cors from "cors";
+import { startCleanupCron } from "./cleanupExpiredFiles";
 
 import statusRoutes from "./routes/status";
 import calendarRoutes from "./routes/calendar";
-import loginRoutes from "./routes/login";
-import captchaRoutes from "./routes/captcha";
+import loginRoutes from "./routes/login/login";
 import marksRoutes from "./routes/marks";
 import hostelRoutes from "./routes/hostel";
 import gradesRoutes from "./routes/grades";
@@ -28,7 +28,6 @@ app.get("/", (req, res) => {
 app.use("/api/status", statusRoutes);
 app.use("/api/calendar", calendarRoutes);
 app.use("/api/login", loginRoutes);
-app.use("/api/captcha", captchaRoutes);
 app.use("/api/marks", marksRoutes);
 app.use("/api/hostel", hostelRoutes);
 app.use("/api/grades", gradesRoutes);
@@ -42,4 +41,5 @@ app.use("/api/files/delete/:userID/:fileID", deleteFile);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Express TS server running on port ${PORT}`);
+    startCleanupCron();
 });

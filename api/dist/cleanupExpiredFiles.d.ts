@@ -1,2 +1,2 @@
-export declare function registerCleanupCron(): void;
+export declare function startCleanupCron(): void;
 //# sourceMappingURL=cleanupExpiredFiles.d.ts.map

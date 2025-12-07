@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const cleanupExpiredFiles_1 = require("./cleanupExpiredFiles");
 const status_1 = __importDefault(require("./routes/status"));
 const calendar_1 = __importDefault(require("./routes/calendar"));
-const login_1 = __importDefault(require("./routes/login"));
-const captcha_1 = __importDefault(require("./routes/captcha"));
+const login_1 = __importDefault(require("./routes/login/login"));
 const marks_1 = __importDefault(require("./routes/marks"));
 const hostel_1 = __importDefault(require("./routes/hostel"));
 const grades_1 = __importDefault(require("./routes/grades"));
@@ -28,7 +28,6 @@ app.get("/", (req, res) => {
 app.use("/api/status", status_1.default);
 app.use("/api/calendar", calendar_1.default);
 app.use("/api/login", login_1.default);
-app.use("/api/captcha", captcha_1.default);
 app.use("/api/marks", marks_1.default);
 app.use("/api/hostel", hostel_1.default);
 app.use("/api/grades", grades_1.default);
@@ -41,5 +40,6 @@ app.use("/api/files/delete/:userID/:fileID", deleteFile_1.default);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Express TS server running on port ${PORT}`);
+    (0, cleanupExpiredFiles_1.startCleanupCron)();
 });
 //# sourceMappingURL=server.js.map

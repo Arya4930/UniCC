@@ -1,5 +1,6 @@
 // utils/solveCaptchaClient.js
 import { bitmaps } from "./bitmaps";
+import { createCanvas, loadImage } from "canvas";
 
 function getImageBlocks(pixelData: Uint8ClampedArray, width: number, height: number): Matrix[] {
     const saturate: Vector = new Array(pixelData.length / 4);
@@ -70,33 +71,26 @@ function softmax(vec: Vector): Vector {
     return exps.map(e => e / sumExps);
 }
 
-export async function solveCaptchaClient(base64: string): Promise<string> {
+export async function solveCaptchaServer(base64: string): Promise<string> {
     const LABEL_TEXT = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    const img = new Image();
-    img.src = base64;
-    await new Promise((res) => (img.onload = res));
 
-    const canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
+    const img = await loadImage(base64);
+    const canvas = createCanvas(img.width, img.height);
     const ctx = canvas.getContext("2d");
     ctx.drawImage(img, 0, 0);
 
-    const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const charBlocks = getImageBlocks(data, canvas.width, canvas.height);
+    const { data } = ctx.getImageData(0, 0, img.width, img.height);
+
+    const charBlocks = getImageBlocks(data, img.width, img.height);
 
     let result = "";
     for (const block of charBlocks) {
-        let inputVector: Matrix = binarizeImage(block);
-        inputVector = [flatten(inputVector)];
-
-        let output: Matrix = matMul(inputVector, bitmaps.weights);
-        const logits: Vector = matAdd(output[0], bitmaps.biases);
+        let inputVector = [flatten(binarizeImage(block))];
+        let output = matMul(inputVector, bitmaps.weights);
+        const logits = matAdd(output[0], bitmaps.biases);
 
         const probabilities = softmax(logits);
-        const maxProbIndex = probabilities.indexOf(Math.max(...probabilities));
-        result += LABEL_TEXT[maxProbIndex];
+        result += LABEL_TEXT[probabilities.indexOf(Math.max(...probabilities))];
     }
-
     return result;
 }
