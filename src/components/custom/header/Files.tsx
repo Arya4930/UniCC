@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, Eye } from "lucide-react";
 import {
     File,
     FileText,
@@ -63,7 +63,8 @@ export default function Files() {
         }
     };
 
-    const getDownloadUrl = (fileID: string) => `https://uniccassets.aryaslocalserver.online/${fileID}`;
+    const getDownloadUrl = (fileID) =>
+        `https://uniccassets.aryaslocalserver.online/${fileID}?response-content-disposition=attachment`;
 
     useEffect(() => {
         fetchFiles();
@@ -103,6 +104,25 @@ export default function Files() {
         fetchFiles();
     };
 
+    const handleDownload = async (file) => {
+        try {
+            const res = await fetch(`${API_BASE}/api/files/download/${userID}/${encodeURIComponent(file.fileID)}`);
+            if (!res.ok) throw new Error("Failed to download file");
+
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = file.name;
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     return (
         <div>
@@ -211,14 +231,21 @@ export default function Files() {
                                                     <>
                                                         <a
                                                             href={getDownloadUrl(file.fileID)}
-
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                             className="p-1 rounded-md border border-transparent hover:border-blue-500 
                                                             text-blue-600 dark:text-blue-400 midnight:text-blue-300"
                                                         >
-                                                            <Download className="w-5 h-5" />
+                                                            <Eye className="w-5 h-5" />
                                                         </a>
+                                                        
+                                                        <button
+                                                            onClick={() => handleDownload(file)}
+                                                            className="p-1 rounded-md border border-transparent hover:border-blue-500 
+                                                                text-blue-600 dark:text-blue-400 midnight:text-blue-300"
+                                                        >
+                                                            <Download className="w-5 h-5" />
+                                                        </button>
 
                                                         <button
                                                             onClick={() => deleteFile(file.fileID)}

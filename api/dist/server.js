@@ -19,6 +19,7 @@ const allGrades_1 = __importDefault(require("./routes/allGrades"));
 const UploadFile_1 = __importDefault(require("./routes/files/UploadFile"));
 const fetchFiles_1 = __importDefault(require("./routes/files/fetchFiles"));
 const deleteFile_1 = __importDefault(require("./routes/files/deleteFile"));
+const downloadFile_1 = __importDefault(require("./routes/files/downloadFile"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json({ limit: "10mb" }));
@@ -39,6 +40,7 @@ app.use("/api/all-grades", allGrades_1.default);
 app.use("/api/files/upload/:userID", UploadFile_1.default);
 app.use("/api/files/fetch/:userID", fetchFiles_1.default);
 app.use("/api/files/delete/:userID/:fileID", deleteFile_1.default);
+app.use("/api/files/download/:userID/:fileID", downloadFile_1.default);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Express TS server running on port ${PORT}`);

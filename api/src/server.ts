@@ -15,6 +15,7 @@ import allGradesRoutes from "./routes/allGrades";
 import UploadFile from "./routes/files/UploadFile";
 import fetchFiles from "./routes/files/fetchFiles";
 import deleteFile from "./routes/files/deleteFile";
+import downloadFile from "./routes/files/downloadFile";
 
 const app: Application = express();
 
@@ -39,6 +40,7 @@ app.use("/api/all-grades", allGradesRoutes);
 app.use("/api/files/upload/:userID", UploadFile);
 app.use("/api/files/fetch/:userID", fetchFiles);
 app.use("/api/files/delete/:userID/:fileID", deleteFile);
+app.use("/api/files/download/:userID/:fileID", downloadFile);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
