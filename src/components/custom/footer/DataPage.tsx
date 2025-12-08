@@ -14,7 +14,6 @@ interface DataPageProps {
     handleClose: () => void;
     handleDeleteItem: (key: string) => void;
     storageData: Record<string, string>;
-    currSemesterID: string;
 }
 
 function LocalStorageItem({ storageKey, value, onDelete }: LocalStorageItemProps) {
@@ -76,13 +75,7 @@ function LocalStorageItem({ storageKey, value, onDelete }: LocalStorageItemProps
     );
 }
 
-export default function DataPage({ handleClose, handleDeleteItem, storageData, currSemesterID }: DataPageProps) {
-    const [selectedSemester, setSelectedSemester] = useState<string>(currSemesterID);
-
-    useEffect(() => {
-        setSelectedSemester(currSemesterID);
-    }, [currSemesterID]);
-
+export default function DataPage({ handleClose, handleDeleteItem, storageData }: DataPageProps) {
     return (
         <div className="fixed inset-0 z-50 bg-gray-100 dark:bg-slate-900 midnight:bg-black bg-opacity-95 flex flex-col items-center justify-start overflow-y-auto p-6">
             <div className="w-full flex justify-between items-center mb-6 max-w-3xl">

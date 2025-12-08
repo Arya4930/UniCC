@@ -10,10 +10,9 @@ import TermsOfServicePage from "./TermsOfService";
 
 type FooterProps = {
   isLoggedIn: boolean;
-  currSemesterID: string;
 }
 
-export default function Footer({ isLoggedIn, currSemesterID }: FooterProps) {
+export default function Footer({ isLoggedIn }: FooterProps) {
   const [showStoragePage, setShowStoragePage] = useState<boolean>(false);
   const [storageData, setStorageData] = useState<Record<string, string | null>>({});
   const [showPolicy, setShowPolicy] = useState<boolean>(false);
@@ -59,7 +58,7 @@ export default function Footer({ isLoggedIn, currSemesterID }: FooterProps) {
 
   return (
     <footer className="bg-transparent text-gray-700 dark:text-gray-300 midnight:text-gray-300 flex items-center justify-center">
-      {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} currSemesterID={currSemesterID} />}
+      {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} />}
       {showPolicy && <PrivacyPolicyPage handleClose={() => setShowPolicy(false)} />}
       {showTOS && <TermsOfServicePage handleClose={() => setShowTOS(false)} />}
       <div className="max-w-7xl mx-auto px-3 py-6 text-center w-full">
