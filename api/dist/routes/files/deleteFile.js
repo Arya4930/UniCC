@@ -13,7 +13,7 @@ router.delete("/", async (req, res) => {
     try {
         await (0, mongodb_1.connectDB)();
         const { userID, fileID } = req.params;
-        const maskedID = (0, mask_1.maskUserID)(userID);
+        const maskedID = (0, mask_1.maskUserID)(userID.toUpperCase());
         const user = await Users_1.default.findOne({ UserID: maskedID });
         if (!user) {
             return res.status(404).json({ error: "User not found" });

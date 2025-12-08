@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
     try {
         await (0, mongodb_1.connectDB)();
         const { userID } = req.params;
-        const maskedID = (0, mask_1.maskUserID)(userID);
+        const maskedID = (0, mask_1.maskUserID)(userID.toUpperCase());
         let user = await Users_1.default.findOne({ UserID: maskedID });
         if (!user) {
             return res.json([]);

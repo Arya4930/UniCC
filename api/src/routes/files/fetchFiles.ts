@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
     try {
         await connectDB();
         const { userID } = req.params;
-        const maskedID = maskUserID(userID);
+        const maskedID = maskUserID(userID.toUpperCase());
 
         let user = await User.findOne({ UserID: maskedID });
 

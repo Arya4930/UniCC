@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
         await connectDB();
         const { userID, fileID } = req.params;
 
-        const maskedID = maskUserID(userID);
+        const maskedID = maskUserID(userID.toUpperCase());
 
         const user = await User.findOne({ UserID: maskedID });
         if(!user) {

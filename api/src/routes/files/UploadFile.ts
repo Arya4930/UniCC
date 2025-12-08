@@ -19,12 +19,11 @@ router.post("/", upload.single("file"), async (req, res) => {
         await connectDB();
 
         const { userID } = req.params;
-        const maskedID = maskUserID(userID);
+        const maskedID = maskUserID(userID.toUpperCase());
         const file = req.file;
         if (!file) return res.status(400).json({ error: "No file uploaded" });
 
-        const isAdmin = ADMINS.includes(userID);
-
+        const isAdmin = ADMINS.includes(userID.toUpperCase());
         let user = await User.findOne({ UserID: maskedID });
         
         if (!user) {
