@@ -8,7 +8,7 @@ const Users_1 = __importDefault(require("../../models/Users"));
 const mongodb_1 = require("../../mongodb");
 const mask_1 = require("../../mask");
 const router = express_1.default.Router({ mergeParams: true });
-router.get("/", async (req, res) => {
+router.get("/:userID", async (req, res) => {
     try {
         await (0, mongodb_1.connectDB)();
         const { userID } = req.params;

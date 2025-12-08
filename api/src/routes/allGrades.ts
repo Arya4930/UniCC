@@ -195,7 +195,8 @@ router.post("/", async (req: Request, res: Response) => {
 
         const output: GradeResultsMap = {};
         semesters.forEach((semId, i) => {
-            output[semId] = resultsArray[i];
+            const res = resultsArray[i] ?? null;
+            output[semId] = res;
         });
 
         return res.status(200).json({ grades: output });

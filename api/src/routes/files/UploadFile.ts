@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request } from 'express';
 import type { Router } from 'express';
 import multer from 'multer';
 import path from 'path';
@@ -8,22 +8,26 @@ import { v4 as uuidv4 } from 'uuid';
 import { connectDB } from '../../mongodb';
 import { maskUserID } from '../../mask';
 
+interface MulterRequest extends Request {
+    file?: Express.Multer.File;
+}
+
 const router: Router = express.Router({ mergeParams: true });
 const upload = multer();
 
 const MAX_STORAGE = 5 * 1024 * 1024;
 const ADMINS = (process.env.ADMINS || "").split(",").map(id => id.trim());
 
-router.post("/", upload.single("file"), async (req, res) => {
+router.post("/:userID", upload.single("file"), async (req, res) => {
     try {
         await connectDB();
 
         const { userID } = req.params;
-        const maskedID = maskUserID(userID.toUpperCase());
-        const file = req.file;
+        const maskedID = maskUserID(userID?.toUpperCase() || "");
+        const file = (req as MulterRequest).file;
         if (!file) return res.status(400).json({ error: "No file uploaded" });
 
-        const isAdmin = ADMINS.includes(userID.toUpperCase());
+        const isAdmin = ADMINS.includes(userID?.toUpperCase() || "");
         let user = await User.findOne({ UserID: maskedID });
         
         if (!user) {

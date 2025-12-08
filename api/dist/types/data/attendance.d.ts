@@ -13,22 +13,22 @@ type detailed = {
     status: string;
 };
 export type attendanceItem = {
-    slNo: string;
+    slNo: string | null;
     courseCode: string;
     courseTitle: string;
-    courseType: string;
+    courseType: string | null;
     slotName: string;
-    faculty: string;
-    registrationDate: string;
-    attendanceDate: string;
-    attendedClasses: number;
-    totalClasses: number;
-    attendancePercentage: string;
+    faculty: string | null;
+    registrationDate: string | null;
+    attendanceDate: string | null;
+    attendedClasses: number | null;
+    totalClasses: number | null;
+    attendancePercentage?: string | null | undefined;
     viewLink: string | detailed[] | null;
-    classId?: string | null;
-    credits?: string | null;
-    slotVenue?: string | null;
-    category?: string | null;
+    slotVenue?: string | null | undefined;
+    classId?: string | null | undefined;
+    credits?: string | null | undefined;
+    category?: string | null | undefined;
 };
 export type attendanceRes = {
     semesterId?: string;

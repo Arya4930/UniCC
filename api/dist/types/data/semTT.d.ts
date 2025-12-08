@@ -4,7 +4,7 @@ export interface CalendarEvent {
     type: "Instructional Day" | "Holiday" | "Other";
     text: string;
     color?: string;
-    category: string;
+    category?: string;
 }
 export interface CalendarDay {
     date: number;
@@ -17,7 +17,7 @@ export interface CalendarMonth {
 export interface HolidayEvent extends CalendarEvent {
     text: string;
     type: "Holiday";
-    color: string;
+    color?: string;
     category?: string;
 }
 export type ParsedCalendarFn = (html: string) => Promise<CalendarMonth>;

@@ -7,7 +7,7 @@ import { maskUserID } from "../../mask";
 
 const router: Router = express.Router({ mergeParams: true });
 
-router.delete("/", async (req, res) => {
+router.delete("/:userID/:fileID", async (req, res) => {
     try {
         await connectDB();
         const { userID, fileID } = req.params;

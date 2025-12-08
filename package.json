@@ -66,6 +66,7 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/dotenv": "^8.2.3",
+    "@types/multer": "^2.0.0",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.2",
     "@types/react-circular-progressbar": "^1.1.0",

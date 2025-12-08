@@ -57,7 +57,7 @@ router.post("/", async (req, res) => {
             throw new Error("Cannot find _csrf or authorizedID");
         let months = [];
         const semCode = semesterId?.slice(-2);
-        const startYear = parseInt(semesterId.slice(2, 6));
+        const startYear = parseInt(semesterId?.slice(2, 6) || "2024");
         const nextYear = startYear + 1;
         if (semCode === "01") {
             months = [
@@ -172,7 +172,7 @@ async function parseCalendar(html) {
                 return;
             const style = $(span).attr("style") || "";
             const colorMatch = style.match(/color:\s*([^;]+)/);
-            const color = colorMatch ? colorMatch[1].trim() : "";
+            const color = colorMatch ? (colorMatch[1] || " ").trim() : "";
             const isInstructional = text.toLowerCase().includes("instructional");
             const isHoliday = text.toLowerCase().includes("holiday");
             events.push({
@@ -190,7 +190,7 @@ async function parseCalendar(html) {
             const match = e.text.match(/\(([^)]+)\)/);
             return {
                 ...e,
-                category: match ? match[1].trim() : "General",
+                category: match ? (match[1] || " ").trim() : "General",
             };
         });
         if (events.length !== 0) {

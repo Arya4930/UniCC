@@ -184,7 +184,8 @@ router.post("/", async (req, res) => {
         const resultsArray = await Promise.all(semesters.map(fetchSemester));
         const output = {};
         semesters.forEach((semId, i) => {
-            output[semId] = resultsArray[i];
+            const res = resultsArray[i] ?? null;
+            output[semId] = res;
         });
         return res.status(200).json({ grades: output });
     }

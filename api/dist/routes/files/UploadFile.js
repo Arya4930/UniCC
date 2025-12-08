@@ -15,15 +15,15 @@ const router = express_1.default.Router({ mergeParams: true });
 const upload = (0, multer_1.default)();
 const MAX_STORAGE = 5 * 1024 * 1024;
 const ADMINS = (process.env.ADMINS || "").split(",").map(id => id.trim());
-router.post("/", upload.single("file"), async (req, res) => {
+router.post("/:userID", upload.single("file"), async (req, res) => {
     try {
         await (0, mongodb_1.connectDB)();
         const { userID } = req.params;
-        const maskedID = (0, mask_1.maskUserID)(userID.toUpperCase());
+        const maskedID = (0, mask_1.maskUserID)(userID?.toUpperCase() || "");
         const file = req.file;
         if (!file)
             return res.status(400).json({ error: "No file uploaded" });
-        const isAdmin = ADMINS.includes(userID.toUpperCase());
+        const isAdmin = ADMINS.includes(userID?.toUpperCase() || "");
         let user = await Users_1.default.findOne({ UserID: maskedID });
         if (!user) {
             user = await Users_1.default.create({ UserID: maskedID, files: [] });

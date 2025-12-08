@@ -14,7 +14,7 @@ export interface CalendarEvent {
     type: "Instructional Day" | "Holiday" | "Other";
     text: string;
     color?: string;
-    category: string;
+    category?: string;
 }
 
 export interface CalendarDay {
@@ -30,7 +30,7 @@ export interface CalendarMonth {
 export interface HolidayEvent extends CalendarEvent {
     text: string;
     type: "Holiday";
-    color: string;
+    color?: string;
     category?: string;
 }
 

@@ -1,6 +1,18 @@
 import mongoose, { Schema, model } from 'mongoose';
 
-const FileSchema = new Schema(
+interface IFile {
+  fileID: string;
+  extension: string;
+  name: string;
+  size: number;
+  expiresAt: Date;
+}
+interface IUser extends Document {
+  UserID: string;
+  files: IFile[];
+}
+
+const FileSchema: Schema<IFile> = new Schema(
   {
     fileID: { type: String, required: true },
     extension: { type: String, required: true },
@@ -11,7 +23,7 @@ const FileSchema = new Schema(
   { _id: false }
 );
 
-const UserSchema = new Schema(
+const UserSchema: Schema<IUser> = new Schema(
   {
     UserID: {
       type: String,
@@ -28,5 +40,5 @@ const UserSchema = new Schema(
   }
 );
 
-const User = mongoose.models?.User || model('User', UserSchema);
+const User = (mongoose.models.User as mongoose.Model<IUser>) || model<IUser>('User', UserSchema);
 export default User;

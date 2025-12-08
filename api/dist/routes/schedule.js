@@ -52,9 +52,9 @@ router.post("/", async (req, res) => {
             throw new Error("Cannot find _csrf or authorizedID");
         const client = (0, VTOPClient_1.default)();
         const ScheduleRes = await client.post("/vtop/examinations/doSearchExamScheduleForStudent", new url_1.URLSearchParams({
-            authorizedID,
-            semesterSubId: semesterId,
-            _csrf: csrf,
+            authorizedID: String(authorizedID),
+            semSubId: semesterId ?? "",
+            _csrf: String(csrf),
             x: Date.now().toString(),
         }).toString(), {
             headers: {
@@ -73,6 +73,8 @@ router.post("/", async (req, res) => {
                 return;
             }
             if ($$$(row).hasClass("tableHeader"))
+                return;
+            if (!currentExamType)
                 return;
             if ($$$(row).hasClass("tableContent") && tds.length > 1) {
                 const item = {

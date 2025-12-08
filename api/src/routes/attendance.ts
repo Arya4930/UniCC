@@ -15,7 +15,7 @@ function mergeAttendanceWithTimetable(attendance: attendanceItem[], timetable: c
     timetable.forEach(tt => {
         const ttCourseCode = tt.courseCode.trim();
         const attEntry = attendance.find(att =>
-            att.courseCode.split(" ")[0].trim() === ttCourseCode
+            (att?.courseCode?.split(" ")[0] ?? "").trim() === ttCourseCode
         );
 
         const cleanedVenue = tt.slotVenue
@@ -77,9 +77,9 @@ router.post("/", async (req: Request, res: Response) => {
         const ttRes = await client.post(
             "/vtop/processViewStudentAttendance",
             new URLSearchParams({
-                authorizedID,
-                semesterSubId: semesterId,
-                _csrf: csrf,
+                authorizedID: String(authorizedID),
+                semesterSubId: semesterId ?? "",
+                _csrf: String(csrf),
                 x: Date.now().toString(),
             }).toString(),
             {
@@ -94,7 +94,7 @@ router.post("/", async (req: Request, res: Response) => {
         const courseInfo: courseItem[] = await fetchTimetable(
             cookieHeader,
             dashboardHtml,
-            semesterId
+            (semesterId as string)
         );
 
         const $$$ = cheerio.load(ttRes.data);
@@ -140,11 +140,11 @@ router.post("/", async (req: Request, res: Response) => {
                 const attendanceRes = await client.post(
                     "/vtop/processViewAttendanceDetail",
                     new URLSearchParams({
-                        _csrf: csrf,
-                        authorizedID,
+                        _csrf: String(csrf),
+                        authorizedID: String(authorizedID),
                         x: Date.now().toString(),
-                        classId,
-                        slotName,
+                        classId: String(classId),
+                        slotName: String(slotName),
                     }).toString(),
                     {
                         headers: {

@@ -9,7 +9,7 @@ const Users_1 = __importDefault(require("../../models/Users"));
 const s3_1 = require("../../s3");
 const mask_1 = require("../../mask");
 const router = express_1.default.Router({ mergeParams: true });
-router.delete("/", async (req, res) => {
+router.delete("/:userID/:fileID", async (req, res) => {
     try {
         await (0, mongodb_1.connectDB)();
         const { userID, fileID } = req.params;

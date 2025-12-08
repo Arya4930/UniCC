@@ -26,9 +26,9 @@ router.post("/", async (req: Request, res: Response) => {
         const ScheduleRes = await client.post(
             "/vtop/examinations/doSearchExamScheduleForStudent",
             new URLSearchParams({
-                authorizedID,
-                semesterSubId: semesterId,
-                _csrf: csrf,
+                authorizedID: String(authorizedID),
+                semSubId: semesterId ?? "",
+                _csrf: String(csrf),
                 x: Date.now().toString(),
             }).toString(),
             {
@@ -53,6 +53,7 @@ router.post("/", async (req: Request, res: Response) => {
             }
 
             if ($$$(row).hasClass("tableHeader")) return;
+            if(!currentExamType) return;
 
             if ($$$(row).hasClass("tableContent") && tds.length > 1) {
                 const item: ExamItem = {
@@ -72,7 +73,7 @@ router.post("/", async (req: Request, res: Response) => {
                 if (!Schedule[currentExamType]) {
                     Schedule[currentExamType] = [];
                 }
-                Schedule[currentExamType].push(item);
+                (Schedule[currentExamType] as ExamItem[]).push(item);
             }
         });
 

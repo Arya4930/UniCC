@@ -7,7 +7,7 @@ import { StreamFileFromS3 } from "../../s3";
 
 const router: Router = express.Router({ mergeParams: true });
 
-router.get("/", async (req, res) => {
+router.get("/:userID/:fileID", async (req, res) => {
     try {
         await connectDB();
         const { userID, fileID } = req.params;

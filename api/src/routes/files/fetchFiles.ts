@@ -6,7 +6,7 @@ import { maskUserID } from '../../mask';
 
 const router: Router = express.Router({ mergeParams: true });
 
-router.get("/", async (req, res) => {
+router.get("/:userID", async (req, res) => {
     try {
         await connectDB();
         const { userID } = req.params;

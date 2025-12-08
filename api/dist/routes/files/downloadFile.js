@@ -9,7 +9,7 @@ const mask_1 = require("../../mask");
 const Users_1 = __importDefault(require("../../models/Users"));
 const s3_1 = require("../../s3");
 const router = express_1.default.Router({ mergeParams: true });
-router.get("/", async (req, res) => {
+router.get("/:userID/:fileID", async (req, res) => {
     try {
         await (0, mongodb_1.connectDB)();
         const { userID, fileID } = req.params;

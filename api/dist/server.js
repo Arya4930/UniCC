@@ -37,10 +37,10 @@ app.use("/api/grades", grades_1.default);
 app.use("/api/schedule", schedule_1.default);
 app.use("/api/attendance", attendance_1.default);
 app.use("/api/all-grades", allGrades_1.default);
-app.use("/api/files/upload/:userID", UploadFile_1.default);
-app.use("/api/files/fetch/:userID", fetchFiles_1.default);
-app.use("/api/files/delete/:userID/:fileID", deleteFile_1.default);
-app.use("/api/files/download/:userID/:fileID", downloadFile_1.default);
+app.use("/api/files/upload", UploadFile_1.default);
+app.use("/api/files/fetch", fetchFiles_1.default);
+app.use("/api/files/delete", deleteFile_1.default);
+app.use("/api/files/download", downloadFile_1.default);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Express TS server running on port ${PORT}`);

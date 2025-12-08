@@ -35,7 +35,7 @@ router.post("/", async (req: Request, res: Response) => {
         let months: string[] = [];
 
         const semCode = semesterId?.slice(-2);
-        const startYear = parseInt(semesterId.slice(2, 6));
+        const startYear = parseInt(semesterId?.slice(2, 6) || "2024");
         const nextYear = startYear + 1;
 
         if (semCode === "01") {
@@ -171,7 +171,7 @@ async function parseCalendar(html: string) {
 
             const style = $(span).attr("style") || "";
             const colorMatch = style.match(/color:\s*([^;]+)/);
-            const color = colorMatch ? colorMatch[1].trim() : "";
+            const color = colorMatch ? (colorMatch[1] || " ").trim() : "";
 
             const isInstructional = text.toLowerCase().includes("instructional");
             const isHoliday = text.toLowerCase().includes("holiday");
@@ -192,7 +192,7 @@ async function parseCalendar(html: string) {
             const match = e.text.match(/\(([^)]+)\)/);
             return {
                 ...e,
-                category: match ? match[1].trim() : "General",
+                category: match ? (match[1] || " ").trim() : "General",
             };
         });
 

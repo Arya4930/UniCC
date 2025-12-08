@@ -46,7 +46,7 @@ function mergeAttendanceWithTimetable(attendance, timetable) {
     const merged = [];
     timetable.forEach(tt => {
         const ttCourseCode = tt.courseCode.trim();
-        const attEntry = attendance.find(att => att.courseCode.split(" ")[0].trim() === ttCourseCode);
+        const attEntry = attendance.find(att => (att?.courseCode?.split(" ")[0] ?? "").trim() === ttCourseCode);
         const cleanedVenue = tt.slotVenue
             ? (() => {
                 const cleaned = tt.slotVenue.replace(/\s+/g, " ").trim();
@@ -97,9 +97,9 @@ router.post("/", async (req, res) => {
             throw new Error("Cannot find _csrf or authorizedID");
         const client = (0, VTOPClient_1.default)();
         const ttRes = await client.post("/vtop/processViewStudentAttendance", new url_1.URLSearchParams({
-            authorizedID,
-            semesterSubId: semesterId,
-            _csrf: csrf,
+            authorizedID: String(authorizedID),
+            semesterSubId: semesterId ?? "",
+            _csrf: String(csrf),
             x: Date.now().toString(),
         }).toString(), {
             headers: {
@@ -142,11 +142,11 @@ router.post("/", async (req, res) => {
             const [, classId, slotName] = match;
             try {
                 const attendanceRes = await client.post("/vtop/processViewAttendanceDetail", new url_1.URLSearchParams({
-                    _csrf: csrf,
-                    authorizedID,
+                    _csrf: String(csrf),
+                    authorizedID: String(authorizedID),
                     x: Date.now().toString(),
-                    classId,
-                    slotName,
+                    classId: String(classId),
+                    slotName: String(slotName),
                 }).toString(), {
                     headers: {
                         Cookie: cookieHeader,

@@ -1,42 +1,42 @@
 export type courseItem = {
-    slNo: string,
-    course: string,
-    courseCode: string,
-    LTPJC: string,
-    category: string,
-    classId: string,
-    slotVenue: string,
-    facultyDetails: string,
+  slNo: string,
+  course: string,
+  courseCode: string,
+  LTPJC: string,
+  category: string,
+  classId: string,
+  slotVenue: string,
+  facultyDetails: string,
 }
 
 type detailed = {
-    date: string,
-    status: string
+  date: string,
+  status: string
 }
 
 export type attendanceItem = {
-    slNo: string,
-    courseCode: string,
-    courseTitle: string,
-    courseType: string,
-    slotName: string,
-    faculty: string,
-    registrationDate: string,
-    attendanceDate: string,
-    attendedClasses: number,
-    totalClasses: number,
-    attendancePercentage: string,
-    viewLink: string | detailed[] | null,
-    classId?: string | null,
-    credits?: string | null,
-    slotVenue?: string | null,
-    category?: string | null,
+  slNo: string | null,
+  courseCode: string,
+  courseTitle: string,
+  courseType: string | null,
+  slotName: string,
+  faculty: string | null,
+  registrationDate: string | null,
+  attendanceDate: string | null,
+  attendedClasses: number | null,
+  totalClasses: number | null,
+  attendancePercentage?: string | null | undefined,
+  viewLink: string | detailed[] | null,
+  slotVenue?: string | null | undefined,
+  classId?: string | null | undefined,
+  credits?: string | null | undefined,
+  category?: string | null | undefined,
 }
 
 export type attendanceRes = {
-    semesterId?: string,
-    attendance?: attendanceItem[],
-    error?: string,
+  semesterId?: string,
+  attendance?: attendanceItem[],
+  error?: string,
 }
 
 type ODEntry = {

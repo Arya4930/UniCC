@@ -12,10 +12,7 @@ const s3 = new client_s3_1.S3Client({
     credentials: {
         accessKeyId: process.env.B2_ACCESS_KEY_ID,
         secretAccessKey: process.env.B2_SECRET_ACCESS_KEY,
-    },
-    maxRetries: 0,
-    requestChecksumCalculation: 'WHEN_REQUIRED',
-    responseChecksumValidation: 'WHEN_REQUIRED'
+    }
 });
 async function UploadFileToS3(file, key) {
     await s3.send(new client_s3_1.PutObjectCommand({
