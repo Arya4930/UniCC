@@ -209,14 +209,14 @@ export default function Files() {
                                                     </span>
 
                                                     <div className="flex gap-2 mt-1 flex-wrap">
-                                                        <span className="text-[10px] font-medium px-2 py-0.5 rounded-md
+                                                        <span className="text-[9px] md:text-[10px] font-medium px-2 py-0.5 rounded-md
                                                             bg-gray-300 dark:bg-gray-700 midnight:bg-gray-800
                                                             text-gray-700 dark:text-gray-200 midnight:text-gray-200">
                                                             {formatSize(file.size)}
                                                         </span>
 
                                                         {(timeLeft !== "Expired" || file.isUploading) && (
-                                                            <span className="text-[10px] font-medium px-2 py-0.5 rounded-md
+                                                            <span className="text-[9px] md:text-[10px] font-medium px-2 py-0.5 rounded-md
                                                         bg-blue-200 dark:bg-blue-900 midnight:bg-blue-900
                                                         text-blue-700 dark:text-blue-300 midnight:text-blue-300">
                                                                 {file.isUploading ? "Uploading…" : timeLeft}
