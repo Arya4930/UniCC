@@ -50,7 +50,7 @@ function mergeAttendanceWithTimetable(attendance, timetable) {
         const cleanedVenue = tt.slotVenue
             ? (() => {
                 const cleaned = tt.slotVenue.replace(/\s+/g, " ").trim();
-                const matches = cleaned.match(/[A-Z]+\d*\s*-\s*\d+[A-Z]?/g);
+                const matches = cleaned.match(/[A-Z]+\d*\s*-\s*\d+\s*[A-Z]?/g);
                 return matches ? matches[matches.length - 1] : null;
             })()
             : null;
