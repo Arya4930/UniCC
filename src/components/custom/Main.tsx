@@ -323,8 +323,7 @@ export default function LoginPage() {
 
       const [
         attRes,
-        marksRes,
-        scheduleRes
+        marksRes
       ] = await Promise.all([
         fetch(`${API_BASE}/api/attendance`, {
           method: "POST",
@@ -345,26 +344,14 @@ export default function LoginPage() {
           setMessage(prev => prev + "\n✅ Marks fetched");
           setProgressBar(prev => prev + 20);
           return j;
-        }),
-        fetch(`${API_BASE}/api/schedule`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
-        }).then(async r => {
-          const j = await r.json();
-          setMessage(prev => prev + "\n✅ Exam schedule fetched");
-          setProgressBar(prev => prev + 20);
-          return j;
-        }),
+        })
       ]);
 
       setAttendanceAndOD(attRes);
       setMarksData(marksRes);
-      setScheduleData(scheduleRes);
 
       localStorage.setItem("attendance", JSON.stringify(attRes));
       localStorage.setItem("marks", JSON.stringify(marksRes));
-      localStorage.setItem("schedule", JSON.stringify(scheduleRes));
 
       setMessage(prev => prev + "\n✅ All data loaded successfully!");
       setProgressBar(100);
@@ -462,7 +449,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 midnight:bg-black flex flex-col text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
       {isAPIworking && !isOffline && (
         <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium z-[9999] shadow-md">
-          ⚠️ All API services are currently down due to maintenance. Please check back later. ⚠️
+          ⚠️ Unable to connect to API services. Please check back later. ⚠️
         </div>
       )}
       {isReloading && (
