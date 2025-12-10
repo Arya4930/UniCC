@@ -20,6 +20,7 @@ export default function Files() {
     const [files, setFiles] = useState<any[]>([]);
     const [loadingFiles, setLoadingFiles] = useState(false);
     const [deletingFileID, setDeletingFileID] = useState<string | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const formatSize = (bytes: number) => {
         if (bytes < 1024) return `${bytes} B`;
@@ -48,6 +49,7 @@ export default function Files() {
 
     const deleteFile = async (fileID: string) => {
         setDeletingFileID(fileID);
+        setIsDeleting(true);
         try {
             const res = await fetch(
                 `${API_BASE}/api/files/delete/${userID}/${encodeURIComponent(fileID)}`,
@@ -60,6 +62,7 @@ export default function Files() {
             console.error(error);
         } finally {
             setDeletingFileID(null);
+            setIsDeleting(false);
         }
     };
 
@@ -249,9 +252,9 @@ export default function Files() {
 
                                                         <button
                                                             onClick={() => deleteFile(file.fileID)}
-                                                            disabled={deletingFileID === file.fileID}
+                                                            disabled={isDeleting}
                                                             className={`p-1 rounded-md border transition
-                                                        ${deletingFileID === file.fileID
+                                                        ${isDeleting
                                                                     ? "opacity-50 cursor-not-allowed border-gray-500"
                                                                     : "text-red-600 dark:text-red-400 midnight:text-red-400 border-red-500 hover:bg-red-200 dark:hover:bg-red-700 midnight:hover:bg-red-800"
                                                                 }`}
