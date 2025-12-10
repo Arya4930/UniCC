@@ -150,7 +150,7 @@ export default function Files() {
                 </div>
             </button>
 
-            <div className={`transition-all duration-300 overflow-hidden ${open ? "max-h-[500px]" : "max-h-0"}`}>
+            <div className={`transition-all duration-300 ${open ? "max-h-[500px] overflow-y-auto" : "max-h-0 overflow-hidden"}`}>
                 {loadingFiles ? (
                     <p className="text-gray-500 dark:text-gray-400 midnight:text-gray-300">Loading…</p>
                 ) : (
