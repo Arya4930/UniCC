@@ -19,7 +19,6 @@ export default function Files() {
     const [open, setOpen] = useState(false);
     const [files, setFiles] = useState<any[]>([]);
     const [loadingFiles, setLoadingFiles] = useState(false);
-    const [deletingFileID, setDeletingFileID] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
 
     const formatSize = (bytes: number) => {
@@ -48,7 +47,6 @@ export default function Files() {
     }
 
     const deleteFile = async (fileID: string) => {
-        setDeletingFileID(fileID);
         setIsDeleting(true);
         try {
             const res = await fetch(
@@ -61,7 +59,6 @@ export default function Files() {
         } catch (error) {
             console.error(error);
         } finally {
-            setDeletingFileID(null);
             setIsDeleting(false);
         }
     };
