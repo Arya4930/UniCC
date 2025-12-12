@@ -8,18 +8,18 @@ import { X } from "lucide-react";
 import "react-circular-progressbar/dist/styles.css"
 
 type CalendarEvent = {
-  text: string;
-  type: "working" | "holiday";
-  color: string;
-  category?: string;
+    text: string;
+    type: "working" | "holiday";
+    color: string;
+    category?: string;
 };
 
 type RemainingClassDay = {
-  date: number;
-  weekday: string;
-  type: string; 
-  events?: CalendarEvent[];
-  fullDate: Date;
+    date: number;
+    weekday: string;
+    type: string;
+    events?: CalendarEvent[];
+    fullDate: Date;
 };
 
 export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalendars, impDates }) {
@@ -152,22 +152,26 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                     </div>
                 </div>
                 <div>
-                    {(() => {
+                    {a.totalClasses > 0 && (() => {
                         const attended = a.attendedClasses;
                         const total = a.totalClasses;
                         const percentage = (attended / total) * 100;
 
                         if (percentage < 75) {
                             const needed = Math.ceil((0.75 * total - attended) / (1 - 0.75));
+                            const neededValue = lab ? Math.ceil(needed / 2) : needed;
+
                             return (
                                 <p className="text-red-500 dark:text-red-400 midnight:text-red-400 text-sm">
-                                    Need to attend <strong>{lab ? needed / 2 : needed}</strong> more{" "}
-                                    {lab ? "lab" : "class"} to reach 75%.
+                                    Need to attend <strong>{neededValue}</strong> more {lab ? "lab" : "class"}
+                                    {neededValue > 1 && (lab ? "s" : "es")} to reach 75%.
                                 </p>
                             );
                         } else {
                             const canMiss = Math.floor(attended / 0.75 - total);
-                            if (canMiss === 0) {
+                            const canMissValue = lab ? Math.floor(canMiss / 2) : canMiss;
+
+                            if (canMissValue === 0) {
                                 return (
                                     <p className="text-yellow-500 dark:text-yellow-400 midnight:text-yellow-400 text-sm">
                                         You are on the edge! Attend the next {lab ? "lab" : "class"}.
@@ -176,8 +180,8 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                             } else {
                                 return (
                                     <p className="text-green-500 dark:text-green-400 midnight:text-green-400 text-sm">
-                                        Can miss <strong>{lab ? canMiss / 2 : canMiss}</strong>{" "}
-                                        {lab ? "lab" : "class"} and stay above 75%.
+                                        Can miss <strong>{canMissValue}</strong> {lab ? "lab" : "class"}
+                                        {canMissValue !== 1 && (lab ? "s" : "es")} and stay above 75%.
                                     </p>
                                 );
                             }
@@ -383,8 +387,8 @@ function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0 })
                 <span className="text-red-500 dark:text-red-400">Not Attending: <strong>{missedCount}</strong></span>
                 <span
                     className={`font-semibold ${predictedPercent >= 75
-                            ? "text-green-600 dark:text-green-400"
-                            : "text-red-500 dark:text-red-400"
+                        ? "text-green-600 dark:text-green-400"
+                        : "text-red-500 dark:text-red-400"
                         }`}
                 >
                     Predicted: {predictedPercent}%
@@ -416,16 +420,16 @@ function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0 })
                         >
                             <span
                                 className={`font-semibold ${isSkipped
-                                        ? "text-red-700 dark:text-red-300 midnight:text-red-400"
-                                        : "text-gray-800 dark:text-gray-200 midnight:text-gray-200"
+                                    ? "text-red-700 dark:text-red-300 midnight:text-red-400"
+                                    : "text-gray-800 dark:text-gray-200 midnight:text-gray-200"
                                     }`}
                             >
                                 {dateStr}
                             </span>
                             <span
                                 className={`text-[10px] ${isSkipped
-                                        ? "text-red-500 dark:text-red-400 midnight:text-red-400"
-                                        : "text-gray-500 dark:text-gray-400 midnight:text-gray-500"
+                                    ? "text-red-500 dark:text-red-400 midnight:text-red-400"
+                                    : "text-gray-500 dark:text-gray-400 midnight:text-gray-500"
                                     }`}
                             >
                                 {weekday}

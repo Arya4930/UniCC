@@ -86,15 +86,19 @@ export default function CourseCard({ a, onClick, activeDay, isHoliday }) {
 
                         if (percentage < 75) {
                             const needed = Math.ceil((0.75 * total - attended) / (1 - 0.75));
+                            const neededValue = lab ? Math.ceil(needed / 2) : needed;
+
                             return (
                                 <p className="text-red-500 dark:text-red-400 midnight:text-red-400 text-sm">
-                                    Need to attend <strong>{lab ? needed / 2 : needed}</strong> more {lab ? "lab" : "class"}
-                                    {needed > 1 && (lab ? "s" : "es")} to reach 75%.
+                                    Need to attend <strong>{neededValue}</strong> more {lab ? "lab" : "class"}
+                                    {neededValue > 1 && (lab ? "s" : "es")} to reach 75%.
                                 </p>
                             );
                         } else {
                             const canMiss = Math.floor(attended / 0.75 - total);
-                            if (canMiss === 0) {
+                            const canMissValue = lab ? Math.floor(canMiss / 2) : canMiss;
+
+                            if (canMissValue === 0) {
                                 return (
                                     <p className="text-yellow-500 dark:text-yellow-400 midnight:text-yellow-400 text-sm">
                                         You are on the edge! Attend the next {lab ? "lab" : "class"}.
@@ -103,8 +107,8 @@ export default function CourseCard({ a, onClick, activeDay, isHoliday }) {
                             } else {
                                 return (
                                     <p className="text-green-500 dark:text-green-400 midnight:text-green-400 text-sm">
-                                        Can miss <strong>{lab ? canMiss / 2 : canMiss}</strong> {lab ? "lab" : "class"}
-                                        {canMiss !== 1 && (lab ? "s" : "es")} and stay above 75%.
+                                        Can miss <strong>{canMissValue}</strong> {lab ? "lab" : "class"}
+                                        {canMissValue !== 1 && (lab ? "s" : "es")} and stay above 75%.
                                     </p>
                                 );
                             }
