@@ -121,6 +121,8 @@ export default function CalendarView({ calendars, calendarType, handleCalendarFe
     const firstDay = getDay(monthStart);
     const blanksCount = (firstDay + 6) % 7;
     const blanks = Array.from({ length: blanksCount }, (_, i) => i);
+    const today = new Date();
+    const isCurrentMonth = today.getFullYear() === year && today.getMonth() === monthIndex;
 
     return (
         <div className="flex flex-col gap-4">
@@ -174,6 +176,8 @@ export default function CalendarView({ calendars, calendarType, handleCalendarFe
                             const hasHoliday = events.some(isHolidayEvent);
                             const hasInstructional = events.some(isInstructionalEvent);
                             const isEmpty = events.length === 0;
+                            const isToday = isCurrentMonth && dateObj.getDate() === today.getDate();
+
 
                             const semiHolidayEvents = ["CAT - I", "CAT - II", "TechnoVIT", "Vibrance"];
                             const hasSemiHoliday = events.some(e =>
@@ -200,7 +204,10 @@ export default function CalendarView({ calendars, calendarType, handleCalendarFe
                             return (
                                 <div
                                     key={date}
-                                    className={`relative flex flex-col items-start justify-start p-3 h-42 ${bgClass} shadow-sm`}
+                                    className={`relative flex flex-col items-start justify-start p-3 h-42 shadow-sm
+                                        ${bgClass}
+                                        ${isToday ? "ring-2 ring-blue-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-900 midnight:ring-offset-black" : ""}
+                                `}
                                 >
                                     <div className="w-full flex items-center justify-between">
                                         <div className="text-lg font-bold text-left text-gray-800 dark:text-gray-100 midnight:text-gray-200">
