@@ -64,7 +64,7 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
                             setActiveSem(sem);
                             setOpenCourse(null);
                         }}
-                        className={`flex-1 min-w-[120px] text-center py-2 text-sm font-medium transition-colors ${activeSem === sem
+                        className={`flex-1 min-w-[160px] text-center py-2 text-sm font-medium transition-colors ${activeSem === sem
                             ? "bg-blue-600 text-white midnight:bg-blue-700"
                             : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600 midnight:bg-black midnight:text-gray-300 midnight:hover:bg-gray-900"
                             }`}
