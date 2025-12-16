@@ -16,6 +16,7 @@ import UploadFile from "./routes/files/UploadFile";
 import fetchFiles from "./routes/files/fetchFiles";
 import deleteFile from "./routes/files/deleteFile";
 import downloadFile from "./routes/files/downloadFile";
+import fetchLMSdata from "./routes/FetchLMSdata";
 
 const app: Application = express();
 
@@ -41,6 +42,7 @@ app.use("/api/files/upload", UploadFile);
 app.use("/api/files/fetch", fetchFiles);
 app.use("/api/files/delete", deleteFile);
 app.use("/api/files/download", downloadFile);
+app.use("/api/lms-data", fetchLMSdata);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

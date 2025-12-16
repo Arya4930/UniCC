@@ -90,9 +90,25 @@ router.post("/", async (req, res) => {
                 Referer: "https://vtopcc.vit.ac.in/vtop/hostels/student/leave/1",
             },
         });
+        const activeLeaveRes = await client.post("/vtop/hostels/student/leave/4", new url_1.URLSearchParams({
+            status: "",
+            authorizedID,
+            _csrf: csrf,
+            form: "undefined",
+            control: "status",
+            x: Date.now().toString(),
+        }).toString(), {
+            headers: {
+                Cookie: cookieHeader,
+                "Content-Type": "application/x-www-form-urlencoded",
+                Referer: "https://vtopcc.vit.ac.in/vtop/hostels/student/leave/1",
+            },
+        });
         const $$ = cheerio.load(hostelRes.data);
         const $$$ = cheerio.load(leaveRes.data);
+        const $$$_ = cheerio.load(activeLeaveRes.data);
         const leaveRows = $$$("#LeaveHistoryTable tbody tr");
+        const appliedLeaveRows = $$$_("#LeaveAppliedTable tbody tr");
         let hostelInfo = {};
         const leaveHistory = [];
         $$("table tr").each((_, row) => {
@@ -137,6 +153,22 @@ router.post("/", async (req, res) => {
                     to: $$$(cells[6]).text().trim(),
                     status: $$$(cells[7]).text().trim(),
                     remarks: $$$(cells[8]).text().trim(),
+                };
+                leaveHistory.push(leave);
+            }
+        });
+        appliedLeaveRows.each((_, row) => {
+            const cells = $$$(row).find("td");
+            if (cells.length >= 8) {
+                const leave = {
+                    leaveId: $$$(cells[2]).text().trim(),
+                    visitPlace: $$$(cells[3]).text().trim(),
+                    reason: $$$(cells[4]).text().trim(),
+                    leaveType: $$$(cells[5]).text().trim(),
+                    from: $$$(cells[6]).text().trim(),
+                    to: $$$(cells[7]).text().trim(),
+                    status: $$$(cells[8]).text().trim(),
+                    remarks: $$$(cells[9]).text().trim(),
                 };
                 leaveHistory.push(leave);
             }

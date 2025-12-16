@@ -4,8 +4,9 @@ import { X } from "lucide-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import Image from "next/image";
 import NoContentFound from "../NoContentFound";
+import MoodleDisplay from "./moodleDisplay";
 
-export default function MarksDisplay({ data }) {
+export default function MarksDisplay({ data, moodleData, handleFetchMoodle }) {
   const [openCourse, setOpenCourse] = useState(null);
 
   const toggleCourse = (slNo) => {
@@ -14,7 +15,10 @@ export default function MarksDisplay({ data }) {
 
   if (!data || !data.marks || data.marks.length === 0) {
     return (
-      <NoContentFound />
+      <>
+        <NoContentFound />
+        {/* <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} /> */}
+      </>
     );
   }
 
@@ -162,6 +166,7 @@ export default function MarksDisplay({ data }) {
           );
         })}
       </div>
+      {/* <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} /> */}
     </div>
   );
 }

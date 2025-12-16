@@ -79,22 +79,22 @@ export default function LeaveDisplay({ leaveData, handleHostelDetailsFetch }) {
                         <p><strong>To:</strong> {activeLeave.to}</p>
                         <p><strong>Reason:</strong> {activeLeave.reason}</p>
                         <p><strong>Place:</strong> {activeLeave.visitPlace}</p>
-                        <p>
-                            <strong>Status:</strong>{" "}
-                            <span
-                                className={`px-2 py-1 rounded-md font-semibold ${getStatusClasses(
-                                    activeLeave.status
-                                )}`}
-                            >
-                                {activeLeave.status}
-                            </span>
-                        </p>
                         {activeLeave.remarks && (
                             <p>
                                 <strong>Remarks:</strong> {activeLeave.remarks}
                             </p>
                         )}
                     </div>
+                    <p>
+                        <strong>Status:</strong>{" "}
+                        <span
+                            className={`px-1 rounded-md font-semibold ${getStatusClasses(
+                                activeLeave.status
+                            )}`}
+                        >
+                            {activeLeave.status}
+                        </span>
+                    </p>
                 </div>
             ) : (
                 <p className="text-center text-gray-600 dark:text-gray-400 midnight:text-gray-400 mb-4">

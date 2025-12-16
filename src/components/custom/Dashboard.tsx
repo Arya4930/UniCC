@@ -59,7 +59,9 @@ export default function DashboardContent({
   setScheduleData,
   currSemesterID,
   setCurrSemesterID,
-  handleLogin
+  handleLogin,
+  moodleData,
+  setMoodleData
 }) {
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
@@ -247,6 +249,33 @@ export default function DashboardContent({
     }
   };
 
+  const handleFetchMoodle = async (username, pass) => {
+    setIsReloading(true);
+    setProgressBar(20);
+    setMessage("Fetching Moodle data...");
+    try {
+      const moodleRes = await fetch(`${API_BASE}/api/lms-data`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, pass }),
+      });
+
+      const gradesData = await moodleRes.json();
+      setProgressBar((prev) => prev + 40);
+
+      setMoodleData(gradesData);
+      localStorage.setItem("moodle", JSON.stringify(gradesData));
+
+      setMessage((prev) => prev + "\n✅ Moodle Data fetched Successfully!");
+      setProgressBar(100);
+      setIsReloading(false);
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Moodle Data fetch failed, check console.");
+      setProgressBar(0);
+    }
+  };
+
   return (
     <div
       className="w-full max-w-md md:max-w-full mx-auto overflow-hidden"
@@ -340,7 +369,7 @@ export default function DashboardContent({
               activeSubTab={activeSubTab}
               setActiveSubTab={setActiveSubTab}
             />
-            {activeSubTab === "marks" && <MarksDisplay data={marksData} />}
+            {activeSubTab === "marks" && <MarksDisplay data={marksData} moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} />}
             {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} handleScheduleFetch={handleScheduleFetch} />}
             {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} />}
           </div>
@@ -351,7 +380,6 @@ export default function DashboardContent({
             <HostelSubTabs
               HostelActiveSubTab={HostelActiveSubTab}
               setHostelActiveSubTab={setHostelActiveSubTab}
-              hostelData={hostelData}
             />
             {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
             {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}

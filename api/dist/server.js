@@ -20,6 +20,7 @@ const UploadFile_1 = __importDefault(require("./routes/files/UploadFile"));
 const fetchFiles_1 = __importDefault(require("./routes/files/fetchFiles"));
 const deleteFile_1 = __importDefault(require("./routes/files/deleteFile"));
 const downloadFile_1 = __importDefault(require("./routes/files/downloadFile"));
+const FetchLMSdata_1 = __importDefault(require("./routes/FetchLMSdata"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json({ limit: "10mb" }));
@@ -41,6 +42,7 @@ app.use("/api/files/upload", UploadFile_1.default);
 app.use("/api/files/fetch", fetchFiles_1.default);
 app.use("/api/files/delete", deleteFile_1.default);
 app.use("/api/files/download", downloadFile_1.default);
+app.use("/api/lms-data", FetchLMSdata_1.default);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Express TS server running on port ${PORT}`);
