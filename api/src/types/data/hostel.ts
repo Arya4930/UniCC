@@ -7,7 +7,7 @@ export type hostel = {
 }
 
 export type leaveItem = {
-    leaveId?: string,
+    leaveId: string,
     visitPlace?: string,
     reason?: string,
     leaveType?: string,

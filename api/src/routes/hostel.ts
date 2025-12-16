@@ -104,7 +104,6 @@ router.post("/", async (req: Request, res: Response) => {
         const appliedLeaveRows = $$$_("#LeaveAppliedTable tbody tr");
 
         let hostelInfo: hostel = {};
-        const leaveHistory: leaveItem[] = [];
 
         $$("table tr").each((_, row) => {
             const cols = $$(row).find("td");
@@ -133,11 +132,12 @@ router.post("/", async (req: Request, res: Response) => {
             }
         });
 
+        const leaveMap = new Map<string, leaveItem>();
         leaveRows.each((_, row) => {
             const cells = $$$(row).find("td");
 
             if (cells.length >= 8) {
-                const leave = {
+                const leave: leaveItem = {
                     leaveId: $$$(cells[1]).text().trim(),
                     visitPlace: $$$(cells[2]).text().trim(),
                     reason: $$$(cells[3]).text().trim(),
@@ -147,26 +147,29 @@ router.post("/", async (req: Request, res: Response) => {
                     status: $$$(cells[7]).text().trim(),
                     remarks: $$$(cells[8]).text().trim(),
                 };
-                leaveHistory.push(leave);
+
+                leaveMap.set(leave.leaveId, leave);
             }
         });
         appliedLeaveRows.each((_, row) => {
-            const cells = $$$(row).find("td");
+            const cells = $$$_(row).find("td");
 
-            if (cells.length >= 8) {
-                const leave = {
-                    leaveId: $$$(cells[2]).text().trim(),
-                    visitPlace: $$$(cells[3]).text().trim(),
-                    reason: $$$(cells[4]).text().trim(),
-                    leaveType: $$$(cells[5]).text().trim(),
-                    from: $$$(cells[6]).text().trim(),
-                    to: $$$(cells[7]).text().trim(),
-                    status: $$$(cells[8]).text().trim(),
-                    remarks: $$$(cells[9]).text().trim(),
+            if (cells.length >= 9) {
+                const leave: leaveItem = {
+                    leaveId: $$$_(cells[2]).text().trim(),
+                    visitPlace: $$$_(cells[3]).text().trim(),
+                    reason: $$$_(cells[4]).text().trim(),
+                    leaveType: $$$_(cells[5]).text().trim(),
+                    from: $$$_(cells[6]).text().trim(),
+                    to: $$$_(cells[7]).text().trim(),
+                    status: $$$_(cells[8]).text().trim(),
+                    remarks: $$$_(cells[9]).text().trim(),
                 };
-                leaveHistory.push(leave);
+
+                leaveMap.set(leave.leaveId, leave);
             }
         });
+        const leaveHistory = Array.from(leaveMap.values());
 
         return res.status(200).json({ hostelInfo, leaveHistory });
     } catch (err: any) {

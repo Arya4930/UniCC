@@ -6,7 +6,7 @@ export type hostel = {
     messInfo?: string;
 };
 export type leaveItem = {
-    leaveId?: string;
+    leaveId: string;
     visitPlace?: string;
     reason?: string;
     leaveType?: string;
