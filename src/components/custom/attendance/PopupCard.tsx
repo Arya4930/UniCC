@@ -23,7 +23,7 @@ type RemainingClassDay = {
 };
 
 export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalendars, impDates }) {
-    const lab = a.slotName.split('')[0] === "L";
+    const lab = a.courseCode.endsWith("(L)");
 
     useEffect(() => {
         document.body.style.overflow = "hidden";
@@ -221,6 +221,7 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                                                     classes={data}
                                                     attendedClasses={a.attendedClasses}
                                                     totalClasses={a.totalClasses}
+                                                    isLab={lab}
                                                 />
                                             </div>
                                         </div>
@@ -351,8 +352,9 @@ export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calenda
     return remainingWorkingDays;
 }
 
-function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0 }) {
+function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0, isLab = false }) {
     const [notAttending, setNotAttending] = useState([]);
+    const CLASS_WEIGHT = isLab ? 2 : 1;
 
     if (!classes || classes.length === 0) {
         return (
@@ -370,9 +372,9 @@ function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0 })
         );
     };
 
-    const upcomingCount: number = classes.length;
-    const missedCount: number = notAttending.length;
-    const attendCount: number = upcomingCount - missedCount;
+    const upcomingCount = classes.length * CLASS_WEIGHT;
+    const missedCount = notAttending.length * CLASS_WEIGHT;
+    const attendCount = upcomingCount - missedCount;
 
     const predictedAttended = attendedClasses + attendCount;
     const predictedTotal = totalClasses + upcomingCount;
