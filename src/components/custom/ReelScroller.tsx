@@ -9,7 +9,8 @@ import { Volume2, VolumeX } from "lucide-react";
 
 const allVideos = [
     "https://uniccassets.aryaslocalserver.online/reels/reel_1.mp4",
-    "https://uniccassets.aryaslocalserver.online/reels/reel_2.mp4",
+//    "https://uniccassets.aryaslocalserver.online/reels/reel_2.mp4",
+    "https://uniccassets.aryaslocalserver.online/reels/reel_7.mp4",
     "https://uniccassets.aryaslocalserver.online/reels/reel_3.mp4",
     "https://uniccassets.aryaslocalserver.online/reels/reel_6.mp4",
     "https://uniccassets.aryaslocalserver.online/reels/reel_5.mp4"
