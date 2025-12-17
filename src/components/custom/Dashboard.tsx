@@ -214,7 +214,7 @@ export default function DashboardContent({
       const HostelData = await HostelRes.json();
       setProgressBar((prev) => prev + 40);
       sethostelData(HostelData);
-      localStorage.setItem("hostelData", JSON.stringify(HostelData));
+      localStorage.setItem("hostel", JSON.stringify(HostelData));
       setMessage((prev) => prev + "\n✅ Hostel details reloaded successfully!");
       setProgressBar(100);
       setIsReloading(false);
