@@ -128,7 +128,7 @@ export default function DashboardContent({
       setProgressBar((prev) => prev + 40);
 
       setAllGradesData(AllGradesData);
-      localStorage.setItem("allGradesData", JSON.stringify(AllGradesData));
+      localStorage.setItem("allGrades", JSON.stringify(AllGradesData));
 
       setMessage((prev) => prev + "\n✅ All grades reloaded successfully!");
       setProgressBar(100);
