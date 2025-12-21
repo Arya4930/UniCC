@@ -102,9 +102,20 @@ export default function OverallAttendancePredictor({
         const attended = parseInt(c.attendedClasses);
         const total = parseInt(c.totalClasses);
         const isLab = c.courseCode.endsWith("(L)");
+        let effectiveCutoff = null;
+
+        if (mode === "CAT1") {
+          effectiveCutoff = impDates.cat1Date;
+        } else if (mode === "CAT2") {
+          effectiveCutoff = impDates.cat2Date;
+        } else if (mode === "LID") {
+          effectiveCutoff = isLab
+            ? impDates.lidLabDate
+            : impDates.lidTheoryDate;
+        }
 
         const filteredDays = allWorkingDays.filter(
-          (d) => !cutoffDate || d.date <= cutoffDate
+          (d) => !effectiveCutoff || d.date <= effectiveCutoff
         );
 
         const { futureCount, ignoredCount } = countFutureClassesForCourse(
@@ -112,7 +123,7 @@ export default function OverallAttendancePredictor({
           dayCardsMap,
           filteredDays,
           dateStates,
-          cutoffDate
+          effectiveCutoff
         );
         const missed = countMissedClassesForCourse(
           c.courseCode,
