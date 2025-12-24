@@ -1,6 +1,6 @@
 # UniCC
 
-**Live site:** [https://github.uni-cc.site/](https://github.uni-cc.site/)
+**Live site:** [https://github.uni-cc.site/](https://uni-cc.site/)
 
 **Repository:** [https://github.com/Arya4930/UniCC](https://github.com/Arya4930/UniCC)
 
