@@ -1,8 +1,8 @@
 export type EffectiveGrade = {
   basketTitle: string;
   distributionType: string;
-  creditsRequired: string;
   creditsEarned: string;
+  grade: string;
 }
 
 export type CurriculumItem = {

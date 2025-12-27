@@ -53,9 +53,8 @@ router.post("/", async (req, res) => {
         const client = (0, VTOPClient_1.default)();
         const ScheduleRes = await client.post("/vtop/examinations/doSearchExamScheduleForStudent", new url_1.URLSearchParams({
             authorizedID: String(authorizedID),
-            semSubId: semesterId ?? "",
-            _csrf: String(csrf),
-            x: Date.now().toString(),
+            semesterSubId: semesterId ?? "",
+            _csrf: String(csrf)
         }).toString(), {
             headers: {
                 Cookie: cookieHeader,

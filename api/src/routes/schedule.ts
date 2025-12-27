@@ -22,14 +22,12 @@ router.post("/", async (req: Request, res: Response) => {
             throw new Error("Cannot find _csrf or authorizedID");
 
         const client = VTOPClient();
-
         const ScheduleRes = await client.post(
             "/vtop/examinations/doSearchExamScheduleForStudent",
             new URLSearchParams({
                 authorizedID: String(authorizedID),
-                semSubId: semesterId ?? "",
-                _csrf: String(csrf),
-                x: Date.now().toString(),
+                semesterSubId: semesterId ?? "",
+                _csrf: String(csrf)
             }).toString(),
             {
                 headers: {

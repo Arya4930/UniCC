@@ -72,10 +72,10 @@ router.post("/", async (req, res) => {
             .each((_, el) => {
             const tds = $$(el).find("td");
             effectiveGrades.push({
-                basketTitle: $$(tds[0]).text().trim(),
-                distributionType: $$(tds[1]).text().trim(),
-                creditsRequired: $$(tds[2]).text().trim(),
-                creditsEarned: $$(tds[3]).text().trim(),
+                basketTitle: $$(tds[2]).text().trim(),
+                distributionType: $$(tds[3]).text().trim(),
+                creditsEarned: $$(tds[4]).text().trim(),
+                grade: $$(tds[5]).text().trim(),
             });
         });
         const curriculum = [];
