@@ -500,6 +500,9 @@ export default function LoginPage() {
           {isOffline && <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium z-[9999] shadow-md">
             ⚠️ You’re currently offline. Some features may not work.
           </div>}
+          {demoMode && <div className="top-0 left-0 w-full bg-blue-500 text-white text-center py-2 font-medium z-[9999] shadow-md">
+            ℹ️ You are in Demo Mode. Data shown is for demonstration purposes only.
+          </div>}
           <DashboardContent
             activeTab={activeTab}
             setActiveTab={setActiveTab}
@@ -547,6 +550,9 @@ export default function LoginPage() {
           />
         </>
       )}
+      <div className="top-0 left-0 w-full bg-blue-500 text-white text-center py-2 font-medium z-[9999] shadow-md">
+        Scheduled maintenance on December 29, 2025 ( afternoon ). API services will be temporarily unavailable.
+      </div>
 
       <Footer isLoggedIn={isLoggedIn} />
     </div>
