@@ -1,0 +1,3489 @@
+{
+    "username": "demo",
+    "password": "demo",
+    "schedule": {
+        "semester": "CH20252601",
+        "Schedule": {
+            "FAT": [
+                {
+                    "courseCode": "BMAT201L",
+                    "courseTitle": "Complex Variables and Linear Algebra",
+                    "classId": "CH2025260100834",
+                    "slot": "A2+TA2+TAA2",
+                    "examDate": "19-Nov-2025",
+                    "examSession": "FN1",
+                    "reportingTime": "09:00 AM",
+                    "examTime": "09:15 AM - 12:30 PM",
+                    "venue": "AB3-402",
+                    "seatLocation": "R5C3",
+                    "seatNo": "41"
+                },
+                {
+                    "courseCode": "BFRE101L",
+                    "courseTitle": "French I",
+                    "classId": "CH2025260101274",
+                    "slot": "B2",
+                    "examDate": "21-Nov-2025",
+                    "examSession": "FN2",
+                    "reportingTime": "09:00 AM",
+                    "examTime": "09:15 AM - 12:30 PM",
+                    "venue": "AB3-311",
+                    "seatLocation": "R6C2",
+                    "seatNo": "29"
+                },
+                {
+                    "courseCode": "BCSE202L",
+                    "courseTitle": "Data Structures and Algorithms",
+                    "classId": "CH2025260100981",
+                    "slot": "C2+TC2",
+                    "examDate": "23-Nov-2025",
+                    "examSession": "FN1",
+                    "reportingTime": "09:00 AM",
+                    "examTime": "09:15 AM - 12:30 PM",
+                    "venue": "AB3-305",
+                    "seatLocation": "R4C6",
+                    "seatNo": "18"
+                },
+                {
+                    "courseCode": "BCSE304L",
+                    "courseTitle": "Theory of Computation",
+                    "classId": "CH2025260101002",
+                    "slot": "D2+TD2",
+                    "examDate": "26-Nov-2025",
+                    "examSession": "FN1",
+                    "reportingTime": "09:00 AM",
+                    "examTime": "09:15 AM - 12:30 PM",
+                    "venue": "AB3-604",
+                    "seatLocation": "R3C4",
+                    "seatNo": "11"
+                },
+                {
+                    "courseCode": "BCSE303L",
+                    "courseTitle": "Operating Systems",
+                    "classId": "CH2025260101013",
+                    "slot": "E2+TE2",
+                    "examDate": "28-Nov-2025",
+                    "examSession": "FN1",
+                    "reportingTime": "09:00 AM",
+                    "examTime": "09:15 AM - 12:30 PM",
+                    "venue": "AB3-508",
+                    "seatLocation": "R6C1",
+                    "seatNo": "24"
+                },
+                {
+                    "courseCode": "BSTS202P",
+                    "courseTitle": "Qualitative Skills Practice II",
+                    "classId": "CH2025260100012",
+                    "slot": "F2+TF2",
+                    "examDate": "30-Nov-2025",
+                    "examSession": "FN1",
+                    "reportingTime": "09:15 AM",
+                    "examTime": "09:30 AM - 10:30 AM",
+                    "venue": "AB3-610",
+                    "seatLocation": "R2C5",
+                    "seatNo": "9"
+                },
+                {
+                    "courseCode": "BECE204L",
+                    "courseTitle": "Microprocessors and Microcontrollers",
+                    "classId": "CH2025260102285",
+                    "slot": "G2+TG2",
+                    "examDate": "07-Dec-2025",
+                    "examSession": "FN1",
+                    "reportingTime": "09:00 AM",
+                    "examTime": "09:15 AM - 12:30 PM",
+                    "venue": "AB3-210",
+                    "seatLocation": "R7C4",
+                    "seatNo": "57"
+                }
+            ],
+            "CAT2": [
+                {
+                    "courseCode": "BMAT201L",
+                    "courseTitle": "Complex Variables and Linear Algebra",
+                    "classId": "CH2025260100834",
+                    "slot": "A2+TA2+TAA2",
+                    "examDate": "05-Oct-2025",
+                    "examSession": "FN1",
+                    "reportingTime": "09:15 AM",
+                    "examTime": "09:30 AM - 11:00 AM",
+                    "venue": "AB1-412",
+                    "seatLocation": "R7C1",
+                    "seatNo": "18"
+                },
+                {
+                    "courseCode": "BFRE101L",
+                    "courseTitle": "French I",
+                    "classId": "CH2025260101274",
+                    "slot": "B2",
+                    "examDate": "07-Oct-2025",
+                    "examSession": "FN1",
+                    "reportingTime": "09:15 AM",
+                    "examTime": "09:30 AM - 11:00 AM",
+                    "venue": "AB3-214",
+                    "seatLocation": "R3C4",
+                    "seatNo": "36"
+                },
+                {
+                    "courseCode": "BCSE202L",
+                    "courseTitle": "Data Structures and Algorithms",
+                    "classId": "CH2025260100981",
+                    "slot": "C2+TC2",
+                    "examDate": "08-Oct-2025",
+                    "examSession": "FN1",
+                    "reportingTime": "09:15 AM",
+                    "examTime": "09:30 AM - 11:00 AM",
+                    "venue": "AB1-603",
+                    "seatLocation": "R4C2",
+                    "seatNo": "49"
+                }
+            ],
+            "CAT1": [
+                {
+                    "courseCode": "BMAT201L",
+                    "courseTitle": "Complex Variables and Linear Algebra",
+                    "classId": "CH2025260100834",
+                    "slot": "A2+TA2+TAA2",
+                    "examDate": "18-Aug-2025",
+                    "examSession": "FN2",
+                    "reportingTime": "11:45 AM",
+                    "examTime": "12:00 PM - 01:30 PM",
+                    "venue": "AB1-412",
+                    "seatLocation": "R6C2",
+                    "seatNo": "21"
+                },
+                {
+                    "courseCode": "BFRE101L",
+                    "courseTitle": "French I",
+                    "classId": "CH2025260101274",
+                    "slot": "B2",
+                    "examDate": "19-Aug-2025",
+                    "examSession": "AN",
+                    "reportingTime": "01:45 PM",
+                    "examTime": "02:00 PM - 03:30 PM",
+                    "venue": "AB3-304",
+                    "seatLocation": "R5C3",
+                    "seatNo": "37"
+                }
+            ]
+        }
+    },
+    "marks": {
+        "marks": [
+            {
+                "slNo": "1",
+                "classNbr": "CH2025260102349",
+                "courseCode": "BCHY102N",
+                "courseTitle": "Environmental Sciences",
+                "courseType": "Online Course",
+                "courseSystem": "CBCS",
+                "faculty": "ANANYA DAS",
+                "slot": "NIL",
+                "courseMode": "OCC02",
+                "assessments": [
+                    {
+                        "slNo": "1",
+                        "title": "Assessment - 1",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "9.0",
+                        "weightageMark": "9"
+                    },
+                    {
+                        "slNo": "2",
+                        "title": "Assessment - 2",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "8.5",
+                        "weightageMark": "8.5"
+                    },
+                    {
+                        "slNo": "3",
+                        "title": "Assessment - 3",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "9.5",
+                        "weightageMark": "9.5"
+                    },
+                    {
+                        "slNo": "4",
+                        "title": "Assessment - 4",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "8.0",
+                        "weightageMark": "8"
+                    },
+                    {
+                        "slNo": "5",
+                        "title": "Assessment - 5",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "9.0",
+                        "weightageMark": "9"
+                    },
+                    {
+                        "slNo": "6",
+                        "title": "Assessment - 6",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "8.0",
+                        "weightageMark": "8"
+                    },
+                    {
+                        "slNo": "7",
+                        "title": "Final Assessment Test",
+                        "maxMark": "100",
+                        "weightagePercent": "40",
+                        "status": "Present",
+                        "scoredMark": "55.0",
+                        "weightageMark": "22"
+                    }
+                ]
+            },
+            {
+                "slNo": "2",
+                "classNbr": "CH2025260101274",
+                "courseCode": "BFRE101L",
+                "courseTitle": "French I",
+                "courseType": "Theory Only",
+                "courseSystem": "CBCS",
+                "faculty": "ROHAN MEHTA",
+                "slot": "B2",
+                "courseMode": "CBL",
+                "assessments": [
+                    {
+                        "slNo": "1",
+                        "title": "CAT - I",
+                        "maxMark": "50",
+                        "weightagePercent": "15",
+                        "status": "Present",
+                        "scoredMark": "36.0",
+                        "weightageMark": "10.8"
+                    },
+                    {
+                        "slNo": "2",
+                        "title": "CAT - II",
+                        "maxMark": "50",
+                        "weightagePercent": "15",
+                        "status": "Present",
+                        "scoredMark": "38.0",
+                        "weightageMark": "11.4"
+                    },
+                    {
+                        "slNo": "3",
+                        "title": "Assignment",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "9.0",
+                        "weightageMark": "9"
+                    },
+                    {
+                        "slNo": "4",
+                        "title": "Quiz - I",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "8.0",
+                        "weightageMark": "8"
+                    },
+                    {
+                        "slNo": "5",
+                        "title": "Quiz - II",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "9.0",
+                        "weightageMark": "9"
+                    },
+                    {
+                        "slNo": "6",
+                        "title": "Final Assessment Test",
+                        "maxMark": "100",
+                        "weightagePercent": "40",
+                        "status": "Present",
+                        "scoredMark": "64.0",
+                        "weightageMark": "25.6"
+                    }
+                ]
+            },
+            {
+                "slNo": "3",
+                "classNbr": "CH2025260100012",
+                "courseCode": "BSTS202P",
+                "courseTitle": "Qualitative Skills Practice II",
+                "courseType": "Soft Skill",
+                "courseSystem": "CBCS",
+                "faculty": "KARTHIK RAO",
+                "slot": "F2+TF2",
+                "courseMode": "SBC01",
+                "assessments": [
+                    {
+                        "slNo": "1",
+                        "title": "Assessment - 1",
+                        "maxMark": "15",
+                        "weightagePercent": "15",
+                        "status": "Present",
+                        "scoredMark": "14.0",
+                        "weightageMark": "14"
+                    },
+                    {
+                        "slNo": "2",
+                        "title": "Assessment - 2",
+                        "maxMark": "15",
+                        "weightagePercent": "15",
+                        "status": "Present",
+                        "scoredMark": "15.0",
+                        "weightageMark": "15"
+                    },
+                    {
+                        "slNo": "3",
+                        "title": "CAT - I",
+                        "maxMark": "30",
+                        "weightagePercent": "15",
+                        "status": "Present",
+                        "scoredMark": "22.0",
+                        "weightageMark": "11"
+                    },
+                    {
+                        "slNo": "4",
+                        "title": "CAT - II",
+                        "maxMark": "30",
+                        "weightagePercent": "15",
+                        "status": "Present",
+                        "scoredMark": "24.0",
+                        "weightageMark": "12"
+                    },
+                    {
+                        "slNo": "5",
+                        "title": "Final Test",
+                        "maxMark": "50",
+                        "weightagePercent": "40",
+                        "status": "Present",
+                        "scoredMark": "39.0",
+                        "weightageMark": "31.2"
+                    }
+                ]
+            },
+            {
+                "slNo": "4",
+                "classNbr": "CH2025260100986",
+                "courseCode": "BCSE202P",
+                "courseTitle": "Data Structures and Algorithms Lab",
+                "courseType": "Lab Only",
+                "courseSystem": "CBCS",
+                "faculty": "ARUN SINGH",
+                "slot": "L27+L28",
+                "courseMode": "LBC",
+                "assessments": [
+                    {
+                        "slNo": "1",
+                        "title": "Assessment - 1",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "10.0",
+                        "weightageMark": "10"
+                    },
+                    {
+                        "slNo": "2",
+                        "title": "Assessment - 2",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "9.0",
+                        "weightageMark": "9"
+                    },
+                    {
+                        "slNo": "3",
+                        "title": "Assessment - 3",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "10.0",
+                        "weightageMark": "10"
+                    },
+                    {
+                        "slNo": "4",
+                        "title": "Assessment - 4",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "9.5",
+                        "weightageMark": "9.5"
+                    },
+                    {
+                        "slNo": "5",
+                        "title": "Assessment - 5",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "10.0",
+                        "weightageMark": "10"
+                    },
+                    {
+                        "slNo": "6",
+                        "title": "Assessment - 6",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "9.0",
+                        "weightageMark": "9"
+                    },
+                    {
+                        "slNo": "7",
+                        "title": "Final Test",
+                        "maxMark": "50",
+                        "weightagePercent": "40",
+                        "status": "Present",
+                        "scoredMark": "46.0",
+                        "weightageMark": "36.8"
+                    }
+                ]
+            }
+        ],
+        "cgpa": {
+            "creditsRequired": "151",
+            "creditsEarned": "42.5",
+            "cgpa": "9.18",
+            "nonGradedRequirement": "5.0"
+        }
+    },
+    "attendance": {
+        "semester": "CH20252605",
+        "attendance": [
+            {
+                "slNo": "1",
+                "courseCode": "BCSE203E(T)",
+                "courseTitle": "Web Programming",
+                "courseType": "Embedded Theory",
+                "slotName": "TG2",
+                "faculty": "RAMESH KUMAR SCOPE",
+                "registrationDate": "08-11-2025 09:09",
+                "attendanceDate": "09-11-2025",
+                "attendedClasses": 2,
+                "totalClasses": 2,
+                "attendancePercentage": "100",
+                "viewLink": [
+                    {
+                        "date": "15-Dec-2025",
+                        "status": "Present"
+                    },
+                    {
+                        "date": "08-Dec-2025",
+                        "status": "Present"
+                    }
+                ],
+                "classId": "CH2025260502001",
+                "credits": "1.0",
+                "slotVenue": "AB3-505",
+                "category": "Discipline Core"
+            },
+            {
+                "slNo": "2",
+                "courseCode": "BCSE203E(L)",
+                "courseTitle": "Web Programming",
+                "courseType": "Embedded Lab",
+                "slotName": "L15+L16+L27+L28",
+                "faculty": "RAMESH KUMAR SCOPE",
+                "registrationDate": "08-11-2025 09:09",
+                "attendanceDate": "09-11-2025",
+                "attendedClasses": 7,
+                "totalClasses": 12,
+                "attendancePercentage": "58",
+                "viewLink": [
+                    {
+                        "date": "20-Dec-2025",
+                        "status": "Absent"
+                    },
+                    {
+                        "date": "19-Dec-2025",
+                        "status": "Absent"
+                    },
+                    {
+                        "date": "17-Dec-2025",
+                        "status": "Present"
+                    },
+                    {
+                        "date": "12-Dec-2025",
+                        "status": "Present"
+                    },
+                    {
+                        "date": "10-Dec-2025",
+                        "status": "Present"
+                    }
+                ],
+                "classId": "CH2025260502071",
+                "credits": "2.0",
+                "slotVenue": "AB1-614",
+                "category": "Discipline Core"
+            },
+            {
+                "slNo": "3",
+                "courseCode": "BCSE205L(T)",
+                "courseTitle": "Computer Architecture and Organization",
+                "courseType": "Theory Only",
+                "slotName": "E2+TE2",
+                "faculty": "ANITA SHARMA",
+                "registrationDate": "08-11-2025 09:15",
+                "attendanceDate": "09-11-2025",
+                "attendedClasses": 7,
+                "totalClasses": 10,
+                "attendancePercentage": "70",
+                "viewLink": [
+                    {
+                        "date": "20-Dec-2025",
+                        "status": "Absent"
+                    },
+                    {
+                        "date": "19-Dec-2025",
+                        "status": "Absent"
+                    },
+                    {
+                        "date": "18-Dec-2025",
+                        "status": "Present"
+                    },
+                    {
+                        "date": "16-Dec-2025",
+                        "status": "Present"
+                    },
+                    {
+                        "date": "13-Dec-2025",
+                        "status": "Present"
+                    }
+                ],
+                "classId": "CH2025260502297",
+                "credits": "3.0",
+                "slotVenue": "AB3-107",
+                "category": "Discipline Core"
+            },
+            {
+                "slNo": "4",
+                "courseCode": "BCSE206L(T)",
+                "courseTitle": "Foundations of Data Science",
+                "courseType": "Theory Only",
+                "slotName": "B2+TB2",
+                "faculty": "NEHA AGRAWAL",
+                "registrationDate": "08-11-2025 09:35",
+                "attendanceDate": "09-11-2025",
+                "attendedClasses": 7,
+                "totalClasses": 8,
+                "attendancePercentage": "88",
+                "viewLink": [
+                    {
+                        "date": "18-Dec-2025",
+                        "status": "Present"
+                    },
+                    {
+                        "date": "16-Dec-2025",
+                        "status": "Present"
+                    },
+                    {
+                        "date": "15-Dec-2025",
+                        "status": "Present"
+                    }
+                ],
+                "classId": "CH2025260502906",
+                "credits": "3.0",
+                "slotVenue": "AB3-107",
+                "category": "Discipline Elective"
+            },
+            {
+                "slNo": "5",
+                "courseCode": "BCSE302L(T)",
+                "courseTitle": "Database Systems",
+                "courseType": "Theory Only",
+                "slotName": "A2+TA2",
+                "faculty": "PRIYA MENON",
+                "registrationDate": "08-11-2025 09:17",
+                "attendanceDate": "09-11-2025",
+                "attendedClasses": 6,
+                "totalClasses": 8,
+                "attendancePercentage": "75",
+                "viewLink": [
+                    {
+                        "date": "20-Dec-2025",
+                        "status": "Absent"
+                    },
+                    {
+                        "date": "19-Dec-2025",
+                        "status": "Absent"
+                    },
+                    {
+                        "date": "17-Dec-2025",
+                        "status": "Present"
+                    }
+                ],
+                "classId": "CH2025260503227",
+                "credits": "3.0",
+                "slotVenue": "AB3-204",
+                "category": "Discipline Core"
+            },
+            {
+                "slNo": "6",
+                "courseCode": "BCSE302P(L)",
+                "courseTitle": "Database Systems Lab",
+                "courseType": "Lab Only",
+                "slotName": "L19+L20",
+                "faculty": "PRIYA MENON",
+                "registrationDate": "08-11-2025 09:17",
+                "attendanceDate": "09-11-2025",
+                "attendedClasses": 8,
+                "totalClasses": 8,
+                "attendancePercentage": "100",
+                "viewLink": [
+                    {
+                        "date": "18-Dec-2025",
+                        "status": "Present"
+                    },
+                    {
+                        "date": "13-Dec-2025",
+                        "status": "Present"
+                    }
+                ],
+                "classId": "CH2025260503257",
+                "credits": "1.0",
+                "slotVenue": "AB1-209",
+                "category": "Discipline Core"
+            },
+            {
+                "slNo": "7",
+                "courseCode": "BCSE308L(T)",
+                "courseTitle": "Computer Networks",
+                "courseType": "Theory Only",
+                "slotName": "F2+TF2",
+                "faculty": "ARJUN PATEL",
+                "registrationDate": "06-12-2025 00:01",
+                "attendanceDate": "07-12-2025",
+                "attendedClasses": 5,
+                "totalClasses": 7,
+                "attendancePercentage": "72",
+                "viewLink": [
+                    {
+                        "date": "20-Dec-2025",
+                        "status": "Absent"
+                    },
+                    {
+                        "date": "17-Dec-2025",
+                        "status": "Present"
+                    }
+                ],
+                "classId": "CH2025260503340",
+                "credits": "3.0",
+                "slotVenue": "AB3-104",
+                "category": "Discipline Core"
+            },
+            {
+                "slNo": "8",
+                "courseCode": "BCSE308P(L)",
+                "courseTitle": "Computer Networks Lab",
+                "courseType": "Lab Only",
+                "slotName": "L1+L2",
+                "faculty": "ARJUN PATEL",
+                "registrationDate": "06-12-2025 00:01",
+                "attendanceDate": "07-12-2025",
+                "attendedClasses": 4,
+                "totalClasses": 4,
+                "attendancePercentage": "100",
+                "viewLink": [
+                    {
+                        "date": "15-Dec-2025",
+                        "status": "Present"
+                    },
+                    {
+                        "date": "08-Dec-2025",
+                        "status": "Present"
+                    }
+                ],
+                "classId": "CH2025260503390",
+                "credits": "1.0",
+                "slotVenue": "AB1-311",
+                "category": "Discipline Core"
+            },
+            {
+                "slNo": "9",
+                "courseCode": "BHUM107L(T)",
+                "courseTitle": "Sustainability and Society",
+                "courseType": "Theory Only",
+                "slotName": "G1+TG1",
+                "faculty": "MEERA IYER",
+                "registrationDate": "08-11-2025 09:29",
+                "attendanceDate": "09-11-2025",
+                "attendedClasses": 7,
+                "totalClasses": 8,
+                "attendancePercentage": "88",
+                "viewLink": [
+                    {
+                        "date": "18-Dec-2025",
+                        "status": "Absent"
+                    },
+                    {
+                        "date": "16-Dec-2025",
+                        "status": "Present"
+                    }
+                ],
+                "classId": "CH2025260503517",
+                "credits": "3.0",
+                "slotVenue": "AB3-403",
+                "category": "Foundation Core - Humanities, Social Sciences and Management"
+            }
+        ]
+    },
+    "grades": {
+        "effectiveGrades": [
+            {
+                "basketTitle": "Computer Programming: Python",
+                "distributionType": "ETL",
+                "creditsEarned": "3.0",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Course Title",
+                "distributionType": "Course Type",
+                "creditsEarned": "Credits",
+                "grade": "Grade"
+            },
+            {
+                "basketTitle": "Introduction to Engineering",
+                "distributionType": "PJT",
+                "creditsEarned": "1.0",
+                "grade": "P"
+            },
+            {
+                "basketTitle": "Basic Electrical and Electronics Engineering",
+                "distributionType": "TH",
+                "creditsEarned": "3.0",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Basic Electrical and Electronics Engineering Lab",
+                "distributionType": "LO",
+                "creditsEarned": "1.0",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Technical English Communication",
+                "distributionType": "TH",
+                "creditsEarned": "2.0",
+                "grade": "B"
+            },
+            {
+                "basketTitle": "Technical English Communication Lab",
+                "distributionType": "LO",
+                "creditsEarned": "1.0",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Calculus",
+                "distributionType": "TH",
+                "creditsEarned": "3.0",
+                "grade": "B"
+            },
+            {
+                "basketTitle": "Calculus Lab",
+                "distributionType": "LO",
+                "creditsEarned": "1.0",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Engineering Physics",
+                "distributionType": "TH",
+                "creditsEarned": "3.0",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Engineering Physics Lab",
+                "distributionType": "LO",
+                "creditsEarned": "1.0",
+                "grade": "S"
+            },
+            {
+                "basketTitle": "Qualitative Skills Practice I",
+                "distributionType": "SS",
+                "creditsEarned": "1.5",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Engineering Chemistry",
+                "distributionType": "TH",
+                "creditsEarned": "3.0",
+                "grade": "B"
+            },
+            {
+                "basketTitle": "Engineering Chemistry Lab",
+                "distributionType": "LO",
+                "creditsEarned": "1.0",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Structured and Object-Oriented Programming",
+                "distributionType": "TH",
+                "creditsEarned": "2.0",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Structured and Object-Oriented Programming Lab",
+                "distributionType": "LO",
+                "creditsEarned": "2.0",
+                "grade": "S"
+            },
+            {
+                "basketTitle": "Digital Systems Design",
+                "distributionType": "TH",
+                "creditsEarned": "3.0",
+                "grade": "S"
+            },
+            {
+                "basketTitle": "Digital Systems Design Lab",
+                "distributionType": "LO",
+                "creditsEarned": "1.0",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Technical Report Writing",
+                "distributionType": "LO",
+                "creditsEarned": "1.0",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Ethics and Values",
+                "distributionType": "OC",
+                "creditsEarned": "2.0",
+                "grade": "P"
+            },
+            {
+                "basketTitle": "Differential Equations and Transforms",
+                "distributionType": "TH",
+                "creditsEarned": "4.0",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Quantitative Skills Practice I",
+                "distributionType": "SS",
+                "creditsEarned": "1.5",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Environmental Sciences",
+                "distributionType": "OC",
+                "creditsEarned": "2.0",
+                "grade": "P"
+            },
+            {
+                "basketTitle": "Data Structures and Algorithms Lab",
+                "distributionType": "LO",
+                "creditsEarned": "1.0",
+                "grade": "S"
+            },
+            {
+                "basketTitle": "Operating Systems Lab",
+                "distributionType": "LO",
+                "creditsEarned": "1.0",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Microprocessors and Microcontrollers Lab",
+                "distributionType": "LO",
+                "creditsEarned": "1.0",
+                "grade": "A"
+            },
+            {
+                "basketTitle": "Qualitative Skills Practice II",
+                "distributionType": "SS",
+                "creditsEarned": "1.5",
+                "grade": "A"
+            }
+        ],
+        "curriculum": [
+            {
+                "basketTitle": "Foundation Core - Basic Sciences and Mathematics",
+                "creditsRequired": "24.0",
+                "creditsEarned": "16.0"
+            },
+            {
+                "basketTitle": "Foundation Core - Basic Engineering Sciences",
+                "creditsRequired": "14.0",
+                "creditsEarned": "11.0"
+            },
+            {
+                "basketTitle": "Foundation Core - Humanities, Social Sciences and Management",
+                "creditsRequired": "15.0",
+                "creditsEarned": "8.5"
+            },
+            {
+                "basketTitle": "Discipline-linked Engineering Sciences",
+                "creditsRequired": "12.0",
+                "creditsEarned": "5.0"
+            },
+            {
+                "basketTitle": "Discipline Core",
+                "creditsRequired": "47.0",
+                "creditsEarned": "2.0"
+            },
+            {
+                "basketTitle": "Discipline Elective",
+                "creditsRequired": "15.0",
+                "creditsEarned": "0.0"
+            },
+            {
+                "basketTitle": "Projects and Internship",
+                "creditsRequired": "9.0",
+                "creditsEarned": "0.0"
+            },
+            {
+                "basketTitle": "Open Elective",
+                "creditsRequired": "15.0",
+                "creditsEarned": "0.0"
+            },
+            {
+                "basketTitle": "Non-graded Core Requirement",
+                "creditsRequired": "11.0",
+                "creditsEarned": "5.0"
+            },
+            {
+                "basketTitle": "Bridge Course",
+                "creditsRequired": "2.0",
+                "creditsEarned": "0.0"
+            },
+            {
+                "basketTitle": "Multidisciplinary Electives",
+                "creditsRequired": "0.0",
+                "creditsEarned": "0.0"
+            },
+            {
+                "basketTitle": "Total Credits",
+                "creditsRequired": "151.0",
+                "creditsEarned": "47.5"
+            },
+            {
+                "basketTitle": "Foreign Language",
+                "creditsRequired": "2.0",
+                "creditsEarned": "0.0"
+            },
+            {
+                "basketTitle": "Extra curricular activities",
+                "creditsRequired": "2.0",
+                "creditsEarned": "0.0"
+            },
+            {
+                "basketTitle": "HSM Elective",
+                "creditsRequired": "3.0",
+                "creditsEarned": "0.0"
+            }
+        ],
+        "cgpa": {
+            "grades": {
+                "S": 6,
+                "A": 14,
+                "B": 3,
+                "C": 0,
+                "D": 0,
+                "E": 0,
+                "F": 0,
+                "N": 0
+            }
+        },
+        "feedback": {
+            "MidSem": {
+                "Curriculum": false,
+                "Course": false
+            },
+            "EndSem": {
+                "Curriculum": false,
+                "Course": false
+            }
+        }
+    },
+    "allGrades": {
+        "grades": {
+            "CH20242501": {
+                "gpa": "9.03",
+                "grades": [
+                    {
+                        "slNo": "1",
+                        "courseCode": "BCSE101E",
+                        "courseTitle": "Computer Programming: Python",
+                        "courseType": "Embedded Theory and Lab",
+                        "grandTotal": "91",
+                        "grade": "S",
+                        "courseId": "CH_BCSE101E_48291",
+                        "range": {
+                            "S": ">=90",
+                            "A": ">=80 and <90",
+                            "B": ">=70 and < 80",
+                            "C": ">=60 and <70",
+                            "D": ">=55 and <60",
+                            "E": ">=50 and <55",
+                            "F": "<50"
+                        },
+                        "details": [
+                            {
+                                "slNo": "1",
+                                "component": "Final Assessment Test",
+                                "maxMark": "100",
+                                "weightagePercent": "100",
+                                "status": "Present",
+                                "scoredMark": "91.2",
+                                "weightageMark": "91.2"
+                            }
+                        ]
+                    },
+                    {
+                        "slNo": "2",
+                        "courseCode": "BCSE101N",
+                        "courseTitle": "Introduction to Engineering",
+                        "courseType": "Project",
+                        "grandTotal": "85",
+                        "grade": "A",
+                        "courseId": "CH_BCSE101N_73210",
+                        "range": {
+                            "S": ">=90",
+                            "A": ">=80 and <90",
+                            "B": ">=70 and < 80",
+                            "C": ">=60 and <70",
+                            "D": ">=55 and <60",
+                            "E": ">=50 and <55",
+                            "F": "<50"
+                        },
+                        "details": [
+                            {
+                                "slNo": "1",
+                                "component": "Review - I",
+                                "maxMark": "5",
+                                "weightagePercent": "5",
+                                "status": "Present",
+                                "scoredMark": "4.5",
+                                "weightageMark": "4.5"
+                            },
+                            {
+                                "slNo": "2",
+                                "component": "Review - II",
+                                "maxMark": "40",
+                                "weightagePercent": "40",
+                                "status": "Present",
+                                "scoredMark": "36",
+                                "weightageMark": "36"
+                            },
+                            {
+                                "slNo": "3",
+                                "component": "Draft / Project Report",
+                                "maxMark": "5",
+                                "weightagePercent": "5",
+                                "status": "Present",
+                                "scoredMark": "4",
+                                "weightageMark": "4"
+                            },
+                            {
+                                "slNo": "4",
+                                "component": "Review - III",
+                                "maxMark": "50",
+                                "weightagePercent": "50",
+                                "status": "Present",
+                                "scoredMark": "41",
+                                "weightageMark": "41"
+                            }
+                        ]
+                    },
+                    {
+                        "slNo": "3",
+                        "courseCode": "BEEE102L",
+                        "courseTitle": "Basic Electrical and Electronics Engineering",
+                        "courseType": "Theory Only",
+                        "grandTotal": "84",
+                        "grade": "A",
+                        "courseId": "CH_BEEE102L_61382",
+                        "range": {
+                            "S": ">=87",
+                            "A": ">=73 and <87",
+                            "B": ">=63 and <73",
+                            "C": ">=58 and <63",
+                            "D": ">=53 and <58",
+                            "E": ">=48 and <53",
+                            "F": "<48"
+                        },
+                        "details": [
+                            {
+                                "slNo": "1",
+                                "component": "Digital Assignment - I",
+                                "maxMark": "10",
+                                "weightagePercent": "10",
+                                "status": "Present",
+                                "scoredMark": "9",
+                                "weightageMark": "9"
+                            },
+                            {
+                                "slNo": "2",
+                                "component": "Quiz - I",
+                                "maxMark": "10",
+                                "weightagePercent": "10",
+                                "status": "Present",
+                                "scoredMark": "8",
+                                "weightageMark": "8"
+                            },
+                            {
+                                "slNo": "3",
+                                "component": "Quiz - II",
+                                "maxMark": "10",
+                                "weightagePercent": "10",
+                                "status": "Present",
+                                "scoredMark": "9",
+                                "weightageMark": "9"
+                            },
+                            {
+                                "slNo": "4",
+                                "component": "CAT - I",
+                                "maxMark": "50",
+                                "weightagePercent": "15",
+                                "status": "Present",
+                                "scoredMark": "40",
+                                "weightageMark": "12"
+                            },
+                            {
+                                "slNo": "5",
+                                "component": "CAT - II",
+                                "maxMark": "50",
+                                "weightagePercent": "15",
+                                "status": "Present",
+                                "scoredMark": "39",
+                                "weightageMark": "11.7"
+                            },
+                            {
+                                "slNo": "6",
+                                "component": "Final Assessment",
+                                "maxMark": "100",
+                                "weightagePercent": "40",
+                                "status": "Present",
+                                "scoredMark": "80",
+                                "weightageMark": "32"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "CH20242505": {
+                "gpa": "8.97",
+                "grades": [
+                    {
+                        "slNo": "1",
+                        "courseCode": "BCHY101L",
+                        "courseTitle": "Engineering Chemistry",
+                        "courseType": "Theory Only",
+                        "grandTotal": "71",
+                        "grade": "B",
+                        "courseId": "CH_BCHY101L_55129",
+                        "range": {
+                            "S": ">=84",
+                            "A": ">=75 and <84",
+                            "B": ">=62 and <75",
+                            "C": ">=56 and <62",
+                            "D": ">=49 and <56",
+                            "E": ">=43 and <49",
+                            "F": "<43"
+                        },
+                        "details": [
+                            {
+                                "slNo": "1",
+                                "component": "Digital Assignment - I",
+                                "maxMark": "10",
+                                "weightagePercent": "10",
+                                "status": "Present",
+                                "scoredMark": "9",
+                                "weightageMark": "9"
+                            },
+                            {
+                                "slNo": "2",
+                                "component": "Quiz - I",
+                                "maxMark": "20",
+                                "weightagePercent": "10",
+                                "status": "Present",
+                                "scoredMark": "16",
+                                "weightageMark": "8"
+                            },
+                            {
+                                "slNo": "3",
+                                "component": "Quiz - II",
+                                "maxMark": "20",
+                                "weightagePercent": "10",
+                                "status": "Present",
+                                "scoredMark": "15",
+                                "weightageMark": "7.5"
+                            },
+                            {
+                                "slNo": "4",
+                                "component": "CAT - I",
+                                "maxMark": "50",
+                                "weightagePercent": "15",
+                                "status": "Present",
+                                "scoredMark": "42",
+                                "weightageMark": "12.6"
+                            },
+                            {
+                                "slNo": "5",
+                                "component": "CAT - II",
+                                "maxMark": "50",
+                                "weightagePercent": "15",
+                                "status": "Present",
+                                "scoredMark": "30",
+                                "weightageMark": "9"
+                            },
+                            {
+                                "slNo": "6",
+                                "component": "Final Exam",
+                                "maxMark": "100",
+                                "weightagePercent": "40",
+                                "status": "Present",
+                                "scoredMark": "58",
+                                "weightageMark": "23.2"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "CH20252601": {
+                "gpa": "9.08",
+                "grades": [
+                    {
+                        "slNo": "1",
+                        "courseCode": "BCHY102N",
+                        "courseTitle": "Environmental Sciences",
+                        "courseType": "Online Course",
+                        "grandTotal": "78",
+                        "grade": "A",
+                        "courseId": "CH_BCHY102N_90321",
+                        "range": {
+                            "S": ">=90",
+                            "A": ">=80 and <90",
+                            "B": ">=70 and < 80",
+                            "C": ">=60 and <70",
+                            "D": ">=55 and <60",
+                            "E": ">=50 and <55",
+                            "F": "<50"
+                        },
+                        "details": [
+                            {
+                                "slNo": "1",
+                                "component": "Assessment - 1",
+                                "maxMark": "10",
+                                "weightagePercent": "10",
+                                "status": "Present",
+                                "scoredMark": "9",
+                                "weightageMark": "9"
+                            },
+                            {
+                                "slNo": "2",
+                                "component": "Assessment - 2",
+                                "maxMark": "10",
+                                "weightagePercent": "10",
+                                "status": "Present",
+                                "scoredMark": "9",
+                                "weightageMark": "9"
+                            },
+                            {
+                                "slNo": "3",
+                                "component": "Assessment - 3",
+                                "maxMark": "10",
+                                "weightagePercent": "10",
+                                "status": "Present",
+                                "scoredMark": "8",
+                                "weightageMark": "8"
+                            },
+                            {
+                                "slNo": "4",
+                                "component": "Final Assessment",
+                                "maxMark": "100",
+                                "weightagePercent": "40",
+                                "status": "Present",
+                                "scoredMark": "55",
+                                "weightageMark": "22"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "CH20252605": null
+        }
+    },
+    "hostel": {
+        "hostelInfo": {
+            "gender": "MALE",
+            "isHosteller": true,
+            "blockName": "B4",
+            "roomNo": "217",
+            "messInfo": "NON-VEG"
+        },
+        "leaveHistory": [
+            {
+                "leaveId": "L7823410",
+                "visitPlace": "Greenfield City",
+                "reason": "Semester Break",
+                "leaveType": "WINTER VACATION",
+                "from": "18-DEC-2025 09:00",
+                "to": "04-JAN-2026 18:00",
+                "status": "REQUEST APPROVED",
+                "remarks": "Approved by [ 90421 ]"
+            },
+            {
+                "leaveId": "L7741293",
+                "visitPlace": "Lakeview Town",
+                "reason": "Festival Visit",
+                "leaveType": "HOME TOWN",
+                "from": "12-OCT-2025 15:00",
+                "to": "29-OCT-2025 21:00",
+                "status": "REQUEST APPROVED",
+                "remarks": "Approved by [ 90421 ]"
+            },
+            {
+                "leaveId": "L7698821",
+                "visitPlace": "Central Mall",
+                "reason": "Shopping",
+                "leaveType": "OUTING",
+                "from": "07-SEP-2025 12:00",
+                "to": "07-SEP-2025 17:00",
+                "status": "LEAVE CLOSED",
+                "remarks": "Approved by [ 90421 ]"
+            },
+            {
+                "leaveId": "L7649902",
+                "visitPlace": "City Square",
+                "reason": "Personal Work",
+                "leaveType": "OUTING",
+                "from": "23-AUG-2025 11:00",
+                "to": "23-AUG-2025 16:00",
+                "status": "LEAVE CLOSED",
+                "remarks": "Approved by [ 90421 ]"
+            },
+            {
+                "leaveId": "L7590024",
+                "visitPlace": "Metro Plaza",
+                "reason": "Movie",
+                "leaveType": "OUTING",
+                "from": "19-JUL-2025 13:30",
+                "to": "19-JUL-2025 18:30",
+                "status": "LEAVE CLOSED",
+                "remarks": "Approved by [ 90421 ]"
+            },
+            {
+                "leaveId": "L7531908",
+                "visitPlace": "Hometown",
+                "reason": "Summer Break",
+                "leaveType": "SUMMER VACATION",
+                "from": "12-MAY-2025 10:00",
+                "to": "08-JUL-2025 07:00",
+                "status": "REQUEST CANCELLED BEFORE APPROVAL",
+                "remarks": ""
+            },
+            {
+                "leaveId": "L7532001",
+                "visitPlace": "Hometown",
+                "reason": "Summer Vacation",
+                "leaveType": "SUMMER VACATION",
+                "from": "12-MAY-2025 09:00",
+                "to": "12-JUL-2025 06:00",
+                "status": "REQUEST APPROVED",
+                "remarks": "Approved by [ 90421 ]"
+            },
+            {
+                "leaveId": "L7456112",
+                "visitPlace": "Sunrise Mall",
+                "reason": "Movie Night",
+                "leaveType": "OUTING",
+                "from": "14-APR-2025 11:00",
+                "to": "14-APR-2025 16:00",
+                "status": "LEAVE CLOSED",
+                "remarks": "Approved by [ 90421 ]"
+            },
+            {
+                "leaveId": "L7395521",
+                "visitPlace": "Downtown Plaza",
+                "reason": "Shopping",
+                "leaveType": "OUTING",
+                "from": "20-FEB-2025 10:30",
+                "to": "20-FEB-2025 14:00",
+                "status": "REQUEST CANCELLED BEFORE APPROVAL",
+                "remarks": ""
+            },
+            {
+                "leaveId": "L7395538",
+                "visitPlace": "Downtown Plaza",
+                "reason": "Shopping",
+                "leaveType": "OUTING",
+                "from": "20-FEB-2025 09:00",
+                "to": "20-FEB-2025 14:30",
+                "status": "REQUEST APPROVED",
+                "remarks": "Approved by [ 90421 ]"
+            },
+            {
+                "leaveId": "L7312094",
+                "visitPlace": "Hometown",
+                "reason": "Winter Break",
+                "leaveType": "WINTER VACATION",
+                "from": "21-DEC-2024 16:00",
+                "to": "04-JAN-2025 20:00",
+                "status": "LEAVE CLOSED",
+                "remarks": "Approved by [ 90421 ]"
+            },
+            {
+                "leaveId": "L7264430",
+                "visitPlace": "Hometown",
+                "reason": "Festival Visit",
+                "leaveType": "HOME TOWN",
+                "from": "25-OCT-2024 13:00",
+                "to": "02-NOV-2024 08:00",
+                "status": "REQUEST CANCELLED BEFORE APPROVAL",
+                "remarks": ""
+            },
+            {
+                "leaveId": "L7264499",
+                "visitPlace": "Hometown",
+                "reason": "Festival Vacation",
+                "leaveType": "HOME TOWN",
+                "from": "25-OCT-2024 12:30",
+                "to": "02-NOV-2024 08:00",
+                "status": "LEAVE CLOSED",
+                "remarks": "Approved by [ 90421 ]"
+            }
+        ]
+    },
+    "calender": {
+        "semesterId": "CH20252605",
+        "calendars": [
+            {
+                "month": "DECEMBER 2025",
+                "days": [
+                    {
+                        "date": 4,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(FID/ Working Day / Add & Drop)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "FID/ Working Day / Add & Drop"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 5,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day / Add & Drop)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day / Add & Drop"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 6,
+                        "events": [
+                            {
+                                "text": "No Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Add & Drop)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Add & Drop"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 8,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 9,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 10,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 11,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 12,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 13,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Instructional Day / Thursday Day Order)",
+                                "type": "Instructional Day",
+                                "color": "#eb556e",
+                                "category": "Instructional Day / Thursday Day Order"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 15,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 16,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 17,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 18,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 19,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 20,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Instructional Day / Friday Day Order)",
+                                "type": "Instructional Day",
+                                "color": "#eb556e",
+                                "category": "Instructional Day / Friday Day Order"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 22,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Winter Vacation)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Winter Vacation"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 23,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Winter Vacation)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Winter Vacation"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 24,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Winter Vacation)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Winter Vacation"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 25,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Winter Vacation)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Winter Vacation"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 26,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Winter Vacation)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Winter Vacation"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 27,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Winter Vacation)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Winter Vacation"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 28,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Winter Vacation)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Winter Vacation"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 29,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Winter Vacation)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Winter Vacation"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 30,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Winter Vacation)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Winter Vacation"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 31,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Winter Vacation)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Winter Vacation"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "month": "JANUARY 2026",
+                "days": [
+                    {
+                        "date": 1,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Winter Vacation)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Winter Vacation"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 2,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Winter Vacation)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Winter Vacation"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 3,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Winter Vacation)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Winter Vacation"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 4,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Winter Vacation)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Winter Vacation"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 5,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 6,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 7,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 8,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 9,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 10,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Instructional Day / Wednesday Day Order)",
+                                "type": "Instructional Day",
+                                "color": "#eb556e",
+                                "category": "Instructional Day / Wednesday Day Order"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 12,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 13,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 14,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 15,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Pongal (Holiday)",
+                                "type": "Holiday",
+                                "color": "#eb556e",
+                                "category": "Pongal (Holiday"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 16,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Pongal (Holiday)",
+                                "type": "Holiday",
+                                "color": "#eb556e",
+                                "category": "Pongal (Holiday"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 17,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Pongal (Holiday)",
+                                "type": "Holiday",
+                                "color": "#eb556e",
+                                "category": "Pongal (Holiday"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 18,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Pongal (Holiday)",
+                                "type": "Holiday",
+                                "color": "#eb556e",
+                                "category": "Pongal (Holiday"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 19,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 20,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 21,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 22,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 23,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 24,
+                        "events": [
+                            {
+                                "text": "CAT - I",
+                                "type": "Other",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(CAT I)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "CAT I"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 25,
+                        "events": [
+                            {
+                                "text": "CAT - I",
+                                "type": "Other",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(CAT I)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "CAT I"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 26,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Republic Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Republic Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 27,
+                        "events": [
+                            {
+                                "text": "CAT - I",
+                                "type": "Other",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(CAT I)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "CAT I"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 28,
+                        "events": [
+                            {
+                                "text": "CAT - I",
+                                "type": "Other",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(CAT I)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "CAT I"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 29,
+                        "events": [
+                            {
+                                "text": "CAT - I",
+                                "type": "Other",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(CAT I)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "CAT I"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 30,
+                        "events": [
+                            {
+                                "text": "CAT - I",
+                                "type": "Other",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(CAT I)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "CAT I"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 31,
+                        "events": [
+                            {
+                                "text": "CAT - I",
+                                "type": "Other",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(CAT I)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "CAT I"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "month": "FEBRUARY 2026",
+                "days": [
+                    {
+                        "date": 1,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(ThaiPoosam)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "ThaiPoosam"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 2,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 3,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 4,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 5,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 6,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 7,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Instructional Day / Thursday Day Order)",
+                                "type": "Instructional Day",
+                                "color": "#eb556e",
+                                "category": "Instructional Day / Thursday Day Order"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 9,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 10,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 11,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 12,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 13,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 16,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day / Course Withdraw option)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day / Course Withdraw option"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 17,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day / Course Withdraw option)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day / Course Withdraw option"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 18,
+                        "events": [
+                            {
+                                "text": "No Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Course Withdraw option / Vibrance 2026)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Course Withdraw option / Vibrance 2026"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 19,
+                        "events": [
+                            {
+                                "text": "No Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Vibrance 2026)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Vibrance 2026"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 20,
+                        "events": [
+                            {
+                                "text": "No Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Vibrance 2026)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Vibrance 2026"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 21,
+                        "events": [
+                            {
+                                "text": "No Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Vibrance 2026)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Vibrance 2026"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 23,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 24,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 25,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 26,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 27,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "month": "MARCH 2026",
+                "days": [
+                    {
+                        "date": 2,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 3,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 4,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Holi)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Holi"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 5,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 6,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 9,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 10,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 11,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 12,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 13,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 14,
+                        "events": [
+                            {
+                                "text": "CAT - II",
+                                "type": "Other",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(CAT-II)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "CAT-II"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 15,
+                        "events": [
+                            {
+                                "text": "CAT - II",
+                                "type": "Other",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(CAT-II)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "CAT-II"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 16,
+                        "events": [
+                            {
+                                "text": "CAT - II",
+                                "type": "Other",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(CAT-II)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "CAT-II"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 17,
+                        "events": [
+                            {
+                                "text": "CAT - II",
+                                "type": "Other",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(CAT-II)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "CAT-II"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 18,
+                        "events": [
+                            {
+                                "text": "CAT - II",
+                                "type": "Other",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(CAT-II)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "CAT-II"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 19,
+                        "events": [
+                            {
+                                "text": "No Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Telugu New Year's Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Telugu New Year's Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 20,
+                        "events": [
+                            {
+                                "text": "CAT - II",
+                                "type": "Other",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(CAT-II)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "CAT-II"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 21,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Eid-ul-Fitr ( Holiday))",
+                                "type": "Holiday",
+                                "color": "#eb556e",
+                                "category": "Eid-ul-Fitr ( Holiday"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 22,
+                        "events": [
+                            {
+                                "text": "CAT - II",
+                                "type": "Other",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(CAT-II)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "CAT-II"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 23,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 24,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 25,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 26,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 27,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 30,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 31,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "month": "APRIL 2026",
+                "days": [
+                    {
+                        "date": 1,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 2,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 3,
+                        "events": [
+                            {
+                                "text": "No Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Good Friday)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Good Friday"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 6,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 7,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 8,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 9,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 10,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day / LID for laboratory classes)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day / LID for laboratory classes"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 11,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(LAB FAT /Instructional Day / Tuesday Day Order)",
+                                "type": "Instructional Day",
+                                "color": "#eb556e",
+                                "category": "LAB FAT /Instructional Day / Tuesday Day Order"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 13,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day / LAB FAT)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day / LAB FAT"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 14,
+                        "events": [
+                            {
+                                "text": "Holiday",
+                                "type": "Holiday",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Tamil New Year's Day/Dr. B. R. Ambedhakr Birthday)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Tamil New Year's Day/Dr. B. R. Ambedhakr Birthday"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 15,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day / LAB FAT)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day / LAB FAT"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 16,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day / LAB FAT)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day / LAB FAT"
+                            }
+                        ]
+                    },
+                    {
+                        "date": 17,
+                        "events": [
+                            {
+                                "text": "Instructional Day",
+                                "type": "Instructional Day",
+                                "color": "green",
+                                "category": "General"
+                            },
+                            {
+                                "text": "(Working Day / LAB FAT / LID for theory classes)",
+                                "type": "Other",
+                                "color": "#eb556e",
+                                "category": "Working Day / LAB FAT / LID for theory classes"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

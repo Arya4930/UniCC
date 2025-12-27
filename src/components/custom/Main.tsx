@@ -9,6 +9,7 @@ import config from '../../app/config.json'
 import { attendanceRes, ODListItem, ODListRaw } from "@/types/data/attendance";
 import { AllGradesRes } from "@/types/data/allgrades";
 import { loadActivityTree, saveActivityTree } from "@/lib/activit-tree";
+import demoData from '../../app/demoData.json';
 
 export const API_BASE =
   process.env.NODE_ENV === "development"
@@ -45,6 +46,7 @@ export default function LoginPage() {
   const [currSemesterID, setCurrSemesterID] = useState<string>(config.semesterIDs[config.semesterIDs.length - 2]);
   const [moodleData, setMoodleData] = useState([]);
   const [isAPIworking, setIsAPIworking] = useState<boolean>(false);
+  const [demoMode, setDemoMode] = useState<boolean>(false);
 
   useEffect(() => {
     const day = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
@@ -437,6 +439,21 @@ export default function LoginPage() {
     };
   }, []);
 
+  const handleDemoClick = () => {
+    setDemoMode(true);
+    setUsername(demoData.username);
+    setPassword(demoData.password);
+    setCalenderType("ALL");
+    setAttendanceData(demoData.attendance);
+    setMarksData(demoData.marks);
+    setGradesData(demoData.grades);
+    setAllGradesData(demoData.allGrades);
+    setScheduleData(demoData.schedule);
+    sethostelData(demoData.hostel);
+    setCalender(demoData.calender);
+    setIsLoggedIn(true);
+  }
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 midnight:bg-black">
@@ -463,7 +480,7 @@ export default function LoginPage() {
         />
       )}
 
-      {!isLoggedIn && (
+      {(!isLoggedIn && !demoMode) && (
         <div className="flex-grow flex items-center justify-center p-4">
           <LoginForm
             username={username}
@@ -473,11 +490,12 @@ export default function LoginPage() {
             message={message}
             handleFormSubmit={handleFormSubmit}
             progressBar={progressBar}
+            handleDemoClick={handleDemoClick}
           />
         </div>
       )}
 
-      {isLoggedIn && (
+      {(isLoggedIn || demoMode) && (
         <>
           {isOffline && <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium z-[9999] shadow-md">
             ⚠️ You’re currently offline. Some features may not work.

@@ -10,6 +10,7 @@ export default function LoginForm({
   message,
   handleFormSubmit,
   progressBar,
+  handleDemoClick
 }) {
   const isLoading = message.startsWith("Logging");
   const [showPassword, setShowPassword] = useState(false);
@@ -85,6 +86,14 @@ export default function LoginForm({
           Please read the Privacy Policy & Terms of Service before using the app.
         </p>
       </div>
+      <div className="text-center mt-4">
+        <button
+          onClick={handleDemoClick}
+          className="text-sm text-blue-600 hover:underline"
+        >
+          Try Demo Mode
+        </button>
+        </div>
     </div>
   );
 }
