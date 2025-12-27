@@ -1,4 +1,4 @@
-import { RequestBody } from "../custom";
+import { RequestBody } from "../../../src/types/custom";
 export type CalendarType = "ALL" | "ALL02" | "ALL03" | "ALL05" | "ALL06" | "ALL08" | "ALL11" | "WEI";
 export interface CalendarEvent {
     type: "Instructional Day" | "Holiday" | "Other";

@@ -7,9 +7,9 @@
     "build": "next build --webpack",
     "start": "next start -p 3001",
     "lint": "eslint",
-    "api-dev": "ts-node --transpile-only api/src/server.ts",
-    "api-build": "tsc -p api/tsconfig.json",
-    "api-start": "node api/dist/server.js"
+    "api-dev": "ts-node --transpile-only backend/src/server.ts",
+    "api-build": "tsc -p backend/tsconfig.json",
+    "api-start": "node backend/dist/server.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.946.0",
