@@ -1,7 +1,7 @@
 "use client";
 
-import { X, ChevronDown, ChevronUp, Save } from "lucide-react";
-import { useState, useEffect } from "react";
+import { X, ChevronDown, ChevronUp, Save, Copy, Check } from "lucide-react";
+import { useState, useEffect, use } from "react";
 import { Button } from "../../ui/button";
 
 interface LocalStorageItemProps {
@@ -21,6 +21,7 @@ function LocalStorageItem({ storageKey, value, onDelete }: LocalStorageItemProps
         storageKey !== "username" && storageKey !== "password" && storageKey !== "moodle_username" && storageKey !== "moodle_password"
     );
     const [expanded, setExpanded] = useState<boolean>(false);
+    const [copied, setCopied] = useState<boolean>(false);
 
     let parsedValue: string = value;
     try {
@@ -64,12 +65,20 @@ function LocalStorageItem({ storageKey, value, onDelete }: LocalStorageItemProps
                     )}
                 </div>
 
-                <button
-                    onClick={onDelete}
-                    className="ml-3 hover:cursor-pointer text-red-500 hover:text-red-700 dark:hover:text-red-400 midnight:hover:text-red-400 transition cursor-pointer"
-                >
-                    <X size={18} />
-                </button>
+                <div className="flex items-center gap-2 ml-3">
+                    <button
+                        onClick={() => {navigator.clipboard.writeText(parsedValue); setCopied(true); setTimeout(() => setCopied(false), 2000);}}
+                        className="hover:cursor-pointer text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 midnight:hover:text-blue-400 transition cursor-pointer"
+                    >
+                        {copied ? <Check size={18} className="text-green-500 dark:text-green-400" /> : <Copy size={18} />}
+                    </button>
+                    <button
+                        onClick={onDelete}
+                        className="hover:cursor-pointer text-red-500 hover:text-red-700 dark:hover:text-red-400 midnight:hover:text-red-400 transition cursor-pointer"
+                    >
+                        <X size={18} />
+                    </button>
+                </div>
             </div>
         </div>
     );
