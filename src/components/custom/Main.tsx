@@ -468,7 +468,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 midnight:bg-black flex flex-col text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
       {isAPIworking && !isOffline && (
-        <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium z-[9999] shadow-md">
+        <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium">
           ⚠️ Unable to connect to API services. Please check back later. ⚠️
         </div>
       )}
@@ -497,10 +497,10 @@ export default function LoginPage() {
 
       {(isLoggedIn || demoMode) && (
         <>
-          {isOffline && <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium z-[9999] shadow-md">
+          {isOffline && <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium">
             ⚠️ You’re currently offline. Some features may not work.
           </div>}
-          {demoMode && <div className="top-0 left-0 w-full bg-blue-500 text-white text-center py-2 font-medium z-[9999] shadow-md">
+          {demoMode && <div className="top-0 left-0 w-full bg-blue-500 text-white text-center py-2 font-medium">
             ℹ️ You are in Demo Mode. Data shown is for demonstration purposes only.
           </div>}
           <DashboardContent
@@ -550,7 +550,7 @@ export default function LoginPage() {
           />
         </>
       )}
-      <div className="top-0 left-0 w-full bg-blue-500 text-white text-center py-2 font-medium z-[9999] shadow-md">
+      <div className="top-0 left-0 w-full bg-blue-500 text-white text-center py-2 font-medium">
         Scheduled maintenance on December 29, 2025 ( afternoon ). API services will be temporarily unavailable.
       </div>
 
