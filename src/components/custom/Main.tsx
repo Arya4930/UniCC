@@ -14,7 +14,7 @@ import demoData from '../../app/demoData.json';
 export const API_BASE =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3000"
-    : "https://uniccapi3.aryaslocalserver.online";
+    : "https://api.uni-cc.site";
 
 export default function LoginPage() {
   // --- State Management ---
@@ -550,9 +550,9 @@ export default function LoginPage() {
           />
         </>
       )}
-      <div className="top-0 left-0 w-full bg-blue-500 text-white text-center py-2 font-medium">
+      {/* <div className="top-0 left-0 w-full bg-blue-500 text-white text-center py-2 font-medium">
         Scheduled maintenance on December 29, 2025 ( afternoon ). API services will be temporarily unavailable.
-      </div>
+      </div> */}
 
       <Footer isLoggedIn={isLoggedIn} />
     </div>

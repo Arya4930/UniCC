@@ -34,10 +34,10 @@ Hosting your own backend is **not recommended** unless you specifically need to,
 - A MongoDB database
 - A Backblaze B2 bucket for file storage
 
-Instead, you can directly use the **hosted UniCC backend API**: ```https://uniccapi3.aryaslocalserver.online/```
+Instead, you can directly use the **hosted UniCC backend API**: ```https://uniccapi.uni-cc.site/```
 To do this, modify the API base URL in: `src/components/custom/main.tsx` Change it to:
 ```ts
-export const API_BASE = "https://uniccapi3.aryaslocalserver.online";
+export const API_BASE = "https://uniccapi.uni-cc.site";
 ```
 ---
 ## Optional: Hosting Your Own Backend

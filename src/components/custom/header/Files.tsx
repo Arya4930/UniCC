@@ -64,7 +64,7 @@ export default function Files() {
     };
 
     const getDownloadUrl = (fileID) =>
-        `https://uniccassets.aryaslocalserver.online/${fileID}?response-content-disposition=attachment`;
+        `https://uniccassets.uni-cc.site/${fileID}?response-content-disposition=attachment`;
 
     useEffect(() => {
         fetchFiles();
