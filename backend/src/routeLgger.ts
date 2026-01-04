@@ -44,16 +44,6 @@ export async function routeLogger(
                 method: req.method,
                 route: normalizedRoute,
             });
-            // temp code will remove later
-            const logs = await RouteLog.findAll();
-
-            for (const log of logs) {
-                const normalized = normalizeRoute(log.route);
-                if (log.route !== normalized) {
-                    log.route = normalized;
-                    await log.save();
-                }
-            }
         } catch (err) {
             console.error("Route log failed:", err);
         }
