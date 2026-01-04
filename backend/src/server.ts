@@ -35,6 +35,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/status", statusRoutes);
 app.use("/api/stats", stats);
+app.use("/api/files/fetch", fetchFiles);
 
 app.use(routeLogger);
 
@@ -48,7 +49,6 @@ app.use("/api/schedule", scheduleRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/all-grades", allGradesRoutes);
 app.use("/api/files/upload", UploadFile);
-app.use("/api/files/fetch", fetchFiles);
 app.use("/api/files/delete", deleteFile);
 app.use("/api/files/download", downloadFile);
 app.use("/api/lms-data", fetchLMSdata);

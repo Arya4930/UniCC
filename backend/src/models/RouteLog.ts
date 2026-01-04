@@ -4,7 +4,7 @@ import { sequelize } from "../sequalize";
 export class RouteLog extends Model {
   declare id: number;
   declare method: string;
-  declare path: string;
+  declare route: string;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }

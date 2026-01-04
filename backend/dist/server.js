@@ -35,6 +35,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/status", status_1.default);
 app.use("/api/stats", stats_1.default);
+app.use("/api/files/fetch", fetchFiles_1.default);
 app.use(routeLgger_1.routeLogger);
 app.use("/api/calendar", calendar_1.default);
 app.use("/api/login", login_1.default);
@@ -46,7 +47,6 @@ app.use("/api/schedule", schedule_1.default);
 app.use("/api/attendance", attendance_1.default);
 app.use("/api/all-grades", allGrades_1.default);
 app.use("/api/files/upload", UploadFile_1.default);
-app.use("/api/files/fetch", fetchFiles_1.default);
 app.use("/api/files/delete", deleteFile_1.default);
 app.use("/api/files/download", downloadFile_1.default);
 app.use("/api/lms-data", FetchLMSdata_1.default);
