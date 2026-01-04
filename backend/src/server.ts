@@ -19,6 +19,9 @@ import downloadFile from "./routes/files/downloadFile";
 import fetchLMSdata from "./routes/FetchLMSdata";
 import mail from "./routes/files/mail";
 import { verifyMailer } from "./nodemailer";
+import { initDB } from "./sequalize";
+import { routeLogger } from "./routeLgger";
+import stats from "./routes/stats";
 
 const app: Application = express();
 
@@ -31,6 +34,10 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/status", statusRoutes);
+app.use("/api/stats", stats);
+
+app.use(routeLogger);
+
 app.use("/api/calendar", calendarRoutes);
 app.use("/api/login", loginRoutes);
 app.use("/api/captcha", captchaRoutes);
@@ -50,6 +57,7 @@ app.use("/api/files/mail", mail);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
     console.log(`🚀 Express TS server running on port ${PORT}`);
+    await initDB();
     startCleanupCron();
     await verifyMailer();
 });

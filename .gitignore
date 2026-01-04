@@ -24,7 +24,7 @@ api/pnpm-lock.yaml
 
 # misc
 .DS_Store
-
+*.sqlite
 
 # debug
 npm-debug.log*
