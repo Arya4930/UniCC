@@ -17,6 +17,8 @@ import fetchFiles from "./routes/files/fetchFiles";
 import deleteFile from "./routes/files/deleteFile";
 import downloadFile from "./routes/files/downloadFile";
 import fetchLMSdata from "./routes/FetchLMSdata";
+import mail from "./routes/files/mail";
+import { verifyMailer } from "./nodemailer";
 
 const app: Application = express();
 
@@ -43,9 +45,11 @@ app.use("/api/files/fetch", fetchFiles);
 app.use("/api/files/delete", deleteFile);
 app.use("/api/files/download", downloadFile);
 app.use("/api/lms-data", fetchLMSdata);
+app.use("/api/files/mail", mail);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`🚀 Express TS server running on port ${PORT}`);
     startCleanupCron();
+    await verifyMailer();
 });

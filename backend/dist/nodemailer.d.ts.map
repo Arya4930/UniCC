@@ -1,0 +1,1 @@
+{"version":3,"file":"nodemailer.d.ts","sourceRoot":"","sources":["../src/nodemailer.ts"],"names":[],"mappings":"AAAA,OAAmB,EAAE,WAAW,EAAE,MAAM,YAAY,CAAC;AACrD,OAAO,aAAa,MAAM,+BAA+B,CAAC;AAY1D,eAAO,MAAM,eAAe,EAAE,WAAW,CAAC,aAAa,CAAC,eAAe,CAA0C,CAAC;AAElH,wBAAsB,YAAY,IAAI,OAAO,CAAC,IAAI,CAAC,CAOlD"}

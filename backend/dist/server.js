@@ -21,6 +21,8 @@ const fetchFiles_1 = __importDefault(require("./routes/files/fetchFiles"));
 const deleteFile_1 = __importDefault(require("./routes/files/deleteFile"));
 const downloadFile_1 = __importDefault(require("./routes/files/downloadFile"));
 const FetchLMSdata_1 = __importDefault(require("./routes/FetchLMSdata"));
+const mail_1 = __importDefault(require("./routes/files/mail"));
+const nodemailer_1 = require("./nodemailer");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json({ limit: "10mb" }));
@@ -43,9 +45,11 @@ app.use("/api/files/fetch", fetchFiles_1.default);
 app.use("/api/files/delete", deleteFile_1.default);
 app.use("/api/files/download", downloadFile_1.default);
 app.use("/api/lms-data", FetchLMSdata_1.default);
+app.use("/api/files/mail", mail_1.default);
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`🚀 Express TS server running on port ${PORT}`);
     (0, cleanupExpiredFiles_1.startCleanupCron)();
+    await (0, nodemailer_1.verifyMailer)();
 });
 //# sourceMappingURL=server.js.map
