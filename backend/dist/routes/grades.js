@@ -97,8 +97,8 @@ router.post("/", async (req, res) => {
             const tds = $$(el).find("td");
             curriculum.push({
                 basketTitle: $$(tds[0]).text().trim(),
-                creditsRequired: $$(tds[2]).text().trim(),
-                creditsEarned: $$(tds[3]).text().trim(),
+                creditsRequired: $$(tds[1]).text().trim(),
+                creditsEarned: $$(tds[2]).text().trim(),
             });
         });
         const cgpa = {};
