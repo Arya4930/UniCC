@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/status", statusRoutes);
-app.use("/api/stats", stats);
+app.use("/stats", stats);
 app.use("/api/files/fetch", fetchFiles);
 
 app.use("/api", routeLogger);

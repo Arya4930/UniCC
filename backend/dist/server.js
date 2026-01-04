@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
     res.send("Express TypeScript API is running!");
 });
 app.use("/api/status", status_1.default);
-app.use("/api/stats", stats_1.default);
+app.use("/stats", stats_1.default);
 app.use("/api/files/fetch", fetchFiles_1.default);
 app.use("/api", routeLgger_1.routeLogger);
 app.use("/api/calendar", calendar_1.default);
