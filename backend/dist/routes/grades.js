@@ -80,7 +80,7 @@ router.post("/", async (req, res) => {
         });
         const curriculum = [];
         $$("#fixedTableContainer table")
-            .eq(3)
+            .eq(4)
             .find("tr.tableContent")
             .each((_, el) => {
             const tds = $$(el).find("td");
@@ -91,14 +91,15 @@ router.post("/", async (req, res) => {
             });
         });
         $$("#fixedTableContainer table")
-            .eq(4)
+            .eq(5)
             .find("tr.tableContent")
             .each((_, el) => {
             const tds = $$(el).find("td");
+            console.log($$(tds[0]).text().trim());
             curriculum.push({
                 basketTitle: $$(tds[0]).text().trim(),
-                creditsRequired: $$(tds[1]).text().trim(),
-                creditsEarned: $$(tds[2]).text().trim(),
+                creditsRequired: $$(tds[2]).text().trim(),
+                creditsEarned: $$(tds[3]).text().trim(),
             });
         });
         const cgpa = {};
