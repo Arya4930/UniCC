@@ -34,6 +34,7 @@ async function routeLogger(req, res, next) {
                 method: req.method,
                 route: normalizedRoute,
             });
+            // temp code will remove later
             const logs = await RouteLog_1.RouteLog.findAll();
             for (const log of logs) {
                 const normalized = normalizeRoute(log.route);

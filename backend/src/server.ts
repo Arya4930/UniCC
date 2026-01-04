@@ -29,6 +29,17 @@ app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+    if (
+        req.path.startsWith("/.") ||
+        req.path.includes(".git") ||
+        req.path.includes(".env")
+    ) {
+        return res.sendStatus(404);
+    }
+    next();
+});
+
 app.get("/", (req, res) => {
     res.send("Express TypeScript API is running!");
 });
@@ -37,7 +48,7 @@ app.use("/api/status", statusRoutes);
 app.use("/api/stats", stats);
 app.use("/api/files/fetch", fetchFiles);
 
-app.use(routeLogger);
+app.use("/api", routeLogger);
 
 app.use("/api/calendar", calendarRoutes);
 app.use("/api/login", loginRoutes);

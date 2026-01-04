@@ -30,13 +30,21 @@ const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json({ limit: "10mb" }));
 app.use(express_1.default.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+    if (req.path.startsWith("/.") ||
+        req.path.includes(".git") ||
+        req.path.includes(".env")) {
+        return res.sendStatus(404);
+    }
+    next();
+});
 app.get("/", (req, res) => {
     res.send("Express TypeScript API is running!");
 });
 app.use("/api/status", status_1.default);
 app.use("/api/stats", stats_1.default);
 app.use("/api/files/fetch", fetchFiles_1.default);
-app.use(routeLgger_1.routeLogger);
+app.use("/api", routeLgger_1.routeLogger);
 app.use("/api/calendar", calendar_1.default);
 app.use("/api/login", login_1.default);
 app.use("/api/captcha", captcha_1.default);
