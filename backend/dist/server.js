@@ -23,6 +23,9 @@ const downloadFile_1 = __importDefault(require("./routes/files/downloadFile"));
 const FetchLMSdata_1 = __importDefault(require("./routes/FetchLMSdata"));
 const mail_1 = __importDefault(require("./routes/files/mail"));
 const nodemailer_1 = require("./nodemailer");
+const sequalize_1 = require("./sequalize");
+const routeLgger_1 = require("./routeLgger");
+const stats_1 = __importDefault(require("./routes/stats"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json({ limit: "10mb" }));
@@ -31,6 +34,8 @@ app.get("/", (req, res) => {
     res.send("Express TypeScript API is running!");
 });
 app.use("/api/status", status_1.default);
+app.use("/api/stats", stats_1.default);
+app.use(routeLgger_1.routeLogger);
 app.use("/api/calendar", calendar_1.default);
 app.use("/api/login", login_1.default);
 app.use("/api/captcha", captcha_1.default);
@@ -49,6 +54,7 @@ app.use("/api/files/mail", mail_1.default);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
     console.log(`🚀 Express TS server running on port ${PORT}`);
+    await (0, sequalize_1.initDB)();
     (0, cleanupExpiredFiles_1.startCleanupCron)();
     await (0, nodemailer_1.verifyMailer)();
 });

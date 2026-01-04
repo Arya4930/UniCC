@@ -1,45 +1,41 @@
-import { Router } from "express";
-import { RouteLog } from "../models/RouteLog";
-import { fn, col } from "sequelize";
-
-const router = Router();
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const RouteLog_1 = require("../models/RouteLog");
+const sequelize_1 = require("sequelize");
+const router = (0, express_1.Router)();
 router.get("/", async (_req, res) => {
     try {
-        const hourlyData = await RouteLog.findAll({
+        const hourlyData = await RouteLog_1.RouteLog.findAll({
             attributes: [
                 [
-                    fn("strftime", "%Y-%m-%d %H:00", col("createdAt")),
+                    (0, sequelize_1.fn)("strftime", "%Y-%m-%d %H:00", (0, sequelize_1.col)("createdAt")),
                     "hour",
                 ],
-                [fn("COUNT", col("id")), "count"],
+                [(0, sequelize_1.fn)("COUNT", (0, sequelize_1.col)("id")), "count"],
             ],
             group: ["hour"],
             order: [["hour", "ASC"]],
             raw: true,
         });
-
-        const hourLabels = hourlyData.map((d: any) => d.hour);
-        const hourCounts = hourlyData.map((d: any) => Number(d.count));
-
-        const routeHourlyData = await RouteLog.findAll({
+        const hourLabels = hourlyData.map((d) => d.hour);
+        const hourCounts = hourlyData.map((d) => Number(d.count));
+        const routeHourlyData = await RouteLog_1.RouteLog.findAll({
             attributes: [
                 [
-                    fn("strftime", "%Y-%m-%d %H:00", col("createdAt")),
+                    (0, sequelize_1.fn)("strftime", "%Y-%m-%d %H:00", (0, sequelize_1.col)("createdAt")),
                     "hour",
                 ],
                 ["route", "route"],
-                [fn("COUNT", col("id")), "count"],
+                [(0, sequelize_1.fn)("COUNT", (0, sequelize_1.col)("id")), "count"],
             ],
             group: ["hour", "route"],
             order: [["hour", "ASC"]],
             raw: true,
         });
-
         // Get unique routes and hours
-        const routes = [...new Set(routeHourlyData.map((d: any) => d.route))];
-        const allHours = [...new Set(routeHourlyData.map((d: any) => d.hour))].sort();
-
+        const routes = [...new Set(routeHourlyData.map((d) => d.route))];
+        const allHours = [...new Set(routeHourlyData.map((d) => d.hour))].sort();
         // Create datasets for each route
         const routeDatasets = routes.map((route, index) => {
             const colors = [
@@ -54,17 +50,12 @@ router.get("/", async (_req, res) => {
                 'rgb(255, 99, 255)',
                 'rgb(99, 255, 132)',
             ];
-            
             const color = colors[index % colors.length] || 'rgb(100, 100, 100)';
-            
             // Fill in data for each hour
             const data = allHours.map(hour => {
-                const entry: any = routeHourlyData.find(
-                    (d: any) => d.hour === hour && d.route === route
-                );
+                const entry = routeHourlyData.find((d) => d.hour === hour && d.route === route);
                 return entry ? Number(entry.count) : 0;
             });
-
             return {
                 label: route,
                 data: data,
@@ -75,7 +66,6 @@ router.get("/", async (_req, res) => {
                 fill: false
             };
         });
-
         res.send(`
 <!DOCTYPE html>
 <html>
@@ -213,10 +203,11 @@ router.get("/", async (_req, res) => {
 </body>
 </html>
 `);
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Stats error:", error);
         res.status(500).send("Error generating stats");
     }
 });
-
-export default router;
+exports.default = router;
+//# sourceMappingURL=stats.js.map

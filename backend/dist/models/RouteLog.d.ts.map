@@ -1,0 +1,1 @@
+{"version":3,"file":"RouteLog.d.ts","sourceRoot":"","sources":["../../src/models/RouteLog.ts"],"names":[],"mappings":"AAAA,OAAO,EAAa,KAAK,EAAE,MAAM,WAAW,CAAC;AAG7C,qBAAa,QAAS,SAAQ,KAAK;IACzB,EAAE,EAAE,MAAM,CAAC;IACX,MAAM,EAAE,MAAM,CAAC;IACf,IAAI,EAAE,MAAM,CAAC;IACrB,SAAiB,SAAS,EAAE,IAAI,CAAC;IACjC,SAAiB,SAAS,EAAE,IAAI,CAAC;CAClC"}
