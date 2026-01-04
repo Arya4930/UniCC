@@ -9,7 +9,7 @@ router.get("/", async (_req, res) => {
         const hourlyData = await RouteLog_1.RouteLog.findAll({
             attributes: [
                 [
-                    (0, sequelize_1.fn)("strftime", "%Y-%m-%d %H:00", (0, sequelize_1.col)("createdAt")),
+                    (0, sequelize_1.fn)("strftime", "%Y-%m-%d %H:00", (0, sequelize_1.col)("createdAt"), "+5 hours", "+30 minutes"),
                     "hour",
                 ],
                 [(0, sequelize_1.fn)("COUNT", (0, sequelize_1.col)("id")), "count"],
@@ -23,7 +23,7 @@ router.get("/", async (_req, res) => {
         const routeHourlyData = await RouteLog_1.RouteLog.findAll({
             attributes: [
                 [
-                    (0, sequelize_1.fn)("strftime", "%Y-%m-%d %H:00", (0, sequelize_1.col)("createdAt")),
+                    (0, sequelize_1.fn)("strftime", "%Y-%m-%d %H:00", (0, sequelize_1.col)("createdAt"), "+5 hours", "+30 minutes"),
                     "hour",
                 ],
                 ["route", "route"],
