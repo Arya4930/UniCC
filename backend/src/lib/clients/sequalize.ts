@@ -11,7 +11,7 @@ export const sequelize = new Sequelize({
 export async function initDB() {
     try {
         await sequelize.authenticate();
-        await sequelize.sync();
+        await sequelize.sync({ alter: true });
         console.log("✅ SQLite connected");
     } catch (error) {
         console.error("❌ Unable to connect to SQLite:", error);

@@ -16,7 +16,7 @@ exports.sequelize = new sequelize_1.Sequelize({
 async function initDB() {
     try {
         await exports.sequelize.authenticate();
-        await exports.sequelize.sync();
+        await exports.sequelize.sync({ alter: true });
         console.log("✅ SQLite connected");
     }
     catch (error) {
