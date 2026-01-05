@@ -1,17 +1,10 @@
-import express, { Request, Response } from "express";
 import VTOPClient from "../VTOPClient";
 import * as cheerio from "cheerio";
 import { URLSearchParams } from "url";
-import { RequestBody } from "../types/custom";
 import { CourseItem, CGPA } from "../types/data/marks";
-import type { Router } from "express";
 
-const router: Router = express.Router();
-
-router.post("/", async (req: Request, res: Response) => {
+export async function getMarks(cookies: string[] | string, dashboardHtml: string, semesterId: string, client: ReturnType<typeof VTOPClient>): Promise<{ courses: CourseItem[]; cgpa: CGPA } | string> {
     try {
-        const { cookies, dashboardHtml, semesterId }: RequestBody = req.body;
-
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
 
@@ -21,8 +14,6 @@ router.post("/", async (req: Request, res: Response) => {
         if (!csrf || !authorizedID) {
             throw new Error("Cannot find _csrf or authorizedID");
         }
-
-        const client = VTOPClient();
 
         const marksRes = await client.post(
             "/vtop/examinations/doStudentMarkView",
@@ -114,11 +105,9 @@ router.post("/", async (req: Request, res: Response) => {
                 cgpa.nonGradedRequirement = value;
         });
 
-        return res.status(200).json({ marks: courses, cgpa: cgpa });
+        return { courses, cgpa };
     } catch (err: any) {
         console.error(err);
-        return res.status(500).json({ error: err.message });
+        return err.message;
     }
-});
-
-export default router;
+}

@@ -41,6 +41,7 @@ const VTOPClient_1 = __importDefault(require("../VTOPClient"));
 const cheerio = __importStar(require("cheerio"));
 const url_1 = require("url");
 const fetchTimeTable_1 = __importDefault(require("./fetchTimeTable"));
+const marks_1 = require("./marks");
 const router = express_1.default.Router();
 function mergeAttendanceWithTimetable(attendance, timetable) {
     const merged = [];
@@ -96,6 +97,7 @@ router.post("/", async (req, res) => {
         if (!csrf || !authorizedID)
             throw new Error("Cannot find _csrf or authorizedID");
         const client = (0, VTOPClient_1.default)();
+        const marksRes = await (0, marks_1.getMarks)(cookieHeader, dashboardHtml, semesterId, client);
         const ttRes = await client.post("/vtop/processViewStudentAttendance", new url_1.URLSearchParams({
             authorizedID: String(authorizedID),
             semesterSubId: semesterId ?? "",
@@ -174,10 +176,7 @@ router.post("/", async (req, res) => {
             return course;
         }
         const detailedAttendance = await Promise.all(mergedAttendance.map(fetchDetail));
-        return res.status(200).json({
-            semester: semesterId,
-            attendance: detailedAttendance,
-        });
+        return res.status(200).json({ attRes: { semester: semesterId, attendance: detailedAttendance }, marksRes: marksRes });
     }
     catch (err) {
         console.error(err);

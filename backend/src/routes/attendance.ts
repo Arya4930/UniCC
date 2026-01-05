@@ -6,6 +6,7 @@ import fetchTimetable from "./fetchTimeTable";
 import { RequestBody } from "../types/custom";
 import { attendanceItem, courseItem } from "../types/data/attendance";
 import type { Router } from "express";
+import { getMarks } from "./marks";
 
 const router: Router = express.Router();
 
@@ -73,6 +74,13 @@ router.post("/", async (req: Request, res: Response) => {
             throw new Error("Cannot find _csrf or authorizedID");
 
         const client = VTOPClient();
+
+        const marksRes = await getMarks(
+            cookieHeader,
+            dashboardHtml,
+            semesterId as string,
+            client
+        );
 
         const ttRes = await client.post(
             "/vtop/processViewStudentAttendance",
@@ -184,10 +192,7 @@ router.post("/", async (req: Request, res: Response) => {
             mergedAttendance.map(fetchDetail)
         );
 
-        return res.status(200).json({
-            semester: semesterId,
-            attendance: detailedAttendance,
-        });
+        return res.status(200).json({ attRes: { semester: semesterId, attendance: detailedAttendance }, marksRes: marksRes });
     } catch (err: any) {
         console.error(err);
         return res.status(500).json({ error: err.message });

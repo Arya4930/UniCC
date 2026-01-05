@@ -32,18 +32,12 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const VTOPClient_1 = __importDefault(require("../VTOPClient"));
+exports.getMarks = getMarks;
 const cheerio = __importStar(require("cheerio"));
 const url_1 = require("url");
-const router = express_1.default.Router();
-router.post("/", async (req, res) => {
+async function getMarks(cookies, dashboardHtml, semesterId, client) {
     try {
-        const { cookies, dashboardHtml, semesterId } = req.body;
         const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
         const csrf = $('input[name="_csrf"]').val();
@@ -51,7 +45,6 @@ router.post("/", async (req, res) => {
         if (!csrf || !authorizedID) {
             throw new Error("Cannot find _csrf or authorizedID");
         }
-        const client = (0, VTOPClient_1.default)();
         const marksRes = await client.post("/vtop/examinations/doStudentMarkView", new url_1.URLSearchParams({
             authorizedID: String(authorizedID),
             semesterSubId: semesterId ?? "",
@@ -126,12 +119,11 @@ router.post("/", async (req, res) => {
             else if (label.includes("Non-graded Core Requirement"))
                 cgpa.nonGradedRequirement = value;
         });
-        return res.status(200).json({ marks: courses, cgpa: cgpa });
+        return { courses, cgpa };
     }
     catch (err) {
         console.error(err);
-        return res.status(500).json({ error: err.message });
+        return err.message;
     }
-});
-exports.default = router;
+}
 //# sourceMappingURL=marks.js.map

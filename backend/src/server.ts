@@ -5,7 +5,6 @@ import { startCleanupCron } from "./cleanupExpiredFiles";
 import statusRoutes from "./routes/status";
 import calendarRoutes from "./routes/calendar";
 import loginRoutes from "./routes/login/login";
-import marksRoutes from "./routes/marks";
 import hostelRoutes from "./routes/hostel";
 import gradesRoutes from "./routes/grades";
 import scheduleRoutes from "./routes/schedule";
@@ -51,7 +50,6 @@ app.use("/api", routeLogger);
 
 app.use("/api/calendar", calendarRoutes);
 app.use("/api/login", loginRoutes);
-app.use("/api/marks", marksRoutes);
 app.use("/api/hostel", hostelRoutes);
 app.use("/api/grades", gradesRoutes);
 app.use("/api/schedule", scheduleRoutes);

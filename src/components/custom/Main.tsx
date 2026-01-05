@@ -177,8 +177,7 @@ export default function LoginPage() {
       localStorage.setItem("password", password);
 
       const [
-        attRes,
-        marksRes,
+        { attRes, marksRes },
         gradesRes,
         ScheduleRes,
         HostelRes,
@@ -191,19 +190,8 @@ export default function LoginPage() {
           body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
         }).then(async r => {
           const j = await r.json();
-          setMessage(prev => prev + "\n✅ Attendance fetched");
+          setMessage(prev => prev + "\n✅ Attendance/Marks fetched");
           setProgressBar(prev => prev + 10);
-          return j;
-        }),
-
-        fetch(`${API_BASE}/api/marks`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
-        }).then(async r => {
-          const j = await r.json();
-          setMessage(prev => prev + "\n✅ Marks fetched");
-          setProgressBar(prev => prev + 5);
           return j;
         }),
 
@@ -312,8 +300,7 @@ export default function LoginPage() {
       localStorage.setItem("password", password);
 
       const [
-        attRes,
-        marksRes
+        { attRes, marksRes }
       ] = await Promise.all([
         fetch(`${API_BASE}/api/attendance`, {
           method: "POST",
@@ -321,22 +308,12 @@ export default function LoginPage() {
           body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
         }).then(async r => {
           const j = await r.json();
-          setMessage(prev => prev + "\n✅ Attendance fetched");
-          setProgressBar(prev => prev + 20);
-          return j;
-        }),
-        fetch(`${API_BASE}/api/marks`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
-        }).then(async r => {
-          const j = await r.json();
-          setMessage(prev => prev + "\n✅ Marks fetched");
+          setMessage(prev => prev + "\n✅ Attendance/Marks fetched");
           setProgressBar(prev => prev + 20);
           return j;
         })
       ]);
-
+      
       setAttendanceAndOD(attRes);
       setMarksData(marksRes);
 
