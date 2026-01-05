@@ -33,17 +33,45 @@ router.get("/", async (_req, res) => {
             order: [["hour", "ASC"]],
             raw: true,
         });
-        const sourceData = await RouteLog_1.RouteLog.findAll({
+        const sourceHourlyData = await RouteLog_1.RouteLog.findAll({
             attributes: [
+                [
+                    (0, sequelize_1.fn)("strftime", "%Y-%m-%d %H:00", (0, sequelize_1.col)("createdAt"), "+5 hours", "+30 minutes"),
+                    "hour",
+                ],
                 ["source", "source"],
                 [(0, sequelize_1.fn)("COUNT", (0, sequelize_1.col)("id")), "count"],
             ],
-            group: ["source"],
-            order: [[(0, sequelize_1.fn)("COUNT", (0, sequelize_1.col)("id")), "DESC"]],
+            group: ["hour", "source"],
+            order: [["hour", "ASC"]],
             raw: true,
         });
-        const sourceLabels = sourceData.map((d) => d.source || "unknown");
-        const sourceCounts = sourceData.map((d) => Number(d.count));
+        const sourceHours = [...new Set(sourceHourlyData.map((d) => d.hour))].sort();
+        const sources = [...new Set(sourceHourlyData.map((d) => d.source || "unknown"))];
+        const sourceColors = [
+            "rgb(54, 162, 235)",
+            "rgb(255, 99, 132)",
+            "rgb(75, 192, 192)",
+            "rgb(255, 206, 86)",
+            "rgb(153, 102, 255)",
+            "rgb(255, 159, 64)",
+        ];
+        const sourceDatasets = sources.map((source, index) => {
+            const color = sourceColors[index % sourceColors.length] || 'rgb(100, 100, 100)';
+            const data = sourceHours.map(hour => {
+                const entry = sourceHourlyData.find((d) => d.hour === hour && (d.source || "unknown") === source);
+                return entry ? Number(entry.count) : 0;
+            });
+            return {
+                label: source,
+                data,
+                borderColor: color,
+                backgroundColor: color.replace("rgb", "rgba").replace(")", ", 0.15)"),
+                borderWidth: 2,
+                tension: 0.3,
+                fill: false,
+            };
+        });
         // Get unique routes and hours
         const routes = [...new Set(routeHourlyData.map((d) => d.route))];
         const allHours = [...new Set(routeHourlyData.map((d) => d.hour))].sort();
@@ -219,29 +247,28 @@ router.get("/", async (_req, res) => {
 
     // Requests by source domain
 new Chart(document.getElementById("sourceChart"), {
-  type: "bar",
+  type: "line",
   data: {
-    labels: ${JSON.stringify(sourceLabels)},
-    datasets: [{
-      label: "Requests",
-      data: ${JSON.stringify(sourceCounts)},
-      backgroundColor: "rgba(54, 162, 235, 0.6)",
-      borderColor: "rgb(54, 162, 235)",
-      borderWidth: 1
-    }]
+    labels: ${JSON.stringify(sourceHours)},
+    datasets: ${JSON.stringify(sourceDatasets)}
   },
   options: {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false
+        display: true,
+        position: "right"
       },
       tooltip: {
-        callbacks: {
-          label: ctx => ' ' + ctx.raw + ' requests'
-        }
+        mode: "index",
+        intersect: false
       }
+    },
+    interaction: {
+      mode: "nearest",
+      axis: "x",
+      intersect: false
     },
     scales: {
       y: {
@@ -252,7 +279,6 @@ new Chart(document.getElementById("sourceChart"), {
       },
       x: {
         ticks: {
-          autoSkip: false,
           maxRotation: 45,
           minRotation: 45
         }
