@@ -5,6 +5,7 @@ export class RouteLog extends Model {
   declare id: number;
   declare method: string;
   declare route: string;
+  declare source?: string;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }
@@ -18,6 +19,10 @@ RouteLog.init(
     route: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    source: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {

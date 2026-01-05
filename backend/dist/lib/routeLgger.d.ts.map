@@ -1,1 +1,1 @@
-{"version":3,"file":"routeLgger.d.ts","sourceRoot":"","sources":["../../src/lib/routeLgger.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,YAAY,EAAE,MAAM,SAAS,CAAC;AA+B1D,wBAAsB,WAAW,CAC7B,GAAG,EAAE,OAAO,EACZ,GAAG,EAAE,QAAQ,EACb,IAAI,EAAE,YAAY,iBAkBrB"}
+{"version":3,"file":"routeLgger.d.ts","sourceRoot":"","sources":["../../src/lib/routeLgger.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,YAAY,EAAE,MAAM,SAAS,CAAC;AAiD1D,wBAAsB,WAAW,CAC7B,GAAG,EAAE,OAAO,EACZ,GAAG,EAAE,QAAQ,EACb,IAAI,EAAE,YAAY,iBAoBrB"}

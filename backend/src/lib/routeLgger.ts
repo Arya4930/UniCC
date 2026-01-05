@@ -29,6 +29,24 @@ function normalizeRoute(url: string) {
         .replace(/\b[A-Z]{2}\d{5,}\b/g, ":userID");
 }
 
+function getSourceDomain(req: Request): string {
+    const origin = req.headers.origin;
+    if (typeof origin === "string") {
+        try {
+            return new URL(origin).hostname;
+        } catch {}
+    }
+
+    const referer = req.headers.referer;
+    if (typeof referer === "string") {
+        try {
+            return new URL(referer).hostname;
+        } catch {}
+    }
+
+    return "unknown";
+}
+
 export async function routeLogger(
     req: Request,
     res: Response,
@@ -39,10 +57,12 @@ export async function routeLogger(
             if (req.originalUrl === "/favicon.ico") return;
 
             const normalizedRoute = normalizeRoute(req.originalUrl);
+            const sourceDomain = getSourceDomain(req);
 
             await RouteLog.create({
                 method: req.method,
                 route: normalizedRoute,
+                source: sourceDomain,
             });
         } catch (err) {
             console.error("Route log failed:", err);

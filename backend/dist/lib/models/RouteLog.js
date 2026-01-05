@@ -15,6 +15,10 @@ RouteLog.init({
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
     },
+    source: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: true,
+    },
 }, {
     sequelize: sequalize_1.sequelize,
     tableName: "api_route_logs",
