@@ -112,38 +112,57 @@ router.get("/", async (_req, res) => {
   <title>API Usage Stats</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body {
-      font-family: system-ui, sans-serif;
-      padding: 20px;
-      background: #f5f5f5;
-    }
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    h1 {
-      color: #333;
-      margin-bottom: 30px;
-    }
-    h2 {
-      color: #555;
-      margin-top: 40px;
-      margin-bottom: 20px;
-    }
-    canvas {
-      max-width: 100%;
-      margin-bottom: 50px;
-    }
-    .chart-container {
-      position: relative;
-      height: 400px;
-      margin-bottom: 50px;
-    }
-  </style>
+  :root {
+    --bg: #0f1115;
+    --card: #151821;
+    --border: #2a2f3a;
+    --text-primary: #e5e7eb;
+    --text-secondary: #9ca3af;
+    --accent: #38bdf8;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 20px;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: var(--card);
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  h1 {
+    color: var(--text-primary);
+    margin-bottom: 30px;
+  }
+
+  h2 {
+    color: var(--text-secondary);
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  .chart-container {
+    position: relative;
+    height: 400px;
+    margin-bottom: 50px;
+    background: #11141b;
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+
+  canvas {
+    max-width: 100%;
+  }
+</style>
 </head>
 <body>
   <div class="container">
@@ -164,6 +183,12 @@ router.get("/", async (_req, res) => {
 
   </div>
   
+  <script>
+  Chart.defaults.color = "#9ca3af";
+  Chart.defaults.borderColor = "#2a2f3a";
+  Chart.defaults.font.family =
+    "system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
+  </script>
   <script>
     // Total requests per hour
     new Chart(document.getElementById("hourChart"), {
