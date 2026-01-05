@@ -53,6 +53,10 @@ B2_REGION=
 
 ADMINS=
 ID_SALT=
+
+SMTP_PASS=
+SMTP_USER=
+SMTP_HOST=
 ```
 ### Starting the backend
 ```bash
