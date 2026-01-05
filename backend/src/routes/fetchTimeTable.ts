@@ -1,5 +1,5 @@
 import * as cheerio from "cheerio";
-import VTOPClient from "../VTOPClient";
+import VTOPClient from "../lib/clients/VTOPClient";
 import { URLSearchParams } from "url";
 import { courseItem } from "../types/data/attendance";
 

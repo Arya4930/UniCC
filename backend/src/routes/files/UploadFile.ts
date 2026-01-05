@@ -2,11 +2,11 @@ import express, { Request } from 'express';
 import type { Router } from 'express';
 import multer from 'multer';
 import path from 'path';
-import User from '../../models/Users';
-import { UploadFileToS3 } from '../../s3';
+import User from '../../lib/models/Users';
+import { UploadFileToS3 } from '../../lib/clients/s3';
 import { v4 as uuidv4 } from 'uuid';
-import { connectDB } from '../../mongodb';
-import { maskUserID } from '../../mask';
+import { connectDB } from '../../lib/clients/mongodb';
+import { maskUserID } from '../../lib/mask';
 
 interface MulterRequest extends Request {
     file?: Express.Multer.File;

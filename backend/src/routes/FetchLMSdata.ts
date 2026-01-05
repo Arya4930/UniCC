@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import * as cheerio from "cheerio";
-import LMSClient from "../LMSClient";
+import LMSClient from "../lib/clients/LMSClient";
 
 const router: Router = express.Router();
 

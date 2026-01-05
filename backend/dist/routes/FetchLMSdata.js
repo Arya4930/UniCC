@@ -38,7 +38,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cheerio = __importStar(require("cheerio"));
-const LMSClient_1 = __importDefault(require("../LMSClient"));
+const LMSClient_1 = __importDefault(require("../lib/clients/LMSClient"));
 const router = express_1.default.Router();
 router.post("/", async (req, res) => {
     try {

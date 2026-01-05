@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.startCleanupCron = startCleanupCron;
 const node_cron_1 = __importDefault(require("node-cron"));
-const Users_1 = __importDefault(require("./models/Users"));
+const Users_1 = __importDefault(require("./lib/models/Users"));
 ;
-const mongodb_1 = require("./mongodb");
-const s3_1 = require("./s3");
+const mongodb_1 = require("./lib/clients/mongodb");
+const s3_1 = require("./lib/clients/s3");
 async function cleanup() {
     console.log("🧹 Running cleanup task…");
     try {

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const RouteLog_1 = require("../models/RouteLog");
+const RouteLog_1 = require("../lib/models/RouteLog");
 const sequelize_1 = require("sequelize");
 const router = (0, express_1.Router)();
 router.get("/", async (_req, res) => {

@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const Users_1 = __importDefault(require("../../models/Users"));
-const mongodb_1 = require("../../mongodb");
-const mask_1 = require("../../mask");
+const Users_1 = __importDefault(require("../../lib/models/Users"));
+const mongodb_1 = require("../../lib/clients/mongodb");
+const mask_1 = require("../../lib/mask");
 const router = express_1.default.Router({ mergeParams: true });
 router.get("/:userID", async (req, res) => {
     try {

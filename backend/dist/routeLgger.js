@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.routeLogger = routeLogger;
-const RouteLog_1 = require("./models/RouteLog");
+const RouteLog_1 = require("./lib/models/RouteLog");
 function normalizeRoute(url) {
     const path = url.split("?")[0] || "undefined";
     if (path.startsWith("/api/files/")) {

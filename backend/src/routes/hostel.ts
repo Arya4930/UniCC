@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import VTOPClient from "../VTOPClient";
+import VTOPClient from "../lib/clients/VTOPClient";
 import { RequestBody } from "../types/custom";
 import { hostel, leaveItem } from "../types/data/hostel";
 import * as cheerio from "cheerio";

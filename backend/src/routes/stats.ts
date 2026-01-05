@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { RouteLog } from "../models/RouteLog";
+import { RouteLog } from "../lib/models/RouteLog";
 import { fn, col } from "sequelize";
 
 const router = Router();

@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import VTOPClient from "../../VTOPClient";
+import VTOPClient from "../../lib/clients/VTOPClient";
 import { LoginRequestBody } from "../../types/data/login";
 import type { Router } from "express";
 import { getCaptcha } from "./captcha";

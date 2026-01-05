@@ -1,6 +1,6 @@
 import express, { Application } from "express";
 import cors from "cors";
-import { startCleanupCron } from "./cleanupExpiredFiles";
+import { startCleanupCron } from "./lib/cleanupExpiredFiles";
 
 import statusRoutes from "./routes/status";
 import calendarRoutes from "./routes/calendar";
@@ -16,9 +16,9 @@ import deleteFile from "./routes/files/deleteFile";
 import downloadFile from "./routes/files/downloadFile";
 import fetchLMSdata from "./routes/FetchLMSdata";
 import mail from "./routes/files/mail";
-import { verifyMailer } from "./nodemailer";
-import { initDB } from "./sequalize";
-import { routeLogger } from "./routeLgger";
+import { verifyMailer } from "./lib/clients/nodemailer";
+import { initDB } from "./lib/clients/sequalize";
+import { routeLogger } from "./lib/routeLgger";
 import stats from "./routes/stats";
 
 const app: Application = express();

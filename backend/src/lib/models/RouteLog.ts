@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../sequalize";
+import { sequelize } from "../clients/sequalize";
 
 export class RouteLog extends Model {
   declare id: number;

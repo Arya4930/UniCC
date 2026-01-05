@@ -38,7 +38,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = fetchTimetable;
 const cheerio = __importStar(require("cheerio"));
-const VTOPClient_1 = __importDefault(require("../VTOPClient"));
+const VTOPClient_1 = __importDefault(require("../lib/clients/VTOPClient"));
 const url_1 = require("url");
 async function fetchTimetable(cookieHeader, dashboardHtml, semesterId) {
     const $ = cheerio.load(dashboardHtml);

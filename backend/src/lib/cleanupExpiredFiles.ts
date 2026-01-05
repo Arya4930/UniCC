@@ -1,7 +1,7 @@
 import cron from "node-cron";
 import User from "./models/Users";;
-import { connectDB } from "./mongodb";
-import { DeleteFromS3 } from "./s3";
+import { connectDB } from "./clients/mongodb";
+import { DeleteFromS3 } from "./clients/s3";
 
 async function cleanup() {
     console.log("🧹 Running cleanup task…");

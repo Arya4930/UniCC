@@ -37,7 +37,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCaptcha = getCaptcha;
-const VTOPClient_1 = __importDefault(require("../../VTOPClient"));
+const VTOPClient_1 = __importDefault(require("../../lib/clients/VTOPClient"));
 const cheerio = __importStar(require("cheerio"));
 async function getCaptcha() {
     const MAX_RETRIES = 10;

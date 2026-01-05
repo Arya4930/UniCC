@@ -1,9 +1,9 @@
 import type { Router } from "express";
 import express from "express";
-import { connectDB } from "../../mongodb";
-import User from "../../models/Users";
-import { DeleteFromS3 } from "../../s3";
-import { maskUserID } from "../../mask";
+import { connectDB } from "../../lib/clients/mongodb";
+import User from "../../lib/models/Users";
+import { DeleteFromS3 } from "../../lib/clients/s3";
+import { maskUserID } from "../../lib/mask";
 
 const router: Router = express.Router({ mergeParams: true });
 

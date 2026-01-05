@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import VTOPClient from "../VTOPClient";
+import VTOPClient from "../lib/clients/VTOPClient";
 import * as cheerio from "cheerio";
 import { URLSearchParams } from "url";
 import {

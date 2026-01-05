@@ -1,4 +1,4 @@
-import VTOPClient from "../VTOPClient";
+import VTOPClient from "../lib/clients/VTOPClient";
 import * as cheerio from "cheerio";
 import { URLSearchParams } from "url";
 import { CourseItem, CGPA } from "../types/data/marks";

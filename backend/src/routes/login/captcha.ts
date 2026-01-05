@@ -1,5 +1,5 @@
 import { CaptchaResult, CaptchaType } from "../../types/data/login";
-import VTOPClient from "../../VTOPClient";
+import VTOPClient from "../../lib/clients/VTOPClient";
 import * as cheerio from "cheerio";
 
 export async function getCaptcha(): Promise<CaptchaResult> {

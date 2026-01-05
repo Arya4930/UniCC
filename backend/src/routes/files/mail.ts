@@ -1,6 +1,6 @@
 import express, { Request } from 'express';
 import type { Router } from 'express';
-import { mailTransporter } from "../../nodemailer";
+import { mailTransporter } from "../../lib/clients/nodemailer";
 import multer from 'multer';
 
 const upload = multer({
