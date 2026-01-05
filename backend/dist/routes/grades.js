@@ -95,7 +95,6 @@ router.post("/", async (req, res) => {
             .find("tr.tableContent")
             .each((_, el) => {
             const tds = $$(el).find("td");
-            console.log($$(tds[0]).text().trim());
             curriculum.push({
                 basketTitle: $$(tds[0]).text().trim(),
                 creditsRequired: $$(tds[2]).text().trim(),

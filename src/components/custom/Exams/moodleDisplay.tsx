@@ -24,7 +24,6 @@ export default function MoodleDisplay({ moodleData, handleFetchMoodle }) {
             </div>
         );
     };
-    console.log(moodleData);
 
     return (
         <div className="mt-6 p-4">

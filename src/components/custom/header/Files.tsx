@@ -38,7 +38,6 @@ export default function Files() {
             if (!res.ok) throw new Error("Failed to fetch files");
             const data = await res.json();
             setFiles(data);
-            console.log("Fetched files:", data);
         } catch (error) {
             console.error(error);
         } finally {
