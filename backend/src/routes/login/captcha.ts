@@ -1,24 +1,8 @@
-import express, { Request, Response } from "express";
-import { CaptchaResult, CaptchaType } from "../types/data/login";
-import VTOPClient from "../VTOPClient";
+import { CaptchaResult, CaptchaType } from "../../types/data/login";
+import VTOPClient from "../../VTOPClient";
 import * as cheerio from "cheerio";
-import type { Router } from "express";
 
-const router: Router = express.Router();
-
-router.post("/", async (req: Request, res: Response) => {
-    try {
-        const result: CaptchaResult = await getCaptcha();
-        return res.status(200).json(result);
-    } catch (err: any) {
-        console.error(err);
-        return res.status(500).json({ error: err.message });
-    }
-});
-
-export default router;
-
-async function getCaptcha(): Promise<CaptchaResult> {
+export async function getCaptcha(): Promise<CaptchaResult> {
     const MAX_RETRIES = 10;
     const client = VTOPClient();
 
@@ -75,7 +59,7 @@ async function getCaptcha(): Promise<CaptchaResult> {
                         Buffer.from(imgRes.data, "binary").toString("base64");
                 }
 
-                return { captchaType, captchaBase64: base64, cookies, csrf };
+                return { captchaBase64: base64, cookies, csrf };
             } else {
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }

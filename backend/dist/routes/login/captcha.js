@@ -81,7 +81,7 @@ async function getCaptcha() {
                         "data:image/jpeg;base64," +
                             Buffer.from(imgRes.data, "binary").toString("base64");
                 }
-                return { captchaType, captchaBase64: base64, cookies, csrf };
+                return { captchaBase64: base64, cookies, csrf };
             }
             else {
                 await new Promise(resolve => setTimeout(resolve, 1000));

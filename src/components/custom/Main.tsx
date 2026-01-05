@@ -4,7 +4,6 @@ import { ReloadModal } from "./reloadModel";
 import LoginForm from "./loginForm";
 import DashboardContent from "./Dashboard";
 import Footer from "./footer/Footer";
-import { solveCaptchaClient } from "@/lib/solveCaptcha";
 import config from '../../app/config.json'
 import { attendanceRes, ODListItem, ODListRaw } from "@/types/data/attendance";
 import { AllGradesRes } from "@/types/data/allgrades";
@@ -140,26 +139,12 @@ export default function LoginPage() {
     try {
       setProgressBar(10);
       setMessage("Logging in and fetching data...");
-
-      const captchaRes = await fetch(`${API_BASE}/api/captcha`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      const { captchaBase64, cookies, csrf, error } = await captchaRes.json();
-      if (error) throw new Error("Failed to get CAPTCHA: " + error);
-
-      const captcha = await solveCaptchaClient(captchaBase64);
-
       const loginRes = await fetch(`${API_BASE}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           username,
-          password,
-          captcha,
-          cookies,
-          csrf,
+          password
         }),
       });
 

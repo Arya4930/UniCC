@@ -1,6 +1,5 @@
 export type CaptchaType = "GRECAPTCHA" | "DEFAULT";
 export type CaptchaResponse = {
-    captchaType: CaptchaType;
     captchaBase64: string;
     cookies: string[];
     csrf: string;

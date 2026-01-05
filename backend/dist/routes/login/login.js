@@ -5,14 +5,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const VTOPClient_1 = __importDefault(require("../../VTOPClient"));
-const captcha_1 = require("../captcha");
-const solveCaptcha_1 = require("../solveCaptcha");
+const captcha_1 = require("./captcha");
+const solveCaptcha_1 = require("./solveCaptcha");
 const router = express_1.default.Router();
 router.post("/", async (req, res) => {
     try {
         const { username, password } = req.body;
-        const { captchaBase64, cookies, csrf, error } = await (0, captcha_1.getCaptcha)();
-        const captcha = await (0, solveCaptcha_1.solveCaptchaServer)(captchaBase64);
+        const captchaRes = await (0, captcha_1.getCaptcha)();
+        if ("error" in captchaRes) {
+            return res.status(500).json({ success: false, error: captchaRes.error });
+        }
+        const { captchaBase64, cookies, csrf } = captchaRes;
+        const captcha = await (0, solveCaptcha_1.solveCaptcha)(captchaBase64);
         const client = (0, VTOPClient_1.default)();
         const loginRes = await client.post("/vtop/login", new URLSearchParams({
             _csrf: csrf,

@@ -1,2 +1,2 @@
-export declare function solveCaptchaServer(base64: string): Promise<string>;
+export declare function solveCaptcha(base64: string): Promise<string>;
 //# sourceMappingURL=solveCaptcha.d.ts.map

@@ -1,20 +1,23 @@
 // utils/solveCaptchaClient.js
 import { bitmaps } from "./bitmaps";
+import { createCanvas, loadImage } from "canvas";
+
+type Matrix = number[][];
+type Vector = number[];
 
 function getImageBlocks(pixelData: Uint8ClampedArray, width: number, height: number): Matrix[] {
     const saturate: Vector = new Array(pixelData.length / 4);
     for (let i = 0; i < pixelData.length; i += 4) {
-        const r = pixelData[i], g = pixelData[i + 1], b = pixelData[i + 2];
+        const r = pixelData[i]!, g = pixelData[i + 1]!, b = pixelData[i + 2]!;
         const min = Math.min(r, g, b);
         const max = Math.max(r, g, b);
         saturate[i / 4] = max === 0 ? 0 : Math.round(((max - min) * 255) / max);
     }
 
-    const img: Matrix = [];
+    const img: Matrix = Array.from({ length: 40 }, () => Array(200).fill(0));
     for (let i = 0; i < 40; i++) {
-        img[i] = [];
         for (let j = 0; j < 200; j++) {
-            img[i][j] = saturate[i * 200 + j];
+            img[i]![j] = saturate[i * 200 + j] ?? 0;
         }
     }
 
@@ -32,12 +35,12 @@ function getImageBlocks(pixelData: Uint8ClampedArray, width: number, height: num
 function binarizeImage(charImg: Matrix): Matrix {
     let avg = 0;
     charImg.forEach(row => row.forEach(pixel => (avg += pixel)));
-    avg /= charImg.length * charImg[0].length;
+    avg /= charImg.length * (charImg[0] || []).length;
     const bits: Matrix = new Array(charImg.length);
     for (let i = 0; i < charImg.length; i++) {
-        bits[i] = new Array(charImg[0].length);
-        for (let j = 0; j < charImg[0].length; j++) {
-            bits[i][j] = charImg[i][j] > avg ? 1 : 0;
+        bits[i] = new Array((charImg[0] || []).length);
+        for (let j = 0; j < (charImg[0] || []).length; j++) {
+            bits[i]![j] = (charImg[i]![j] || 0) > avg ? 1 : 0;
         }
     }
     return bits;
@@ -48,12 +51,12 @@ function flatten(matrix: Matrix): Vector {
 }
 
 function matMul(a: Matrix, b: Matrix): Matrix {
-    const x = a.length, z = a[0].length, y = b[0].length;
+    const x = a.length, z = a[0]?.length ?? 0, y = b[0]?.length ?? 0;
     const product = Array(x).fill(0).map(() => Array(y).fill(0));
     for (let i = 0; i < x; i++) {
         for (let j = 0; j < y; j++) {
             for (let k = 0; k < z; k++) {
-                product[i][j] += a[i][k] * b[k][j];
+                product[i]![j] += (a[i]![k] ?? 0) * (b[k]![j] ?? 0);
             }
         }
     }
@@ -61,7 +64,7 @@ function matMul(a: Matrix, b: Matrix): Matrix {
 }
 
 function matAdd(a: Vector, b: Vector): Vector {
-    return a.map((val, i) => val + b[i]);
+    return a.map((val, i) => val + (b[i] ?? 0));
 }
 
 function softmax(vec: Vector): Vector {
@@ -70,16 +73,14 @@ function softmax(vec: Vector): Vector {
     return exps.map(e => e / sumExps);
 }
 
-export async function solveCaptchaClient(base64: string): Promise<string> {
+export async function solveCaptcha(base64: string): Promise<string> {
     const LABEL_TEXT = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    const img = new Image();
-    img.src = base64;
-    await new Promise((res) => (img.onload = res));
+    const img = await loadImage(base64);
 
-    const canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
+    const canvas = createCanvas(img.width, img.height);
     const ctx = canvas.getContext("2d");
+
+    if(!ctx) throw new Error("Failed to get canvas context");
     ctx.drawImage(img, 0, 0);
 
     const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -91,7 +92,7 @@ export async function solveCaptchaClient(base64: string): Promise<string> {
         inputVector = [flatten(inputVector)];
 
         let output: Matrix = matMul(inputVector, bitmaps.weights);
-        const logits: Vector = matAdd(output[0], bitmaps.biases);
+        const logits: Vector = matAdd(output[0] ?? [], bitmaps.biases);
 
         const probabilities = softmax(logits);
         const maxProbIndex = probabilities.indexOf(Math.max(...probabilities));
