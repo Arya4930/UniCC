@@ -3,6 +3,8 @@
 **Live site:** [https://github.uni-cc.site/](https://uni-cc.site/)
 
 **Repository:** [https://github.com/Arya4930/UniCC](https://github.com/Arya4930/UniCC)
+**API Docs:** [https://api.uni-cc.site/docs](https://api.uni-cc.site/docs)
+**API Stats:** [https://api.uni-cc.site/stats](https://api.uni-cc.site/docs)
 
 ---
 
