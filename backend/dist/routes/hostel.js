@@ -41,6 +41,85 @@ const VTOPClient_1 = __importDefault(require("../lib/clients/VTOPClient"));
 const cheerio = __importStar(require("cheerio"));
 const url_1 = require("url");
 const router = express_1.default.Router();
+/**
+ * @openapi
+ * /api/hostel:
+ *   post:
+ *     tags:
+ *       - Hostel
+ *     summary: Fetch hostel details and leave history
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - cookies
+ *               - authorizedID
+ *               - csrf
+ *             properties:
+ *               cookies:
+ *                 oneOf:
+ *                   - type: string
+ *                   - type: array
+ *                     items:
+ *                       type: string
+ *               authorizedID:
+ *                 type: string
+ *                 example: 24BCE1234
+ *               csrf:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 hostelInfo:
+ *                   type: object
+ *                   properties:
+ *                     gender:
+ *                       type: string
+ *                     isHosteller:
+ *                       type: boolean
+ *                     blockName:
+ *                       type: string
+ *                     roomNo:
+ *                       type: string
+ *                     messInfo:
+ *                       type: string
+ *                 leaveHistory:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       leaveId:
+ *                         type: string
+ *                       visitPlace:
+ *                         type: string
+ *                       reason:
+ *                         type: string
+ *                       leaveType:
+ *                         type: string
+ *                       from:
+ *                         type: string
+ *                       to:
+ *                         type: string
+ *                       status:
+ *                         type: string
+ *                       remarks:
+ *                         type: string
+ *       500:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
 router.post("/", async (req, res) => {
     try {
         const { cookies, authorizedID, csrf } = req.body;

@@ -1,1 +1,1 @@
-{"version":3,"file":"deleteFile.d.ts","sourceRoot":"","sources":["../../../src/routes/files/deleteFile.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAOtC,QAAA,MAAM,MAAM,EAAE,MAA8C,CAAC;AAyC7D,eAAe,MAAM,CAAC"}
+{"version":3,"file":"deleteFile.d.ts","sourceRoot":"","sources":["../../../src/routes/files/deleteFile.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAOtC,QAAA,MAAM,MAAM,EAAE,MAA8C,CAAC;AA+F7D,eAAe,MAAM,CAAC"}

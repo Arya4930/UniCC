@@ -40,6 +40,70 @@ const express_1 = __importDefault(require("express"));
 const cheerio = __importStar(require("cheerio"));
 const LMSClient_1 = __importDefault(require("../lib/clients/LMSClient"));
 const router = express_1.default.Router();
+/**
+ * @openapi
+ * /api/lms-data:
+ *   post:
+ *     tags:
+ *       - Academics
+ *     security: []
+ *     summary: Fetch upcoming and completed LMS assignments for current and next month
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - pass
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: 24BCE1234
+ *               pass:
+ *                 type: string
+ *                 example: myLMSPassword
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   name:
+ *                     type: string
+ *                   due:
+ *                     type: string
+ *                   done:
+ *                     type: boolean
+ *                   day:
+ *                     type: number
+ *                   month:
+ *                     type: number
+ *                   year:
+ *                     type: number
+ *                   url:
+ *                     type: string
+ *       400:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       500:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
 router.post("/", async (req, res) => {
     try {
         const { username, pass } = req.body;

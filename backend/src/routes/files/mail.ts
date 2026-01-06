@@ -10,6 +10,56 @@ const upload = multer({
 
 const router: Router = express.Router({ mergeParams: true });
 
+/**
+ * @openapi
+ * /api/mail/send:
+ *   post:
+ *     tags:
+ *       - Files
+ *     security: []
+ *     summary: Send files via email
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - files
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: user@example.com
+ *               subject:
+ *                 type: string
+ *                 example: Important documents
+ *               files:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *     responses:
+ *       200:
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: Email sent successfully
+ *       400:
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: Email and files are required
+ *       500:
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: Failed to send email
+ */
+
 router.post("/send", upload.array("files"), async (req, res) => {
     const to = req.body.email as String | undefined;
     const subject = req.body.subject as String | undefined;

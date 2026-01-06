@@ -8,6 +8,91 @@ import type { Router } from "express";
 
 const router: Router = express.Router();
 
+/**
+ * @openapi
+ * /api/all-grades:
+ *   post:
+ *     tags:
+ *       - Academics
+ *     summary: Fetch complete semester-wise grade history with detailed breakdown
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - cookies
+ *               - authorizedID
+ *               - csrf
+ *             properties:
+ *               cookies:
+ *                 oneOf:
+ *                   - type: string
+ *                   - type: array
+ *                     items:
+ *                       type: string
+ *               authorizedID:
+ *                 type: string
+ *                 example: 24BCE1234
+ *               csrf:
+ *                 type: string
+ *                 example: a1b2c3d4e5
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 grades:
+ *                   type: object
+ *                   additionalProperties:
+ *                     type: object
+ *                     nullable: true
+ *                     properties:
+ *                       gpa:
+ *                         type: string
+ *                         example: "8.72"
+ *                       grades:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             slNo:
+ *                               type: string
+ *                             courseCode:
+ *                               type: string
+ *                             courseTitle:
+ *                               type: string
+ *                             courseType:
+ *                               type: string
+ *                             grandTotal:
+ *                               type: string
+ *                             grade:
+ *                               type: string
+ *                             courseId:
+ *                               type: string
+ *                               nullable: true
+ *                             range:
+ *                               type: object
+ *                               nullable: true
+ *                             details:
+ *                               type: array
+ *                               nullable: true
+ *                               items:
+ *                                 type: object
+ *       500:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal server error
+ */
+
 router.post("/", async (req: Request, res: Response) => {
     try {
         const { cookies, authorizedID, csrf }: RequestBody = req.body;

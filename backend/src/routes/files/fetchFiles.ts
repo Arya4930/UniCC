@@ -6,6 +6,54 @@ import { maskUserID } from '../../lib/mask';
 
 const router: Router = express.Router({ mergeParams: true });
 
+/**
+ * @openapi
+ * /api/files/fetch/{userID}:
+ *   get:
+ *     tags:
+ *       - Files
+ *     security: []
+ *     summary: Fetch all active files for a user
+ *     parameters:
+ *       - in: path
+ *         name: userID
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: 24BCE1234
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   fileID:
+ *                     type: string
+ *                     example: file_abc123
+ *                   name:
+ *                     type: string
+ *                     example: notes.pdf
+ *                   size:
+ *                     type: number
+ *                     example: 245760
+ *                   expiresAt:
+ *                     type: string
+ *                     format: date-time
+ *                     example: 2026-01-20T12:00:00.000Z
+ *       500:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal server error
+ */
+
 router.get("/:userID", async (req, res) => {
     try {
         await connectDB();

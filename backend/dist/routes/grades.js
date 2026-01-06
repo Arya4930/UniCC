@@ -41,6 +41,106 @@ const VTOPClient_1 = __importDefault(require("../lib/clients/VTOPClient"));
 const cheerio = __importStar(require("cheerio"));
 const url_1 = require("url");
 const router = express_1.default.Router();
+/**
+ * @openapi
+ * /api/grades:
+ *   post:
+ *     tags:
+ *       - Academics
+ *     summary: Fetch grade summary, curriculum progress, CGPA distribution, and feedback status
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - cookies
+ *               - authorizedID
+ *               - csrf
+ *               - semesterId
+ *             properties:
+ *               cookies:
+ *                 oneOf:
+ *                   - type: string
+ *                   - type: array
+ *                     items:
+ *                       type: string
+ *               authorizedID:
+ *                 type: string
+ *                 example: 24BCE1234
+ *               csrf:
+ *                 type: string
+ *               semesterId:
+ *                 type: string
+ *                 example: CH20242501
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 effectiveGrades:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       basketTitle:
+ *                         type: string
+ *                       distributionType:
+ *                         type: string
+ *                       creditsEarned:
+ *                         type: string
+ *                       grade:
+ *                         type: string
+ *                 curriculum:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       basketTitle:
+ *                         type: string
+ *                       creditsRequired:
+ *                         type: string
+ *                       creditsEarned:
+ *                         type: string
+ *                 cgpa:
+ *                   type: object
+ *                   properties:
+ *                     grades:
+ *                       type: object
+ *                       properties:
+ *                         S: { type: number }
+ *                         A: { type: number }
+ *                         B: { type: number }
+ *                         C: { type: number }
+ *                         D: { type: number }
+ *                         E: { type: number }
+ *                         F: { type: number }
+ *                         N: { type: number }
+ *                 feedback:
+ *                   type: object
+ *                   properties:
+ *                     MidSem:
+ *                       type: object
+ *                       properties:
+ *                         Curriculum: { type: boolean }
+ *                         Course: { type: boolean }
+ *                     EndSem:
+ *                       type: object
+ *                       properties:
+ *                         Curriculum: { type: boolean }
+ *                         Course: { type: boolean }
+ *       500:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
 router.post("/", async (req, res) => {
     try {
         const { cookies, authorizedID, csrf, semesterId } = req.body;

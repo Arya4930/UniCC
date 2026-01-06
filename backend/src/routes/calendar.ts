@@ -12,6 +12,91 @@ import type { Router } from "express";
 
 const router: Router = express.Router();
 
+/**
+ * @openapi
+ * /api/calendar:
+ *   post:
+ *     tags:
+ *       - Academics
+ *     summary: Fetch semester academic calendar with events grouped by month
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - cookies
+ *               - authorizedID
+ *               - csrf
+ *               - semesterId
+ *             properties:
+ *               cookies:
+ *                 oneOf:
+ *                   - type: string
+ *                   - type: array
+ *                     items:
+ *                       type: string
+ *               authorizedID:
+ *                 type: string
+ *                 example: 24BCE1234
+ *               csrf:
+ *                 type: string
+ *               semesterId:
+ *                 type: string
+ *                 example: CH20242501
+ *               type:
+ *                 type: string
+ *                 example: ALL
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 semesterId:
+ *                   type: string
+ *                 calendars:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       month:
+ *                         type: string
+ *                         example: JULY 2024
+ *                       days:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             date:
+ *                               type: number
+ *                               example: 12
+ *                             events:
+ *                               type: array
+ *                               items:
+ *                                 type: object
+ *                                 properties:
+ *                                   text:
+ *                                     type: string
+ *                                   type:
+ *                                     type: string
+ *                                     example: Instructional Day
+ *                                   color:
+ *                                     type: string
+ *                                   category:
+ *                                     type: string
+ *       500:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+
 router.post("/", async (req: Request, res: Response) => {
     try {
         let { cookies, authorizedID, csrf, type, semesterId }: CalendarRequestBody = req.body;

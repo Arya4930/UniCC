@@ -48,6 +48,7 @@ const router = express_1.default.Router();
  *   post:
  *     tags:
  *       - Authentication
+ *     security: []
  *     summary: Authenticate user via VTOP and return session credentials
  *     requestBody:
  *       required: true

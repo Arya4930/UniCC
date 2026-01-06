@@ -11,6 +11,7 @@ const router = express_1.default.Router();
  *   get:
  *     tags:
  *       - System
+ *     security: []
  *     summary: Check API health status
  *     description: >
  *       Simple health check endpoint used to verify that the API server

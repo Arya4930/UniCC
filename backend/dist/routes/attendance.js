@@ -43,6 +43,105 @@ const url_1 = require("url");
 const fetchTimeTable_1 = __importDefault(require("./fetchTimeTable"));
 const marks_1 = require("./marks");
 const router = express_1.default.Router();
+/**
+ * @openapi
+ * /api/attendance:
+ *   post:
+ *     tags:
+ *       - Academics
+ *     summary: Fetch merged attendance, timetable, and marks for a semester
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - cookies
+ *               - authorizedID
+ *               - csrf
+ *               - semesterId
+ *             properties:
+ *               cookies:
+ *                 oneOf:
+ *                   - type: string
+ *                   - type: array
+ *                     items:
+ *                       type: string
+ *               authorizedID:
+ *                 type: string
+ *                 example: 24BCE1234
+ *               csrf:
+ *                 type: string
+ *               semesterId:
+ *                 type: string
+ *                 example: CH20242501
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 attRes:
+ *                   type: object
+ *                   properties:
+ *                     semester:
+ *                       type: string
+ *                     attendance:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           courseCode:
+ *                             type: string
+ *                           courseTitle:
+ *                             type: string
+ *                           slotName:
+ *                             type: string
+ *                           faculty:
+ *                             type: string
+ *                             nullable: true
+ *                           attendedClasses:
+ *                             type: number
+ *                             nullable: true
+ *                           totalClasses:
+ *                             type: number
+ *                             nullable: true
+ *                           attendancePercentage:
+ *                             type: string
+ *                             nullable: true
+ *                           credits:
+ *                             type: string
+ *                             nullable: true
+ *                           slotVenue:
+ *                             type: string
+ *                             nullable: true
+ *                           category:
+ *                             type: string
+ *                             nullable: true
+ *                           viewLink:
+ *                             oneOf:
+ *                               - type: string
+ *                               - type: array
+ *                                 items:
+ *                                   type: object
+ *                                   properties:
+ *                                     date:
+ *                                       type: string
+ *                                     status:
+ *                                       type: string
+ *                 marksRes:
+ *                   type: object
+ *       500:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
 function mergeAttendanceWithTimetable(attendance, timetable) {
     const merged = [];
     timetable.forEach(tt => {

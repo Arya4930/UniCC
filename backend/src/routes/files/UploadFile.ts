@@ -13,6 +13,88 @@ interface MulterRequest extends Request {
 }
 
 const router: Router = express.Router({ mergeParams: true });
+
+/**
+ * @openapi
+ * /api/files/upload/{userID}:
+ *   post:
+ *     tags:
+ *       - Files
+ *     security: []
+ *     summary: Upload a file for a user
+ *     parameters:
+ *       - in: path
+ *         name: userID
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: 24BCE1234
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - file
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       201:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: File uploaded successfully
+ *                 file:
+ *                   type: object
+ *                   properties:
+ *                     fileID:
+ *                       type: string
+ *                       example: maskedID/uuid-filename.pdf
+ *                     extension:
+ *                       type: string
+ *                       example: pdf
+ *                     name:
+ *                       type: string
+ *                       example: notes.pdf
+ *                     size:
+ *                       type: number
+ *                       example: 102400
+ *                     expiresAt:
+ *                       type: string
+ *                       format: date-time
+ *                 storageUsed:
+ *                   type: number
+ *                   example: 204800
+ *                 isAdmin:
+ *                   type: boolean
+ *                   example: false
+ *       400:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Storage limit exceeded
+ *       500:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Upload failed
+ */
+
 const upload = multer();
 
 const MAX_STORAGE = 5 * 1024 * 1024;
