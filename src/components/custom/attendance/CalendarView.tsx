@@ -48,11 +48,6 @@ function isInstructionalEvent(e) {
     return false;
 }
 
-const MONTH_NAME_MAP = {
-    jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
-    jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
-};
-
 export default function CalendarView({ calendars, calendarType, handleCalendarFetch }) {
     const safeCalendars = useMemo(() => {
         if (!calendars) return [];
@@ -84,23 +79,22 @@ export default function CalendarView({ calendars, calendarType, handleCalendarFe
             jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
         };
 
-        const getMonthIndex = (mRaw: unknown): number => {
-            if (!mRaw) return now.getMonth();
-            if (typeof mRaw === "number") {
-                if (mRaw >= 1 && mRaw <= 12) return mRaw - 1;
-                if (mRaw >= 0 && mRaw <= 11) return mRaw;
-            }
-            const s = String(mRaw).trim().toLowerCase();
-            const short = s.slice(0, 3);
-            return MONTH_NAME_MAP[short] ?? now.getMonth();
+        const rawMonth = String(activeCalendar.month || "").trim();
+        const match = rawMonth.match(/([a-zA-Z]+)\s+(\d{4})/);
+
+        let parsedMonthIndex = now.getMonth();
+        let parsedYear = now.getFullYear();
+
+        if (match) {
+            const monthName = match[1].toLowerCase().slice(0, 3);
+            parsedMonthIndex = MONTH_NAME_MAP[monthName] ?? parsedMonthIndex;
+            parsedYear = parseInt(match[2], 10);
+        }
+
+        return {
+            year: parsedYear,
+            monthIndex: parsedMonthIndex,
         };
-
-        const mIndex = getMonthIndex(activeCalendar.month);
-        const currYear = now.getFullYear();
-
-        const y = mIndex <= 4 ? currYear + 1 : currYear;
-
-        return { year: y, monthIndex: mIndex };
     }, [activeCalendar.month]);
 
 
@@ -118,7 +112,7 @@ export default function CalendarView({ calendars, calendarType, handleCalendarFe
         daysInMonth = Array.from({ length: totalDays }, (_, i) => new Date(year, monthIndex, i + 1));
     }
 
-    const firstDay = (getDay(monthStart) + 6) % 7;
+    const firstDay = getDay(monthStart);
     const blanksCount = (firstDay + 6) % 7;
     const blanks = Array.from({ length: blanksCount }, (_, i) => i);
     const today = new Date();
