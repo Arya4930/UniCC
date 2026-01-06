@@ -8,6 +8,79 @@ const VTOPClient_1 = __importDefault(require("../../lib/clients/VTOPClient"));
 const captcha_1 = require("./captcha");
 const solveCaptcha_1 = require("./solveCaptcha");
 const router = express_1.default.Router();
+/**
+ * @openapi
+ * /api/login:
+ *   post:
+ *     tags:
+ *       - Authentication
+ *     summary: Authenticate a user via VTOP and return session credentials
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: 24BCE1234
+ *               password:
+ *                 type: string
+ *                 example: mySecretPassword
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Login successful!
+ *                 cookies:
+ *                   type: string
+ *                   description: Session cookies for authenticated requests
+ *                 csrf:
+ *                   type: string
+ *                   description: CSRF token required for subsequent requests
+ *                 dashboardHtml:
+ *                   type: string
+ *                   description: Raw HTML of the authenticated dashboard page
+ *       401:
+ *         description: Authentication failed (invalid captcha or credentials)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Invalid Username / Password
+ *       500:
+ *         description: Internal server error or captcha fetch failure
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: Failed to get captcha
+ */
 router.post("/", async (req, res) => {
     try {
         const { username, password } = req.body;

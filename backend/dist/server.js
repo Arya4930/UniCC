@@ -24,6 +24,8 @@ const nodemailer_1 = require("./lib/clients/nodemailer");
 const sequalize_1 = require("./lib/clients/sequalize");
 const routeLgger_1 = require("./lib/routeLgger");
 const stats_1 = __importDefault(require("./routes/stats"));
+const swagger_1 = require("./lib/clients/swagger");
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json({ limit: "10mb" }));
@@ -55,6 +57,7 @@ app.use("/api/files/delete", deleteFile_1.default);
 app.use("/api/files/download", downloadFile_1.default);
 app.use("/api/lms-data", FetchLMSdata_1.default);
 app.use("/api/files/mail", mail_1.default);
+app.use("/docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerSpec));
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
     console.log(`🚀 Express TS server running on port ${PORT}`);
