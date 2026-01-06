@@ -3,17 +3,9 @@ import * as cheerio from "cheerio";
 import { URLSearchParams } from "url";
 import { CourseItem, CGPA } from "../types/data/marks";
 
-export async function getMarks(cookies: string[] | string, dashboardHtml: string, semesterId: string, client: ReturnType<typeof VTOPClient>): Promise<{ courses: CourseItem[]; cgpa: CGPA } | string> {
+export async function getMarks(cookies: string[] | string, authorizedID: string, csrf: string, semesterId: string, client: ReturnType<typeof VTOPClient>): Promise<{ courses: CourseItem[]; cgpa: CGPA } | string> {
     try {
-        const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
-
-        const csrf: any = $('input[name="_csrf"]').val();
-        const authorizedID: any = $('#authorizedID').val() || $('input[name="authorizedid"]').val();
-
-        if (!csrf || !authorizedID) {
-            throw new Error("Cannot find _csrf or authorizedID");
-        }
 
         const marksRes = await client.post(
             "/vtop/examinations/doStudentMarkView",

@@ -1,1 +1,1 @@
-{"version":3,"file":"allGrades.d.ts","sourceRoot":"","sources":["../../src/routes/allGrades.ts"],"names":[],"mappings":"AAMA,OAAO,KAAK,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAEtC,QAAA,MAAM,MAAM,EAAE,MAAyB,CAAC;AAwMxC,eAAe,MAAM,CAAC"}
+{"version":3,"file":"allGrades.d.ts","sourceRoot":"","sources":["../../src/routes/allGrades.ts"],"names":[],"mappings":"AAMA,OAAO,KAAK,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAEtC,QAAA,MAAM,MAAM,EAAE,MAAyB,CAAC;AAmMxC,eAAe,MAAM,CAAC"}

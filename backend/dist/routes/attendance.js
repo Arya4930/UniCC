@@ -89,15 +89,12 @@ function mergeAttendanceWithTimetable(attendance, timetable) {
 }
 router.post("/", async (req, res) => {
     try {
-        const { cookies, dashboardHtml, semesterId } = req.body;
-        const $ = cheerio.load(dashboardHtml);
+        const { cookies, authorizedID, csrf, semesterId } = req.body;
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
-        const csrf = $('input[name="_csrf"]').val();
-        const authorizedID = $('#authorizedID').val() || $('input[name="authorizedid"]').val();
         if (!csrf || !authorizedID)
             throw new Error("Cannot find _csrf or authorizedID");
         const client = (0, VTOPClient_1.default)();
-        const marksRes = await (0, marks_1.getMarks)(cookieHeader, dashboardHtml, semesterId, client);
+        const marksRes = await (0, marks_1.getMarks)(cookieHeader, authorizedID, csrf, semesterId, client);
         const ttRes = await client.post("/vtop/processViewStudentAttendance", new url_1.URLSearchParams({
             authorizedID: String(authorizedID),
             semesterSubId: semesterId ?? "",
@@ -110,7 +107,7 @@ router.post("/", async (req, res) => {
                 Referer: "https://vtopcc.vit.ac.in/vtop/open/page",
             },
         });
-        const courseInfo = await (0, fetchTimeTable_1.default)(cookieHeader, dashboardHtml, semesterId);
+        const courseInfo = await (0, fetchTimeTable_1.default)(cookieHeader, authorizedID, csrf, semesterId);
         const $$$ = cheerio.load(ttRes.data);
         const attendance = [];
         $$$("#getStudentDetails table tbody tr").each((i, row) => {

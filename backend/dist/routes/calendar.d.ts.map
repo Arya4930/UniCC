@@ -1,1 +1,1 @@
-{"version":3,"file":"calendar.d.ts","sourceRoot":"","sources":["../../src/routes/calendar.ts"],"names":[],"mappings":"AAUA,OAAO,KAAK,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAEtC,QAAA,MAAM,MAAM,EAAE,MAAyB,CAAC;AAkMxC,eAAe,MAAM,CAAC"}
+{"version":3,"file":"calendar.d.ts","sourceRoot":"","sources":["../../src/routes/calendar.ts"],"names":[],"mappings":"AAUA,OAAO,KAAK,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAEtC,QAAA,MAAM,MAAM,EAAE,MAAyB,CAAC;AA6LxC,eAAe,MAAM,CAAC"}

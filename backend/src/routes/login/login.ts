@@ -4,6 +4,7 @@ import { LoginRequestBody } from "../../types/data/login";
 import type { Router } from "express";
 import { getCaptcha } from "./captcha";
 import { solveCaptcha } from "./solveCaptcha";
+import * as cheerio from "cheerio";
 
 const router: Router = express.Router();
 
@@ -13,7 +14,7 @@ const router: Router = express.Router();
  *   post:
  *     tags:
  *       - Authentication
- *     summary: Authenticate a user via VTOP and return session credentials
+ *     summary: Authenticate user via VTOP and return session credentials
  *     requestBody:
  *       required: true
  *       content:
@@ -46,15 +47,18 @@ const router: Router = express.Router();
  *                   example: Login successful!
  *                 cookies:
  *                   type: string
- *                   description: Session cookies for authenticated requests
+ *                   description: Session cookies required for authenticated requests
+ *                   example: JSESSIONID=abc123; Path=/; HttpOnly
  *                 csrf:
  *                   type: string
- *                   description: CSRF token required for subsequent requests
- *                 dashboardHtml:
+ *                   description: CSRF token required for future form submissions
+ *                   example: 533aba0b-ca27-489c-9c78-d0e117a3e2c7
+ *                 authorizedID:
  *                   type: string
- *                   description: Raw HTML of the authenticated dashboard page
+ *                   description: Authorized VTOP user ID extracted after login
+ *                   example: 24BCE1234
  *       401:
- *         description: Authentication failed (invalid captcha or credentials)
+ *         description: Authentication failed due to invalid captcha or credentials
  *         content:
  *           application/json:
  *             schema:
@@ -144,12 +148,17 @@ router.post("/", async (req: Request, res: Response) => {
             });
         }
 
+        const $ = cheerio.load(dashboardHtml);
+        const new_csrf: any = $('input[name="_csrf"]').val();
+        const authorizedID: any =
+            $('#authorizedID').val() || $('input[name="authorizedid"]').val();
+
         return res.status(200).json({
             success: true,
             message: "Login successful!",
             cookies: allCookies,
-            csrf,
-            dashboardHtml,
+            csrf: new_csrf,
+            authorizedID,
         });
 
     } catch (err: any) {

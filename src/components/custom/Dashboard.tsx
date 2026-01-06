@@ -116,12 +116,12 @@ export default function DashboardContent({
   const handleAllGradesFetch = async () => {
     setIsReloading(true);
     try {
-      const { cookies, dashboardHtml } = await loginToVTOP();
+      const { cookies, authorizedID, csrf } = await loginToVTOP();
 
       const AllGradesRes = await fetch(`${API_BASE}/api/all-grades`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+        body: JSON.stringify({ cookies: cookies, authorizedID, csrf }),
       });
 
       const AllGradesData = await AllGradesRes.json();
@@ -143,14 +143,14 @@ export default function DashboardContent({
   const handleCalendarFetch = async (FncalendarType) => {
     setIsReloading(true);
     try {
-      const { cookies, dashboardHtml } = await loginToVTOP();
+      const { cookies, authorizedID, csrf } = await loginToVTOP();
 
       const calenderRes = await fetch(`${API_BASE}/api/calendar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           cookies: cookies,
-          dashboardHtml: dashboardHtml,
+          authorizedID, csrf,
           type: FncalendarType || "ALL",
           semesterId: currSemesterID
         }),
@@ -177,12 +177,12 @@ export default function DashboardContent({
   const handleFetchGrades = async () => {
     setIsReloading(true);
     try {
-      const { cookies, dashboardHtml } = await loginToVTOP();
+      const { cookies, authorizedID, csrf } = await loginToVTOP();
 
       const gradesRes = await fetch(`${API_BASE}/api/grades`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cookies, dashboardHtml, semesterId: currSemesterID }),
+        body: JSON.stringify({ cookies, authorizedID, csrf, semesterId: currSemesterID }),
       });
 
       const gradesData = await gradesRes.json();
@@ -204,12 +204,12 @@ export default function DashboardContent({
   const handleHostelDetailsFetch = async () => {
     setIsReloading(true);
     try {
-      const { cookies, dashboardHtml } = await loginToVTOP();
+      const { cookies, authorizedID, csrf } = await loginToVTOP();
 
       const HostelRes = await fetch(`${API_BASE}/api/hostel`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml }),
+        body: JSON.stringify({ cookies: cookies, authorizedID, csrf }),
       });
       const HostelData = await HostelRes.json();
       setProgressBar((prev) => prev + 40);
@@ -228,12 +228,12 @@ export default function DashboardContent({
   const handleScheduleFetch = async () => {
     setIsReloading(true);
     try {
-      const { cookies, dashboardHtml } = await loginToVTOP();
+      const { cookies, authorizedID, csrf } = await loginToVTOP();
 
       const ScheduleRes = await fetch(`${API_BASE}/api/schedule`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cookies: cookies, dashboardHtml: dashboardHtml, semesterId: currSemesterID }),
+        body: JSON.stringify({ cookies: cookies, authorizedID, csrf, semesterId: currSemesterID }),
       });
       const ScheduleData = await ScheduleRes.json();
       setProgressBar((prev) => prev + 40);

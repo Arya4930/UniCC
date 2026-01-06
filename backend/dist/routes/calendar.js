@@ -43,16 +43,13 @@ const url_1 = require("url");
 const router = express_1.default.Router();
 router.post("/", async (req, res) => {
     try {
-        let { cookies, dashboardHtml, type, semesterId } = req.body;
+        let { cookies, authorizedID, csrf, type, semesterId } = req.body;
         if (semesterId?.toString().endsWith("05")) {
             if (type !== "ALL" && type !== "ALL02" && type !== "ALL05") {
                 type = "ALL";
             }
         }
-        const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
-        const csrf = $('input[name="_csrf"]').val();
-        const authorizedID = $('#authorizedID').val() || $('input[name="authorizedid"]').val();
         if (!csrf || !authorizedID)
             throw new Error("Cannot find _csrf or authorizedID");
         let months = [];

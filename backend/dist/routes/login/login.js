@@ -1,4 +1,37 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -7,6 +40,7 @@ const express_1 = __importDefault(require("express"));
 const VTOPClient_1 = __importDefault(require("../../lib/clients/VTOPClient"));
 const captcha_1 = require("./captcha");
 const solveCaptcha_1 = require("./solveCaptcha");
+const cheerio = __importStar(require("cheerio"));
 const router = express_1.default.Router();
 /**
  * @openapi
@@ -14,7 +48,7 @@ const router = express_1.default.Router();
  *   post:
  *     tags:
  *       - Authentication
- *     summary: Authenticate a user via VTOP and return session credentials
+ *     summary: Authenticate user via VTOP and return session credentials
  *     requestBody:
  *       required: true
  *       content:
@@ -47,15 +81,18 @@ const router = express_1.default.Router();
  *                   example: Login successful!
  *                 cookies:
  *                   type: string
- *                   description: Session cookies for authenticated requests
+ *                   description: Session cookies required for authenticated requests
+ *                   example: JSESSIONID=abc123; Path=/; HttpOnly
  *                 csrf:
  *                   type: string
- *                   description: CSRF token required for subsequent requests
- *                 dashboardHtml:
+ *                   description: CSRF token required for future form submissions
+ *                   example: 533aba0b-ca27-489c-9c78-d0e117a3e2c7
+ *                 authorizedID:
  *                   type: string
- *                   description: Raw HTML of the authenticated dashboard page
+ *                   description: Authorized VTOP user ID extracted after login
+ *                   example: 24BCE1234
  *       401:
- *         description: Authentication failed (invalid captcha or credentials)
+ *         description: Authentication failed due to invalid captcha or credentials
  *         content:
  *           application/json:
  *             schema:
@@ -134,12 +171,15 @@ router.post("/", async (req, res) => {
                 message: "Login failed for an unknown reason.",
             });
         }
+        const $ = cheerio.load(dashboardHtml);
+        const new_csrf = $('input[name="_csrf"]').val();
+        const authorizedID = $('#authorizedID').val() || $('input[name="authorizedid"]').val();
         return res.status(200).json({
             success: true,
             message: "Login successful!",
             cookies: allCookies,
-            csrf,
-            dashboardHtml,
+            csrf: new_csrf,
+            authorizedID,
         });
     }
     catch (err) {

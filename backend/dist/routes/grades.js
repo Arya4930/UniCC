@@ -43,11 +43,8 @@ const url_1 = require("url");
 const router = express_1.default.Router();
 router.post("/", async (req, res) => {
     try {
-        const { cookies, dashboardHtml, semesterId } = req.body;
-        const $ = cheerio.load(dashboardHtml);
+        const { cookies, authorizedID, csrf, semesterId } = req.body;
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
-        const csrf = $('input[name="_csrf"]').val();
-        const authorizedID = $('#authorizedID').val() || $('input[name="authorizedid"]').val();
         if (!csrf || !authorizedID) {
             throw new Error("Cannot find _csrf or authorizedID");
         }

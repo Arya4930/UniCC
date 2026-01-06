@@ -36,15 +36,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMarks = getMarks;
 const cheerio = __importStar(require("cheerio"));
 const url_1 = require("url");
-async function getMarks(cookies, dashboardHtml, semesterId, client) {
+async function getMarks(cookies, authorizedID, csrf, semesterId, client) {
     try {
-        const $ = cheerio.load(dashboardHtml);
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
-        const csrf = $('input[name="_csrf"]').val();
-        const authorizedID = $('#authorizedID').val() || $('input[name="authorizedid"]').val();
-        if (!csrf || !authorizedID) {
-            throw new Error("Cannot find _csrf or authorizedID");
-        }
         const marksRes = await client.post("/vtop/examinations/doStudentMarkView", new url_1.URLSearchParams({
             authorizedID: String(authorizedID),
             semesterSubId: semesterId ?? "",

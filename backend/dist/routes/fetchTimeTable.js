@@ -40,12 +40,7 @@ exports.default = fetchTimetable;
 const cheerio = __importStar(require("cheerio"));
 const VTOPClient_1 = __importDefault(require("../lib/clients/VTOPClient"));
 const url_1 = require("url");
-async function fetchTimetable(cookieHeader, dashboardHtml, semesterId) {
-    const $ = cheerio.load(dashboardHtml);
-    const csrf = $('input[name="_csrf"]').val();
-    const authorizedID = $('#authorizedID').val() || $('input[name="authorizedid"]').val();
-    if (!csrf || !authorizedID)
-        throw new Error("Cannot find _csrf or authorizedID");
+async function fetchTimetable(cookieHeader, authorizedID, csrf, semesterId) {
     const client = (0, VTOPClient_1.default)();
     const ttRes = await client.post("/vtop/processViewTimeTable", new url_1.URLSearchParams({
         authorizedID,
