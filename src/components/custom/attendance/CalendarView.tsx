@@ -118,7 +118,7 @@ export default function CalendarView({ calendars, calendarType, handleCalendarFe
         daysInMonth = Array.from({ length: totalDays }, (_, i) => new Date(year, monthIndex, i + 1));
     }
 
-    const firstDay = getDay(monthStart);
+    const firstDay = (getDay(monthStart) + 6) % 7;
     const blanksCount = (firstDay + 6) % 7;
     const blanks = Array.from({ length: blanksCount }, (_, i) => i);
     const today = new Date();
