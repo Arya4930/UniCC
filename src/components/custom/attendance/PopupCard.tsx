@@ -313,7 +313,7 @@ export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calenda
         const isWorkingDay =
             d.type?.toLowerCase() === "working" ||
             (d.events?.some(ev =>
-                ev.text?.toLowerCase().includes("instructional") ||
+                ev.text?.toLowerCase() === "instructional day" ||
                 ev.text?.toLowerCase().includes("working")
             ));
 
