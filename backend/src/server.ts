@@ -21,6 +21,9 @@ import { initDB } from "./lib/clients/sequalize";
 import { routeLogger } from "./lib/routeLgger";
 import stats from "./routes/stats";
 
+import { swaggerSpec } from "./lib/clients/swagger";
+import swaggerUi from "swagger-ui-express";
+
 const app: Application = express();
 
 app.use(cors());
@@ -60,6 +63,7 @@ app.use("/api/files/delete", deleteFile);
 app.use("/api/files/download", downloadFile);
 app.use("/api/lms-data", fetchLMSdata);
 app.use("/api/files/mail", mail);
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {

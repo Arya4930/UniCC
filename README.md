@@ -73,9 +73,7 @@ The backend exposes the following endpoints:
 app.use("/api/status", statusRoutes);
 app.use("/api/calendar", calendarRoutes);
 app.use("/api/login", loginRoutes);
-app.use("/api/captcha", captchaRoutes);
 
-app.use("/api/marks", marksRoutes);          // All marks
 app.use("/api/hostel", hostelRoutes);        // Hostel / mess status
 app.use("/api/grades", gradesRoutes);        // Overall grades + CGPA
 app.use("/api/schedule", scheduleRoutes);
