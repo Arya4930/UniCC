@@ -365,7 +365,7 @@ new Chart(document.getElementById("sourceChart"), {
   </script>
   <script>
     const params = new URLSearchParams(window.location.search);
-    const currentRange = params.get("range") || "24h";
+    const currentRange = params.get("range") || "full";
 
     document.querySelectorAll(".range-btn").forEach(btn => {
       if (btn.dataset.range === currentRange) {
