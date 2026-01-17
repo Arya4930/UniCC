@@ -6,7 +6,30 @@ const sequelize_1 = require("sequelize");
 const router = (0, express_1.Router)();
 router.get("/", async (_req, res) => {
     try {
+        const range = _req.query.range || "24h";
+        let startDate = null;
+        const now = new Date();
+        switch (range) {
+            case "1h":
+                startDate = new Date(now.getTime() - 60 * 60 * 1000);
+                break;
+            case "24h":
+                startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+                break;
+            case "7d":
+                startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                break;
+            case "30d":
+                startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                break;
+            case "full":
+            default:
+                startDate = null;
+                break;
+        }
+        const whereClause = startDate ? { createdAt: { [sequelize_1.Op.gte]: startDate } } : {};
         const hourlyData = await RouteLog_1.RouteLog.findAll({
+            where: whereClause,
             attributes: [
                 [
                     (0, sequelize_1.fn)("strftime", "%Y-%m-%d %H:00", (0, sequelize_1.col)("createdAt"), "+5 hours", "+30 minutes"),
@@ -21,6 +44,7 @@ router.get("/", async (_req, res) => {
         const hourLabels = hourlyData.map((d) => d.hour);
         const hourCounts = hourlyData.map((d) => Number(d.count));
         const routeHourlyData = await RouteLog_1.RouteLog.findAll({
+            where: whereClause,
             attributes: [
                 [
                     (0, sequelize_1.fn)("strftime", "%Y-%m-%d %H:00", (0, sequelize_1.col)("createdAt"), "+5 hours", "+30 minutes"),
@@ -34,6 +58,7 @@ router.get("/", async (_req, res) => {
             raw: true,
         });
         const sourceHourlyData = await RouteLog_1.RouteLog.findAll({
+            where: whereClause,
             attributes: [
                 [
                     (0, sequelize_1.fn)("strftime", "%Y-%m-%d %H:00", (0, sequelize_1.col)("createdAt"), "+5 hours", "+30 minutes"),
@@ -162,10 +187,39 @@ router.get("/", async (_req, res) => {
   canvas {
     max-width: 100%;
   }
+
+  .range-btn {
+  background: #11141b;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+  .range-btn:hover {
+    color: var(--text-primary);
+    border-color: var(--accent);
+  }
+
+  .range-btn.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+  }
+
 </style>
 </head>
 <body>
   <div class="container">
+    <div style="display:flex; gap:12px; margin-bottom:20px;">
+      <button class="range-btn" data-range="1h">Last 1 Hour</button>
+      <button class="range-btn" data-range="24h">Last 24 Hours</button>
+      <button class="range-btn" data-range="7d">Last 7 Days</button>
+      <button class="range-btn" data-range="30d">Last 30 Days</button>
+      <button class="range-btn" data-range="full">To Date</button>
+    </div>
+
     <h2>Total Requests Per Hour</h2>
     <div class="chart-container">
       <canvas id="hourChart"></canvas>
@@ -311,6 +365,21 @@ new Chart(document.getElementById("sourceChart"), {
     }
   }
 });
+  </script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const currentRange = params.get("range") || "24h";
+
+    document.querySelectorAll(".range-btn").forEach(btn => {
+      if (btn.dataset.range === currentRange) {
+        btn.classList.add("active");
+      }
+
+      btn.addEventListener("click", () => {
+        params.set("range", btn.dataset.range);
+        window.location.search = params.toString();
+      });
+    });
   </script>
 </body>
 </html>

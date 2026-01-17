@@ -60,7 +60,7 @@ const router = express_1.default.Router({ mergeParams: true });
  *               type: string
  *               example: Failed to send email
  */
-router.post("/send", upload.array("files"), async (req, res) => {
+router.post("/", upload.array("files"), async (req, res) => {
     const to = req.body.email;
     const subject = req.body.subject;
     const files = req.files;

@@ -62,7 +62,7 @@ app.use("/api/files/upload", UploadFile);
 app.use("/api/files/delete", deleteFile);
 app.use("/api/files/download", downloadFile);
 app.use("/api/lms-data", fetchLMSdata);
-app.use("/api/files/mail", mail);
+app.use("/api/files/mail/send", mail);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const PORT = process.env.PORT || 3000;

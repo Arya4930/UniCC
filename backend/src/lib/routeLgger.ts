@@ -47,6 +47,10 @@ function getSourceDomain(req: Request): string {
     return "unknown";
 }
 
+const routes = ["/api/calendar", "/api/login", "/api/hostel", "/api/grades", "/api/schedule", "/api/attendance", 
+    "/api/all-grades", "/api/files/upload/:userID", "/api/files/delete/:userID/:fileID", "/api/files/download/:userID/:fileID", 
+    "/api/lms-data", "/api/files/mail/send"];
+
 export async function routeLogger(
     req: Request,
     res: Response,
@@ -56,8 +60,12 @@ export async function routeLogger(
         try {
             if (req.originalUrl === "/favicon.ico") return;
 
-            const normalizedRoute = normalizeRoute(req.originalUrl);
+            let normalizedRoute = normalizeRoute(req.originalUrl);
             const sourceDomain = getSourceDomain(req);
+
+            if (!routes.includes(normalizedRoute)) {
+                normalizedRoute = "unknown"
+            }
 
             await RouteLog.create({
                 method: req.method,

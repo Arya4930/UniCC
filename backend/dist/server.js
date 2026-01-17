@@ -56,7 +56,7 @@ app.use("/api/files/upload", UploadFile_1.default);
 app.use("/api/files/delete", deleteFile_1.default);
 app.use("/api/files/download", downloadFile_1.default);
 app.use("/api/lms-data", FetchLMSdata_1.default);
-app.use("/api/files/mail", mail_1.default);
+app.use("/api/files/mail/send", mail_1.default);
 app.use("/docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerSpec));
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {

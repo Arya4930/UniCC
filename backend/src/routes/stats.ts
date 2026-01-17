@@ -1,12 +1,37 @@
 import { Router } from "express";
 import { RouteLog } from "../lib/models/RouteLog";
-import { fn, col } from "sequelize";
+import { fn, col, Op } from "sequelize";
 
 const router = Router();
 
 router.get("/", async (_req, res) => {
   try {
+    const range = _req.query.range || "24h" as string;
+    let startDate: Date | null = null;
+    const now = new Date();
+
+    switch(range) {
+      case "1h":
+        startDate = new Date(now.getTime() - 60 * 60 * 1000);
+        break;
+      case "24h":
+        startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        break;
+      case "7d":
+        startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        break;
+      case "30d":
+        startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        break;
+      case "full":
+      default:
+        startDate = null;
+        break;
+    }
+
+    const whereClause = startDate ? { createdAt: { [Op.gte]: startDate } } : {};
     const hourlyData = await RouteLog.findAll({
+      where: whereClause,
       attributes: [
         [
           fn(
@@ -30,6 +55,7 @@ router.get("/", async (_req, res) => {
     const hourCounts = hourlyData.map((d: any) => Number(d.count));
 
     const routeHourlyData = await RouteLog.findAll({
+      where: whereClause,
       attributes: [
         [
           fn(
@@ -50,6 +76,7 @@ router.get("/", async (_req, res) => {
     });
 
     const sourceHourlyData = await RouteLog.findAll({
+      where: whereClause,
       attributes: [
         [
           fn(
@@ -201,10 +228,39 @@ router.get("/", async (_req, res) => {
   canvas {
     max-width: 100%;
   }
+
+  .range-btn {
+  background: #11141b;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+  .range-btn:hover {
+    color: var(--text-primary);
+    border-color: var(--accent);
+  }
+
+  .range-btn.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+  }
+
 </style>
 </head>
 <body>
   <div class="container">
+    <div style="display:flex; gap:12px; margin-bottom:20px;">
+      <button class="range-btn" data-range="1h">Last 1 Hour</button>
+      <button class="range-btn" data-range="24h">Last 24 Hours</button>
+      <button class="range-btn" data-range="7d">Last 7 Days</button>
+      <button class="range-btn" data-range="30d">Last 30 Days</button>
+      <button class="range-btn" data-range="full">To Date</button>
+    </div>
+
     <h2>Total Requests Per Hour</h2>
     <div class="chart-container">
       <canvas id="hourChart"></canvas>
@@ -350,6 +406,21 @@ new Chart(document.getElementById("sourceChart"), {
     }
   }
 });
+  </script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const currentRange = params.get("range") || "24h";
+
+    document.querySelectorAll(".range-btn").forEach(btn => {
+      if (btn.dataset.range === currentRange) {
+        btn.classList.add("active");
+      }
+
+      btn.addEventListener("click", () => {
+        params.set("range", btn.dataset.range);
+        window.location.search = params.toString();
+      });
+    });
   </script>
 </body>
 </html>

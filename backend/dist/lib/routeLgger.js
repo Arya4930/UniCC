@@ -41,13 +41,19 @@ function getSourceDomain(req) {
     }
     return "unknown";
 }
+const routes = ["/api/calendar", "/api/login", "/api/hostel", "/api/grades", "/api/schedule", "/api/attendance",
+    "/api/all-grades", "/api/files/upload/:userID", "/api/files/delete/:userID/:fileID", "/api/files/download/:userID/:fileID",
+    "/api/lms-data", "/api/files/mail/send"];
 async function routeLogger(req, res, next) {
     res.on("finish", async () => {
         try {
             if (req.originalUrl === "/favicon.ico")
                 return;
-            const normalizedRoute = normalizeRoute(req.originalUrl);
+            let normalizedRoute = normalizeRoute(req.originalUrl);
             const sourceDomain = getSourceDomain(req);
+            if (!routes.includes(normalizedRoute)) {
+                normalizedRoute = "unknown";
+            }
             await RouteLog_1.RouteLog.create({
                 method: req.method,
                 route: normalizedRoute,
