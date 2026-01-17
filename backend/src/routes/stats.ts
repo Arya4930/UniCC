@@ -6,14 +6,11 @@ const router = Router();
 
 router.get("/", async (_req, res) => {
   try {
-    const range = _req.query.range || "24h" as string;
+    const range = _req.query.range || "full" as string;
     let startDate: Date | null = null;
     const now = new Date();
 
     switch(range) {
-      case "1h":
-        startDate = new Date(now.getTime() - 60 * 60 * 1000);
-        break;
       case "24h":
         startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
         break;

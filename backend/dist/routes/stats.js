@@ -6,13 +6,10 @@ const sequelize_1 = require("sequelize");
 const router = (0, express_1.Router)();
 router.get("/", async (_req, res) => {
     try {
-        const range = _req.query.range || "24h";
+        const range = _req.query.range || "full";
         let startDate = null;
         const now = new Date();
         switch (range) {
-            case "1h":
-                startDate = new Date(now.getTime() - 60 * 60 * 1000);
-                break;
             case "24h":
                 startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
                 break;
