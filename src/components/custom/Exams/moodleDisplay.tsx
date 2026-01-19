@@ -108,6 +108,7 @@ function MoodleUserPassForm({ handleFetchMoodle }) {
         const res = await handleFetchMoodle(username, password);
         localStorage.setItem("moodle_username", username);
         localStorage.setItem("moodle_password", password);
+        window.location.reload();
     }
 
     return (
