@@ -260,12 +260,11 @@ export default function DashboardContent({
         body: JSON.stringify({ username, pass }),
       });
 
-      const gradesData = await moodleRes.json();
+      const moodleData = await moodleRes.json();
       setProgressBar((prev) => prev + 40);
 
-      setMoodleData(gradesData);
-      localStorage.setItem("moodle", JSON.stringify(gradesData));
-
+      setMoodleData(moodleData);
+      localStorage.setItem("moodleData", JSON.stringify(moodleData));
       setMessage((prev) => prev + "\n✅ Moodle Data fetched Successfully!");
       setProgressBar(100);
       setIsReloading(false);
