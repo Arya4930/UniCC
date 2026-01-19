@@ -2,9 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import Image from "next/image";
 import NoContentFound from "../NoContentFound";
-import MoodleDisplay from "./moodleDisplay";
 
 export default function MarksDisplay({ data, moodleData, handleFetchMoodle }) {
   const [openCourse, setOpenCourse] = useState(null);
@@ -23,12 +21,12 @@ export default function MarksDisplay({ data, moodleData, handleFetchMoodle }) {
   }
 
   return (
-    <div className="p-2">
-      <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-        Academic Marks
-      </h1>
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100">Marks</h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400">Assessment-wise performance per course.</p>
+      </div>
 
-      {/* Grid for cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {data.marks.map((course, idx) => {
           const formatNumber = (num) => {
@@ -52,7 +50,7 @@ export default function MarksDisplay({ data, moodleData, handleFetchMoodle }) {
           return (
             <div
               key={idx}
-              className="p-4 rounded-lg shadow bg-white dark:bg-slate-800 midnight:bg-black midnight:outline midnight:outline-1 midnight:outline-gray-800 cursor-pointer"
+              className="p-4 rounded-2xl border border-gray-200/70 dark:border-slate-800 midnight:border-gray-900 bg-white dark:bg-slate-900/60 midnight:bg-black/60 hover:shadow-md transition cursor-pointer"
               onClick={() => toggleCourse(course.slNo)}
             >
               <div className="flex justify-between items-center">
@@ -61,7 +59,7 @@ export default function MarksDisplay({ data, moodleData, handleFetchMoodle }) {
                     {course.courseCode} - {course.courseTitle}
                   </span>
 
-                  <div className="px-3 py-1 flex items-center justify-center bg-gray-200 dark:bg-slate-700 midnight:bg-gray-900 text-black dark:text-gray-300 midnight:text-gray-300 text-xs rounded-full outline outline-1 outline-gray-700 dark:outline-gray-500 midnight:outline-gray-700 mt-2">
+                  <div className="px-3 py-1 flex items-center justify-center bg-gray-100 dark:bg-slate-800 midnight:bg-gray-900 text-gray-700 dark:text-gray-300 midnight:text-gray-300 text-xs rounded-full border border-gray-200 dark:border-slate-700 midnight:border-gray-800 mt-2">
                     {course.courseType}
                   </div>
                 </div>
@@ -73,7 +71,7 @@ export default function MarksDisplay({ data, moodleData, handleFetchMoodle }) {
                       totals.weightPercent
                     )}`}
                     styles={buildStyles({
-                      pathColor: "#00ff11ff",
+                      pathColor: "#22c55e",
                       textColor: "currentColor",
                       trailColor: "#E5E7EB",
                       strokeLinecap: "round",
@@ -88,7 +86,7 @@ export default function MarksDisplay({ data, moodleData, handleFetchMoodle }) {
               {/* Full page modal */}
               {openCourse === course.slNo && (
                 <div data-scrollable className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
-                  <div className="bg-white dark:bg-slate-800 midnight:bg-black rounded-xl shadow-lg p-6 max-w-3xl w-[95%] relative max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                  <div className="bg-white dark:bg-slate-900 midnight:bg-black rounded-2xl shadow-lg p-6 max-w-3xl w-[95%] relative max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
                     <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100 midnight:text-gray-100">
                       {course.courseCode} – {course.courseTitle}
                     </h2>

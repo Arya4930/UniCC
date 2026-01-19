@@ -57,68 +57,81 @@ export default function Footer({ isLoggedIn }: FooterProps) {
   };
 
   return (
-    <footer className="bg-transparent text-gray-700 dark:text-gray-300 midnight:text-gray-300 flex items-center justify-center">
-      {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} />}
+    <footer
+      className={`bg-transparent text-gray-700 dark:text-gray-300 midnight:text-gray-300 w-full ${
+        isLoggedIn ? "md:pl-64" : ""
+      }`}
+    >
+      {showStoragePage && isLoggedIn && (
+        <DataPage
+          handleClose={() => setShowStoragePage(false)}
+          handleDeleteItem={handleDeleteItem}
+          storageData={storageData}
+        />
+      )}
       {showPolicy && <PrivacyPolicyPage handleClose={() => setShowPolicy(false)} />}
       {showTOS && <TermsOfServicePage handleClose={() => setShowTOS(false)} />}
-      <div className="max-w-7xl mx-auto px-3 py-6 text-center w-full">
-        <hr className="border-gray-300 dark:border-gray-700 midnight:border-gray-700 w-11/12 mx-auto mb-6" />
 
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Button variant="outline" size="icon" asChild>
-            <a
-              href="https://github.com/Arya4930/UniCC"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Github
-                size={20}
-                className="text-gray-600 dark:text-gray-300 midnight:text-gray-300"
-              />
-            </a>
-          </Button>
-          <Button variant="outline" size="icon" asChild>
-            <a
-              href="https://arya22.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Link
-                size={20}
-                className="text-gray-600 dark:text-gray-300 midnight:text-gray-300"
-              />
-            </a>
-          </Button>
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div className="border-t border-gray-200 dark:border-gray-800 midnight:border-gray-900 pt-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div className="text-left">
+              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">UniCC</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                Built for students. Designed for clarity.
+              </p>
+            </div>
 
-          <p className="text-sm font-medium tracking-wide px-5">
-            Made for No reason<br></br>By My heart{" "}
-            {/* <span className="ml-2 text-xs text-gray-400">v0.1.3</span> */}
-          </p>
+            <div className="flex items-center flex-wrap gap-2">
+              <Button variant="outline" size="icon" asChild>
+                <a
+                  href="https://github.com/Arya4930/UniCC"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                >
+                  <Github size={18} className="text-gray-600 dark:text-gray-300" />
+                </a>
+              </Button>
+              <Button variant="outline" size="icon" asChild>
+                <a
+                  href="https://arya22.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Portfolio"
+                >
+                  <Link size={18} className="text-gray-600 dark:text-gray-300" />
+                </a>
+              </Button>
+              <Button variant="outline" size="icon" onClick={openStoragePage} aria-label="Storage data">
+                <Database className="h-[1.1rem] w-[1.1rem]" />
+              </Button>
+              <IconToggle />
+            </div>
+          </div>
 
-          <Button variant="outline" size="icon" onClick={openStoragePage}>
-            <Database className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all" />
-          </Button>
-          <IconToggle />
-        </div>
-
-        <span className="text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400 block">
-          &copy; {new Date().getFullYear()} Arya Evil Inc. All rights reserved. &nbsp;
-        </span>
-        <div>
-          <Button
-            variant="ghost"
-            className="mt-2 w-18 h-6 underline text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400"
-            onClick={() => setShowPolicy(true)}
-          >
-            Privacy Policy
-          </Button> • 
-          <Button
-            variant="ghost"
-            className="mt-2 ml-1 w-22 h-6 underline text-xs text-gray-500 dark:text-gray-400 midnight:text-gray-400"
-            onClick={() => setShowTOS(true)}
-          >
-            Terms of Service
-          </Button>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mt-6 text-xs text-gray-500 dark:text-gray-400">
+            <span>
+              &copy; {new Date().getFullYear()} Arya Evil Inc. All rights reserved.
+            </span>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                className="h-7 px-2 underline text-xs text-gray-500 dark:text-gray-400"
+                onClick={() => setShowPolicy(true)}
+              >
+                Privacy Policy
+              </Button>
+              <span aria-hidden="true">•</span>
+              <Button
+                variant="ghost"
+                className="h-7 px-2 underline text-xs text-gray-500 dark:text-gray-400"
+                onClick={() => setShowTOS(true)}
+              >
+                Terms of Service
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

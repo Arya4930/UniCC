@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { RefreshCcw } from "lucide-react";
+import { CheckCircle2, Clock4, GraduationCap, Layers } from "lucide-react";
 
 export default function StatsCards({
   attendancePercentage,
@@ -36,104 +36,110 @@ export default function StatsCards({
       : 0;
 
   const cardBase =
-    "cursor-pointer p-6 rounded-2xl shadow hover:shadow-lg transition flex-shrink-0 snap-start w-[calc(50%-8px)] md:w-[calc(25%-12px)] flex flex-col items-center justify-center text-center";
+    "cursor-pointer p-5 rounded-2xl border border-gray-200/70 dark:border-slate-800 midnight:border-gray-900 bg-white dark:bg-slate-900/60 midnight:bg-black/60 transition hover:shadow-md";
 
   return (
-    <div data-scrollable className="overflow-x-auto snap-x snap-mandatory ml-4 mr-4">
-      <div className="flex gap-4 py-4 px-2">
-        {/* Card 1 */}
-        <div
-          className={`${cardBase} bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800`}
-          onClick={() => setAttendancePercentageOrString((prev) => (prev === "percentage" ? "str" : "percentage"))}
-        >
-          <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 midnight:text-gray-200">Attendance</h2>
-          <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mt-2">
-            {attendancePercentage[attendancePercentageOrString] || 0}
-          </p>
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      <button
+        type="button"
+        className={cardBase}
+        onClick={() => setAttendancePercentageOrString((prev) => (prev === "percentage" ? "str" : "percentage"))}
+        aria-pressed={attendancePercentageOrString === "percentage"}
+      >
+        <div className="flex items-center justify-between">
+          <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Attendance</div>
+          <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
         </div>
-
-        {/* Card 2 */}
-        <div
-          className={`${cardBase} bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800`}
-          onClick={() => setODhoursIsOpen(true)}
-        >
-          <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 midnight:text-gray-200">OD hours</h2>
-          <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mt-2">
-            {totalODHours}/40
-          </p>
+        <div className="mt-3 text-3xl font-semibold text-gray-900 dark:text-gray-100">
+          {attendancePercentage[attendancePercentageOrString] || 0}
         </div>
+        <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">Tap to toggle view</div>
+      </button>
 
-        {/* Card 3 - Feedback Status */}
-        {feedbackStatus && <div
-          className={`${cardBase} bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800`}
-          onClick={() => console.log("Feedback Status was clicked")}
+      <button
+        type="button"
+        className={cardBase}
+        onClick={() => setODhoursIsOpen(true)}
+      >
+        <div className="flex items-center justify-between">
+          <div className="text-sm font-medium text-gray-500 dark:text-gray-400">OD hours</div>
+          <Clock4 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+        </div>
+        <div className="mt-3 text-3xl font-semibold text-gray-900 dark:text-gray-100">
+          {totalODHours}/40
+        </div>
+        <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">View summary</div>
+      </button>
+
+      {marksData.cgpa && (
+        <button
+          type="button"
+          className={cardBase}
+          onClick={() => setCGPAHidden((prev) => !prev)}
+          aria-pressed={!CGPAHidden}
         >
-          <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 midnight:text-gray-200 mb-1">
-            Feedback
-          </h2>
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-medium text-gray-500 dark:text-gray-400">CGPA</div>
+            <GraduationCap className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+          </div>
+          <div className="mt-3 text-3xl font-semibold text-gray-900 dark:text-gray-100 select-none">
+            {CGPAHidden ? "###" : marksData?.cgpa?.cgpa}
+          </div>
+          <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">Tap to hide/show</div>
+        </button>
+      )}
 
-          <div className="flex items-center justify-center gap-3 mt-2 text-center">
-            <div className="flex flex-col items-center">
-              <span className="text-xs text-gray-600 dark:text-gray-400 midnight:text-gray-400">
-                Mid Sem
-              </span>
-              <span
-                className={`text-base font-bold ${feedbackStatus?.MidSem?.Curriculum && feedbackStatus?.MidSem?.Course
-                    ? "text-green-500"
-                    : "text-red-500"
+      <button
+        type="button"
+        className={cardBase}
+        onClick={() => setGradesDisplayIsOpen(true)}
+      >
+        <div className="flex items-center justify-between">
+          <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Credits earned</div>
+          <Layers className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+        </div>
+        <div className="mt-3 text-3xl font-semibold text-gray-900 dark:text-gray-100">
+          {Number(marksData?.cgpa?.creditsEarned) + Number(marksData?.cgpa?.nonGradedRequirement || 0)}
+        </div>
+        <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">Open grade summary</div>
+      </button>
+
+      {feedbackStatus && (
+        <div className={cardBase} aria-label="Feedback status">
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Feedback</div>
+            <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
+            <div className="rounded-lg border border-gray-200 dark:border-slate-800 p-2">
+              <div className="text-xs text-gray-500 dark:text-gray-400">Mid Sem</div>
+              <div
+                className={`font-semibold ${feedbackStatus?.MidSem?.Curriculum && feedbackStatus?.MidSem?.Course
+                  ? "text-green-600 dark:text-green-400"
+                  : "text-red-600 dark:text-red-400"
                   }`}
               >
                 {feedbackStatus?.MidSem?.Curriculum && feedbackStatus?.MidSem?.Course
                   ? "Given"
-                  : "Not Given"}
-              </span>
+                  : "Not given"}
+              </div>
             </div>
-
-            <div className="h-8 w-[1.5px] bg-gray-300 dark:bg-gray-600 midnight:bg-gray-700 rounded-full" />
-
-            <div className="flex flex-col items-center">
-              <span className="text-xs text-gray-600 dark:text-gray-400 midnight:text-gray-400">
-                End Sem
-              </span>
-              <span
-                className={`text-base font-bold ${feedbackStatus?.EndSem?.Curriculum && feedbackStatus?.EndSem?.Course
-                    ? "text-green-500"
-                    : "text-red-500"
+            <div className="rounded-lg border border-gray-200 dark:border-slate-800 p-2">
+              <div className="text-xs text-gray-500 dark:text-gray-400">End Sem</div>
+              <div
+                className={`font-semibold ${feedbackStatus?.EndSem?.Curriculum && feedbackStatus?.EndSem?.Course
+                  ? "text-green-600 dark:text-green-400"
+                  : "text-red-600 dark:text-red-400"
                   }`}
               >
                 {feedbackStatus?.EndSem?.Curriculum && feedbackStatus?.EndSem?.Course
                   ? "Given"
-                  : "Not Given"}
-              </span>
+                  : "Not given"}
+              </div>
             </div>
           </div>
-        </div>}
-
-        {/* Card 3 */}
-        {marksData.cgpa && <div
-          className={`${cardBase} bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800`}
-          onClick={() => setCGPAHidden((prev) => !prev)}
-        >
-          <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 midnight:text-gray-200">
-            CGPA
-          </h2>
-          <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mt-2 select-none">
-            {CGPAHidden ? "###" : marksData?.cgpa?.cgpa}
-          </p>
         </div>
-        }
-
-        {/* Card 4 */}
-        <div
-          className={`${cardBase} bg-white dark:bg-slate-800 midnight:bg-black midnight:border midnight:border-gray-800`}
-          onClick={() => setGradesDisplayIsOpen(true)}
-        >
-          <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-300 midnight:text-gray-200">Credits Earned</h2>
-          <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mt-2">
-            {Number(marksData?.cgpa?.creditsEarned) + Number(marksData?.cgpa?.nonGradedRequirement || 0)}
-          </p>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from "react";
+import type { FormEvent } from "react";
 import { ReloadModal } from "./reloadModel";
 import LoginForm from "./loginForm";
 import DashboardContent from "./Dashboard";
@@ -9,18 +10,52 @@ import { attendanceRes, ODListItem, ODListRaw } from "@/types/data/attendance";
 import { AllGradesRes } from "@/types/data/allgrades";
 import { loadActivityTree, saveActivityTree } from "@/lib/activit-tree";
 import demoData from '../../app/demoData.json';
+import Skeleton from "@/components/ui/skeleton";
+import { useToast } from "@/components/custom/toast/ToastProvider";
 
 export const API_BASE =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3000"
     : "https://api.uni-cc.site";
 
+const STORAGE_KEYS = {
+  attendance: "attendance",
+  marks: "marks",
+  grades: "grades",
+  allGrades: "allGrades",
+  schedule: "schedule",
+  hostel: "hostel",
+  calender: "calender",
+  calendarType: "calendarType",
+  currSemesterID: "currSemesterID",
+  username: "username",
+  password: "password",
+  moodleData: "moodleData",
+  theme: "theme",
+  CGPAHidden: "CGPAHidden",
+  activityTree: "activityTree",
+} as const;
+
+function readJSON<T>(key: string): T | null {
+  const raw = localStorage.getItem(key);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as T;
+  } catch {
+    return null;
+  }
+}
+
+function writeJSON<T>(key: string, value: T): void {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
 export default function LoginPage() {
   // --- State Management ---
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [message, setMessage] = useState<string>("");
-  const [attendanceData, setAttendanceData] = useState<attendanceRes | null>({});
+  const [attendanceData, setAttendanceData] = useState<attendanceRes>({});
   const [marksData, setMarksData] = useState<object>({});
   const [GradesData, setGradesData] = useState<object>({});
   const [AllGradesData, setAllGradesData] = useState<AllGradesRes>({});
@@ -43,9 +78,10 @@ export default function LoginPage() {
   const [calendarType, setCalenderType] = useState<string | null>(null)
   const [progressBar, setProgressBar] = useState<number>(0);
   const [currSemesterID, setCurrSemesterID] = useState<string>(config.semesterIDs[config.semesterIDs.length - 2]);
-  const [moodleData, setMoodleData] = useState([]);
-  const [isAPIworking, setIsAPIworking] = useState<boolean>(false);
+  const [moodleData, setMoodleData] = useState<unknown[]>([]);
+  const [isAPIDown, setIsAPIDown] = useState<boolean>(false);
   const [demoMode, setDemoMode] = useState<boolean>(false);
+  const { notify } = useToast();
 
   useEffect(() => {
     const day = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
@@ -55,9 +91,9 @@ export default function LoginPage() {
       try {
         const res = await fetch(`${API_BASE}/api/status`);
         const data = await res.json();
-        setIsAPIworking(data.text === "API is working" ? false : true);
+        setIsAPIDown(data.text === "API is working" ? false : true);
       } catch (err) {
-        setIsAPIworking(true);
+        setIsAPIDown(true);
       }
     }
     checkAPIStatus();
@@ -74,7 +110,7 @@ export default function LoginPage() {
     setattendancePercentage({ "percentage": Math.round(attendedClasses * 10000 / totalClass) / 100, "str": `${attendedClasses}/${totalClass}` });
 
     let ODList: ODListRaw = {};
-    attendance.attendance.forEach(course => {
+    attendance.attendance?.forEach(course => {
       if (!course.viewLink || !Array.isArray(course.viewLink)) return;
 
       course.viewLink.forEach(day => {
@@ -103,35 +139,35 @@ export default function LoginPage() {
 
   // --- Effects ---
   useEffect(() => {
-    const storedAttendance = localStorage.getItem("attendance");
-    const storedMarks = localStorage.getItem("marks");
-    const storedGrades = localStorage.getItem("grades");
-    const storedAllGrades = localStorage.getItem("allGrades");
-    const storedUsername = localStorage.getItem("username");
-    const storedPassword = localStorage.getItem("password");
-    const storedSchedule = localStorage.getItem("schedule");
-    const storedHoste = localStorage.getItem("hostel");
-    const calendar = localStorage.getItem("calender");
-    const calendarType = localStorage.getItem("calendarType");
-    const storedCurrSemesterID = localStorage.getItem("currSemesterID");
-    const MoodleData = localStorage.getItem("moodleData");
-
-    const parsedStoredAttendance: attendanceRes | null = storedAttendance ? JSON.parse(storedAttendance) : null;
+    const parsedStoredAttendance = readJSON<attendanceRes>(STORAGE_KEYS.attendance);
     if (parsedStoredAttendance && parsedStoredAttendance.attendance) {
       setAttendanceAndOD(parsedStoredAttendance);
     }
-    if (storedMarks) setMarksData(JSON.parse(storedMarks));
+    const storedMarks = readJSON<object>(STORAGE_KEYS.marks);
+    const storedGrades = readJSON<object>(STORAGE_KEYS.grades);
+    const storedAllGrades = readJSON<AllGradesRes>(STORAGE_KEYS.allGrades);
+    const storedSchedule = readJSON<object>(STORAGE_KEYS.schedule);
+    const storedHostel = readJSON<object>(STORAGE_KEYS.hostel);
+    const storedCalendar = readJSON<object>(STORAGE_KEYS.calender);
+    const storedMoodle = readJSON<unknown[]>(STORAGE_KEYS.moodleData);
+    const storedUsername = localStorage.getItem(STORAGE_KEYS.username);
+    const storedPassword = localStorage.getItem(STORAGE_KEYS.password);
+    const storedCalendarType = localStorage.getItem(STORAGE_KEYS.calendarType);
+    const storedCurrSemesterID = localStorage.getItem(STORAGE_KEYS.currSemesterID);
+
+    if (storedMarks) setMarksData(storedMarks);
+    if (storedGrades) setGradesData(storedGrades);
+    if (storedAllGrades) setAllGradesData(storedAllGrades);
+    if (storedSchedule) setScheduleData(storedSchedule);
+    if (storedHostel) sethostelData(storedHostel);
+    if (storedCalendar) setCalender(storedCalendar);
+    if (storedMoodle) setMoodleData(storedMoodle);
     if (storedUsername) setUsername(storedUsername);
     if (storedPassword) setPassword(storedPassword);
-    if (storedSchedule) setScheduleData(JSON.parse(storedSchedule));
-    if (storedGrades) setGradesData(JSON.parse(storedGrades));
-    if (storedAllGrades) setAllGradesData(JSON.parse(storedAllGrades));
-    if (storedHoste) sethostelData(JSON.parse(storedHoste));
-    if (calendar) setCalender(JSON.parse(calendar));
-    if (calendarType) setCalenderType(calendarType);
+    if (storedCalendarType) setCalenderType(storedCalendarType);
     if (storedCurrSemesterID) setCurrSemesterID(storedCurrSemesterID);
-    if (MoodleData) setMoodleData(JSON.parse(MoodleData));
-    setIsLoggedIn((storedUsername && storedPassword) ? true : false);
+
+    setIsLoggedIn(Boolean(storedUsername && storedPassword));
     setTimeout(() => setIsLoading(false), 300);
   }, []);
 
@@ -174,8 +210,8 @@ export default function LoginPage() {
   const handleLogin = async (currSemesterID = config.semesterIDs[config.semesterIDs.length - 2]) => {
     try {
       const { cookies, authorizedID, csrf } = await loginToVTOP();
-      localStorage.setItem("username", username);
-      localStorage.setItem("password", password);
+      localStorage.setItem(STORAGE_KEYS.username, username);
+      localStorage.setItem(STORAGE_KEYS.password, password);
 
       const [
         { attRes, marksRes },
@@ -266,13 +302,13 @@ export default function LoginPage() {
       sethostelData(HostelRes);
       setCalender(calenderRes);
 
-      localStorage.setItem("attendance", JSON.stringify(attRes));
-      localStorage.setItem("marks", JSON.stringify(marksRes));
-      localStorage.setItem("grades", JSON.stringify(gradesRes));
-      localStorage.setItem("allGrades", JSON.stringify(allGradesRes));
-      localStorage.setItem("schedule", JSON.stringify(ScheduleRes));
-      localStorage.setItem("hostel", JSON.stringify(HostelRes));
-      localStorage.setItem("calender", JSON.stringify(calenderRes));
+      writeJSON(STORAGE_KEYS.attendance, attRes);
+      writeJSON(STORAGE_KEYS.marks, marksRes);
+      writeJSON(STORAGE_KEYS.grades, gradesRes);
+      writeJSON(STORAGE_KEYS.allGrades, allGradesRes);
+      writeJSON(STORAGE_KEYS.schedule, ScheduleRes);
+      writeJSON(STORAGE_KEYS.hostel, HostelRes);
+      writeJSON(STORAGE_KEYS.calender, calenderRes);
 
       setMessage(prev => prev + "\n✅ All data loaded successfully!");
       setProgressBar(100);
@@ -297,8 +333,8 @@ export default function LoginPage() {
     setIsReloading(true);
     try {
       const { cookies, authorizedID, csrf } = await loginToVTOP();
-      localStorage.setItem("username", username);
-      localStorage.setItem("password", password);
+      localStorage.setItem(STORAGE_KEYS.username, username);
+      localStorage.setItem(STORAGE_KEYS.password, password);
 
       const [
         { attRes, marksRes }
@@ -318,8 +354,8 @@ export default function LoginPage() {
       setAttendanceAndOD(attRes);
       setMarksData(marksRes);
 
-      localStorage.setItem("attendance", JSON.stringify(attRes));
-      localStorage.setItem("marks", JSON.stringify(marksRes));
+      writeJSON(STORAGE_KEYS.attendance, attRes);
+      writeJSON(STORAGE_KEYS.marks, marksRes);
 
       setMessage(prev => prev + "\n✅ All data loaded successfully!");
       setProgressBar(100);
@@ -341,7 +377,7 @@ export default function LoginPage() {
     setUsername("");
     setPassword("");
 
-    const keysToKeep = ["theme", "CGPAHidden", "activityTree"];
+    const keysToKeep = [STORAGE_KEYS.theme, STORAGE_KEYS.CGPAHidden, STORAGE_KEYS.activityTree];
 
     const saved: Record<string, string | null> = {};
     keysToKeep.forEach((key) => {
@@ -363,7 +399,7 @@ export default function LoginPage() {
     setMessage("");
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!username || !password) {
       return alert("Please fill all the fields!");
@@ -377,21 +413,26 @@ export default function LoginPage() {
   useEffect(() => {
     setIsOffline(!navigator.onLine);
 
-    const goOffline = () => setIsOffline(true);
-    const goOnline = () => setIsOffline(false);
-
-    window.addEventListener("offline", goOffline);
-    window.addEventListener("online", goOnline);
-
-    return () => {
-      window.removeEventListener("offline", goOffline);
-      window.removeEventListener("online", goOnline);
+    const handleOnline = () => {
+      setIsOffline(false);
+      notify({
+        variant: "success",
+        title: "Back online",
+        description: "Syncing latest data...",
+      });
+      if (isLoggedIn && !demoMode) {
+        handleReloadRequest();
+      }
     };
-  }, []);
 
-  useEffect(() => {
-    const handleOnline = () => setIsOffline(false);
-    const handleOffline = () => setIsOffline(true);
+    const handleOffline = () => {
+      setIsOffline(true);
+      notify({
+        variant: "error",
+        title: "Offline",
+        description: "Some features may feel limited until you reconnect.",
+      });
+    };
 
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
@@ -400,7 +441,7 @@ export default function LoginPage() {
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
     };
-  }, []);
+  }, [demoMode, handleReloadRequest, isLoggedIn, notify]);
 
   const handleDemoClick = () => {
     setDemoMode(true);
@@ -419,10 +460,22 @@ export default function LoginPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 midnight:bg-black">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-transparent border-gray-500"></div>
-          <p className="text-gray-600 dark:text-gray-300">Loading app...</p>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 midnight:bg-black p-6">
+        <div className="mx-auto w-full max-w-6xl space-y-6">
+          <div className="space-y-2">
+            <Skeleton className="h-7 w-40" />
+            <Skeleton className="h-4 w-64" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            <Skeleton className="h-28" />
+            <Skeleton className="h-28" />
+            <Skeleton className="h-28" />
+            <Skeleton className="h-28" />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Skeleton className="h-64" />
+            <Skeleton className="h-64" />
+          </div>
         </div>
       </div>
     );
@@ -430,9 +483,9 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 midnight:bg-black flex flex-col text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
-      {isAPIworking && !isOffline && (
+      {isAPIDown && !isOffline && (
         <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium">
-          ⚠️ Unable to connect to API services. Please check back later. ⚠️
+          Unable to connect to API services. Please check back later.
         </div>
       )}
       {isReloading && (
@@ -461,10 +514,10 @@ export default function LoginPage() {
       {(isLoggedIn || demoMode) && (
         <>
           {isOffline && <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium">
-            ⚠️ You’re currently offline. Some features may not work.
+            You’re currently offline. Some features may not work.
           </div>}
           {demoMode && <div className="top-0 left-0 w-full bg-blue-500 text-white text-center py-2 font-medium">
-            ℹ️ You are in Demo Mode. Data shown is for demonstration purposes only.
+            You are in Demo Mode. Data shown is for demonstration purposes only.
           </div>}
           <DashboardContent
             activeTab={activeTab}

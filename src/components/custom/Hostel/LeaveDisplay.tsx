@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
 
 export default function LeaveDisplay({ leaveData, handleHostelDetailsFetch }) {
@@ -8,12 +7,13 @@ export default function LeaveDisplay({ leaveData, handleHostelDetailsFetch }) {
 
     if (!leaveData || leaveData.length === 0) {
         return (
-            <p className="text-center text-gray-600 dark:text-gray-400 midnight:text-gray-400">
-                No leave history available{" "}
-                <button onClick={handleHostelDetailsFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-                    <RefreshCcw className={`w-4 h-4`} />
+            <div className="flex flex-col items-center gap-3 text-gray-600 dark:text-gray-400">
+                <p>No leave history available.</p>
+                <button onClick={handleHostelDetailsFetch} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors">
+                    <RefreshCcw className="w-4 h-4" />
+                    Reload data
                 </button>
-            </p>
+            </div>
         )
     }
 
@@ -60,18 +60,21 @@ export default function LeaveDisplay({ leaveData, handleHostelDetailsFetch }) {
     };
 
     return (
-        <div>
-            <h1 className="text-xl font-bold mb-2 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                Leave Details <button onClick={handleHostelDetailsFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-                    <RefreshCcw className={`w-4 h-4`} />
+        <div className="space-y-4">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100">Leave details</h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Active leave and history overview.</p>
+                </div>
+                <button onClick={handleHostelDetailsFetch} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors">
+                    <RefreshCcw className="w-4 h-4" />
+                    Refresh
                 </button>
-            </h1>
+            </div>
 
             {activeLeave ? (
-                <div className="max-w-xl mx-auto mb-4 border border-gray-300 dark:border-gray-700 midnight:border-gray-700 rounded-2xl p-4 bg-white dark:bg-slate-800 midnight:bg-black text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                    <h2 className="text-lg font-semibold text-center mb-3">
-                        Active Leave
-                    </h2>
+                <div className="max-w-2xl border border-gray-200 dark:border-slate-800 rounded-2xl p-4 bg-white dark:bg-slate-900/60 text-gray-900 dark:text-gray-100">
+                    <h3 className="text-base font-semibold mb-3">Active leave</h3>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                         <p><strong>Leave ID:</strong> {activeLeave.leaveId}</p>
                         <p><strong>Type:</strong> {activeLeave.leaveType}</p>
@@ -87,11 +90,7 @@ export default function LeaveDisplay({ leaveData, handleHostelDetailsFetch }) {
                     </div>
                     <p>
                         <strong>Status:</strong>{" "}
-                        <span
-                            className={`px-1 rounded-md font-semibold ${getStatusClasses(
-                                activeLeave.status
-                            )}`}
-                        >
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusClasses(activeLeave.status)}`}>
                             {activeLeave.status}
                         </span>
                     </p>
@@ -103,59 +102,55 @@ export default function LeaveDisplay({ leaveData, handleHostelDetailsFetch }) {
             )}
 
             {pastLeaves.length > 0 && (
-                <div className="text-center">
+                <div>
                     <button
                         onClick={() => setShowHistory((prev) => !prev)}
-                        className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors"
+                        className="inline-flex items-center px-4 py-2 rounded-lg border border-gray-200 dark:border-slate-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800 text-sm font-medium transition-colors"
                     >
-                        {showHistory ? "Hide Leave History" : "Show Leave History"}
+                        {showHistory ? "Hide leave history" : "Show leave history"}
                     </button>
                 </div>
             )}
 
             {showHistory && pastLeaves.length > 0 && (
-                <div data-scrollable className="mt-6 overflow-x-auto">
-                    <table className="min-w-full border-collapse table-auto bg-white dark:bg-slate-800 midnight:bg-black text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                        <thead className="bg-gray-100 dark:bg-slate-700 midnight:bg-slate-900">
+                <div data-scrollable className="mt-4 overflow-x-auto rounded-2xl border border-gray-200 dark:border-slate-800">
+                    <table className="min-w-full border-collapse table-auto bg-white dark:bg-slate-900/60 text-gray-900 dark:text-gray-100">
+                        <thead className="bg-gray-50 dark:bg-slate-800">
                             <tr>
-                                <th className="px-4 py-2 text-center border-b border-gray-300 dark:border-gray-700">
+                                <th className="px-4 py-3 text-center border-b border-gray-200 dark:border-slate-800 text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300">
                                     Leave ID
                                 </th>
-                                <th className="px-4 py-2 text-center border-b border-gray-300 dark:border-gray-700">
+                                <th className="px-4 py-3 text-center border-b border-gray-200 dark:border-slate-800 text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300">
                                     From
                                 </th>
-                                <th className="px-4 py-2 text-center border-b border-gray-300 dark:border-gray-700">
+                                <th className="px-4 py-3 text-center border-b border-gray-200 dark:border-slate-800 text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300">
                                     To
                                 </th>
-                                <th className="px-4 py-2 text-center border-b border-gray-300 dark:border-gray-700">
+                                <th className="px-4 py-3 text-center border-b border-gray-200 dark:border-slate-800 text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300">
                                     Reason
                                 </th>
-                                <th className="px-4 py-2 text-center border-b border-gray-300 dark:border-gray-700">
+                                <th className="px-4 py-3 text-center border-b border-gray-200 dark:border-slate-800 text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300">
                                     Status
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             {pastLeaves.map((leave, idx) => (
-                                <tr key={idx}>
-                                    <td className="px-4 py-2 text-center border-b border-gray-800 dark:border-gray-700">
+                                <tr key={idx} className="odd:bg-white even:bg-gray-50 dark:odd:bg-slate-900/50 dark:even:bg-slate-800/60">
+                                    <td className="px-4 py-3 text-center border-b border-gray-200 dark:border-slate-800">
                                         {leave.leaveId}
                                     </td>
-                                    <td className="px-4 py-2 text-center border-b border-gray-800 dark:border-gray-700">
+                                    <td className="px-4 py-3 text-center border-b border-gray-200 dark:border-slate-800">
                                         {leave.from}
                                     </td>
-                                    <td className="px-4 py-2 text-center border-b border-gray-800 dark:border-gray-700">
+                                    <td className="px-4 py-3 text-center border-b border-gray-200 dark:border-slate-800">
                                         {leave.to}
                                     </td>
-                                    <td className="px-4 py-2 text-center border-b border-gray-800 dark:border-gray-700">
+                                    <td className="px-4 py-3 text-center border-b border-gray-200 dark:border-slate-800">
                                         {leave.reason}
                                     </td>
-                                    <td className={`px-4 py-2 text-center border-b border-gray-800 dark:border-gray-700 ${getStatusClasses(
-                                        leave.status
-                                    )}`}>
-                                        <span
-                                            className={`px-2 py-1 rounded-md font-semibold`}
-                                        >
+                                    <td className="px-4 py-3 text-center border-b border-gray-200 dark:border-slate-800">
+                                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusClasses(leave.status)}`}>
                                             {leave.status}
                                         </span>
                                     </td>

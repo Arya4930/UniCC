@@ -2,10 +2,12 @@ import * as React from "react"
 import { Geist, Geist_Mono, Roboto } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from "../components/themeprovider";
+import { ToastProvider } from "../components/custom/toast/ToastProvider";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import type { Viewport, Metadata } from "next";
 import './globals.css';
+import ServiceWorkerRegister from "../components/custom/pwa/ServiceWorkerRegister";
 
 export const viewport: Viewport = {
   themeColor: [
@@ -68,15 +70,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="midnight"
-          enableSystem
-          disableTransitionOnChange
-          value={{ light: "light", dark: "dark", midnight: "midnight" }}
-        >
-          {children}
-        </ThemeProvider>
+        <ToastProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="midnight"
+            enableSystem
+            disableTransitionOnChange
+            value={{ light: "light", dark: "dark", midnight: "midnight" }}
+          >
+            {children}
+            <ServiceWorkerRegister />
+          </ThemeProvider>
+        </ToastProvider>
         <Analytics />
         <SpeedInsights />
       </body>

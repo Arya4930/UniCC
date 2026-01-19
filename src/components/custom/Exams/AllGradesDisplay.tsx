@@ -1,18 +1,22 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { X, RefreshCcw } from "lucide-react";
 import NoContentFound from "../NoContentFound";
 
 export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
     if (!data || !data.grades) {
         return (
-            <div>
-                <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                    Academic Grades <button onClick={handleAllGradesFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-                        <RefreshCcw className={`w-4 h-4`} />
+            <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100">Academic grades</h2>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Semester-wise grade overview.</p>
+                    </div>
+                    <button onClick={handleAllGradesFetch} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors">
+                        <RefreshCcw className="w-4 h-4" />
+                        Refresh
                     </button>
-                </h1>
+                </div>
                 <NoContentFound />
             </div>
         );
@@ -21,12 +25,17 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
     const semesterKeys = Object.keys(data.grades).filter((sem) => data.grades[sem]);
     if (semesterKeys.length === 0) {
         return (
-            <div>
-                <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                    Academic Grades <button onClick={handleAllGradesFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-                        <RefreshCcw className={`w-4 h-4`} />
+            <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100">Academic grades</h2>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Semester-wise grade overview.</p>
+                    </div>
+                    <button onClick={handleAllGradesFetch} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors">
+                        <RefreshCcw className="w-4 h-4" />
+                        Refresh
                     </button>
-                </h1>
+                </div>
                 <NoContentFound />
             </div>
         );
@@ -46,17 +55,19 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
     };
 
     return (
-        <div className="py-2">
-            <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                Academic Grades <button onClick={handleAllGradesFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-                    <RefreshCcw className={`w-4 h-4`} />
+        <div className="space-y-4">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100">Academic grades</h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Semester-wise grade overview.</p>
+                </div>
+                <button onClick={handleAllGradesFetch} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors">
+                    <RefreshCcw className="w-4 h-4" />
+                    Refresh
                 </button>
-            </h1>
+            </div>
 
-            <div
-                data-scrollable
-                className="flex w-full overflow-x-auto mb-4"
-            >
+            <div data-scrollable className="flex w-full overflow-x-auto gap-2 pb-1">
                 {semesterKeys.map((sem) => (
                     <button
                         key={sem}
@@ -64,9 +75,9 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
                             setActiveSem(sem);
                             setOpenCourse(null);
                         }}
-                        className={`flex-1 min-w-[160px] text-center py-2 text-sm font-medium transition-colors ${activeSem === sem
-                            ? "bg-blue-600 text-white midnight:bg-blue-700"
-                            : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-700 dark:text-gray-300 dark:hover:bg-slate-600 midnight:bg-black midnight:text-gray-300 midnight:hover:bg-gray-900"
+                        className={`min-w-[180px] px-4 py-2 text-sm font-medium rounded-full border transition-colors ${activeSem === sem
+                            ? "bg-blue-600 text-white border-blue-600"
+                            : "bg-white dark:bg-slate-900 midnight:bg-black border-gray-200 dark:border-slate-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800"
                             }`}
                     >
                         {sem.endsWith("1") ? `FALLSEM` : `WINTERSEM`} {sem.slice(4, -4)}-{sem.slice(6, -2)}
@@ -82,11 +93,11 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
                 </div>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 px-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {gradeList.map((course, idx) => (
                     <div
                         key={course.courseId || course.courseCode || idx}
-                        className="p-4 rounded-lg shadow bg-white dark:bg-slate-800 midnight:bg-black midnight:outline midnight:outline-1 midnight:outline-gray-800 cursor-pointer"
+                        className="p-4 rounded-2xl border border-gray-200/70 dark:border-slate-800 midnight:border-gray-900 bg-white dark:bg-slate-900/60 midnight:bg-black/60 hover:shadow-md transition cursor-pointer"
                         onClick={() => setOpenCourse(course.courseId)}
                     >
                         <div className="flex justify-between items-start gap-3">
@@ -116,7 +127,7 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch }) {
                                 className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50"
                             >
                                 <div
-                                    className="bg-white dark:bg-slate-800 midnight:bg-black rounded-xl shadow-lg p-6 max-w-3xl w-[95%] relative max-h-[90vh] overflow-y-auto"
+                                    className="bg-white dark:bg-slate-900 midnight:bg-black rounded-2xl shadow-lg p-6 max-w-3xl w-[95%] relative max-h-[90vh] overflow-y-auto"
                                     onClick={(e) => e.stopPropagation()}
                                 >
                                     <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100 midnight:text-gray-100">
