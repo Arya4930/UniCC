@@ -128,7 +128,7 @@ export default function CalendarView({ calendars, calendarType, handleCalendarFe
             <div className="flex gap-2 mb-3 justify-center flex-wrap">
                 {safeCalendars.map((calendar, idx) => (
                     <button
-                        key={calendar.id}
+                        key={calendar.id ?? `${calendar.month ?? "month"}-${calendar.year ?? "year"}-${idx}`}
                         onClick={() => setActiveIdx(idx)}
                         className={`px-4 py-2 rounded-md text-sm md:text-base font-medium transition-colors duration-150 ${idx === activeIdx
                             ? "bg-blue-600 text-white dark:bg-blue-700 midnight:bg-blue-800"

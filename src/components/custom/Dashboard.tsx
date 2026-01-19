@@ -17,6 +17,10 @@ import { useRef } from "react";
 import LeaveDisplay from "./Hostel/LeaveDisplay";
 import AllGradesDisplay from "./Exams/AllGradesDisplay";
 import { API_BASE } from "./Main";
+import CommandPalette from "./CommandPalette";
+import { Button } from "@/components/ui/button";
+import { Calendar, GraduationCap, LayoutGrid, RefreshCcw, UploadCloud, BedDouble } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function DashboardContent({
   activeTab,
@@ -63,6 +67,7 @@ export default function DashboardContent({
   moodleData,
   setMoodleData
 }) {
+  const router = useRouter();
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
   const touchEndX = useRef(0);
@@ -278,33 +283,105 @@ export default function DashboardContent({
 
   return (
     <div
-      className="w-full max-w-md md:max-w-full mx-auto overflow-hidden"
+      className="h-screen bg-gray-50 dark:bg-gray-950 midnight:bg-black text-gray-900 dark:text-gray-100 midnight:text-gray-100 overflow-hidden"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <NavigationTabs
+      <CommandPalette
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        handleLogOutRequest={handleLogOutRequest}
+        setActiveAttendanceSubTab={setActiveAttendanceSubTab}
+        setActiveSubTab={setActiveSubTab}
+        setHostelActiveSubTab={setHostelActiveSubTab}
         handleReloadRequest={handleReloadRequest}
-        currSemesterID={currSemesterID}
-        setCurrSemesterID={setCurrSemesterID}
-        handleLogin={handleLogin}
-        setIsReloading={setIsReloading}
+        CGPAHidden={CGPAHidden}
+        setCGPAHidden={setCGPAHidden}
       />
-
-      <div className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-screen text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
-        <StatsCards
-          attendancePercentage={attendancePercentage}
-          ODhoursData={ODhoursData}
-          setODhoursIsOpen={setODhoursIsOpen}
-          feedbackStatus={GradesData.feedback}
-          marksData={marksData}
-          setGradesDisplayIsOpen={setGradesDisplayIsOpen}
-          CGPAHidden={CGPAHidden}
-          setCGPAHidden={setCGPAHidden}
+      <div className="flex h-screen flex-col md:flex-row">
+        <NavigationTabs
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          handleLogOutRequest={handleLogOutRequest}
+          handleReloadRequest={handleReloadRequest}
+          currSemesterID={currSemesterID}
+          setCurrSemesterID={setCurrSemesterID}
+          handleLogin={handleLogin}
+          setIsReloading={setIsReloading}
         />
+
+        <main className="flex-1 min-w-0 w-full overflow-y-auto">
+          <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-6 pb-16">
+            <header className="mb-6 text-left">
+              <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 dark:text-gray-100">Dashboard</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                Your academic snapshot with quick access to daily essentials.
+              </p>
+            </header>
+
+            <section className="mb-8">
+              <StatsCards
+                attendancePercentage={attendancePercentage}
+                ODhoursData={ODhoursData}
+                setODhoursIsOpen={setODhoursIsOpen}
+                feedbackStatus={GradesData.feedback}
+                marksData={marksData}
+                setGradesDisplayIsOpen={setGradesDisplayIsOpen}
+                CGPAHidden={CGPAHidden}
+                setCGPAHidden={setCGPAHidden}
+              />
+            </section>
+
+            <section className="mb-8">
+              <div className="rounded-2xl border border-gray-200 dark:border-slate-800 midnight:border-gray-900 bg-white dark:bg-slate-900 midnight:bg-black p-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Quick actions</h2>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      Jump to key pages and tasks. Press Ctrl/Cmd + K for more.
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  <Button variant="outline" onClick={() => setActiveTab("attendance")}>
+                    <LayoutGrid className="w-4 h-4" /> Attendance
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setActiveTab("attendance");
+                      setActiveAttendanceSubTab("calendar");
+                    }}
+                  >
+                    <Calendar className="w-4 h-4" /> Calendar
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setActiveTab("exams");
+                      setActiveSubTab("marks");
+                    }}
+                  >
+                    <GraduationCap className="w-4 h-4" /> Marks
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setActiveTab("hostel");
+                      setHostelActiveSubTab("mess");
+                    }}
+                  >
+                    <BedDouble className="w-4 h-4" /> Mess menu
+                  </Button>
+                  <Button variant="outline" onClick={handleReloadRequest}>
+                    <RefreshCcw className="w-4 h-4" /> Refresh data
+                  </Button>
+                  <Button variant="outline" onClick={() => router.push("/upload")}>
+                    <UploadCloud className="w-4 h-4" /> Upload files
+                  </Button>
+                </div>
+              </div>
+            </section>
 
         {ODhoursIsOpen && (
           <ODHoursModal
@@ -323,69 +400,83 @@ export default function DashboardContent({
           />
         )}
 
-        {activeTab === "attendance" && attendanceData?.attendance && (
-          <div className="animate-fadeIn">
-            <AttendanceSubTabs
-              activeSubTab={activeAttendanceSubTab}
-              setActiveAttendanceSubTab={setActiveAttendanceSubTab}
-            />
+            {activeTab === "attendance" && attendanceData?.attendance && (
+              <section className="animate-fadeIn space-y-4">
+                <AttendanceSubTabs
+                  activeSubTab={activeAttendanceSubTab}
+                  setActiveAttendanceSubTab={setActiveAttendanceSubTab}
+                />
 
-            {activeAttendanceSubTab === "attendance" && (
-              <>
-                {!calendarType && (
-                  <CalendarTabWrapper
-                    calendarType={calendarType}
-                    handleCalendarFetch={handleCalendarFetch}
-                  />
+                {activeAttendanceSubTab === "attendance" && (
+                  <>
+                    {!calendarType && (
+                      <CalendarTabWrapper
+                        calendarType={calendarType}
+                        handleCalendarFetch={handleCalendarFetch}
+                      />
+                    )}
+                    <AttendanceTabs
+                      data={attendanceData}
+                      activeDay={activeDay}
+                      setActiveDay={setActiveDay}
+                      calendars={calendarData.calendars}
+                    />
+                  </>
                 )}
-                <AttendanceTabs
-                  data={attendanceData}
-                  activeDay={activeDay}
-                  setActiveDay={setActiveDay}
-                  calendars={calendarData.calendars}
-                />
-              </>
+
+                {activeAttendanceSubTab === "calendar" && (
+                  <>
+                    <CalendarView
+                      calendars={calendarData.calendars}
+                      calendarType={calendarType}
+                      handleCalendarFetch={handleCalendarFetch}
+                    />
+                    <CalendarTabWrapper
+                      calendarType={calendarType}
+                      handleCalendarFetch={handleCalendarFetch}
+                    />
+                  </>
+                )}
+              </section>
             )}
 
-            {activeAttendanceSubTab === "calendar" && (
-              <>
-                <CalendarView
-                  calendars={calendarData.calendars}
-                  calendarType={calendarType}
-                  handleCalendarFetch={handleCalendarFetch}
+            {activeTab === "exams" && marksData && (
+              <section className="animate-fadeIn space-y-4">
+                <ExamsSubTabs
+                  activeSubTab={activeSubTab}
+                  setActiveSubTab={setActiveSubTab}
                 />
-                <CalendarTabWrapper
-                  calendarType={calendarType}
-                  handleCalendarFetch={handleCalendarFetch}
+                {activeSubTab === "marks" && (
+                  <MarksDisplay data={marksData} moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} />
+                )}
+                {activeSubTab === "schedule" && (
+                  <ScheduleDisplay data={ScheduleData} handleScheduleFetch={handleScheduleFetch} />
+                )}
+                {activeSubTab === "grades" && (
+                  <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} />
+                )}
+              </section>
+            )}
+
+            {activeTab === "hostel" && (
+              <section className="animate-fadeIn space-y-4">
+                <HostelSubTabs
+                  HostelActiveSubTab={HostelActiveSubTab}
+                  setHostelActiveSubTab={setHostelActiveSubTab}
                 />
-              </>
+                {HostelActiveSubTab === "mess" && (
+                  <MessDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />
+                )}
+                {HostelActiveSubTab === "laundry" && (
+                  <LaundryDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />
+                )}
+                {HostelActiveSubTab === "leave" && (
+                  <LeaveDisplay leaveData={hostelData.leaveHistory} handleHostelDetailsFetch={handleHostelDetailsFetch} />
+                )}
+              </section>
             )}
           </div>
-        )}
-
-        {activeTab === "exams" && marksData && (
-          <div className="animate-fadeIn">
-            <ExamsSubTabs
-              activeSubTab={activeSubTab}
-              setActiveSubTab={setActiveSubTab}
-            />
-            {activeSubTab === "marks" && <MarksDisplay data={marksData} moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} />}
-            {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} handleScheduleFetch={handleScheduleFetch} />}
-            {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} />}
-          </div>
-        )}
-
-        {activeTab === "hostel" && (
-          <div className="animate-fadeIn">
-            <HostelSubTabs
-              HostelActiveSubTab={HostelActiveSubTab}
-              setHostelActiveSubTab={setHostelActiveSubTab}
-            />
-            {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
-            {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
-            {HostelActiveSubTab === "leave" && <LeaveDisplay leaveData={hostelData.leaveHistory} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
-          </div>
-        )}
+        </main>
       </div>
     </div>
   );

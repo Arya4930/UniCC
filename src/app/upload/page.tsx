@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/shadcn-io/dropzone";
 import { API_BASE } from "@/components/custom/Main";
 import Footer from "@/components/custom/footer/Footer";
+import { useToast } from "@/components/custom/toast/ToastProvider";
 
 export default function UploadPage() {
     const [userID, setUserID] = useState("");
@@ -19,6 +20,7 @@ export default function UploadPage() {
     const [email, setEmail] = useState("");
     const [mailSending, setMailSending] = useState(false);
     const [mailTitle, setMailTitle] = useState("Files from UniCC");
+    const { notify } = useToast();
 
     const handleDrop = (incomingFiles: File[]) => {
         setFiles(incomingFiles);
@@ -45,9 +47,19 @@ export default function UploadPage() {
 
                 if (!res.ok) throw new Error("Upload failed");
                 setMessage(`Uploaded: ${file.name}`);
+                notify({
+                    title: "Upload complete",
+                    description: file.name,
+                    variant: "success"
+                });
             } catch (err) {
                 console.error(err);
                 setMessage(`Failed: ${file.name}`);
+                notify({
+                    title: "Upload failed",
+                    description: file.name,
+                    variant: "error"
+                });
             }
         }
 
@@ -76,10 +88,20 @@ export default function UploadPage() {
 
             if (!res.ok) throw new Error("Mail send failed");
             setMessage("Files sent to mail successfully");
+            notify({
+                title: "Mail sent",
+                description: "Your files were sent to your email",
+                variant: "success"
+            });
             setFiles([]);
         } catch (err) {
             console.error(err);
             setMessage("Failed to send files to mail");
+            notify({
+                title: "Mail failed",
+                description: "Unable to send files to your email",
+                variant: "error"
+            });
         } finally {
             setMailSending(false);
         }

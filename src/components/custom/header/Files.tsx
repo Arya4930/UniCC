@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { API_BASE } from "../Main";
 import { Dropzone, DropzoneContent, DropzoneEmptyState } from "@/components/ui/shadcn-io/dropzone";
+import { useToast } from "@/components/custom/toast/ToastProvider";
 
 export default function Files() {
     const userID = localStorage.getItem("username") || "";
@@ -20,6 +21,7 @@ export default function Files() {
     const [files, setFiles] = useState<any[]>([]);
     const [loadingFiles, setLoadingFiles] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const { notify } = useToast();
 
     const formatSize = (bytes: number) => {
         if (bytes < 1024) return `${bytes} B`;
@@ -55,8 +57,18 @@ export default function Files() {
             if (!res.ok) throw new Error("Failed to delete file");
 
             setFiles(prev => prev.filter(file => file.fileID !== fileID));
+            notify({
+                title: "File deleted",
+                description: "The file was removed successfully",
+                variant: "success"
+            });
         } catch (error) {
             console.error(error);
+            notify({
+                title: "Delete failed",
+                description: "Unable to delete the file",
+                variant: "error"
+            });
         } finally {
             setIsDeleting(false);
         }
@@ -84,6 +96,14 @@ export default function Files() {
 
         setFiles(prev => [...prev, ...tempFiles]);
 
+        if (incomingFiles.length > 0) {
+            notify({
+                title: "Uploading files",
+                description: `${incomingFiles.length} file(s) queued`,
+                variant: "info"
+            });
+        }
+
         for (const file of incomingFiles) {
             const formData = new FormData();
             formData.append("file", file);
@@ -95,8 +115,18 @@ export default function Files() {
                 );
 
                 if (!res.ok) throw new Error("Upload failed");
+                notify({
+                    title: "Upload complete",
+                    description: file.name,
+                    variant: "success"
+                });
             } catch (err) {
                 console.error(err);
+                notify({
+                    title: "Upload failed",
+                    description: file.name,
+                    variant: "error"
+                });
             }
         }
 
@@ -118,8 +148,18 @@ export default function Files() {
             a.click();
 
             window.URL.revokeObjectURL(url);
+            notify({
+                title: "Download started",
+                description: file.name,
+                variant: "success"
+            });
         } catch (err) {
             console.error(err);
+            notify({
+                title: "Download failed",
+                description: file.name,
+                variant: "error"
+            });
         }
     };
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import NoContentFound from "../NoContentFound";
 import { RefreshCcw } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -9,12 +8,20 @@ import { useEffect, useState } from "react";
 export default function ExamSchedule({ data, handleScheduleFetch }) {
   if (Object.keys(data.Schedule).length === 0) {
     return (
-      <div>
-        <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-          Exam Schedule <button onClick={handleScheduleFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-            <RefreshCcw className={`w-4 h-4`} />
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100">Exam schedule</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Latest timetable for upcoming exams.</p>
+          </div>
+          <button
+            onClick={handleScheduleFetch}
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors"
+          >
+            <RefreshCcw className="w-4 h-4" />
+            Refresh
           </button>
-        </h1>
+        </div>
         <NoContentFound />
       </div>
     );
@@ -129,12 +136,20 @@ export default function ExamSchedule({ data, handleScheduleFetch }) {
 
 
   return (
-    <div className="space-y-6 p-2">
-      <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-        Exam Schedule <button onClick={handleScheduleFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-          <RefreshCcw className={`w-4 h-4`} />
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100">Exam schedule</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Latest timetable for upcoming exams.</p>
+        </div>
+        <button
+          onClick={handleScheduleFetch}
+          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors"
+        >
+          <RefreshCcw className="w-4 h-4" />
+          Refresh
         </button>
-      </h1>
+      </div>
 
       {todayExams.length > 0 && (
         <div className="bg-green-100 dark:bg-green-700/40 midnight:bg-green-800/40 
@@ -195,7 +210,7 @@ export default function ExamSchedule({ data, handleScheduleFetch }) {
         return (
           <div
             key={examType}
-            className="bg-slate-50 dark:bg-slate-800 midnight:bg-black shadow rounded-2xl p-4 midnight:outline midnight:outline-1 midnight:outline-gray-800"
+            className="bg-white dark:bg-slate-900/60 midnight:bg-black/60 border border-gray-200/70 dark:border-slate-800 midnight:border-gray-900 rounded-2xl p-4"
           >
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-blue-700 dark:text-blue-400 midnight:text-white">

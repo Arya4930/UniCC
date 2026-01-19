@@ -141,26 +141,39 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
   };
 
   return (
-    <div className="grid gap-4">
-      <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-        <button onClick={() => setShowTimetable(true)} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-          <Calendar className={`w-4 h-4`} />
-        </button>
-        {" "} Weekly Attendance {" "}
-        <button onClick={() => setShowPredictor(true)} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-          <BadgeQuestionMark className={`w-4 h-4`} />
-        </button>
-      </h1>
+    <div className="grid gap-5">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div>
+          <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100">Attendance</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Weekly view with low-attendance alerts.</p>
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setShowTimetable(true)}
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors"
+          >
+            <Calendar className="w-4 h-4" />
+            Timetable
+          </button>
+          <button
+            onClick={() => setShowPredictor(true)}
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-800 midnight:border-gray-900 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-800 text-sm font-medium transition-colors"
+          >
+            <BadgeQuestionMark className="w-4 h-4" />
+            Predictor
+          </button>
+        </div>
+      </div>
 
-      <div className="flex gap-2 mb-3 justify-center flex-wrap">
+      <div className="flex gap-2 mb-2 flex-wrap">
         {daysWithClasses.map((d) => (
           <button
             key={d}
             onClick={() => setActiveDay(d)}
-            className={`px-4 py-2 rounded-md text-sm md:text-base font-medium transition-colors duration-150
+            className={`px-3 py-2 rounded-full text-sm font-medium transition-colors
               ${activeDay === d
-                ? "bg-blue-600 text-white midnight:bg-blue-700"
-                : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 midnight:bg-black midnight:text-gray-200 midnight:hover:bg-gray-800 midnight:outline midnight:outline-1 midnight:outline-gray-800"
+                ? "bg-blue-600 text-white"
+                : "bg-white dark:bg-slate-900 midnight:bg-black border border-gray-200 dark:border-slate-800 midnight:border-gray-900 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800"
               }`}
           >
             {d}
@@ -192,7 +205,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
 
       {showPredictor && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex justify-center items-center">
-          <div className="relative w-[95%] max-w-4xl max-h-[95vh] overflow-y-auto bg-gray-100 dark:bg-slate-800 midnight:bg-black rounded-2xl shadow-2xl p-5">
+          <div className="relative w-[95%] max-w-4xl max-h-[95vh] overflow-y-auto bg-white dark:bg-slate-900 midnight:bg-black rounded-2xl shadow-2xl p-6">
             <Button
               variant="ghost"
               size="icon"
@@ -213,7 +226,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
       )}
       {showTimetable && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex justify-center items-center">
-          <div className="relative w-[95%] max-h-[95vh] overflow-y-auto bg-gray-100 dark:bg-slate-800 midnight:bg-black rounded-2xl shadow-2xl p-5">
+          <div className="relative w-[95%] max-h-[95vh] overflow-y-auto bg-white dark:bg-slate-900 midnight:bg-black rounded-2xl shadow-2xl p-6">
             <Button
               variant="ghost"
               size="icon"

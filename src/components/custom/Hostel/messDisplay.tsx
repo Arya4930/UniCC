@@ -37,12 +37,13 @@ const shortToFullDay = Object.fromEntries(
 export default function MessDisplay({ hostelData, handleHostelDetailsFetch }) {
   if (!hostelData.hostelInfo?.isHosteller) {
     return (
-      <p className="text-center text-gray-600 dark:text-gray-400 midnight:text-gray-400">
-        You are not a hosteller. / Reload Data{" "}
-        <button onClick={handleHostelDetailsFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-          <RefreshCcw className={`w-4 h-4`} />
+      <div className="flex flex-col items-center gap-3 text-gray-600 dark:text-gray-400">
+        <p>You are not a hosteller.</p>
+        <button onClick={handleHostelDetailsFetch} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors">
+          <RefreshCcw className="w-4 h-4" />
+          Reload data
         </button>
-      </p>
+      </div>
     )
   }
 
@@ -115,28 +116,28 @@ export default function MessDisplay({ hostelData, handleHostelDetailsFetch }) {
   const todayMenu = menu.find((day) => day.Day === activeDay);
 
   return (
-    <div>
-      <h1 className="text-xl font-bold mb-2 text-center dark:text-white midnight:text-white">
-        Mess Menu
-      </h1>
-      <h2 className="text-md font-bold mb-2 text-center text-gray-700 dark:text-gray-300 midnight:text-gray-300">
-        ( Data taken from{" "}
-        <a
-          href="http://kaffeine.tech/unmessify"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline text-blue-600 dark:text-blue-400 midnight:text-blue-400"
-        >
-          Unmessify
-        </a>{" "}
-        )
-      </h2>
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100">Mess menu</h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          Data sourced from{" "}
+          <a
+            href="http://kaffeine.tech/unmessify"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline text-blue-600 dark:text-blue-400"
+          >
+            Unmessify
+          </a>
+          .
+        </p>
+      </div>
 
-      <div className="flex flex-wrap gap-4 justify-center mb-6">
+      <div className="flex flex-wrap gap-3">
         <select
           value={gender}
           onChange={(e) => setGender(e.target.value)}
-          className="border rounded-lg p-2 shadow-sm hover:cursor-pointer bg-white dark:bg-slate-700 midnight:bg-black text-gray-900 dark:text-gray-100 midnight:text-gray-100"
+          className="border border-gray-200 dark:border-slate-700 rounded-lg px-3 py-2 bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100"
         >
           <option value="Male">Male</option>
           <option value="Female">Female</option>
@@ -145,7 +146,7 @@ export default function MessDisplay({ hostelData, handleHostelDetailsFetch }) {
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
-          className="border rounded-lg p-2 shadow-sm hover:cursor-pointer bg-white dark:bg-slate-700 midnight:bg-black text-gray-900 dark:text-gray-100 midnight:text-gray-100"
+          className="border border-gray-200 dark:border-slate-700 rounded-lg px-3 py-2 bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100"
         >
           <option value="Veg">Veg</option>
           <option value="Non Veg">Non Veg</option>
@@ -153,14 +154,14 @@ export default function MessDisplay({ hostelData, handleHostelDetailsFetch }) {
         </select>
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-4 justify-center">
+      <div className="flex flex-wrap gap-2">
         {shortDays.map((short) => (
           <button
             key={short}
             onClick={() => setActiveDay(shortToFullDay[short])}
-            className={`px-4 py-2 rounded-lg transition-colors hover:cursor-pointer duration-200 shadow-sm ${activeDay === shortToFullDay[short]
-              ? "bg-blue-600 text-white dark:bg-blue-500 midnight:bg-blue-700 dark:text-gray-100 midnight:text-gray-100"
-              : "bg-gray-200 text-gray-700 hover:bg-blue-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 midnight:bg-black midnight:text-gray-200 midnight:hover:bg-gray-800 midnight:outline midnight:outline-1 midnight:outline-gray-800"
+            className={`px-3 py-2 rounded-full text-sm font-medium transition-colors ${activeDay === shortToFullDay[short]
+              ? "bg-blue-600 text-white"
+              : "bg-white dark:bg-slate-900 midnight:bg-black border border-gray-200 dark:border-slate-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800"
               }`}
           >
             {short}
@@ -169,29 +170,29 @@ export default function MessDisplay({ hostelData, handleHostelDetailsFetch }) {
       </div>
 
       {todayMenu ? (
-        <div className="p-6">
-          <h2 className="text-2xl font-bold mb-6 text-center dark:text-white midnight:text-white">
+        <div className="space-y-4">
+          <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">
             {todayMenu.Day}
-          </h2>
+          </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 dark:text-gray-200 midnight:text-gray-200 midnight:bg-black midnight:outline midnight:outline-1 midnight:outline-gray-800">
-              <h3 className="text-lg font-bold mb-2">🍳 Breakfast</h3>
+            <div className="p-4 border border-gray-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900/60 text-gray-800 dark:text-gray-200">
+              <h4 className="text-sm font-semibold mb-2">Breakfast</h4>
               <p className="whitespace-pre-line">{todayMenu.Breakfast}</p>
             </div>
 
-            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 dark:text-gray-200 midnight:text-gray-200 midnight:bg-black midnight:outline midnight:outline-1 midnight:outline-gray-800">
-              <h3 className="text-lg font-bold mb-2">🍲 Lunch</h3>
+            <div className="p-4 border border-gray-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900/60 text-gray-800 dark:text-gray-200">
+              <h4 className="text-sm font-semibold mb-2">Lunch</h4>
               <p className="whitespace-pre-line">{todayMenu.Lunch}</p>
             </div>
 
-            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 dark:text-gray-200 midnight:text-gray-200 midnight:bg-black midnight:outline midnight:outline-1 midnight:outline-gray-800">
-              <h3 className="text-lg font-bold mb-2">☕ Snacks</h3>
+            <div className="p-4 border border-gray-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900/60 text-gray-800 dark:text-gray-200">
+              <h4 className="text-sm font-semibold mb-2">Snacks</h4>
               <p className="whitespace-pre-line">{todayMenu.Snacks}</p>
             </div>
 
-            <div className="p-4 border rounded-2xl shadow bg-white dark:bg-gray-900 dark:text-gray-200 midnight:text-gray-200 midnight:bg-black midnight:outline midnight:outline-1 midnight:outline-gray-800">
-              <h3 className="text-lg font-bold mb-2">🍽️ Dinner</h3>
+            <div className="p-4 border border-gray-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900/60 text-gray-800 dark:text-gray-200">
+              <h4 className="text-sm font-semibold mb-2">Dinner</h4>
               <p className="whitespace-pre-line">{todayMenu.Dinner}</p>
             </div>
           </div>
