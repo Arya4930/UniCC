@@ -149,17 +149,36 @@ async function ScrapeLMS(username, password) {
         if (!sesskey) {
             throw new Error("Cannot find sesskey");
         }
-        let now = new Date();
-        let nextMonth = now.getMonth() + 2;
-        let nextYear = now.getFullYear();
+        const now = new Date();
+        let currentMonth = now.getMonth() + 1;
+        let currentYear = now.getFullYear();
+        let prevMonth = currentMonth - 1;
+        let prevYear = currentYear;
+        if (prevMonth < 1) {
+            prevMonth = 12;
+            prevYear--;
+        }
+        let nextMonth = currentMonth + 1;
+        let nextYear = currentYear;
         if (nextMonth > 12) {
             nextMonth = 1;
             nextYear++;
         }
         const calendarEventsCurrent = extractCalendarEvents(redirectRes.data);
+        // const prevMonthHTML = await fetchCalendarMonthHTML(
+        //     sesskey,
+        //     prevYear,
+        //     prevMonth,
+        //     loginCookies
+        // );
         const nextMonthHTML = await fetchCalendarMonthHTML(sesskey, nextYear, nextMonth, loginCookies);
+        // const calendarEventsPrev = extractCalendarEvents(prevMonthHTML);
         const calendarEventsNext = extractCalendarEvents(nextMonthHTML);
-        const allEvents = [...calendarEventsCurrent, ...calendarEventsNext];
+        const allEvents = [
+            // ...calendarEventsPrev,
+            ...calendarEventsCurrent,
+            ...calendarEventsNext
+        ];
         const finalResults = [];
         for (const dayData of allEvents) {
             for (const ev of dayData.events) {

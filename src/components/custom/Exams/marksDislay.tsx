@@ -17,7 +17,7 @@ export default function MarksDisplay({ data, moodleData, handleFetchMoodle }) {
     return (
       <>
         <NoContentFound />
-        {/* <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} /> */}
+        <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} />
       </>
     );
   }
@@ -166,7 +166,7 @@ export default function MarksDisplay({ data, moodleData, handleFetchMoodle }) {
           );
         })}
       </div>
-      {/* <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} /> */}
+      <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} />
     </div>
   );
 }

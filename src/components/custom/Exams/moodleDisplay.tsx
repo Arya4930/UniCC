@@ -13,17 +13,22 @@ export default function MoodleDisplay({ moodleData, handleFetchMoodle }) {
         if (moodle_password) setPassword(moodle_password);
     }, [])
     if (!username || !password) return <MoodleUserPassForm handleFetchMoodle={handleFetchMoodle} />;
-    if (!moodleData || moodleData.length === 0) {
+    if (!username || !password || !moodleData || moodleData.length === 0) {
         return (
-            <div>
-                <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+            <div className="text-xl mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+                <h1 className="font-bold">
                     Moodle/LMS Data <button onClick={() => handleFetchMoodle(username, password)} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
                         <RefreshCcw className={`w-4 h-4`} />
                     </button>
                 </h1>
+                <h3 className="font-normal text-base p-2">
+                    Nothing here yet? Maybe your Moodle account has no upcoming assignments or password has changed, try again
+                </h3>
+                <MoodleUserPassForm handleFetchMoodle={handleFetchMoodle} />
             </div>
         );
     };
+    moodleData = moodleData.sort((a, b) => new Date(b.due).getTime() - new Date(a.due).getTime());
 
     return (
         <div className="mt-6 p-4">
@@ -40,6 +45,7 @@ export default function MoodleDisplay({ moodleData, handleFetchMoodle }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {moodleData.map((item, idx) => {
                     const isOverdue = !item.done && new Date(item.due) < new Date();
+                    const [SemCode, courseName, assignmentName] = item.name.split("/");
 
                     return (
                         <a
@@ -52,15 +58,15 @@ export default function MoodleDisplay({ moodleData, handleFetchMoodle }) {
                         >
                             <div className="flex items-center justify-between">
                                 <h2 className="font-semibold text-gray-900 dark:text-gray-100 midnight:text-gray-200">
-                                    {item.name}
+                                    {courseName} - {assignmentName}
                                 </h2>
 
                                 {item.done ? (
-                                    <CheckCircle className="text-green-500" size={22} />
+                                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                                 ) : isOverdue ? (
-                                    <AlertCircle className="text-red-500" size={22} />
+                                    <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
                                 ) : (
-                                    <Clock className="text-yellow-500" size={22} />
+                                    <Clock className="w-5 h-5 text-yellow-500 flex-shrink-0" />
                                 )}
                             </div>
 
