@@ -94,6 +94,9 @@ export default function MoodleDisplay({ moodleData, handleFetchMoodle, setMoodle
                                 </div>
 
                                 <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 midnight:text-gray-300">
+                                    <strong>Teacher:</strong> {item.teachers[0] ?? "Unknown"}
+                                </p>
+                                <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 midnight:text-gray-300">
                                     <strong>Due:</strong> {item.due}
                                 </p>
                             </a>

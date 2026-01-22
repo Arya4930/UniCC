@@ -193,6 +193,26 @@ async function ScrapeLMS(username: string, password: string): Promise<Assingment
 
                     const $ = cheerio.load(eventRes.data);
 
+                    const courseLink = $("ol.breadcrumb li.breadcrumb-item a")
+                        .first()
+                        .attr("href");
+
+                    let teachers: string[] = [];
+
+                    if (courseLink) {
+                        const courseId = new URL(courseLink).searchParams.get("id");
+                        const moduleId = new URL(ev.link).searchParams.get("id");
+
+                        if (courseId && moduleId) {
+                            const courseRes = await LMSClient.get(
+                                `/course/view.php?id=${courseId}`,
+                                { headers: { Cookie: loginCookies } }
+                            );
+
+                            teachers = extractTeacherForModule(courseRes.data, moduleId);
+                        }
+                    }
+
                     const courseCodeFull = $("ol.breadcrumb li.breadcrumb-item a")
                         .first()
                         .text()
@@ -218,7 +238,8 @@ async function ScrapeLMS(username: string, password: string): Promise<Assingment
                         day: dayData.day,
                         month: dayData.month,
                         year: dayData.year,
-                        url: ev.link
+                        url: ev.link,
+                        teachers
                     });
                 } catch (err: any) {
                     console.error("❌ Failed parsing:", ev.link, err.message);
@@ -283,4 +304,17 @@ async function fetchCalendarMonthHTML(sesskey: string, year: number, month: numb
         }
     );
     return res.data[0]?.data?.html || "";
+}
+
+function extractTeacherForModule(courseHTML: string, moduleId: string): string[] {
+    const $ = cheerio.load(courseHTML);
+
+    const moduleEl = $(`#module-${moduleId}`);
+    if (!moduleEl.length) return [];
+    const sectionEl = moduleEl.closest('li[id^="section-"]');
+    if (!sectionEl.length) return [];
+    const sectionTitle = sectionEl.find("h3.sectionname").first().text().trim();
+    if (!sectionTitle) return [];
+    const match = sectionTitle.match(/^(Dr\.?\s+[A-Za-z.\s]+)/i);
+    return match ? [(match[1] ?? "Unknown").trim()] : [sectionTitle];
 }
