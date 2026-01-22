@@ -17,6 +17,7 @@ import { useRef } from "react";
 import LeaveDisplay from "./Hostel/LeaveDisplay";
 import AllGradesDisplay from "./Exams/AllGradesDisplay";
 import { API_BASE } from "./Main";
+import MarksSubTab from "./Exams/MarksSubTab";
 
 export default function DashboardContent({
   activeTab,
@@ -379,7 +380,7 @@ export default function DashboardContent({
               activeSubTab={activeSubTab}
               setActiveSubTab={setActiveSubTab}
             />
-            {activeSubTab === "marks" && <MarksDisplay data={marksData} moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} />}
+            {activeSubTab === "marks" && <MarksSubTab data={marksData} moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} />}
             {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} handleScheduleFetch={handleScheduleFetch} />}
             {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} />}
           </div>

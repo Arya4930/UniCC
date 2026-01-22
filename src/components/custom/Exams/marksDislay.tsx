@@ -1,30 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import Image from "next/image";
-import NoContentFound from "../NoContentFound";
-import MoodleDisplay from "./moodleDisplay";
-import { MoodleUserPassForm } from "./moodleDisplay";
 
-export default function MarksDisplay({ data, moodleData, handleFetchMoodle, setMoodleData }) {
+export default function MarksDisplay({ data }) {
   const [openCourse, setOpenCourse] = useState(null);
 
   const toggleCourse = (slNo) => {
     setOpenCourse(openCourse === slNo ? null : slNo);
   };
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  useEffect(() => {
-    const moodle_username = localStorage.getItem("moodle_username");
-    const moodle_password = localStorage.getItem("moodle_password");
-
-    if (moodle_username) setUsername(moodle_username);
-    if (moodle_password) setPassword(moodle_password);
-  }, []);
-
-  if ((!data || !data.marks || data.marks.length === 0) && (!moodleData || moodleData.length === 0)) return <NoContentFound />
 
   if (!data || !data.marks || data.marks.length === 0) {
     return (
@@ -32,15 +17,7 @@ export default function MarksDisplay({ data, moodleData, handleFetchMoodle, setM
         <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
           Academic Marks
         </h1>
-        <p className="text-md font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-          Nothing here yet.
-        </p>
-        {(username && password) ? (
-          <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} />
-        ) : (
-          <MoodleUserPassForm handleFetchMoodle={handleFetchMoodle} />
-        )
-        }
+        <Image src="/chepu/chepu_says_sup.png" alt="No Data" width={300} height={300} className="mx-auto" />
       </div>
     );
   }
@@ -189,12 +166,6 @@ export default function MarksDisplay({ data, moodleData, handleFetchMoodle, setM
           );
         })}
       </div>
-      {(username && password) ? (
-        <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} />
-      ) : (
-        <MoodleUserPassForm handleFetchMoodle={handleFetchMoodle} />
-      )
-      }
     </div>
   );
 }

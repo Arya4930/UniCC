@@ -8,7 +8,8 @@ export default function MoodleDisplay({ moodleData, handleFetchMoodle, setMoodle
         return (
             <div className="text-xl mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
                 <h1 className="font-bold">
-                    Moodle/LMS Data <button onClick={() => handleFetchMoodle()} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                    Moodle/LMS Data 
+                    <button onClick={() => handleFetchMoodle()} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
                         <RefreshCcw className={`w-4 h-4`} />
                     </button>
                 </h1>
