@@ -189,6 +189,18 @@ async function ScrapeLMS(username, password) {
                         }
                     });
                     const $ = cheerio.load(eventRes.data);
+                    const courseLink = $("ol.breadcrumb li.breadcrumb-item a")
+                        .first()
+                        .attr("href");
+                    let teachers = [];
+                    if (courseLink) {
+                        const courseId = new URL(courseLink).searchParams.get("id");
+                        const moduleId = new URL(ev.link).searchParams.get("id");
+                        if (courseId && moduleId) {
+                            const courseRes = await LMSClient_1.default.get(`/course/view.php?id=${courseId}`, { headers: { Cookie: loginCookies } });
+                            teachers = extractTeacherForModule(courseRes.data, moduleId);
+                        }
+                    }
                     const courseCodeFull = $("ol.breadcrumb li.breadcrumb-item a")
                         .first()
                         .text()
@@ -211,7 +223,8 @@ async function ScrapeLMS(username, password) {
                         day: dayData.day,
                         month: dayData.month,
                         year: dayData.year,
-                        url: ev.link
+                        url: ev.link,
+                        teachers
                     });
                 }
                 catch (err) {
@@ -266,5 +279,19 @@ async function fetchCalendarMonthHTML(sesskey, year, month, cookies) {
         }
     });
     return res.data[0]?.data?.html || "";
+}
+function extractTeacherForModule(courseHTML, moduleId) {
+    const $ = cheerio.load(courseHTML);
+    const moduleEl = $(`#module-${moduleId}`);
+    if (!moduleEl.length)
+        return [];
+    const sectionEl = moduleEl.closest('li[id^="section-"]');
+    if (!sectionEl.length)
+        return [];
+    const sectionTitle = sectionEl.find("h3.sectionname").first().text().trim();
+    if (!sectionTitle)
+        return [];
+    const match = sectionTitle.match(/^(Dr\.?\s+[A-Za-z.\s]+)/i);
+    return match ? [(match[1] ?? "Unknown").trim()] : [sectionTitle];
 }
 //# sourceMappingURL=FetchLMSdata.js.map
