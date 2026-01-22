@@ -263,8 +263,19 @@ export default function DashboardContent({
       const moodleData = await moodleRes.json();
       setProgressBar((prev) => prev + 40);
 
-      setMoodleData(moodleData);
-      localStorage.setItem("moodleData", JSON.stringify(moodleData));
+      const prevData = JSON.parse(localStorage.getItem("moodleData") || "[]");
+
+      const mergedData = moodleData.map(item => {
+        const prevItem = prevData.find(p => p.url === item.url);
+        return {
+          ...item,
+          hidden: prevItem?.hidden ?? false,
+        };
+      });
+
+      setMoodleData(mergedData);
+      localStorage.setItem("moodleData", JSON.stringify(mergedData));
+
       setMessage((prev) => prev + "\n✅ Moodle Data fetched Successfully!");
       setProgressBar(100);
       setIsReloading(false);
