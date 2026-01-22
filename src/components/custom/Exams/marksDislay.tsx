@@ -6,7 +6,7 @@ import Image from "next/image";
 import NoContentFound from "../NoContentFound";
 import MoodleDisplay from "./moodleDisplay";
 
-export default function MarksDisplay({ data, moodleData, handleFetchMoodle }) {
+export default function MarksDisplay({ data, moodleData, handleFetchMoodle, setMoodleData }) {
   const [openCourse, setOpenCourse] = useState(null);
 
   const toggleCourse = (slNo) => {
@@ -17,7 +17,7 @@ export default function MarksDisplay({ data, moodleData, handleFetchMoodle }) {
     return (
       <>
         <NoContentFound />
-        <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} />
+        <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} />
       </>
     );
   }
@@ -166,7 +166,7 @@ export default function MarksDisplay({ data, moodleData, handleFetchMoodle }) {
           );
         })}
       </div>
-      <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} />
+      <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} />
     </div>
   );
 }
