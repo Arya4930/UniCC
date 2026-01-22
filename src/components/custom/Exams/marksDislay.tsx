@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import Image from "next/image";
 import NoContentFound from "../NoContentFound";
 import MoodleDisplay from "./moodleDisplay";
+import { MoodleUserPassForm } from "./moodleDisplay";
 
 export default function MarksDisplay({ data, moodleData, handleFetchMoodle, setMoodleData }) {
   const [openCourse, setOpenCourse] = useState(null);
@@ -13,12 +14,34 @@ export default function MarksDisplay({ data, moodleData, handleFetchMoodle, setM
     setOpenCourse(openCourse === slNo ? null : slNo);
   };
 
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  useEffect(() => {
+    const moodle_username = localStorage.getItem("moodle_username");
+    const moodle_password = localStorage.getItem("moodle_password");
+
+    if (moodle_username) setUsername(moodle_username);
+    if (moodle_password) setPassword(moodle_password);
+  }, []);
+
+  if ((!data || !data.marks || data.marks.length === 0) && (!moodleData || moodleData.length === 0)) return <NoContentFound />
+
   if (!data || !data.marks || data.marks.length === 0) {
     return (
-      <>
-        <NoContentFound />
-        <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} />
-      </>
+      <div className="p-2">
+        <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+          Academic Marks
+        </h1>
+        <p className="text-md font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+          Nothing here yet.
+        </p>
+        {(username && password) ? (
+          <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} />
+        ) : (
+          <MoodleUserPassForm handleFetchMoodle={handleFetchMoodle} />
+        )
+        }
+      </div>
     );
   }
 
@@ -166,7 +189,12 @@ export default function MarksDisplay({ data, moodleData, handleFetchMoodle, setM
           );
         })}
       </div>
-      <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} />
+      {(username && password) ? (
+        <MoodleDisplay moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} />
+      ) : (
+        <MoodleUserPassForm handleFetchMoodle={handleFetchMoodle} />
+      )
+      }
     </div>
   );
 }

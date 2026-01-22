@@ -249,7 +249,7 @@ export default function DashboardContent({
     }
   };
 
-  const handleFetchMoodle = async (username, pass) => {
+  const handleFetchMoodle = async (username = localStorage.getItem("moodle_username"), pass = localStorage.getItem("moodle_password")) => {
     setIsReloading(true);
     setProgressBar(20);
     setMessage("Fetching Moodle data...");

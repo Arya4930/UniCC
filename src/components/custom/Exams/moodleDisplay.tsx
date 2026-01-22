@@ -2,27 +2,13 @@ import { useEffect, useState } from "react";
 import { RefreshCcw, CheckCircle, AlertCircle, Clock, Eye, EyeOff, Undo2 } from "lucide-react";
 
 export default function MoodleDisplay({ moodleData, handleFetchMoodle, setMoodleData }) {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
     const [showHidden, setShowHidden] = useState(false);
-
-    useEffect(() => {
-        const moodle_username = localStorage.getItem("moodle_username");
-        const moodle_password = localStorage.getItem("moodle_password");
-
-        if (moodle_username) setUsername(moodle_username);
-        if (moodle_password) setPassword(moodle_password);
-    }, []);
-
-    if (!username || !password) {
-        return <MoodleUserPassForm handleFetchMoodle={handleFetchMoodle} />;
-    }
 
     if (!moodleData || moodleData.length === 0) {
         return (
             <div className="text-xl mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
                 <h1 className="font-bold">
-                    Moodle/LMS Data <button onClick={() => handleFetchMoodle(username, password)} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                    Moodle/LMS Data <button onClick={() => handleFetchMoodle()} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
                         <RefreshCcw className={`w-4 h-4`} />
                     </button>
                 </h1>
@@ -59,7 +45,7 @@ export default function MoodleDisplay({ moodleData, handleFetchMoodle, setMoodle
             <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
                 Moodle Upcoming Exams / Assignments
                 <button
-                    onClick={() => handleFetchMoodle(username, password)}
+                    onClick={() => handleFetchMoodle()}
                     className="ml-3 inline-flex items-center px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition"
                 >
                     <RefreshCcw size={16} />
@@ -150,7 +136,7 @@ export default function MoodleDisplay({ moodleData, handleFetchMoodle, setMoodle
     );
 }
 
-function MoodleUserPassForm({ handleFetchMoodle }) {
+export function MoodleUserPassForm({ handleFetchMoodle }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
