@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const RouteLog_1 = require("../lib/models/RouteLog");
+const VisitorLog_1 = require("../lib/models/VisitorLog");
 const sequelize_1 = require("sequelize");
 const router = (0, express_1.Router)();
 router.get("/", async (_req, res) => {
@@ -68,7 +69,7 @@ router.get("/", async (_req, res) => {
             order: [["hour", "ASC"]],
             raw: true,
         });
-        const uniqueUsersHourly = await RouteLog_1.RouteLog.findAll({
+        const uniqueUsersHourly = await VisitorLog_1.VisitorLog.findAll({
             where: whereClause,
             attributes: [
                 [
@@ -88,7 +89,7 @@ router.get("/", async (_req, res) => {
         const sources = [...new Set(sourceHourlyData.map((d) => d.source || "unknown"))];
         const uniqueUserHours = uniqueUsersHourly.map((d) => d.hour);
         const uniqueUserCounts = uniqueUsersHourly.map((d) => Number(d.uniqueUsers));
-        const firstSeenPerUser = await RouteLog_1.RouteLog.findAll({
+        const firstSeenPerUser = await VisitorLog_1.VisitorLog.findAll({
             attributes: [
                 [(0, sequelize_1.fn)("COALESCE", (0, sequelize_1.col)("hashedIP"), "unknown"), "user"],
                 [(0, sequelize_1.fn)("MIN", (0, sequelize_1.col)("createdAt")), "firstSeen"],
@@ -100,7 +101,7 @@ router.get("/", async (_req, res) => {
         firstSeenPerUser.forEach((row) => {
             firstSeenMap.set(row.user, new Date(row.firstSeen));
         });
-        const usersPerHour = await RouteLog_1.RouteLog.findAll({
+        const usersPerHour = await VisitorLog_1.VisitorLog.findAll({
             where: whereClause,
             attributes: [
                 [

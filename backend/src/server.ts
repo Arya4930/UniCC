@@ -18,7 +18,7 @@ import fetchLMSdata from "./routes/FetchLMSdata";
 import mail from "./routes/files/mail";
 import { verifyMailer } from "./lib/clients/nodemailer";
 import { initDB } from "./lib/clients/sequalize";
-import { routeLogger } from "./lib/routeLgger";
+import { routeLogger, visitorLogger } from "./lib/Logger";
 import stats from "./routes/stats";
 
 import { swaggerSpec } from "./lib/clients/swagger";
@@ -45,6 +45,7 @@ app.get("/", (req, res) => {
     res.send("Express TypeScript API is running!");
 });
 
+app.use("/api/status", visitorLogger);
 app.use("/api/status", statusRoutes);
 app.use("/stats", stats);
 app.use("/api/files/fetch", fetchFiles);

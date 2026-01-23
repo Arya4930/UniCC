@@ -22,7 +22,7 @@ const FetchLMSdata_1 = __importDefault(require("./routes/FetchLMSdata"));
 const mail_1 = __importDefault(require("./routes/files/mail"));
 const nodemailer_1 = require("./lib/clients/nodemailer");
 const sequalize_1 = require("./lib/clients/sequalize");
-const routeLgger_1 = require("./lib/routeLgger");
+const Logger_1 = require("./lib/Logger");
 const stats_1 = __importDefault(require("./routes/stats"));
 const swagger_1 = require("./lib/clients/swagger");
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
@@ -41,10 +41,11 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
     res.send("Express TypeScript API is running!");
 });
+app.use("/api/status", Logger_1.visitorLogger);
 app.use("/api/status", status_1.default);
 app.use("/stats", stats_1.default);
 app.use("/api/files/fetch", fetchFiles_1.default);
-app.use("/api", routeLgger_1.routeLogger);
+app.use("/api", Logger_1.routeLogger);
 app.use("/api/calendar", calendar_1.default);
 app.use("/api/login", login_1.default);
 app.use("/api/hostel", hostel_1.default);

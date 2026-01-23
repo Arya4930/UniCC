@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { RouteLog } from "./models/RouteLog";
+import { VisitorLog } from "./models/VisitorLog";
 import { maskIP } from "./mask";
 
 function getDailyUserId(req: Request) {
@@ -75,7 +76,6 @@ export async function routeLogger(
 
             let normalizedRoute = normalizeRoute(req.originalUrl);
             const sourceDomain = getSourceDomain(req);
-            const dailyUserId = getDailyUserId(req);
 
             if (!routes.includes(normalizedRoute)) {
                 normalizedRoute = "unknown"
@@ -84,6 +84,29 @@ export async function routeLogger(
             await RouteLog.create({
                 method: req.method,
                 route: normalizedRoute,
+                source: sourceDomain,
+            });
+        } catch (err) {
+            console.error("Route log failed:", err);
+        }
+    });
+
+    next();
+}
+
+export async function visitorLogger(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    res.on("finish", async () => {
+        try {
+            if (req.originalUrl === "/favicon.ico") return;
+
+            const sourceDomain = getSourceDomain(req);
+            const dailyUserId = getDailyUserId(req);
+
+            await VisitorLog.create({
                 source: sourceDomain,
                 hashedIP: dailyUserId,
             });

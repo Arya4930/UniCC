@@ -1,33 +1,28 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../clients/sequalize";
 
-export class RouteLog extends Model {
+export class VisitorLog extends Model {
   declare id: number;
-  declare method: string;
-  declare route: string;
-  declare source?: string;
+  declare source: string;
+  declare hashedIP: string;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }
 
-RouteLog.init(
+VisitorLog.init(
   {
-    method: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    route: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     source: {
       type: DataTypes.STRING,
-      allowNull: true,
-    }
+      allowNull: false,
+    },
+    hashedIP: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     sequelize,
-    tableName: "api_route_logs",
+    tableName: "visitor_logs",
     timestamps: true,
   }
 );

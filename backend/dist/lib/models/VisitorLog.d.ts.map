@@ -1,0 +1,1 @@
+{"version":3,"file":"VisitorLog.d.ts","sourceRoot":"","sources":["../../../src/lib/models/VisitorLog.ts"],"names":[],"mappings":"AAAA,OAAO,EAAa,KAAK,EAAE,MAAM,WAAW,CAAC;AAG7C,qBAAa,UAAW,SAAQ,KAAK;IAC3B,EAAE,EAAE,MAAM,CAAC;IACX,MAAM,EAAE,MAAM,CAAC;IACf,QAAQ,EAAE,MAAM,CAAC;IACzB,SAAiB,SAAS,EAAE,IAAI,CAAC;IACjC,SAAiB,SAAS,EAAE,IAAI,CAAC;CAClC"}

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { RouteLog } from "../lib/models/RouteLog";
+import { VisitorLog } from "../lib/models/VisitorLog";
 import { fn, col, Op } from "sequelize";
 
 const router = Router();
@@ -93,7 +94,7 @@ router.get("/", async (_req, res) => {
       raw: true,
     });
 
-    const uniqueUsersHourly = await RouteLog.findAll({
+    const uniqueUsersHourly = await VisitorLog.findAll({
       where: whereClause,
       attributes: [
         [
@@ -127,7 +128,7 @@ router.get("/", async (_req, res) => {
       Number(d.uniqueUsers)
     );
 
-    const firstSeenPerUser = await RouteLog.findAll({
+    const firstSeenPerUser = await VisitorLog.findAll({
       attributes: [
         [fn("COALESCE", col("hashedIP"), "unknown"), "user"],
         [fn("MIN", col("createdAt")), "firstSeen"],
@@ -142,7 +143,7 @@ router.get("/", async (_req, res) => {
       firstSeenMap.set(row.user, new Date(row.firstSeen));
     });
 
-    const usersPerHour = await RouteLog.findAll({
+    const usersPerHour = await VisitorLog.findAll({
       where: whereClause,
       attributes: [
         [

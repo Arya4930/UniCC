@@ -1,0 +1,98 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.routeLogger = routeLogger;
+exports.visitorLogger = visitorLogger;
+const RouteLog_1 = require("./models/RouteLog");
+const VisitorLog_1 = require("./models/VisitorLog");
+const mask_1 = require("./mask");
+function getDailyUserId(req) {
+    const ip = req.headers["x-forwarded-for"]?.toString().split(",")[0] ||
+        req.socket.remoteAddress ||
+        "unknown";
+    const ua = req.headers["user-agent"] || "unknown";
+    const day = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    return (0, mask_1.maskIP)(ip + ua + day);
+}
+function normalizeRoute(url) {
+    const path = url.split("?")[0] || "undefined";
+    if (path.startsWith("/api/files/")) {
+        const parts = path.split("/").filter(Boolean);
+        // parts example:
+        // ["api","files","download","userID","fileID"]
+        if (parts.length === 4) {
+            return `/api/files/${parts[2]}/:userID`;
+        }
+        if (parts.length === 5) {
+            return `/api/files/${parts[2]}/:userID/:fileID`;
+        }
+        return `/api/files/${parts[2]}`;
+    }
+    return path
+        // Mongo ObjectId / hashes
+        .replace(/[a-f0-9]{24}/gi, ":id")
+        // numeric IDs
+        .replace(/\b\d+\b/g, ":id")
+        // user IDs like 24BCE5274
+        .replace(/\b[A-Z]{2}\d{5,}\b/g, ":userID");
+}
+function getSourceDomain(req) {
+    const origin = req.headers.origin;
+    if (typeof origin === "string") {
+        try {
+            return new URL(origin).hostname;
+        }
+        catch { }
+    }
+    const referer = req.headers.referer;
+    if (typeof referer === "string") {
+        try {
+            return new URL(referer).hostname;
+        }
+        catch { }
+    }
+    return "unknown";
+}
+const routes = ["/api/calendar", "/api/login", "/api/hostel", "/api/grades", "/api/schedule", "/api/attendance",
+    "/api/all-grades", "/api/files/upload/:userID", "/api/files/delete/:userID/:fileID", "/api/files/download/:userID/:fileID",
+    "/api/lms-data", "/api/files/mail/send"];
+async function routeLogger(req, res, next) {
+    res.on("finish", async () => {
+        try {
+            if (req.originalUrl === "/favicon.ico")
+                return;
+            let normalizedRoute = normalizeRoute(req.originalUrl);
+            const sourceDomain = getSourceDomain(req);
+            if (!routes.includes(normalizedRoute)) {
+                normalizedRoute = "unknown";
+            }
+            await RouteLog_1.RouteLog.create({
+                method: req.method,
+                route: normalizedRoute,
+                source: sourceDomain,
+            });
+        }
+        catch (err) {
+            console.error("Route log failed:", err);
+        }
+    });
+    next();
+}
+async function visitorLogger(req, res, next) {
+    res.on("finish", async () => {
+        try {
+            if (req.originalUrl === "/favicon.ico")
+                return;
+            const sourceDomain = getSourceDomain(req);
+            const dailyUserId = getDailyUserId(req);
+            await VisitorLog_1.VisitorLog.create({
+                source: sourceDomain,
+                hashedIP: dailyUserId,
+            });
+        }
+        catch (err) {
+            console.error("Route log failed:", err);
+        }
+    });
+    next();
+}
+//# sourceMappingURL=Logger.js.map
