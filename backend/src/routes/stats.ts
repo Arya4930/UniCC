@@ -27,6 +27,7 @@ router.get("/", async (_req, res) => {
     }
 
     const whereClause = startDate ? { createdAt: { [Op.gte]: startDate } } : {};
+
     const hourlyData = await RouteLog.findAll({
       where: whereClause,
       attributes: [
@@ -46,7 +47,6 @@ router.get("/", async (_req, res) => {
       order: [["hour", "ASC"]],
       raw: true,
     });
-
 
     const hourLabels = hourlyData.map((d: any) => d.hour);
     const hourCounts = hourlyData.map((d: any) => Number(d.count));
@@ -161,29 +161,49 @@ router.get("/", async (_req, res) => {
       raw: true,
     });
 
-    const returningUsersByHour = new Map<string, Set<string>>();
+    const usersByHour = new Map<string, Set<string>>();
 
     usersPerHour.forEach((row: any) => {
       const hour = row.hour;
       const user = row.user;
 
-      const hourDate = new Date(hour + ":00");
-      const firstSeen = firstSeenMap.get(user);
+      if (!usersByHour.has(hour)) {
+        usersByHour.set(hour, new Set());
+      }
+      usersByHour.get(hour)!.add(user);
+    });
 
-      if (!firstSeen) return;
+    const firstSeenHourPerUser = new Map<string, string>();
 
-      // returning = first seen BEFORE this hour
-      if (firstSeen < hourDate) {
-        if (!returningUsersByHour.has(hour)) {
-          returningUsersByHour.set(hour, new Set());
+    usersPerHour.forEach((row: any) => {
+      const user = row.user;
+      const hour = row.hour;
+
+      if (!firstSeenHourPerUser.has(user)) {
+        firstSeenHourPerUser.set(user, hour);
+      } else {
+        const existing = firstSeenHourPerUser.get(user)!;
+        if (hour < existing) {
+          firstSeenHourPerUser.set(user, hour);
         }
-        returningUsersByHour.get(hour)!.add(user);
       }
     });
-    const returningUserCounts = uniqueUserHours.map(
-      hour => returningUsersByHour.get(hour)?.size || 0
-    );
 
+    const returningUserCounts = uniqueUserHours.map((hour) => {
+      const uniqueThisHour = usersByHour.get(hour)?.size || 0;
+      let newThisHour = 0;
+
+      const usersThisHour = usersByHour.get(hour) || new Set();
+
+      for (const user of usersThisHour) {
+        const firstHour = firstSeenHourPerUser.get(user);
+        if (firstHour === hour) {
+          newThisHour++;
+        }
+      }
+
+      return uniqueThisHour - newThisHour;
+    });
 
     const sourceColors = [
       "rgb(54, 162, 235)",
@@ -215,12 +235,9 @@ router.get("/", async (_req, res) => {
       };
     });
 
-
-    // Get unique routes and hours
     const routes = [...new Set(routeHourlyData.map((d: any) => d.route))];
     const allHours = [...new Set(routeHourlyData.map((d: any) => d.hour))].sort();
 
-    // Create datasets for each route
     const routeDatasets = routes.map((route, index) => {
       const colors = [
         'rgb(75, 192, 192)',
@@ -237,7 +254,6 @@ router.get("/", async (_req, res) => {
 
       const color = colors[index % colors.length] || 'rgb(100, 100, 100)';
 
-      // Fill in data for each hour
       const data = allHours.map(hour => {
         const entry: any = routeHourlyData.find(
           (d: any) => d.hour === hour && d.route === route
@@ -374,7 +390,6 @@ router.get("/", async (_req, res) => {
     "system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
   </script>
   <script>
-    // Total requests per hour
     new Chart(document.getElementById("hourChart"), {
       type: "line",
       data: {
@@ -412,7 +427,6 @@ router.get("/", async (_req, res) => {
       }
     });
     
-    // Requests per route per hour
     new Chart(document.getElementById("routeHourChart"), {
       type: "line",
       data: {
@@ -454,7 +468,6 @@ router.get("/", async (_req, res) => {
       }
     });
 
-    // Requests by source domain
 new Chart(document.getElementById("sourceChart"), {
   type: "line",
   data: {

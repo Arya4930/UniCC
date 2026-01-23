@@ -112,23 +112,41 @@ router.get("/", async (_req, res) => {
             group: ["hour", "user"],
             raw: true,
         });
-        const returningUsersByHour = new Map();
+        const usersByHour = new Map();
         usersPerHour.forEach((row) => {
             const hour = row.hour;
             const user = row.user;
-            const hourDate = new Date(hour + ":00");
-            const firstSeen = firstSeenMap.get(user);
-            if (!firstSeen)
-                return;
-            // returning = first seen BEFORE this hour
-            if (firstSeen < hourDate) {
-                if (!returningUsersByHour.has(hour)) {
-                    returningUsersByHour.set(hour, new Set());
+            if (!usersByHour.has(hour)) {
+                usersByHour.set(hour, new Set());
+            }
+            usersByHour.get(hour).add(user);
+        });
+        const firstSeenHourPerUser = new Map();
+        usersPerHour.forEach((row) => {
+            const user = row.user;
+            const hour = row.hour;
+            if (!firstSeenHourPerUser.has(user)) {
+                firstSeenHourPerUser.set(user, hour);
+            }
+            else {
+                const existing = firstSeenHourPerUser.get(user);
+                if (hour < existing) {
+                    firstSeenHourPerUser.set(user, hour);
                 }
-                returningUsersByHour.get(hour).add(user);
             }
         });
-        const returningUserCounts = uniqueUserHours.map(hour => returningUsersByHour.get(hour)?.size || 0);
+        const returningUserCounts = uniqueUserHours.map((hour) => {
+            const uniqueThisHour = usersByHour.get(hour)?.size || 0;
+            let newThisHour = 0;
+            const usersThisHour = usersByHour.get(hour) || new Set();
+            for (const user of usersThisHour) {
+                const firstHour = firstSeenHourPerUser.get(user);
+                if (firstHour === hour) {
+                    newThisHour++;
+                }
+            }
+            return uniqueThisHour - newThisHour;
+        });
         const sourceColors = [
             "rgb(54, 162, 235)",
             "rgb(255, 99, 132)",
@@ -153,10 +171,8 @@ router.get("/", async (_req, res) => {
                 fill: false,
             };
         });
-        // Get unique routes and hours
         const routes = [...new Set(routeHourlyData.map((d) => d.route))];
         const allHours = [...new Set(routeHourlyData.map((d) => d.hour))].sort();
-        // Create datasets for each route
         const routeDatasets = routes.map((route, index) => {
             const colors = [
                 'rgb(75, 192, 192)',
@@ -171,7 +187,6 @@ router.get("/", async (_req, res) => {
                 'rgb(99, 255, 132)',
             ];
             const color = colors[index % colors.length] || 'rgb(100, 100, 100)';
-            // Fill in data for each hour
             const data = allHours.map(hour => {
                 const entry = routeHourlyData.find((d) => d.hour === hour && d.route === route);
                 return entry ? Number(entry.count) : 0;
@@ -304,7 +319,6 @@ router.get("/", async (_req, res) => {
     "system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
   </script>
   <script>
-    // Total requests per hour
     new Chart(document.getElementById("hourChart"), {
       type: "line",
       data: {
@@ -342,7 +356,6 @@ router.get("/", async (_req, res) => {
       }
     });
     
-    // Requests per route per hour
     new Chart(document.getElementById("routeHourChart"), {
       type: "line",
       data: {
@@ -384,7 +397,6 @@ router.get("/", async (_req, res) => {
       }
     });
 
-    // Requests by source domain
 new Chart(document.getElementById("sourceChart"), {
   type: "line",
   data: {
