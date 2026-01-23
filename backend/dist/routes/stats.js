@@ -68,8 +68,44 @@ router.get("/", async (_req, res) => {
             order: [["hour", "ASC"]],
             raw: true,
         });
+        const uniqueUsersHourly = await RouteLog_1.RouteLog.findAll({
+            where: whereClause,
+            attributes: [
+                [
+                    (0, sequelize_1.fn)("strftime", "%Y-%m-%d %H:00", (0, sequelize_1.col)("createdAt"), "+5 hours", "+30 minutes"),
+                    "hour",
+                ],
+                [
+                    (0, sequelize_1.fn)("COUNT", (0, sequelize_1.fn)("DISTINCT", (0, sequelize_1.fn)("COALESCE", (0, sequelize_1.col)("hashedIP"), "unknown"))),
+                    "uniqueUsers",
+                ],
+            ],
+            group: ["hour"],
+            order: [["hour", "ASC"]],
+            raw: true,
+        });
+        const returningUsersHourly = await RouteLog_1.RouteLog.findAll({
+            where: whereClause,
+            attributes: [
+                [
+                    (0, sequelize_1.fn)("strftime", "%Y-%m-%d %H:00", (0, sequelize_1.col)("createdAt"), "+5 hours", "+30 minutes"),
+                    "hour",
+                ],
+                [
+                    (0, sequelize_1.fn)("COUNT", (0, sequelize_1.fn)("DISTINCT", (0, sequelize_1.fn)("COALESCE", (0, sequelize_1.col)("hashedIP"), "unknown"))),
+                    "returningUsers",
+                ],
+            ],
+            group: ["hour"],
+            having: (0, sequelize_1.fn)("MIN", (0, sequelize_1.col)("createdAt")),
+            order: [["hour", "ASC"]],
+            raw: true,
+        });
         const sourceHours = [...new Set(sourceHourlyData.map((d) => d.hour))].sort();
         const sources = [...new Set(sourceHourlyData.map((d) => d.source || "unknown"))];
+        const uniqueUserHours = uniqueUsersHourly.map((d) => d.hour);
+        const uniqueUserCounts = uniqueUsersHourly.map((d) => Number(d.uniqueUsers));
+        const returningUserCounts = returningUsersHourly.map((d) => Number(d.returningUsers));
         const sourceColors = [
             "rgb(54, 162, 235)",
             "rgb(255, 99, 132)",
@@ -228,8 +264,12 @@ router.get("/", async (_req, res) => {
     </div>
 
     <h2>Requests by Source Domain</h2>
-<div class="chart-container" style="height: 400px;">
-  <canvas id="sourceChart"></canvas>
+    <div class="chart-container" style="height: 400px;">
+      <canvas id="sourceChart"></canvas>
+      <h2>Users Over Time</h2>
+    <div class="chart-container">
+      <canvas id="userChart"></canvas>
+    </div>
 </div>
 
   </div>
@@ -377,6 +417,56 @@ new Chart(document.getElementById("sourceChart"), {
         window.location.search = params.toString();
       });
     });
+  </script>
+    <script>
+  new Chart(document.getElementById("userChart"), {
+    type: "line",
+    data: {
+      labels: ${JSON.stringify(uniqueUserHours)},
+      datasets: [
+        {
+          label: "Unique Users",
+          data: ${JSON.stringify(uniqueUserCounts)},
+          borderColor: "rgb(54, 162, 235)",
+          backgroundColor: "rgba(54, 162, 235, 0.2)",
+          borderWidth: 2,
+          tension: 0.3,
+          fill: true,
+        },
+        {
+          label: "Returning Users",
+          data: ${JSON.stringify(returningUserCounts)},
+          borderColor: "rgb(255, 99, 132)",
+          backgroundColor: "rgba(255, 99, 132, 0.2)",
+          borderWidth: 2,
+          tension: 0.3,
+          fill: true,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true },
+        tooltip: {
+          mode: "index",
+          intersect: false
+        }
+      },
+      interaction: {
+        mode: "nearest",
+        axis: "x",
+        intersect: false
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { precision: 0 }
+        }
+      }
+    }
+  });
   </script>
 </body>
 </html>

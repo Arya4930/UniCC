@@ -19,6 +19,10 @@ RouteLog.init({
         type: sequelize_1.DataTypes.STRING,
         allowNull: true,
     },
+    hashedIP: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: true,
+    },
 }, {
     sequelize: sequalize_1.sequelize,
     tableName: "api_route_logs",

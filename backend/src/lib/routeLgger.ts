@@ -1,5 +1,18 @@
 import { Request, Response, NextFunction } from "express";
 import { RouteLog } from "./models/RouteLog";
+import { maskIP } from "./mask";
+
+function getDailyUserId(req: Request) {
+    const ip =
+        req.headers["x-forwarded-for"]?.toString().split(",")[0] ||
+        req.socket.remoteAddress ||
+        "unknown";
+
+    const ua = req.headers["user-agent"] || "unknown";
+
+    const day = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    return maskIP(ip + ua + day);
+}
 
 function normalizeRoute(url: string) {
     const path = url.split("?")[0] || "undefined";
@@ -34,21 +47,21 @@ function getSourceDomain(req: Request): string {
     if (typeof origin === "string") {
         try {
             return new URL(origin).hostname;
-        } catch {}
+        } catch { }
     }
 
     const referer = req.headers.referer;
     if (typeof referer === "string") {
         try {
             return new URL(referer).hostname;
-        } catch {}
+        } catch { }
     }
 
     return "unknown";
 }
 
-const routes = ["/api/calendar", "/api/login", "/api/hostel", "/api/grades", "/api/schedule", "/api/attendance", 
-    "/api/all-grades", "/api/files/upload/:userID", "/api/files/delete/:userID/:fileID", "/api/files/download/:userID/:fileID", 
+const routes = ["/api/calendar", "/api/login", "/api/hostel", "/api/grades", "/api/schedule", "/api/attendance",
+    "/api/all-grades", "/api/files/upload/:userID", "/api/files/delete/:userID/:fileID", "/api/files/download/:userID/:fileID",
     "/api/lms-data", "/api/files/mail/send"];
 
 export async function routeLogger(
@@ -62,6 +75,7 @@ export async function routeLogger(
 
             let normalizedRoute = normalizeRoute(req.originalUrl);
             const sourceDomain = getSourceDomain(req);
+            const dailyUserId = getDailyUserId(req);
 
             if (!routes.includes(normalizedRoute)) {
                 normalizedRoute = "unknown"
@@ -71,6 +85,7 @@ export async function routeLogger(
                 method: req.method,
                 route: normalizedRoute,
                 source: sourceDomain,
+                hashedIP: dailyUserId,
             });
         } catch (err) {
             console.error("Route log failed:", err);

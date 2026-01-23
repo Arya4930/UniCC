@@ -2,6 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.routeLogger = routeLogger;
 const RouteLog_1 = require("./models/RouteLog");
+const mask_1 = require("./mask");
+function getDailyUserId(req) {
+    const ip = req.headers["x-forwarded-for"]?.toString().split(",")[0] ||
+        req.socket.remoteAddress ||
+        "unknown";
+    const ua = req.headers["user-agent"] || "unknown";
+    const day = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    return (0, mask_1.maskIP)(ip + ua + day);
+}
 function normalizeRoute(url) {
     const path = url.split("?")[0] || "undefined";
     if (path.startsWith("/api/files/")) {
@@ -51,6 +60,7 @@ async function routeLogger(req, res, next) {
                 return;
             let normalizedRoute = normalizeRoute(req.originalUrl);
             const sourceDomain = getSourceDomain(req);
+            const dailyUserId = getDailyUserId(req);
             if (!routes.includes(normalizedRoute)) {
                 normalizedRoute = "unknown";
             }
@@ -58,6 +68,7 @@ async function routeLogger(req, res, next) {
                 method: req.method,
                 route: normalizedRoute,
                 source: sourceDomain,
+                hashedIP: dailyUserId,
             });
         }
         catch (err) {

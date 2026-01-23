@@ -9,3 +9,10 @@ export function maskUserID(userID: string): string {
     .digest("hex")
     .substring(0, 16);
 }
+
+export function maskIP(ipAddress: string): string {
+  return createHmac("sha256", SALT)
+    .update(ipAddress)
+    .digest("hex")
+    .substring(0, 32);
+}

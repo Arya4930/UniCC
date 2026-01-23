@@ -6,6 +6,7 @@ export class RouteLog extends Model {
   declare method: string;
   declare route: string;
   declare source?: string;
+  declare hashedIP?: string;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }
@@ -21,6 +22,10 @@ RouteLog.init(
       allowNull: false,
     },
     source: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    hashedIP: {
       type: DataTypes.STRING,
       allowNull: true,
     },
