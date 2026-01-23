@@ -84,28 +84,51 @@ router.get("/", async (_req, res) => {
             order: [["hour", "ASC"]],
             raw: true,
         });
-        const returningUsersHourly = await RouteLog_1.RouteLog.findAll({
+        const sourceHours = [...new Set(sourceHourlyData.map((d) => d.hour))].sort();
+        const sources = [...new Set(sourceHourlyData.map((d) => d.source || "unknown"))];
+        const uniqueUserHours = uniqueUsersHourly.map((d) => d.hour);
+        const uniqueUserCounts = uniqueUsersHourly.map((d) => Number(d.uniqueUsers));
+        const firstSeenPerUser = await RouteLog_1.RouteLog.findAll({
+            attributes: [
+                [(0, sequelize_1.fn)("COALESCE", (0, sequelize_1.col)("hashedIP"), "unknown"), "user"],
+                [(0, sequelize_1.fn)("MIN", (0, sequelize_1.col)("createdAt")), "firstSeen"],
+            ],
+            group: ["user"],
+            raw: true,
+        });
+        const firstSeenMap = new Map();
+        firstSeenPerUser.forEach((row) => {
+            firstSeenMap.set(row.user, new Date(row.firstSeen));
+        });
+        const usersPerHour = await RouteLog_1.RouteLog.findAll({
             where: whereClause,
             attributes: [
                 [
                     (0, sequelize_1.fn)("strftime", "%Y-%m-%d %H:00", (0, sequelize_1.col)("createdAt"), "+5 hours", "+30 minutes"),
                     "hour",
                 ],
-                [
-                    (0, sequelize_1.fn)("COUNT", (0, sequelize_1.fn)("DISTINCT", (0, sequelize_1.fn)("COALESCE", (0, sequelize_1.col)("hashedIP"), "unknown"))),
-                    "returningUsers",
-                ],
+                [(0, sequelize_1.fn)("COALESCE", (0, sequelize_1.col)("hashedIP"), "unknown"), "user"],
             ],
-            group: ["hour"],
-            having: (0, sequelize_1.fn)("MIN", (0, sequelize_1.col)("createdAt")),
-            order: [["hour", "ASC"]],
+            group: ["hour", "user"],
             raw: true,
         });
-        const sourceHours = [...new Set(sourceHourlyData.map((d) => d.hour))].sort();
-        const sources = [...new Set(sourceHourlyData.map((d) => d.source || "unknown"))];
-        const uniqueUserHours = uniqueUsersHourly.map((d) => d.hour);
-        const uniqueUserCounts = uniqueUsersHourly.map((d) => Number(d.uniqueUsers));
-        const returningUserCounts = returningUsersHourly.map((d) => Number(d.returningUsers));
+        const returningUsersByHour = new Map();
+        usersPerHour.forEach((row) => {
+            const hour = row.hour;
+            const user = row.user;
+            const hourDate = new Date(hour + ":00");
+            const firstSeen = firstSeenMap.get(user);
+            if (!firstSeen)
+                return;
+            // returning = first seen BEFORE this hour
+            if (firstSeen < hourDate) {
+                if (!returningUsersByHour.has(hour)) {
+                    returningUsersByHour.set(hour, new Set());
+                }
+                returningUsersByHour.get(hour).add(user);
+            }
+        });
+        const returningUserCounts = uniqueUserHours.map(hour => returningUsersByHour.get(hour)?.size || 0);
         const sourceColors = [
             "rgb(54, 162, 235)",
             "rgb(255, 99, 132)",
@@ -193,6 +216,7 @@ router.get("/", async (_req, res) => {
     padding: 30px;
     border-radius: 12px;
     border: 1px solid var(--border);
+    height: fit-content;
   }
 
   h1 {
@@ -246,7 +270,6 @@ router.get("/", async (_req, res) => {
 <body>
   <div class="container">
     <div style="display:flex; gap:12px; margin-bottom:20px;">
-      <button class="range-btn" data-range="1h">Last 1 Hour</button>
       <button class="range-btn" data-range="24h">Last 24 Hours</button>
       <button class="range-btn" data-range="7d">Last 7 Days</button>
       <button class="range-btn" data-range="30d">Last 30 Days</button>
@@ -262,12 +285,12 @@ router.get("/", async (_req, res) => {
     <div class="chart-container" style="height: 500px;">
       <canvas id="routeHourChart"></canvas>
     </div>
-
     <h2>Requests by Source Domain</h2>
-    <div class="chart-container" style="height: 400px;">
+    <div class="chart-container" style="height: 500px;">
       <canvas id="sourceChart"></canvas>
-      <h2>Users Over Time</h2>
-    <div class="chart-container">
+    </div>
+    <h2>Users Over Time</h2>
+    <div class="chart-container" style="height: 500px;">
       <canvas id="userChart"></canvas>
     </div>
 </div>

@@ -119,7 +119,30 @@ router.get("/", async (_req, res) => {
       raw: true,
     });
 
-    const returningUsersHourly = await RouteLog.findAll({
+    const sourceHours = [...new Set(sourceHourlyData.map((d: any) => d.hour))].sort();
+    const sources = [...new Set(sourceHourlyData.map((d: any) => d.source || "unknown"))];
+
+    const uniqueUserHours = uniqueUsersHourly.map((d: any) => d.hour);
+    const uniqueUserCounts = uniqueUsersHourly.map((d: any) =>
+      Number(d.uniqueUsers)
+    );
+
+    const firstSeenPerUser = await RouteLog.findAll({
+      attributes: [
+        [fn("COALESCE", col("hashedIP"), "unknown"), "user"],
+        [fn("MIN", col("createdAt")), "firstSeen"],
+      ],
+      group: ["user"],
+      raw: true,
+    });
+
+    const firstSeenMap = new Map<string, Date>();
+
+    firstSeenPerUser.forEach((row: any) => {
+      firstSeenMap.set(row.user, new Date(row.firstSeen));
+    });
+
+    const usersPerHour = await RouteLog.findAll({
       where: whereClause,
       attributes: [
         [
@@ -132,33 +155,33 @@ router.get("/", async (_req, res) => {
           ),
           "hour",
         ],
-        [
-          fn(
-            "COUNT",
-            fn("DISTINCT", fn("COALESCE", col("hashedIP"), "unknown"))
-          ),
-          "returningUsers",
-        ],
+        [fn("COALESCE", col("hashedIP"), "unknown"), "user"],
       ],
-      group: ["hour"],
-      having: fn(
-        "MIN",
-        col("createdAt")
-      ),
-      order: [["hour", "ASC"]],
+      group: ["hour", "user"],
       raw: true,
     });
 
-    const sourceHours = [...new Set(sourceHourlyData.map((d: any) => d.hour))].sort();
-    const sources = [...new Set(sourceHourlyData.map((d: any) => d.source || "unknown"))];
+    const returningUsersByHour = new Map<string, Set<string>>();
 
-    const uniqueUserHours = uniqueUsersHourly.map((d: any) => d.hour);
-    const uniqueUserCounts = uniqueUsersHourly.map((d: any) =>
-      Number(d.uniqueUsers)
-    );
+    usersPerHour.forEach((row: any) => {
+      const hour = row.hour;
+      const user = row.user;
 
-    const returningUserCounts = returningUsersHourly.map((d: any) =>
-      Number(d.returningUsers)
+      const hourDate = new Date(hour + ":00");
+      const firstSeen = firstSeenMap.get(user);
+
+      if (!firstSeen) return;
+
+      // returning = first seen BEFORE this hour
+      if (firstSeen < hourDate) {
+        if (!returningUsersByHour.has(hour)) {
+          returningUsersByHour.set(hour, new Set());
+        }
+        returningUsersByHour.get(hour)!.add(user);
+      }
+    });
+    const returningUserCounts = uniqueUserHours.map(
+      hour => returningUsersByHour.get(hour)?.size || 0
     );
 
 
@@ -263,6 +286,7 @@ router.get("/", async (_req, res) => {
     padding: 30px;
     border-radius: 12px;
     border: 1px solid var(--border);
+    height: fit-content;
   }
 
   h1 {
@@ -316,7 +340,6 @@ router.get("/", async (_req, res) => {
 <body>
   <div class="container">
     <div style="display:flex; gap:12px; margin-bottom:20px;">
-      <button class="range-btn" data-range="1h">Last 1 Hour</button>
       <button class="range-btn" data-range="24h">Last 24 Hours</button>
       <button class="range-btn" data-range="7d">Last 7 Days</button>
       <button class="range-btn" data-range="30d">Last 30 Days</button>
@@ -332,12 +355,12 @@ router.get("/", async (_req, res) => {
     <div class="chart-container" style="height: 500px;">
       <canvas id="routeHourChart"></canvas>
     </div>
-
     <h2>Requests by Source Domain</h2>
-    <div class="chart-container" style="height: 400px;">
+    <div class="chart-container" style="height: 500px;">
       <canvas id="sourceChart"></canvas>
-      <h2>Users Over Time</h2>
-    <div class="chart-container">
+    </div>
+    <h2>Users Over Time</h2>
+    <div class="chart-container" style="height: 500px;">
       <canvas id="userChart"></canvas>
     </div>
 </div>
