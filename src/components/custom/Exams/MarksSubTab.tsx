@@ -15,8 +15,6 @@ export default function MarksSubTab({ data, moodleData, handleFetchMoodle, setMo
         if (moodle_password) setPassword(moodle_password);
     }, []);
 
-    if ((!data || !data.marks || data.marks.length === 0) && (moodleData && moodleData.length === 0)) return <NoContentFound />
-
     return (
         <>
             <MarksDisplay data={data} />
