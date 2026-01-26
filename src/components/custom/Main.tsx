@@ -510,6 +510,8 @@ export default function LoginPage() {
             handleLogin={handleLogin}
             moodleData={moodleData}
             setMoodleData={setMoodleData}
+            password={password}
+            setPassword={setPassword}
           />
         </>
       )}

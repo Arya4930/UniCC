@@ -11,7 +11,9 @@ export default function NavigationTabs({
   currSemesterID, 
   setCurrSemesterID, 
   handleLogin, 
-  setIsReloading
+  setIsReloading,
+  password,
+  setPassword
 }) {
   const [isSpinning, setIsSpinning] = useState(false);
   const [showSettingsPage, setShowSettingsPage] = useState<boolean>(false);
@@ -36,6 +38,8 @@ export default function NavigationTabs({
         handleLogin={handleLogin} 
         setIsReloading={setIsReloading}
         handleLogOutRequest={handleLogOutRequest}
+        password={password}
+        setPassword={setPassword}
       />}
       <button
         onClick={() => setShowSettingsPage(true)}

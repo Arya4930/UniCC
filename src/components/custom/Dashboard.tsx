@@ -62,7 +62,9 @@ export default function DashboardContent({
   setCurrSemesterID,
   handleLogin,
   moodleData,
-  setMoodleData
+  setMoodleData,
+  password,
+  setPassword
 }) {
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
@@ -303,6 +305,8 @@ export default function DashboardContent({
         setCurrSemesterID={setCurrSemesterID}
         handleLogin={handleLogin}
         setIsReloading={setIsReloading}
+        password={password}
+        setPassword={setPassword}
       />
 
       <div className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-screen text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
