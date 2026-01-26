@@ -7,7 +7,7 @@ const sequelize_1 = require("sequelize");
 const router = (0, express_1.Router)();
 router.get("/", async (_req, res) => {
     try {
-        const range = _req.query.range || "full";
+        const range = _req.query.range || "30d";
         let startDate = null;
         const now = new Date();
         switch (range) {
@@ -441,7 +441,7 @@ new Chart(document.getElementById("sourceChart"), {
   </script>
   <script>
     const params = new URLSearchParams(window.location.search);
-    const currentRange = params.get("range") || "full";
+    const currentRange = params.get("range") || "30d";
 
     document.querySelectorAll(".range-btn").forEach(btn => {
       if (btn.dataset.range === currentRange) {
