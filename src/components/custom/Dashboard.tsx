@@ -138,7 +138,9 @@ export default function DashboardContent({
       setIsReloading(false);
     } catch (err) {
       console.error(err);
-      setMessage("❌ All Grades fetch failed, check console.");
+      setMessage(
+        "❌ " + (err instanceof Error ? err.message : "All Grades fetch failed, check console.")
+      );
       setProgressBar(0);
     }
   };
@@ -172,7 +174,9 @@ export default function DashboardContent({
       setIsReloading(false);
     } catch (err) {
       console.error(err);
-      setMessage("❌ Calendar fetch failed, check console.");
+      setMessage(
+        "❌ " + (err instanceof Error ? err.message : "Calendar fetch failed, check console.")
+      );
       setProgressBar(0);
     }
   };
@@ -199,7 +203,9 @@ export default function DashboardContent({
       setIsReloading(false);
     } catch (err) {
       console.error(err);
-      setMessage("❌ Grades fetch failed, check console.");
+      setMessage(
+        "❌ " + (err instanceof Error ? err.message : "Grades fetch failed, check console.")
+      );
       setProgressBar(0);
     }
   };
@@ -223,7 +229,9 @@ export default function DashboardContent({
       setIsReloading(false);
     } catch (err) {
       console.error(err);
-      setMessage("❌ Hostel details fetch failed, check console.");
+      setMessage(
+        "❌ " + (err instanceof Error ? err.message : "Hostel details fetch failed, check console.")
+      );
       setProgressBar(0);
     }
   };
@@ -247,7 +255,9 @@ export default function DashboardContent({
       setIsReloading(false);
     } catch (err) {
       console.error(err);
-      setMessage("❌ Schedule fetch failed, check console.");
+      setMessage(
+        "❌ " + (err instanceof Error ? err.message : "Schedule fetch failed, check console.")
+      );
       setProgressBar(0);
     }
   };
@@ -284,7 +294,9 @@ export default function DashboardContent({
       setIsReloading(false);
     } catch (err) {
       console.error(err);
-      setMessage("❌ Moodle Data fetch failed, check console.");
+      setMessage(
+        "❌ " + (err instanceof Error ? err.message : "Moodle Data fetch failed, check console.")
+      );
       setProgressBar(0);
     }
   };

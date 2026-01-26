@@ -140,6 +140,8 @@ router.post("/", async (req: Request, res: Response) => {
             return res.status(401).json({ success: false, message: "Invalid Captcha" });
         } else if (/invalid\s*(user\s*name|login\s*id|user\s*id)\s*\/\s*password/i.test(dashboardHtml)) {
             return res.status(401).json({ success: false, message: "Invalid Username / Password" });
+        } else if (/months/i.test(dashboardHtml)) {
+            return res.status(401).json({ success: false, message: "Please visit VTOP and change your password, it has expired after the usual 3 month period"})
         }
 
         if (!isAuthorized) {

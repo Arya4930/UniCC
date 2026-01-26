@@ -7,7 +7,7 @@ const router = Router();
 
 router.get("/", async (_req, res) => {
   try {
-    const range = _req.query.range || "full" as string;
+    const range = _req.query.range || "30d" as string;
     let startDate: Date | null = null;
     const now = new Date();
 
@@ -510,7 +510,7 @@ new Chart(document.getElementById("sourceChart"), {
   </script>
   <script>
     const params = new URLSearchParams(window.location.search);
-    const currentRange = params.get("range") || "full";
+    const currentRange = params.get("range") || "30d";
 
     document.querySelectorAll(".range-btn").forEach(btn => {
       if (btn.dataset.range === currentRange) {

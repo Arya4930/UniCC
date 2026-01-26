@@ -286,7 +286,9 @@ export default function LoginPage() {
       return true;
     } catch (err) {
       console.error(err);
-      setMessage(prev => prev + "\n❌ Login failed, check console.");
+      setMessage(
+        "❌ " + (err instanceof Error ? err.message : "Login failed")
+      );
       setProgressBar(0);
       throw err;
     }
@@ -331,7 +333,9 @@ export default function LoginPage() {
       saveActivityTree(tree);
     } catch (err) {
       console.error(err);
-      setMessage(prev => prev + "\n❌ Login failed, check console.");
+      setMessage(
+        "❌ " + (err instanceof Error ? err.message : "Login failed")
+      );
       setProgressBar(0);
     }
   };
