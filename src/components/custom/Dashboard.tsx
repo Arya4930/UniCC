@@ -343,12 +343,6 @@ export default function DashboardContent({
 
             {activeAttendanceSubTab === "attendance" && (
               <>
-                {!calendarType && (
-                  <CalendarTabWrapper
-                    calendarType={calendarType}
-                    handleCalendarFetch={handleCalendarFetch}
-                  />
-                )}
                 <AttendanceTabs
                   data={attendanceData}
                   activeDay={activeDay}

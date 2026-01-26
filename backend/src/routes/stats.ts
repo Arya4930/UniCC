@@ -124,9 +124,7 @@ router.get("/", async (_req, res) => {
     const sources = [...new Set(sourceHourlyData.map((d: any) => d.source || "unknown"))];
 
     const uniqueUserHours = uniqueUsersHourly.map((d: any) => d.hour);
-    const uniqueUserCounts = uniqueUsersHourly.map((d: any) =>
-      Number(d.uniqueUsers)
-    );
+    const uniqueUserCounts = uniqueUsersHourly.map((d: any) => Number(d.uniqueUsers));
 
     const firstSeenPerUser = await VisitorLog.findAll({
       attributes: [
