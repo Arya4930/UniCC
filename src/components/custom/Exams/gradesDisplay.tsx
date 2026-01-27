@@ -1,6 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { BookOpen, RefreshCcw } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { RefreshCcw } from "lucide-react";
 import NoContentFound from "../NoContentFound";
 
 export default function GradesDisplay({ data, handleFetchGrades, marksData, attendance }) {
@@ -49,6 +48,10 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
 
   const Curriculum = data.curriculum.filter(
     c => !c.basketTitle.toLowerCase().includes("total credits")
+  );
+  let effectiveGrades = data.effectiveGrades || [];
+  effectiveGrades = effectiveGrades.filter(
+    eg => !isNaN(parseFloat(eg.creditsEarned))
   );
 
   const specialBaskets = ["Extra curricular activities", "HSM Elective", "Foreign Language"];
@@ -139,9 +142,6 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
           })()}
 
           <div className="space-y-4 border-b-2 pb-6">
-            <h3 className="font-semibold text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-              Curriculum
-            </h3>
             <div className="relative">
               <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[1px] bg-gray-300 dark:bg-gray-700 midnight:bg-gray-800 transform -translate-x-1/2" />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
@@ -193,7 +193,7 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
           </div>
 
           {specialCurriculum.length > 0 && (
-            <div className="space-y-4 pb-6">
+            <div className="space-y-4 border-b-2 pb-6">
               <h3 className="font-semibold text-gray-900 dark:text-gray-100 midnight:text-gray-100">
                 Basket
               </h3>
@@ -238,6 +238,43 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
                   </div>
                 );
               })}
+            </div>
+          )}
+
+          {effectiveGrades.length > 0 && (
+            <div className="mt-4">
+              <h4 className="font-semibold mb-3 text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+                Grades
+              </h4>
+
+              <div className="space-y-2 grid grid-cols-1 md:grid-cols-2 gap-x-10">
+                {effectiveGrades.map(
+                  ({ basketTitle, creditsEarned, distributionType, grade }, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between py-2 border-b
+                       text-gray-900 dark:text-gray-100 midnight:text-gray-100"
+                    >
+                      <div className="flex flex-col text-left">
+                        <span className="text-sm font-medium truncate max-w-[16rem]">
+                          {basketTitle || "Unknown"}
+                        </span>
+                        <span className="text-xs text-gray-500 dark:text-gray-300 midnight:text-gray-400">
+                          {distributionType || "—"}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3 text-sm font-semibold">
+                        <span>{grade || "—"}</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-300 midnight:text-gray-400">
+                          {Number.isFinite(Number(creditsEarned))
+                            ? `${Number(creditsEarned).toFixed(1)} cr`
+                            : "—"}
+                        </span>
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
             </div>
           )}
         </CardContent>
