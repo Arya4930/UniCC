@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Building2, Clock, ChevronDown, ChevronUp } from "lucide-react"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,12 @@ type RemainingClassDay = {
     type: string;
     events?: CalendarEvent[];
     fullDate: Date;
+};
+
+const normalize = (d: Date) => {
+    const x = new Date(d);
+    x.setHours(0, 0, 0, 0);
+    return x.getTime();
 };
 
 export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalendars, impDates }) {
@@ -81,6 +87,7 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
     }
     const [openDropdown, setOpenDropdown] = useState(null);
     const toggleDropdown = (key) => setOpenDropdown(openDropdown === key ? null : key);
+
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
             <div className="bg-gray-100 dark:bg-gray-800 midnight:bg-black rounded-2xl shadow-2xl p-5 w-[90%] max-w-md relative max-h-[90vh] overflow-hidden flex flex-col overflow-y-auto">
@@ -216,13 +223,28 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                                             className={`transition-all duration-300 ease-in-out ${openDropdown === key ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
                                                 } overflow-hidden`}
                                         >
-                                            <div className="px-3 pb-3 bg-gray-50 dark:bg-slate-800 midnight:bg-black rounded-b-lg">
+                                            <div className="px-3 pb-2 bg-gray-50 dark:bg-slate-800 midnight:bg-black rounded-b-lg">
                                                 <UpcomingClassesList
                                                     classes={data}
                                                     attendedClasses={a.attendedClasses}
                                                     totalClasses={a.totalClasses}
                                                     isLab={lab}
+                                                    impDates={impDates}
                                                 />
+                                                <div className="flex items-center justify-center gap-4 mt-3 text-xs font-medium text-gray-700 dark:text-gray-300 midnight:text-gray-300">
+                                                    <div className="flex items-center gap-1">
+                                                        <div className="w-4 h-4 border-2 border-dashed border-gray-500 rounded-sm"></div>
+                                                        <span>Attending</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-1">
+                                                        <div className="w-4 h-4 bg-red-500 rounded-sm"></div>
+                                                        <span>Not Attending</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-1">
+                                                        <div className="w-4 h-4 bg-gray-500 opacity-70 rounded-sm"></div>
+                                                        <span>Ignored</span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -352,8 +374,8 @@ export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calenda
     return remainingWorkingDays;
 }
 
-function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0, isLab = false }) {
-    const [notAttending, setNotAttending] = useState([]);
+function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0, isLab = false, impDates }) {
+    const [dayStates, setDayStates] = useState<Record<number, number>>({});
     const CLASS_WEIGHT = isLab ? 2 : 1;
 
     if (!classes || classes.length === 0) {
@@ -364,17 +386,57 @@ function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0, i
         );
     }
 
-    const toggleAttendance = (index) => {
-        setNotAttending((prev) =>
-            prev.includes(index)
-                ? prev.filter((i) => i !== index)
-                : [...prev, index]
-        );
+    const lockDates = useMemo(() => {
+        const locked = new Set<number>();
+        if (!classes || classes.length === 0) return locked;
+
+        const isThuOrFri = (d: Date) => {
+            const day = d.getDay();
+            return day === 4 || day === 5;
+        };
+
+        const lastTwo = classes.slice(-2);
+
+        lastTwo.forEach(day => {
+            const d = day.fullDate;
+            if (isThuOrFri(d)) {
+                locked.add(normalize(d));
+            }
+        });
+
+        return locked;
+    }, [classes]);
+
+
+    const toggleAttendance = (time: number) => {
+        setDayStates(prev => {
+            const effectiveState =
+                prev[time] !== undefined
+                    ? prev[time]
+                    : lockDates.has(time)
+                        ? 2
+                        : 0;
+
+            const nextState = (effectiveState + 1) % 3;
+
+            return { ...prev, [time]: nextState };
+        });
     };
 
-    const upcomingCount = classes.length * CLASS_WEIGHT;
-    const missedCount = notAttending.length * CLASS_WEIGHT;
-    const attendCount = upcomingCount - missedCount;
+    let attending = 0;
+    let missed = 0;
+
+    classes.forEach(day => {
+        const time = normalize(day.fullDate);
+        const state = getEffectiveState(time, dayStates, lockDates);
+
+        if (state === 0) attending += CLASS_WEIGHT;
+        if (state === 1) missed += CLASS_WEIGHT;
+    });
+
+    const upcomingCount = (attending + missed);
+    const attendCount = attending;
+    const missedCount = missed;
 
     const predictedAttended = attendedClasses + attendCount;
     const predictedTotal = totalClasses + upcomingCount;
@@ -399,25 +461,37 @@ function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0, i
 
             <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 text-xs">
                 {classes.map((day, i) => {
+                    const time = normalize(day.fullDate);
+
+                    const state =
+                        dayStates[time] !== undefined
+                            ? dayStates[time]
+                            : lockDates.has(time)
+                                ? 2
+                                : 0;
+
                     const d = new Date(day.fullDate);
                     const dateStr = d.toLocaleDateString("en-IN", {
                         day: "numeric",
                         month: "short",
                     });
                     const weekday = d.toLocaleDateString("en-IN", { weekday: "short" });
-                    const isSkipped = notAttending.includes(i);
+                    const isSkipped = state === 1;
+                    const isIgnored = state === 2;
 
                     return (
                         <div
                             key={i}
-                            onClick={() => toggleAttendance(i)}
+                            onClick={() => toggleAttendance(time)}
                             className={`flex flex-col items-center justify-center 
                           rounded-lg border p-2 shadow-sm 
                           cursor-pointer select-none transform-gpu
                           transition-all duration-200 ease-in-out
                           ${isSkipped
-                                    ? "bg-red-100 dark:bg-red-900/40 midnight:bg-red-950 border-red-300 dark:border-red-700 midnight:border-red-800 scale-[0.98]"
-                                    : "bg-white dark:bg-slate-900 midnight:bg-gray-950 border-gray-200 dark:border-gray-700 midnight:border-gray-800 hover:scale-[1.02] hover:shadow-md"
+                                    ? "bg-red-100 dark:bg-red-900/40 midnight:bg-red-950 ..."
+                                    : isIgnored
+                                        ? "bg-gray-200 dark:bg-gray-500 midnight:bg-gray-700 ..."
+                                        : "bg-white dark:bg-slate-900 midnight:bg-gray-950 ..."
                                 }`}
                         >
                             <span
@@ -442,4 +516,14 @@ function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0, i
             </div>
         </div>
     );
+}
+
+function getEffectiveState(
+    time: number,
+    dateStates: Record<number, number>,
+    attendanceLockDates?: Set<number>
+): number {
+    if (dateStates[time] !== undefined) return dateStates[time];
+    if (attendanceLockDates?.has(time)) return 2; // default ignored
+    return 0; // default attending
 }

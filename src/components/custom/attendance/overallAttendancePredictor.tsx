@@ -87,13 +87,48 @@ export default function OverallAttendancePredictor({
     const time = date.getTime();
 
     setDateStates((prev) => {
-      const currentState = prev[time] ?? 0;
-      const nextState = (currentState + 1) % 3;
+      const effectiveState =
+        prev[time] !== undefined
+          ? prev[time]
+          : attendanceLockDates.has(time)
+            ? 2
+            : 0;
+
+      const nextState = (effectiveState + 1) % 3;
+
       return { ...prev, [time]: nextState };
     });
   };
 
   const resetSelected = () => setDateStates({});
+
+  const attendanceLockDates = useMemo(() => {
+    if (!cutoffDate || mode === "LID") return new Set<number>();
+
+    const normalize = (d: Date) => {
+      const x = new Date(d);
+      x.setHours(0, 0, 0, 0);
+      return x.getTime();
+    };
+
+    const isThuOrFri = (d: Date) => {
+      const day = d.getDay();
+      return day === 4 || day === 5;
+    };
+
+    const locked = new Set<number>();
+
+    const d1 = new Date(cutoffDate);
+    d1.setDate(d1.getDate() - 2);
+
+    const d2 = new Date(cutoffDate);
+    d2.setDate(d2.getDate() - 1);
+
+    if (isThuOrFri(d1)) locked.add(normalize(d1));
+    if (isThuOrFri(d2)) locked.add(normalize(d2));
+
+    return locked;
+  }, [cutoffDate, mode]);
 
   const predictions = useMemo(() => {
     return attendanceData
@@ -118,19 +153,21 @@ export default function OverallAttendancePredictor({
           (d) => !effectiveCutoff || d.date <= effectiveCutoff
         );
 
-        const { futureCount, ignoredCount } = countFutureClassesForCourse(
+        const { futureCount } = countFutureClassesForCourse(
           c.courseCode,
           dayCardsMap,
           filteredDays,
           dateStates,
-          effectiveCutoff
+          effectiveCutoff,
+          attendanceLockDates
         );
         const missed = countMissedClassesForCourse(
           c.courseCode,
           dayCardsMap,
           dateStates,
           filteredDays,
-          cutoffDate
+          cutoffDate,
+          attendanceLockDates
         );
 
         const effectiveFuture = isLab ? futureCount * 2 : futureCount;
@@ -225,11 +262,17 @@ export default function OverallAttendancePredictor({
 
       <div className="grid grid-cols-5 gap-2 mb-5">
         {visibleDays.map((d, i) => {
-          const state = dateStates[d.date.getTime()] ?? 0;
+          const time = d.date.getTime();
+          const state =
+            dateStates[time] !== undefined
+              ? dateStates[time]
+              : attendanceLockDates.has(time)
+                ? 2
+                : 0;
+
           const formatted = d.date.getDate();
           const weekday = d.date.toLocaleDateString("en-US", { weekday: "short" });
           const isToday = d.date.toDateString() === new Date().toDateString();
-
           return (
             <div
               key={i}
@@ -311,7 +354,7 @@ export default function OverallAttendancePredictor({
   );
 }
 
-function countFutureClassesForCourse(courseCode, dayCardsMap, allWorkingDays, dateStates, cutoffDate) {
+function countFutureClassesForCourse(courseCode, dayCardsMap, allWorkingDays, dateStates, cutoffDate, attendanceLockDates) {
   if (!courseCode || !dayCardsMap || !Array.isArray(allWorkingDays))
     return { futureCount: 0, ignoredCount: 0 };
 
@@ -360,17 +403,6 @@ function countFutureClassesForCourse(courseCode, dayCardsMap, allWorkingDays, da
     effectiveMap.set(ymd(d.date), effectiveDay);
   }
 
-  let ignoredCount = 0;
-
-  for (const [timestamp, state] of Object.entries(dateStates || {})) {
-    const s = new Date(parseInt(timestamp));
-    if (cutoffDate && s > cutoffDate) continue;
-    const key = ymd(s);
-    const eff = effectiveMap.get(key);
-    if (!eff) continue;
-    if (state === 2 && subjectDaysShort.includes(eff)) ignoredCount++;
-  }
-
   const remainingWorkingDays = allWorkingDays.filter((d) => {
     if (!d || !d.date || isNaN(d.date.getTime?.())) return false;
     if (cutoffDate && d.date > cutoffDate) return false;
@@ -391,12 +423,23 @@ function countFutureClassesForCourse(courseCode, dayCardsMap, allWorkingDays, da
       }
     }
 
-    return subjectDaysShort.includes(effectiveDay);
+    const time = d.date.getTime();
+
+    const effectiveState =
+      dateStates[time] !== undefined
+        ? dateStates[time]
+        : attendanceLockDates?.has(time)
+          ? 2
+          : 0;
+
+    return (
+      subjectDaysShort.includes(effectiveDay) &&
+      effectiveState !== 2
+    );
+
   });
 
-  const futureCount = Math.max(remainingWorkingDays.length - ignoredCount, 0);
-
-  return { futureCount, ignoredCount };
+  return { futureCount: remainingWorkingDays.length };
 }
 
 function countMissedClassesForCourse(
@@ -404,7 +447,8 @@ function countMissedClassesForCourse(
   dayCardsMap,
   dateStates,
   allWorkingDays,
-  cutoffDate
+  cutoffDate,
+  attendanceLockDates
 ) {
   if (!courseCode || !dayCardsMap || typeof dateStates !== "object") return 0;
 
@@ -462,7 +506,18 @@ function countMissedClassesForCourse(
     if (!eff) continue;
     if (cutoffDate && s > cutoffDate) continue;
 
-    if (state === 1 && subjectDaysShort.includes(eff)) missed++;
+    const time = s.getTime();
+
+    const effectiveState =
+      dateStates[time] !== undefined
+        ? dateStates[time]
+        : attendanceLockDates?.has(time)
+          ? 2
+          : 0;
+
+    if (effectiveState === 1 && subjectDaysShort.includes(eff)) {
+      missed++;
+    }
   }
   return missed;
 }
