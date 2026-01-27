@@ -91,7 +91,7 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
                     >
                         Change Password{" "}
                         <span className="text-xs text-gray-800 dark:text-gray-600 midnight:text-gray-500">
-                            ( Inside UniCC )
+                            (Inside UniCC)
                         </span>
                     </label>
 
