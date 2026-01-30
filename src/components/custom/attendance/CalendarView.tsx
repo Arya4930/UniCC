@@ -18,7 +18,8 @@ const CALENDAR_TYPES = {
 const HOLIDAY_KEYWORDS = [
     "holiday", "pooja", "puja", "ayudha", "diwali", "pongal", "eid", "christmas", "good friday",
     "independence", "republic", "onam", "holi", "ramadan", "ganesh", "maha shivaratri", "vesak",
-    "vacation", "term end", "no instructional", "noinstructional", "vinayakar chathurthi", "gandhi jayanthi"
+    "vacation", "term end", "no instructional", "noinstructional", "vinayakar chathurthi", "gandhi jayanthi",
+    "thaipoosam", "telugu", "tamil", "ambedkar"
 ];
 
 function normalize(str = "") {
