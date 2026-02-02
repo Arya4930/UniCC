@@ -9,7 +9,8 @@ const Users_1 = __importDefault(require("../../lib/models/Users"));
 const mask_1 = require("../../lib/mask");
 const router = express_1.default.Router();
 router.post("/", async (req, res) => {
-    const { UserID, title, message } = req.body;
+    const { UserID, message } = req.body;
+    const title = "Testing Notification";
     const maskedID = (0, mask_1.maskUserID)(UserID?.toUpperCase() || "");
     const user = await Users_1.default.findOne({ UserID: maskedID });
     if (!user)

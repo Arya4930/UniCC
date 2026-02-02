@@ -7,7 +7,8 @@ import { maskUserID } from '../../lib/mask';
 const router: Router = express.Router();
 
 router.post("/", async (req, res) => {
-    const { UserID, title, message } = req.body;
+    const { UserID, message } = req.body;
+    const title = "Testing Notification";
 
     const maskedID = maskUserID(UserID?.toUpperCase() || "");
 
