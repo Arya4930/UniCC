@@ -69,6 +69,21 @@ router.get("/", async (_req, res) => {
             order: [["hour", "ASC"]],
             raw: true,
         });
+        const globalFirstSeen = await VisitorLog_1.VisitorLog.findAll({
+            attributes: [
+                [(0, sequelize_1.fn)("COALESCE", (0, sequelize_1.col)("hashedIP"), "unknown"), "user"],
+                [
+                    (0, sequelize_1.fn)("strftime", "%Y-%m-%d %H:00", (0, sequelize_1.fn)("MIN", (0, sequelize_1.col)("createdAt")), "+5 hours", "+30 minutes"),
+                    "firstHour",
+                ],
+            ],
+            group: ["user"],
+            raw: true,
+        });
+        const firstSeenHourPerUser = new Map();
+        globalFirstSeen.forEach((row) => {
+            firstSeenHourPerUser.set(row.user, row.firstHour);
+        });
         const uniqueUsersHourly = await VisitorLog_1.VisitorLog.findAll({
             where: whereClause,
             attributes: [
@@ -89,18 +104,6 @@ router.get("/", async (_req, res) => {
         const sources = [...new Set(sourceHourlyData.map((d) => d.source || "unknown"))];
         const uniqueUserHours = uniqueUsersHourly.map((d) => d.hour);
         const uniqueUserCounts = uniqueUsersHourly.map((d) => Number(d.uniqueUsers));
-        const firstSeenPerUser = await VisitorLog_1.VisitorLog.findAll({
-            attributes: [
-                [(0, sequelize_1.fn)("COALESCE", (0, sequelize_1.col)("hashedIP"), "unknown"), "user"],
-                [(0, sequelize_1.fn)("MIN", (0, sequelize_1.col)("createdAt")), "firstSeen"],
-            ],
-            group: ["user"],
-            raw: true,
-        });
-        const firstSeenMap = new Map();
-        firstSeenPerUser.forEach((row) => {
-            firstSeenMap.set(row.user, new Date(row.firstSeen));
-        });
         const usersPerHour = await VisitorLog_1.VisitorLog.findAll({
             where: whereClause,
             attributes: [
@@ -122,32 +125,44 @@ router.get("/", async (_req, res) => {
             }
             usersByHour.get(hour).add(user);
         });
-        const firstSeenHourPerUser = new Map();
+        const newUserCounts = [];
+        const returningUserCounts = [];
+        const sortedHours = [...uniqueUserHours].sort();
+        sortedHours.forEach((hour) => {
+            const usersThisHour = usersByHour.get(hour) || new Set();
+            let newUsers = 0;
+            let returningUsers = 0;
+            for (const user of usersThisHour) {
+                const firstHour = firstSeenHourPerUser.get(user);
+                if (!firstHour)
+                    continue;
+                if (firstHour === hour) {
+                    newUsers++;
+                }
+                else if (firstHour < hour) {
+                    returningUsers++;
+                }
+            }
+            newUserCounts.push(newUsers);
+            returningUserCounts.push(returningUsers);
+        });
+        let totalNewUsers = 0;
+        let totalReturningUsers = 0;
+        const seenUsers = new Set();
+        firstSeenHourPerUser.forEach((_firstHour, user) => {
+            seenUsers.add(user);
+        });
         usersPerHour.forEach((row) => {
             const user = row.user;
             const hour = row.hour;
-            if (!firstSeenHourPerUser.has(user)) {
-                firstSeenHourPerUser.set(user, hour);
-            }
-            else {
-                const existing = firstSeenHourPerUser.get(user);
-                if (hour < existing) {
-                    firstSeenHourPerUser.set(user, hour);
-                }
+            const firstHour = firstSeenHourPerUser.get(user);
+            if (!firstHour)
+                return;
+            if (hour !== firstHour) {
+                totalReturningUsers++;
             }
         });
-        const returningUserCounts = uniqueUserHours.map((hour) => {
-            const uniqueThisHour = usersByHour.get(hour)?.size || 0;
-            let newThisHour = 0;
-            const usersThisHour = usersByHour.get(hour) || new Set();
-            for (const user of usersThisHour) {
-                const firstHour = firstSeenHourPerUser.get(user);
-                if (firstHour === hour) {
-                    newThisHour++;
-                }
-            }
-            return uniqueThisHour - newThisHour;
-        });
+        totalNewUsers = seenUsers.size - totalReturningUsers;
         const sourceColors = [
             "rgb(54, 162, 235)",
             "rgb(255, 99, 132)",
@@ -306,6 +321,16 @@ router.get("/", async (_req, res) => {
       <canvas id="sourceChart"></canvas>
     </div>
     <h2>Users Over Time</h2>
+    <div style="display:flex; gap:20px; margin-bottom:30px;">
+      <div style="background:#11141b;padding:16px;border-radius:10px;border:1px solid var(--border);">
+        <strong>New Users</strong><br/>
+        ${totalNewUsers}
+      </div>
+      <div style="background:#11141b;padding:16px;border-radius:10px;border:1px solid var(--border);">
+        <strong>Returning Users</strong><br/>
+        ${totalReturningUsers}
+      </div>
+    </div>
     <div class="chart-container" style="height: 500px;">
       <canvas id="userChart"></canvas>
     </div>
@@ -458,7 +483,7 @@ new Chart(document.getElementById("sourceChart"), {
   new Chart(document.getElementById("userChart"), {
     type: "line",
     data: {
-      labels: ${JSON.stringify(uniqueUserHours)},
+      labels: ${JSON.stringify(sortedHours)},
       datasets: [
         {
           label: "Unique Users",

@@ -18,6 +18,7 @@ import LeaveDisplay from "./Hostel/LeaveDisplay";
 import AllGradesDisplay from "./Exams/AllGradesDisplay";
 import { API_BASE } from "./Main";
 import MarksSubTab from "./Exams/MarksSubTab";
+import ScheduleSubTab from "./Exams/ScheduleSubTab";
 
 export default function DashboardContent({
   activeTab,
@@ -64,7 +65,9 @@ export default function DashboardContent({
   moodleData,
   setMoodleData,
   password,
-  setPassword
+  setPassword,
+  vitolData,
+  setVitolData
 }) {
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
@@ -301,6 +304,35 @@ export default function DashboardContent({
     }
   };
 
+  const handleFetchVitol = async (username = localStorage.getItem("vitol_username"), pass = localStorage.getItem("vitol_password"), vitolSite = localStorage.getItem("vitol_site")) => {
+    setIsReloading(true);
+    setProgressBar(20);
+    setMessage("Fetching Vitol data...");
+    try {
+      const vitolRes = await fetch(`${API_BASE}/api/vitol-data`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, pass, vitolSite }),
+      });
+
+      const vitolData = await vitolRes.json();
+      setProgressBar((prev) => prev + 40);
+
+      setVitolData(vitolData);
+      localStorage.setItem("vitolData", JSON.stringify(vitolData));
+
+      setMessage((prev) => prev + "\n✅ Vitol Data fetched Successfully!");
+      setProgressBar(100);
+      setIsReloading(false);
+    } catch (err) {
+      console.error(err);
+      setMessage(
+        "❌ " + (err instanceof Error ? err.message : "Vitol Data fetch failed, check console.")
+      );
+      setProgressBar(0);
+    }
+  };
+
   return (
     <div
       className="w-full max-w-md md:max-w-full mx-auto overflow-hidden"
@@ -391,7 +423,7 @@ export default function DashboardContent({
               setActiveSubTab={setActiveSubTab}
             />
             {activeSubTab === "marks" && <MarksSubTab data={marksData} moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} />}
-            {activeSubTab === "schedule" && <ScheduleDisplay data={ScheduleData} handleScheduleFetch={handleScheduleFetch} />}
+            {activeSubTab === "schedule" && <ScheduleSubTab data={ScheduleData} handleScheduleFetch={handleScheduleFetch} vitolData={vitolData} handleFetchVitol={handleFetchVitol} setVitolData={setVitolData} />}
             {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} />}
           </div>
         )}

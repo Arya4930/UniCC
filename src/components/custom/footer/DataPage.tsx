@@ -18,7 +18,7 @@ interface DataPageProps {
 
 function LocalStorageItem({ storageKey, value, onDelete }: LocalStorageItemProps) {
     const [showValue, setShowValue] = useState<boolean>(
-        storageKey !== "username" && storageKey !== "password" && storageKey !== "moodle_username" && storageKey !== "moodle_password"
+        storageKey.includes("password") || storageKey.includes("username") ? false : true
     );
     const [expanded, setExpanded] = useState<boolean>(false);
     const [copied, setCopied] = useState<boolean>(false);

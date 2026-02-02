@@ -41,6 +41,14 @@ const FileSchema = new mongoose_1.Schema({
     size: { type: Number, required: true },
     expiresAt: { type: Date, required: true }
 }, { _id: false });
+const PushSubscriptionSchema = new mongoose_1.Schema({
+    endpoint: { type: String, required: true },
+    keys: {
+        p256dh: { type: String, required: true },
+        auth: { type: String, required: true },
+    },
+    createdAt: { type: Date, default: Date.now },
+}, { _id: false });
 const UserSchema = new mongoose_1.Schema({
     UserID: {
         type: String,
@@ -51,9 +59,14 @@ const UserSchema = new mongoose_1.Schema({
         type: [FileSchema],
         default: [],
     },
+    pushSubscriptions: {
+        type: [PushSubscriptionSchema],
+        default: [],
+    },
 }, {
     timestamps: true,
 });
-const User = mongoose_1.default.models.User || (0, mongoose_1.model)('User', UserSchema);
+const User = mongoose_1.default.models.User ||
+    (0, mongoose_1.model)('User', UserSchema);
 exports.default = User;
 //# sourceMappingURL=Users.js.map

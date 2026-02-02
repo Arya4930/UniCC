@@ -15,11 +15,17 @@ import fetchFiles from "./routes/files/fetchFiles";
 import deleteFile from "./routes/files/deleteFile";
 import downloadFile from "./routes/files/downloadFile";
 import fetchLMSdata from "./routes/FetchLMSdata";
+import fetchVitoldata from "./routes/FetchVitoldata";
+import subscribe from "./routes/notifications/subscribe";
+import unsubscribe from "./routes/notifications/unsubscribe";
+import send from "./routes/notifications/send";
 import mail from "./routes/files/mail";
 import { verifyMailer } from "./lib/clients/nodemailer";
 import { initDB } from "./lib/clients/sequalize";
 import { routeLogger, visitorLogger } from "./lib/Logger";
 import stats from "./routes/stats";
+import webpush from 'web-push'
+import { vitolReminder } from "./lib/VitolReminder";
 
 import { swaggerSpec } from "./lib/clients/swagger";
 import swaggerUi from "swagger-ui-express";
@@ -63,13 +69,24 @@ app.use("/api/files/upload", UploadFile);
 app.use("/api/files/delete", deleteFile);
 app.use("/api/files/download", downloadFile);
 app.use("/api/lms-data", fetchLMSdata);
+app.use("/api/vitol-data", fetchVitoldata);
+app.use("/api/notifications/subscribe", subscribe);
+app.use("/api/notifications/unsubscribe", unsubscribe);
+app.use("/api/notifications/send", send);
 app.use("/api/files/mail/send", mail);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const PORT = process.env.PORT || 3000;
+webpush.setVapidDetails(
+    process.env.VAPID_SUBJECT!,
+    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+    process.env.VAPID_PRIVATE_KEY!
+)
+
 app.listen(PORT, async () => {
     console.log(`🚀 Express TS server running on port ${PORT}`);
     await initDB();
     startCleanupCron();
     await verifyMailer();
+    vitolReminder();
 });

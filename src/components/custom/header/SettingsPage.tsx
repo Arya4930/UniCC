@@ -8,6 +8,7 @@ import { DropdownToggle } from "../toggle";
 import HeatMapComponent from "./HeatMapComponent";
 import Links from "./Links";
 import Files from "./Files";
+import PushNotificationManager from "@/app/pushNotificationManager";
 
 export default function SettingsPage({ handleClose, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading, handleLogOutRequest, password, setPassword }) {
     const [selectedSemester, setSelectedSemester] = useState<string>(currSemesterID);
@@ -142,6 +143,9 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
             </div>
             <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-4">
                 <Links />
+            </div>
+            <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-4">
+                <PushNotificationManager />
             </div>
             <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 pt-5">
                 <button

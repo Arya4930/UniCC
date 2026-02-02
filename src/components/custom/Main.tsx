@@ -44,6 +44,7 @@ export default function LoginPage() {
   const [progressBar, setProgressBar] = useState<number>(0);
   const [currSemesterID, setCurrSemesterID] = useState<string>(config.semesterIDs[config.semesterIDs.length - 2]);
   const [moodleData, setMoodleData] = useState([]);
+  const [vitolData, setVitolData] = useState([]);
   const [isAPIworking, setIsAPIworking] = useState<boolean>(false);
   const [demoMode, setDemoMode] = useState<boolean>(false);
 
@@ -115,6 +116,7 @@ export default function LoginPage() {
     const calendarType = localStorage.getItem("calendarType");
     const storedCurrSemesterID = localStorage.getItem("currSemesterID");
     const MoodleData = localStorage.getItem("moodleData");
+    const VitolData = localStorage.getItem("vitolData");
 
     const parsedStoredAttendance: attendanceRes | null = storedAttendance ? JSON.parse(storedAttendance) : null;
     if (parsedStoredAttendance && parsedStoredAttendance.attendance) {
@@ -131,6 +133,7 @@ export default function LoginPage() {
     if (calendarType) setCalenderType(calendarType);
     if (storedCurrSemesterID) setCurrSemesterID(storedCurrSemesterID);
     if (MoodleData) setMoodleData(JSON.parse(MoodleData));
+    if (VitolData) setVitolData(JSON.parse(VitolData));
     setIsLoggedIn((storedUsername && storedPassword) ? true : false);
     setTimeout(() => setIsLoading(false), 300);
   }, []);
@@ -516,6 +519,8 @@ export default function LoginPage() {
             setMoodleData={setMoodleData}
             password={password}
             setPassword={setPassword}
+            vitolData={vitolData}
+            setVitolData={setVitolData}
           />
         </>
       )}
