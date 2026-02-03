@@ -127,6 +127,23 @@ router.post("/", async (req, res) => {
                 hidden: false,
                 reminders: {},
             }));
+            const existing = user.notifications.sources.moodle.data;
+            const merged = result
+                .filter(a => !a.done)
+                .map(a => {
+                const prev = existing.find(e => e.name === a.name);
+                return {
+                    name: a.name,
+                    due: a.due,
+                    done: a.done,
+                    day: a.day,
+                    month: a.month,
+                    year: a.year,
+                    hidden: false,
+                    reminders: prev?.reminders ?? {},
+                };
+            });
+            user.notifications.sources.moodle.data = merged;
             await user.save();
         }
         return res.status(200).json(result);

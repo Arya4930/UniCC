@@ -55,6 +55,12 @@ async function Reminder() {
                         const moodleLines: string[] = []
 
                         if (moodle?.enabled) {
+                            const before = moodle.data.length
+
+                            moodle.data = moodle.data.filter(item => !item.done)
+
+                            if (moodle.data.length !== before) dirty = true
+
                             for (const item of moodle.data) {
                                 if (item.done || item.hidden) continue
 
@@ -92,6 +98,12 @@ async function Reminder() {
                         const vitolLines: string[] = []
 
                         if (vitol?.enabled) {
+                            const before = vitol.data.length
+
+                            vitol.data = vitol.data.filter(item => !item.done)
+
+                            if (vitol.data.length !== before) dirty = true
+                            
                             for (const item of vitol.data) {
                                 if (item.done || item.hidden) continue
 

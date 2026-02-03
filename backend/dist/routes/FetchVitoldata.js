@@ -120,17 +120,24 @@ router.post("/", async (req, res) => {
         const user = await Users_1.default.findOne({ UserID: maskedID });
         if (user?.notifications?.enabled &&
             user.notifications.sources.vitol?.enabled) {
-            user.notifications.sources.vitol.data = result.map(a => ({
-                name: a.name,
-                opens: a.opens,
-                done: a.done,
-                day: a.day,
-                month: a.month,
-                year: a.year,
-                url: a.url,
-                hidden: false,
-                reminders: {},
-            }));
+            const existing = user.notifications.sources.vitol.data;
+            const merged = result
+                .filter(a => !a.done)
+                .map(a => {
+                const prev = existing.find(e => e.url === a.url);
+                return {
+                    name: a.name,
+                    opens: a.opens,
+                    done: a.done,
+                    day: a.day,
+                    month: a.month,
+                    year: a.year,
+                    url: a.url,
+                    hidden: prev?.hidden ?? false,
+                    reminders: prev?.reminders ?? {},
+                };
+            });
+            user.notifications.sources.vitol.data = merged;
             await user.save();
         }
         return res.status(200).json(result);
