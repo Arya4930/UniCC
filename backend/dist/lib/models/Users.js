@@ -34,22 +34,31 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
+const ReminderSchema = {
+    type: Map,
+    of: Boolean,
+    default: {},
+};
 const VitolItemSchema = new mongoose_1.Schema({
-    name: { type: String, required: true },
-    opens: { type: String, required: true },
-    done: { type: Boolean, required: true },
-    day: { type: Number, required: true },
-    month: { type: Number, required: true },
-    year: { type: Number, required: true },
-    url: { type: String, required: true }
+    name: String,
+    opens: String,
+    done: Boolean,
+    day: Number,
+    month: Number,
+    year: Number,
+    url: String,
+    hidden: Boolean,
+    reminders: ReminderSchema,
 }, { _id: false });
 const MoodleItemSchema = new mongoose_1.Schema({
-    name: { type: String, required: true },
-    due: { type: String, required: true },
-    done: { type: Boolean, required: true },
-    day: { type: Number, required: true },
-    month: { type: Number, required: true },
-    year: { type: Number, required: true },
+    name: String,
+    due: String,
+    done: Boolean,
+    day: Number,
+    month: Number,
+    year: Number,
+    hidden: Boolean,
+    reminders: ReminderSchema,
 }, { _id: false });
 const FileSchema = new mongoose_1.Schema({
     fileID: { type: String, required: true },

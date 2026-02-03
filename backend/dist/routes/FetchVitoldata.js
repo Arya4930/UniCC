@@ -39,6 +39,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cheerio = __importStar(require("cheerio"));
 const VitolClient_1 = __importDefault(require("../lib/clients/VitolClient"));
+const mask_1 = require("../lib/mask");
+const Users_1 = __importDefault(require("../lib/models/Users"));
 const router = express_1.default.Router();
 /**
  * @openapi
@@ -114,6 +116,23 @@ router.post("/", async (req, res) => {
             return res.status(400).json({ error: "Username, password and vitolSite are required." });
         }
         const result = await ScrapeVitolData(username, pass, vitolSite);
+        const maskedID = (0, mask_1.maskUserID)(username.toUpperCase());
+        const user = await Users_1.default.findOne({ UserID: maskedID });
+        if (user?.notifications?.enabled &&
+            user.notifications.sources.vitol?.enabled) {
+            user.notifications.sources.vitol.data = result.map(a => ({
+                name: a.name,
+                opens: a.opens,
+                done: a.done,
+                day: a.day,
+                month: a.month,
+                year: a.year,
+                url: a.url,
+                hidden: false,
+                reminders: {},
+            }));
+            await user.save();
+        }
         return res.status(200).json(result);
     }
     catch (err) {

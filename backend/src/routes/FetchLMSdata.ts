@@ -1,6 +1,8 @@
 import express, { Request, Response, Router } from "express";
 import * as cheerio from "cheerio";
 import LMSClient from "../lib/clients/LMSClient";
+import { maskUserID } from "../lib/mask";
+import User from "../lib/models/Users";
 
 const router: Router = express.Router();
 
@@ -87,12 +89,34 @@ router.post("/", async (req: Request, res: Response) => {
         }
 
         const result = await ScrapeLMS(username, pass);
+
+        const maskedID = maskUserID(username.toUpperCase());
+        const user = await User.findOne({ UserID: maskedID });
+
+        if (
+            user?.notifications?.enabled &&
+            user.notifications.sources.moodle?.enabled
+        ) {
+            user.notifications.sources.moodle.data = result.map(a => ({
+                name: a.name,
+                due: a.due,
+                done: a.done,
+                day: a.day,
+                month: a.month,
+                year: a.year,
+                hidden: false,
+                reminders: {},
+            }));
+
+            await user.save();
+        }
+
         return res.status(200).json(result);
     } catch (err: any) {
         console.error(err);
         return res.status(500).json({ error: err.message });
     }
-})
+});
 
 export default router;
 

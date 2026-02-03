@@ -3,6 +3,8 @@ import * as cheerio from "cheerio";
 import LMSClient from "../lib/clients/LMSClient";
 import getVitolClient from "../lib/clients/VitolClient";
 import axios from "axios";
+import { maskUserID } from "../lib/mask";
+import User from "../lib/models/Users";
 
 const router: Router = express.Router();
 
@@ -92,6 +94,29 @@ router.post("/", async (req: Request, res: Response) => {
         }
 
         const result = await ScrapeVitolData(username, pass, vitolSite);
+
+        const maskedID = maskUserID(username.toUpperCase());
+        const user = await User.findOne({ UserID: maskedID });
+
+        if (
+            user?.notifications?.enabled &&
+            user.notifications.sources.vitol?.enabled
+        ) {
+            user.notifications.sources.vitol.data = result.map(a => ({
+                name: a.name,
+                opens: a.opens,
+                done: a.done,
+                day: a.day,
+                month: a.month,
+                year: a.year,
+                url: a.url,
+                hidden: false,
+                reminders: {},
+            }));
+
+            await user.save();
+        }
+
         return res.status(200).json(result);
     } catch (err: any) {
         console.error(err);
@@ -101,7 +126,7 @@ router.post("/", async (req: Request, res: Response) => {
 
 export default router;
 
-async function ScrapeVitolData(username: string, password: string, vitolSite: string ): Promise<Assingment[]> {
+async function ScrapeVitolData(username: string, password: string, vitolSite: string): Promise<Assingment[]> {
     try {
         const VitolClient = getVitolClient(vitolSite);
         const getRes = await VitolClient.get("/login/index.php");
@@ -226,7 +251,7 @@ async function ScrapeVitolData(username: string, password: string, vitolSite: st
                         .attr("title") || "";
                     const assignmentName = $("h1.h2").first().text().trim();
                     const name = `${courseCodeFull}/${courseNameFull}/${assignmentName}`;
-                    
+
                     const opensText = $('div.activity-dates strong')
                         .filter((_, el) => {
                             const text = $(el).text()

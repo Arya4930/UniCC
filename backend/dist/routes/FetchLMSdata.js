@@ -39,6 +39,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cheerio = __importStar(require("cheerio"));
 const LMSClient_1 = __importDefault(require("../lib/clients/LMSClient"));
+const mask_1 = require("../lib/mask");
+const Users_1 = __importDefault(require("../lib/models/Users"));
 const router = express_1.default.Router();
 /**
  * @openapi
@@ -111,6 +113,22 @@ router.post("/", async (req, res) => {
             return res.status(400).json({ error: "Username and password are required." });
         }
         const result = await ScrapeLMS(username, pass);
+        const maskedID = (0, mask_1.maskUserID)(username.toUpperCase());
+        const user = await Users_1.default.findOne({ UserID: maskedID });
+        if (user?.notifications?.enabled &&
+            user.notifications.sources.moodle?.enabled) {
+            user.notifications.sources.moodle.data = result.map(a => ({
+                name: a.name,
+                due: a.due,
+                done: a.done,
+                day: a.day,
+                month: a.month,
+                year: a.year,
+                hidden: false,
+                reminders: {},
+            }));
+            await user.save();
+        }
         return res.status(200).json(result);
     }
     catch (err) {

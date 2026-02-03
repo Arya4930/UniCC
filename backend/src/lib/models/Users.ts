@@ -54,30 +54,67 @@ interface IMoodleItem {
   day: number;
   month: number;
   year: number;
+  hidden: boolean;
 }
 
+interface IReminderFlags {
+  [key: string]: boolean;
+}
 
-const VitolItemSchema: Schema<IVitolItem> = new Schema(
+interface IVitolItem {
+  name: string;
+  opens: string;
+  done: boolean;
+  day: number;
+  month: number;
+  year: number;
+  url: string;
+  hidden: boolean;
+  reminders: IReminderFlags;
+}
+
+interface IMoodleItem {
+  name: string;
+  due: string;
+  done: boolean;
+  day: number;
+  month: number;
+  year: number;
+  hidden: boolean;
+  reminders: IReminderFlags;
+}
+
+const ReminderSchema = {
+  type: Map,
+  of: Boolean,
+  default: {},
+};
+
+const VitolItemSchema = new Schema(
   {
-    name: { type: String, required: true },
-    opens: { type: String, required: true },
-    done: { type: Boolean, required: true },
-    day: { type: Number, required: true },
-    month: { type: Number, required: true },
-    year: { type: Number, required: true },
-    url: { type: String, required: true }
+    name: String,
+    opens: String,
+    done: Boolean,
+    day: Number,
+    month: Number,
+    year: Number,
+    url: String,
+    hidden: Boolean,
+    reminders: ReminderSchema,
   },
   { _id: false }
 );
 
-const MoodleItemSchema: Schema<IMoodleItem> = new Schema(
+const MoodleItemSchema = new Schema(
   {
-    name: { type: String, required: true },
-    due: { type: String, required: true },
-    done: { type: Boolean, required: true },
-    day: { type: Number, required: true },
-    month: { type: Number, required: true },
-    year: { type: Number, required: true },
+    name: String,
+    due: String,
+    done: Boolean,
+    day: Number,
+    month: Number,
+    year: Number,
+    hidden: Boolean,
+    reminders: ReminderSchema,
   },
   { _id: false }
 );

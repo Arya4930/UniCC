@@ -1,1 +1,1 @@
-{"version":3,"file":"FetchLMSdata.d.ts","sourceRoot":"","sources":["../../src/routes/FetchLMSdata.ts"],"names":[],"mappings":"AAAA,OAAgB,EAAqB,MAAM,EAAE,MAAM,SAAS,CAAC;AAI7D,QAAA,MAAM,MAAM,EAAE,MAAyB,CAAC;AA4FxC,eAAe,MAAM,CAAC"}
+{"version":3,"file":"FetchLMSdata.d.ts","sourceRoot":"","sources":["../../src/routes/FetchLMSdata.ts"],"names":[],"mappings":"AAAA,OAAgB,EAAqB,MAAM,EAAE,MAAM,SAAS,CAAC;AAM7D,QAAA,MAAM,MAAM,EAAE,MAAyB,CAAC;AAkHxC,eAAe,MAAM,CAAC"}

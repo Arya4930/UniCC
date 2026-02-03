@@ -300,40 +300,99 @@ export default function LoginPage() {
   // --- Event Handlers ---
   const handleReloadRequest = async () => {
     setIsReloading(true);
+    setProgressBar(10);
+    setMessage("Reloading data...");
+
     try {
       const { cookies, authorizedID, csrf } = await loginToVTOP();
       localStorage.setItem("username", username);
       localStorage.setItem("password", password);
 
-      const [
-        { attRes, marksRes }
-      ] = await Promise.all([
-        fetch(`${API_BASE}/api/attendance`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cookies: cookies, authorizedID, csrf, semesterId: currSemesterID }),
-        }).then(async r => {
-          const j = await r.json();
-          setMessage(prev => prev + "\n✅ Attendance/Marks fetched");
-          setProgressBar(prev => prev + 20);
-          return j;
-        })
-      ]);
-      
-      setAttendanceAndOD(attRes);
-      setMarksData(marksRes);
+      const coreTask = fetch(`${API_BASE}/api/attendance`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cookies,
+          authorizedID,
+          csrf,
+          semesterId: currSemesterID,
+        }),
+      }).then(async r => {
+        const { attRes, marksRes } = await r.json();
+        setAttendanceAndOD(attRes);
+        setMarksData(marksRes);
+        localStorage.setItem("attendance", JSON.stringify(attRes));
+        localStorage.setItem("marks", JSON.stringify(marksRes));
+        setMessage(prev => prev + "\n✅ Attendance & Marks fetched");
+        setProgressBar(prev => prev + 30);
+      });
 
-      localStorage.setItem("attendance", JSON.stringify(attRes));
-      localStorage.setItem("marks", JSON.stringify(marksRes));
+      const tasks: Promise<void>[] = [coreTask];
+      const moodleUsername = localStorage.getItem("moodle_username");
+      const moodlePassword = localStorage.getItem("moodle_password");
 
-      setMessage(prev => prev + "\n✅ All data loaded successfully!");
+      if (moodleUsername && moodlePassword) {
+        tasks.push(
+          (async () => {
+            setMessage(prev => prev + "\n📘 Fetching Moodle data...");
+            const res = await fetch(`${API_BASE}/api/lms-data`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                username: moodleUsername,
+                pass: moodlePassword,
+              }),
+            });
+
+            const moodleData = await res.json();
+            const prevData = JSON.parse(localStorage.getItem("moodleData") || "[]");
+
+            const merged = moodleData.map(item => {
+              const prevItem = prevData.find(p => p.url === item.url);
+              return {
+                ...item,
+                hidden: prevItem?.hidden ?? false,
+              };
+            });
+
+            setMoodleData(merged);
+            localStorage.setItem("moodleData", JSON.stringify(merged));
+            setMessage(prev => prev + "\n✅ Moodle data fetched");
+            setProgressBar(prev => prev + 20);
+          })()
+        );
+      }
+      const vitolUsername = localStorage.getItem("vitol_username");
+      const vitolPassword = localStorage.getItem("vitol_password");
+      const vitolSite = localStorage.getItem("vitol_site");
+
+      if (vitolUsername && vitolPassword && vitolSite) {
+        tasks.push(
+          (async () => {
+            const res = await fetch(`${API_BASE}/api/vitol-data`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                username: vitolUsername,
+                pass: vitolPassword,
+                vitolSite,
+              }),
+            });
+
+            const vitolData = await res.json();
+            setVitolData(vitolData);
+            localStorage.setItem("vitolData", JSON.stringify(vitolData));
+            setMessage(prev => prev + "\n✅ Vitol data fetched");
+            setProgressBar(prev => prev + 20);
+          })()
+        );
+      }
+      await Promise.all(tasks);
+
       setProgressBar(100);
       setIsLoggedIn(true);
       setIsReloading(false);
 
-      const tree = loadActivityTree();
-      tree.increment();
-      saveActivityTree(tree);
     } catch (err) {
       console.error(err);
       setMessage(

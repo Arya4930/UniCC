@@ -49,6 +49,31 @@ interface IMoodleItem {
     day: number;
     month: number;
     year: number;
+    hidden: boolean;
+}
+interface IReminderFlags {
+    [key: string]: boolean;
+}
+interface IVitolItem {
+    name: string;
+    opens: string;
+    done: boolean;
+    day: number;
+    month: number;
+    year: number;
+    url: string;
+    hidden: boolean;
+    reminders: IReminderFlags;
+}
+interface IMoodleItem {
+    name: string;
+    due: string;
+    done: boolean;
+    day: number;
+    month: number;
+    year: number;
+    hidden: boolean;
+    reminders: IReminderFlags;
 }
 declare const User: mongoose.Model<IUser, {}, {}, {}, mongoose.Document<unknown, {}, IUser, {}, mongoose.DefaultSchemaOptions> & IUser & Required<{
     _id: mongoose.Types.ObjectId;
