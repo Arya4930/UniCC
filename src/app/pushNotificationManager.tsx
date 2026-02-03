@@ -116,7 +116,7 @@ export default function PushNotificationManager() {
             <div className="flex items-center justify-between">
                 <div className="flex flex-col">
                     <p className="text-lg font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100">
-                        Push Notifications <span className="text-xs text-muted-foreground">( EARLY TESTING DO NOT CLICK PLS PLS XOXO )</span>
+                        Push Notifications
                     </p>
                 </div>
 
@@ -129,7 +129,7 @@ export default function PushNotificationManager() {
             </div>
 
             {subscription && (
-                <div className="mt-3 flex flex-col gap-4">
+                <div className="mt-1 flex flex-col gap-4">
 
                     {/* Vitol */}
                     <div className="flex flex-col gap-1">
