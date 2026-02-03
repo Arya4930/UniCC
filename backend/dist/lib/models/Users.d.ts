@@ -18,6 +18,37 @@ interface IUser extends Document {
     UserID: string;
     files: IFile[];
     pushSubscriptions: IPushSubscription[];
+    notifications: {
+        enabled: boolean;
+        sources: {
+            vitol?: {
+                enabled: boolean;
+                data: IVitolItem[];
+            };
+            moodle?: {
+                enabled: boolean;
+                data: IMoodleItem[];
+            };
+        };
+    };
+}
+interface IVitolItem {
+    name: string;
+    opens: string;
+    done: boolean;
+    day: number;
+    month: number;
+    year: number;
+    url: string;
+    hidden: boolean;
+}
+interface IMoodleItem {
+    name: string;
+    due: string;
+    done: boolean;
+    day: number;
+    month: number;
+    year: number;
 }
 declare const User: mongoose.Model<IUser, {}, {}, {}, mongoose.Document<unknown, {}, IUser, {}, mongoose.DefaultSchemaOptions> & IUser & Required<{
     _id: mongoose.Types.ObjectId;

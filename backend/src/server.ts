@@ -18,7 +18,9 @@ import fetchLMSdata from "./routes/FetchLMSdata";
 import fetchVitoldata from "./routes/FetchVitoldata";
 import subscribe from "./routes/notifications/subscribe";
 import unsubscribe from "./routes/notifications/unsubscribe";
-import send from "./routes/notifications/send";
+import notifConfig from "./routes/notifications/config";
+import notifTest from "./routes/notifications/test";
+import notifStatus from "./routes/notifications/status";
 import mail from "./routes/files/mail";
 import { verifyMailer } from "./lib/clients/nodemailer";
 import { initDB } from "./lib/clients/sequalize";
@@ -47,10 +49,6 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get("/", (req, res) => {
-    res.send("Express TypeScript API is running!");
-});
-
 app.use("/api/status", visitorLogger);
 app.use("/api/status", statusRoutes);
 app.use("/stats", stats);
@@ -72,7 +70,9 @@ app.use("/api/lms-data", fetchLMSdata);
 app.use("/api/vitol-data", fetchVitoldata);
 app.use("/api/notifications/subscribe", subscribe);
 app.use("/api/notifications/unsubscribe", unsubscribe);
-app.use("/api/notifications/send", send);
+app.use("/api/notifications/config", notifConfig);
+app.use("/api/notifications/test", notifTest);
+app.use("/api/notifications/status", notifStatus);
 app.use("/api/files/mail/send", mail);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

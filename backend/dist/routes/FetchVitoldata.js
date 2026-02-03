@@ -212,7 +212,7 @@ async function ScrapeVitolData(username, password, vitolSite) {
                         .first()
                         .attr("title") || "";
                     const assignmentName = $("h1.h2").first().text().trim();
-                    const name = `${courseCodeFull} | ${courseNameFull} | ${assignmentName}`;
+                    const name = `${courseCodeFull}/${courseNameFull}/${assignmentName}`;
                     const opensText = $('div.activity-dates strong')
                         .filter((_, el) => {
                         const text = $(el).text();

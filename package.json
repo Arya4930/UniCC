@@ -39,6 +39,7 @@
     "dayjs": "^1.11.19",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
     "https": "^1.0.0",
     "jotai": "^2.15.0",
     "lucide-react": "^0.544.0",

@@ -37,7 +37,7 @@ export default function vitolDisplay({ vitolData, handleFetchVitol, setVitolData
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {sortedData.map((item, idx) => {
                     const isOverdue = !item.done && new Date(item.due) < new Date();
-                    const [SemCode, courseName, assignmentName] = item.name.split("|");
+                    const [SemCode, courseName, assignmentName] = item.name.split("/");
 
                     return (
                         <div

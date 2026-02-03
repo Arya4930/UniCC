@@ -22,7 +22,9 @@ const FetchLMSdata_1 = __importDefault(require("./routes/FetchLMSdata"));
 const FetchVitoldata_1 = __importDefault(require("./routes/FetchVitoldata"));
 const subscribe_1 = __importDefault(require("./routes/notifications/subscribe"));
 const unsubscribe_1 = __importDefault(require("./routes/notifications/unsubscribe"));
-const send_1 = __importDefault(require("./routes/notifications/send"));
+const config_1 = __importDefault(require("./routes/notifications/config"));
+const test_1 = __importDefault(require("./routes/notifications/test"));
+const status_2 = __importDefault(require("./routes/notifications/status"));
 const mail_1 = __importDefault(require("./routes/files/mail"));
 const nodemailer_1 = require("./lib/clients/nodemailer");
 const sequalize_1 = require("./lib/clients/sequalize");
@@ -44,9 +46,6 @@ app.use((req, res, next) => {
     }
     next();
 });
-app.get("/", (req, res) => {
-    res.send("Express TypeScript API is running!");
-});
 app.use("/api/status", Logger_1.visitorLogger);
 app.use("/api/status", status_1.default);
 app.use("/stats", stats_1.default);
@@ -66,7 +65,9 @@ app.use("/api/lms-data", FetchLMSdata_1.default);
 app.use("/api/vitol-data", FetchVitoldata_1.default);
 app.use("/api/notifications/subscribe", subscribe_1.default);
 app.use("/api/notifications/unsubscribe", unsubscribe_1.default);
-app.use("/api/notifications/send", send_1.default);
+app.use("/api/notifications/config", config_1.default);
+app.use("/api/notifications/test", test_1.default);
+app.use("/api/notifications/status", status_2.default);
 app.use("/api/files/mail/send", mail_1.default);
 app.use("/docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerSpec));
 const PORT = process.env.PORT || 3000;

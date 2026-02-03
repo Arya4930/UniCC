@@ -14,9 +14,26 @@ function urlBase64ToUint8Array(base64String: string) {
 export default function PushNotificationManager() {
     const [isSupported, setIsSupported] = useState(false)
     const [subscription, setSubscription] = useState<PushSubscription | null>(null)
+    const [vitolEnabled, setVitolEnabled] = useState(false)
+    const [moodleEnabled, setMoodleEnabled] = useState(false)
+    const [fetchError, setFetchError] = useState<string | null>(null)
 
     const UserID = localStorage.getItem("username") || ""
-    const message = 'This is a test push notification.'
+
+    useEffect(() => {
+        if (!UserID) return;
+
+        fetch(`${API_BASE}/api/notifications/status?UserID=${UserID}`)
+            .then(res => res.json())
+            .then(data => {
+                setVitolEnabled(!!data.vitol);
+                setMoodleEnabled(!!data.moodle);
+            })
+            .catch(() => {
+                setVitolEnabled(false);
+                setMoodleEnabled(false);
+            });
+    }, [UserID]);
 
     useEffect(() => {
         if ('serviceWorker' in navigator && 'PushManager' in window) {
@@ -72,47 +89,145 @@ export default function PushNotificationManager() {
         setSubscription(null)
     }
 
-    async function sendTestNotification() {
-        await fetch(`${API_BASE}/api/notifications/send`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                UserID,
-                message,
-            }),
-        })
-    }
-
     if (!isSupported) {
         return <p>Push notifications are not supported in this browser.</p>
     }
 
-    return (
-        <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-1">
-                <p className="font-medium">Notifications ( VERY EARLY TESTING, THIS DOESNT WORK, DONT CLICK XOXO )</p>
-                <p className="text text-muted-foreground">
-                    {subscription
-                        ? 'Push Notifications Enabled'
-                        : 'Push Notifications Disabled'}
-                </p>
+    async function updateSource(source: 'vitol' | 'moodle', enabled: boolean) {
+        const data =
+            enabled
+                ? JSON.parse(localStorage.getItem(`${source}Data`) || '[]')
+                : [];
 
-                {subscription && (
-                    <button
-                        onClick={sendTestNotification}
-                        className="mt-2 w-fit rounded-md bg-primary px-3 py-1 text-xs text-primary-foreground hover:bg-primary/90"
-                    >
-                        Send test notification
-                    </button>
-                )}
+        await fetch(`${API_BASE}/api/notifications/config`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                UserID,
+                source,
+                enabled,
+                data,
+            }),
+        });
+    }
+
+    return (
+        <div className="w-full flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+                <div className="flex flex-col">
+                    <p className="text-lg font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100">
+                        Push Notifications <span className="text-xs text-muted-foreground">( EARLY TESTING DO NOT CLICK PLS PLS XOXO )</span>
+                    </p>
+                </div>
+
+                <Switch
+                    checked={!!subscription}
+                    onCheckedChange={(checked) => {
+                        checked ? subscribeToPush() : unsubscribeFromPush()
+                    }}
+                />
             </div>
 
-            <Switch
-                checked={!!subscription}
-                onCheckedChange={(checked) => {
-                    checked ? subscribeToPush() : unsubscribeFromPush()
-                }}
-            />
-        </div>
+            {subscription && (
+                <div className="mt-3 flex flex-col gap-4">
+
+                    {/* Vitol */}
+                    <div className="flex flex-col gap-1">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-gray-800 dark:text-gray-200 midnight:text-gray-100">
+                                    Vitol notifications
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                    Tests, quizzes and assignments <span className='text-xs text-red-600'>{fetchError ? " / " + fetchError : ''}</span>
+                                </p>
+                            </div>
+
+                            <Switch
+                                checked={vitolEnabled}
+                                disabled={!subscription}
+                                onCheckedChange={(checked) => {
+                                    setVitolEnabled(checked)
+                                    updateSource('vitol', checked)
+                                }}
+                            />
+                        </div>
+
+                        <button
+                            disabled={!vitolEnabled}
+                            className="w-fit text-xs text-blue-600 dark:text-blue-400 hover:underline disabled:opacity-50 disabled:pointer-events-none"
+                            onClick={async () => {
+                                try {
+                                    const response = await fetch(`${API_BASE}/api/notifications/test`, {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ UserID, source: 'vitol' }),
+                                    });
+                                    if (!response.ok) {
+                                        const errorData = await response.json();
+                                        setFetchError(errorData.error || 'Failed to send test notification');
+                                    } else {
+                                        setFetchError(null);
+                                    }
+                                } catch (error) {
+                                    setFetchError('Failed to send test notification');
+                                }
+                            }}
+                        >
+                            Test Vitol notification
+                        </button>
+                    </div>
+
+                    {/* Moodle */}
+                    <div className="flex flex-col gap-1">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-gray-800 dark:text-gray-200 midnight:text-gray-100">
+                                    Moodle notifications
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                    Assignment due reminders <span className='text-xs text-red-600'>{fetchError ? " / " + fetchError : ''}</span>
+                                </p>
+                            </div>
+
+                            <Switch
+                                checked={moodleEnabled}
+                                disabled={!subscription}
+                                onCheckedChange={(checked) => {
+                                    setMoodleEnabled(checked)
+                                    updateSource('moodle', checked)
+                                }}
+                            />
+                        </div>
+
+                        <button
+                            disabled={!moodleEnabled}
+                            className="w-fit text-xs text-blue-600 dark:text-blue-400 hover:underline disabled:opacity-50 disabled:pointer-events-none"
+                            onClick={async () => {
+                                try {
+                                    const response = await fetch(`${API_BASE}/api/notifications/test`, {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ UserID, source: 'moodle' }),
+                                    });
+                                    if (!response.ok) {
+                                        const errorData = await response.json();
+                                        setFetchError(errorData.error || 'Failed to send test notification');
+                                    } else {
+                                        setFetchError(null);
+                                    }
+                                } catch (error) {
+                                    setFetchError('Failed to send test notification');
+                                }
+                            }}
+                        >
+                            Test Moodle notification
+                        </button>
+                    </div>
+
+                </div>
+            )
+            }
+        </div >
     )
 }

@@ -34,6 +34,23 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
+const VitolItemSchema = new mongoose_1.Schema({
+    name: { type: String, required: true },
+    opens: { type: String, required: true },
+    done: { type: Boolean, required: true },
+    day: { type: Number, required: true },
+    month: { type: Number, required: true },
+    year: { type: Number, required: true },
+    url: { type: String, required: true }
+}, { _id: false });
+const MoodleItemSchema = new mongoose_1.Schema({
+    name: { type: String, required: true },
+    due: { type: String, required: true },
+    done: { type: Boolean, required: true },
+    day: { type: Number, required: true },
+    month: { type: Number, required: true },
+    year: { type: Number, required: true },
+}, { _id: false });
 const FileSchema = new mongoose_1.Schema({
     fileID: { type: String, required: true },
     extension: { type: String, required: true },
@@ -62,6 +79,22 @@ const UserSchema = new mongoose_1.Schema({
     pushSubscriptions: {
         type: [PushSubscriptionSchema],
         default: [],
+    },
+    notifications: {
+        enabled: {
+            type: Boolean,
+            default: false,
+        },
+        sources: {
+            vitol: {
+                enabled: { type: Boolean, default: false },
+                data: { type: [VitolItemSchema], default: [] },
+            },
+            moodle: {
+                enabled: { type: Boolean, default: false },
+                data: { type: [MoodleItemSchema], default: [] },
+            },
+        },
     },
 }, {
     timestamps: true,
