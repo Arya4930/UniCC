@@ -334,7 +334,6 @@ export default function LoginPage() {
       if (moodleUsername && moodlePassword) {
         tasks.push(
           (async () => {
-            setMessage(prev => prev + "\n📘 Fetching Moodle data...");
             const res = await fetch(`${API_BASE}/api/lms-data`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
