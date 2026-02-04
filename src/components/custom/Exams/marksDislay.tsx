@@ -11,7 +11,7 @@ export default function MarksDisplay({ data }) {
     setOpenCourse(openCourse === slNo ? null : slNo);
   };
 
-  if (!data || !data.marks || data.marks.length === 0) {
+  if (!data || !data.courses || data.courses.length === 0) {
     return (
       <div className="p-2">
         <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
@@ -30,7 +30,7 @@ export default function MarksDisplay({ data }) {
 
       {/* Grid for cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {data.marks.map((course, idx) => {
+        {data.courses.map((course, idx) => {
           const formatNumber = (num) => {
             const numericValue = Number(num);
             if (num == null || isNaN(numericValue)) {
