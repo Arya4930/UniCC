@@ -36,30 +36,7 @@ interface IUser extends Document {
   };
 }
 
-interface IVitolItem {
-  name: string;
-  opens: string;
-  done: boolean;
-  day: number;
-  month: number;
-  year: number;
-  url: string;
-  hidden: boolean;
-}
-
-interface IMoodleItem {
-  name: string;
-  due: string;
-  done: boolean;
-  day: number;
-  month: number;
-  year: number;
-  hidden: boolean;
-}
-
-interface IReminderFlags {
-  [key: string]: boolean;
-}
+type ReminderMap = Map<string, boolean>;
 
 interface IVitolItem {
   name: string;
@@ -70,7 +47,7 @@ interface IVitolItem {
   year: number;
   url: string;
   hidden: boolean;
-  reminders: IReminderFlags;
+  reminders: ReminderMap;
 }
 
 interface IMoodleItem {
@@ -81,7 +58,7 @@ interface IMoodleItem {
   month: number;
   year: number;
   hidden: boolean;
-  reminders: IReminderFlags;
+  reminders: ReminderMap;
 }
 
 const ReminderSchema = {

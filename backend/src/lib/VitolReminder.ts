@@ -24,7 +24,7 @@ const VITOL_REMINDERS = [
 function shouldSend(target: Date, offset: number) {
     const now = Date.now()
     const trigger = target.getTime() - offset
-    return now >= trigger && now < trigger + ONE_HOUR
+    return now >= trigger
 }
 
 function parseName(name: string) {
@@ -43,120 +43,93 @@ async function Reminder() {
         pushSubscriptions: { $ne: [] },
     })
 
-    const tasks: Promise<void>[] = []
-
     for (const user of users) {
+        const notificationsToSend: {
+            title: string
+            body: string
+            tag: string
+        }[] = []
+
+        const moodle = user.notifications.sources.moodle
+        if (moodle?.enabled) {
+            moodle.data = moodle.data.filter(item => !item.done)
+
+            for (const item of moodle.data) {
+                if (item.hidden) continue
+
+                const dueDate = new Date(item.year, item.month - 1, item.day)
+
+                for (const r of MOODLE_REMINDERS) {
+                    item.reminders ??= new Map<string, boolean>()
+                    if (item.reminders.get(r.key)) continue
+                    if (!shouldSend(dueDate, r.ms)) continue
+                    
+                    const { assignmentName } = parseName(item.name)
+
+                    notificationsToSend.push({
+                        title: 'Moodle Reminder',
+                        body: `${assignmentName} is due on ${item.due}`,
+                        tag: `moodle-${r.key}`,
+                    })
+
+                    item.reminders.set(r.key, true)
+                }
+            }
+        }
+
+        const vitol = user.notifications.sources.vitol
+        if (vitol?.enabled) {
+            vitol.data = vitol.data.filter(item => !item.done)
+
+            for (const item of vitol.data) {
+                if (item.hidden) continue
+
+                const openDate = new Date(item.opens)
+
+                for (const r of VITOL_REMINDERS) {
+                    item.reminders ??= new Map<string, boolean>()
+                    if (item.reminders.get(r.key)) continue
+                    if (!shouldSend(openDate, r.ms)) continue
+
+                    const { courseName } = parseName(item.name)
+
+                    notificationsToSend.push({
+                        title: 'Vitol Reminder',
+                        body: `${courseName} opens at ${item.opens}`,
+                        tag: `vitol-${r.key}`,
+                    })
+
+                    item.reminders.set(r.key, true)
+                }
+            }
+        }
+
+        if (notificationsToSend.length > 0) {
+            user.markModified('notifications.sources.moodle.data')
+            user.markModified('notifications.sources.vitol.data')
+            await user.save()
+        }
+
         for (const sub of user.pushSubscriptions) {
-            tasks.push(
-                limit(async () => {
-                    try {
-                        let dirty = false
-                        const moodle = user.notifications.sources.moodle
-                        const moodleLines: string[] = []
+            for (const n of notificationsToSend) {
+                try {
+                    await webpush.sendNotification(sub, JSON.stringify(n))
+                } catch (err: any) {
+                    console.error('❌ Push failed:', err?.statusCode, err?.body || err)
 
-                        if (moodle?.enabled) {
-                            const before = moodle.data.length
-
-                            moodle.data = moodle.data.filter(item => !item.done)
-
-                            if (moodle.data.length !== before) dirty = true
-
-                            for (const item of moodle.data) {
-                                if (item.done || item.hidden) continue
-
-                                const dueDate = new Date(item.year, item.month - 1, item.day)
-
-                                for (const r of MOODLE_REMINDERS) {
-                                    item.reminders ??= {}
-                                    if (item.reminders[r.key]) continue
-
-                                    if (shouldSend(dueDate, r.ms)) {
-                                        const { assignmentName } = parseName(item.name)
-
-                                        moodleLines.push(
-                                            `${assignmentName} is due on ${item.due}`
-                                        )
-
-                                        item.reminders[r.key] = true
-                                        dirty = true
-                                    }
-                                }
-                            }
-
-                            if (moodleLines.length > 0) {
-                                await webpush.sendNotification(
-                                    sub,
-                                    JSON.stringify({
-                                        title: 'Moodle Reminders',
-                                        body: moodleLines.join('\n'),
-                                    })
-                                )
-                            }
-                        }
-
-                        const vitol = user.notifications.sources.vitol
-                        const vitolLines: string[] = []
-
-                        if (vitol?.enabled) {
-                            const before = vitol.data.length
-
-                            vitol.data = vitol.data.filter(item => !item.done)
-
-                            if (vitol.data.length !== before) dirty = true
-                            
-                            for (const item of vitol.data) {
-                                if (item.done || item.hidden) continue
-
-                                const openDate = new Date(item.opens)
-
-                                for (const r of VITOL_REMINDERS) {
-                                    item.reminders ??= {}
-                                    if (item.reminders[r.key]) continue
-
-                                    if (shouldSend(openDate, r.ms)) {
-                                        const { courseName } = parseName(item.name)
-
-                                        vitolLines.push(
-                                            `${courseName} opens at ${item.opens}`
-                                        )
-
-                                        item.reminders[r.key] = true
-                                        dirty = true
-                                    }
-                                }
-                            }
-
-                            if (vitolLines.length > 0) {
-                                await webpush.sendNotification(
-                                    sub,
-                                    JSON.stringify({
-                                        title: 'Vitol Reminders',
-                                        body: vitolLines.join('\n'),
-                                    })
-                                )
-                            }
-                        }
-
-                        if (dirty) await user.save()
-
-                    } catch (err: any) {
-                        console.error('❌ Push failed:', err.statusCode)
-
-                        if (err.statusCode === 410 || err.statusCode === 404) {
-                            await User.updateOne(
-                                { UserID: user.UserID },
-                                { $pull: { pushSubscriptions: { endpoint: sub.endpoint } } }
-                            )
-                        }
+                    if (err?.statusCode === 410 || err?.statusCode === 404) {
+                        await User.updateOne(
+                            { _id: user._id },
+                            { $pull: { pushSubscriptions: { endpoint: sub.endpoint } } }
+                        )
                     }
-                })
-            )
+                }
+            }
         }
     }
-
-    await Promise.all(tasks)
 }
 
 export function vitolReminder() {
     cron.schedule('0 * * * *', Reminder)
+    Reminder().catch(console.error)
 }

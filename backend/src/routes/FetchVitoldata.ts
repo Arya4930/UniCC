@@ -118,7 +118,9 @@ router.post("/", async (req: Request, res: Response) => {
                         year: a.year,
                         url: a.url,
                         hidden: prev?.hidden ?? false,
-                        reminders: prev?.reminders ?? {},
+                        reminders: prev?.reminders instanceof Map
+                            ? prev.reminders
+                            : new Map<string, boolean>(),
                     }
                 })
 

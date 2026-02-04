@@ -134,7 +134,9 @@ router.post("/", async (req, res) => {
                     year: a.year,
                     url: a.url,
                     hidden: prev?.hidden ?? false,
-                    reminders: prev?.reminders ?? {},
+                    reminders: prev?.reminders instanceof Map
+                        ? prev.reminders
+                        : new Map(),
                 };
             });
             user.notifications.sources.vitol.data = merged;

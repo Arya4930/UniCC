@@ -1,1 +1,1 @@
-{"version":3,"file":"FetchVitoldata.d.ts","sourceRoot":"","sources":["../../src/routes/FetchVitoldata.ts"],"names":[],"mappings":"AAAA,OAAgB,EAAqB,MAAM,EAAE,MAAM,SAAS,CAAC;AAQ7D,QAAA,MAAM,MAAM,EAAE,MAAyB,CAAC;AA+HxC,eAAe,MAAM,CAAC"}
+{"version":3,"file":"FetchVitoldata.d.ts","sourceRoot":"","sources":["../../src/routes/FetchVitoldata.ts"],"names":[],"mappings":"AAAA,OAAgB,EAAqB,MAAM,EAAE,MAAM,SAAS,CAAC;AAQ7D,QAAA,MAAM,MAAM,EAAE,MAAyB,CAAC;AAiIxC,eAAe,MAAM,CAAC"}

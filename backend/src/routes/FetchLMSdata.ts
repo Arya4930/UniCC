@@ -97,16 +97,6 @@ router.post("/", async (req: Request, res: Response) => {
             user?.notifications?.enabled &&
             user.notifications.sources.moodle?.enabled
         ) {
-            user.notifications.sources.moodle.data = result.map(a => ({
-                name: a.name,
-                due: a.due,
-                done: a.done,
-                day: a.day,
-                month: a.month,
-                year: a.year,
-                hidden: false,
-                reminders: {},
-            }));
             const existing = user.notifications.sources.moodle.data
 
             const merged = result
@@ -122,7 +112,9 @@ router.post("/", async (req: Request, res: Response) => {
                         month: a.month,
                         year: a.year,
                         hidden: false,
-                        reminders: prev?.reminders ?? {},
+                        reminders: prev?.reminders instanceof Map
+                            ? prev.reminders
+                            : new Map<string, boolean>(),
                     }
                 })
 

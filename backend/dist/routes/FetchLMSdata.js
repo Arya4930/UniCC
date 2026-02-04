@@ -117,16 +117,6 @@ router.post("/", async (req, res) => {
         const user = await Users_1.default.findOne({ UserID: maskedID });
         if (user?.notifications?.enabled &&
             user.notifications.sources.moodle?.enabled) {
-            user.notifications.sources.moodle.data = result.map(a => ({
-                name: a.name,
-                due: a.due,
-                done: a.done,
-                day: a.day,
-                month: a.month,
-                year: a.year,
-                hidden: false,
-                reminders: {},
-            }));
             const existing = user.notifications.sources.moodle.data;
             const merged = result
                 .filter(a => !a.done)
@@ -140,7 +130,9 @@ router.post("/", async (req, res) => {
                     month: a.month,
                     year: a.year,
                     hidden: false,
-                    reminders: prev?.reminders ?? {},
+                    reminders: prev?.reminders instanceof Map
+                        ? prev.reminders
+                        : new Map(),
                 };
             });
             user.notifications.sources.moodle.data = merged;
