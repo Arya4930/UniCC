@@ -21,6 +21,19 @@ const VITOL_REMINDERS = [
     { key: '30m', ms: 30 * 60 * 1000 },
 ]
 
+function parseTime12h(time: string): { hours: number; minutes: number } {
+  const [clock, modifier] = time.split(' ')
+  let [hours, minutes] = clock?.split(':').map(Number) || [0, 0]
+
+  if(!hours) hours = 0;
+  if(!minutes) minutes = 0;
+
+  if (modifier === 'PM' && hours !== 12) hours += 12
+  if (modifier === 'AM' && hours === 12) hours = 0
+
+  return { hours, minutes }
+}
+
 function shouldSend(target: Date, offset: number) {
     const now = Date.now()
     const trigger = target.getTime() - offset
@@ -56,8 +69,10 @@ async function Reminder() {
 
             for (const item of moodle.data) {
                 if (item.hidden) continue
-
-                const dueDate = new Date(item.year, item.month - 1, item.day)
+                const due = item.due.split(',').map(e => e.trim())
+                const dueTime = due[due.length - 1];
+                const { hours, minutes } = parseTime12h(dueTime || "11:59 PM")
+                const dueDate = new Date(item.year, item.month - 1, item.day, hours, minutes, 0, 0)
 
                 for (const r of MOODLE_REMINDERS) {
                     item.reminders ??= new Map<string, boolean>()
