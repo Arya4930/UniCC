@@ -22,16 +22,16 @@ const VITOL_REMINDERS = [
 ]
 
 function parseTime12h(time: string): { hours: number; minutes: number } {
-  const [clock, modifier] = time.split(' ')
-  let [hours, minutes] = clock?.split(':').map(Number) || [0, 0]
+    const [clock, modifier] = time.split(' ')
+    let [hours, minutes] = clock?.split(':').map(Number) || [0, 0]
 
-  if(!hours) hours = 0;
-  if(!minutes) minutes = 0;
+    if (!hours) hours = 0;
+    if (!minutes) minutes = 0;
 
-  if (modifier === 'PM' && hours !== 12) hours += 12
-  if (modifier === 'AM' && hours === 12) hours = 0
+    if (modifier === 'PM' && hours !== 12) hours += 12
+    if (modifier === 'AM' && hours === 12) hours = 0
 
-  return { hours, minutes }
+    return { hours, minutes }
 }
 
 function shouldSend(target: Date, offset: number) {
@@ -73,12 +73,15 @@ async function Reminder() {
                 const dueTime = due[due.length - 1];
                 const { hours, minutes } = parseTime12h(dueTime || "11:59 PM")
                 const dueDate = new Date(item.year, item.month - 1, item.day, hours, minutes, 0, 0)
+                const sortedReminders = [...MOODLE_REMINDERS].sort(
+                    (a, b) => a.ms - b.ms
+                )
 
-                for (const r of MOODLE_REMINDERS) {
+                for (const r of sortedReminders) {
                     item.reminders ??= new Map<string, boolean>()
                     if (item.reminders.get(r.key)) continue
                     if (!shouldSend(dueDate, r.ms)) continue
-                    
+
                     const { assignmentName } = parseName(item.name)
 
                     notificationsToSend.push({
@@ -87,7 +90,12 @@ async function Reminder() {
                         tag: `moodle-${r.key}`,
                     })
 
-                    item.reminders.set(r.key, true)
+                    for (const older of sortedReminders) {
+                        if (older.ms >= r.ms) {
+                            item.reminders.set(older.key, true)
+                        }
+                    }
+                    break;
                 }
             }
         }
@@ -99,9 +107,15 @@ async function Reminder() {
             for (const item of vitol.data) {
                 if (item.hidden) continue
 
-                const openDate = new Date(item.opens)
+                const opens = item.opens.split(',').map(e => e.trim())
+                const opensTime = opens[opens.length - 1];
+                const { hours, minutes } = parseTime12h(opensTime || "11:59 PM")
+                const openDate = new Date(item.year, item.month - 1, item.day, hours, minutes, 0, 0)
+                const sortedReminders = [...VITOL_REMINDERS].sort(
+                    (a, b) => a.ms - b.ms
+                )
 
-                for (const r of VITOL_REMINDERS) {
+                for (const r of sortedReminders) {
                     item.reminders ??= new Map<string, boolean>()
                     if (item.reminders.get(r.key)) continue
                     if (!shouldSend(openDate, r.ms)) continue
@@ -114,7 +128,12 @@ async function Reminder() {
                         tag: `vitol-${r.key}`,
                     })
 
-                    item.reminders.set(r.key, true)
+                    for (const older of sortedReminders) {
+                        if (older.ms >= r.ms) {
+                            item.reminders.set(older.key, true)
+                        }
+                    }
+                    break
                 }
             }
         }
@@ -145,6 +164,8 @@ async function Reminder() {
 }
 
 export function vitolReminder() {
-    cron.schedule('0 * * * *', Reminder)
+    cron.schedule('0 * * * *', Reminder, {
+        timezone: 'Asia/Kolkata',
+    })
     Reminder().catch(console.error)
 }
