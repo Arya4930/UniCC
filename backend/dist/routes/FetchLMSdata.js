@@ -198,67 +198,70 @@ async function ScrapeLMS(username, password) {
         //     prevMonth,
         //     loginCookies
         // );
-        const nextMonthHTML = await fetchCalendarMonthHTML(sesskey, nextYear, nextMonth, loginCookies);
+        // const nextMonthHTML = await fetchCalendarMonthHTML(
+        //     sesskey,
+        //     nextYear,
+        //     nextMonth,
+        //     loginCookies
+        // );
         // const calendarEventsPrev = extractCalendarEvents(prevMonthHTML);
-        const calendarEventsNext = extractCalendarEvents(nextMonthHTML);
+        // const calendarEventsNext = extractCalendarEvents(nextMonthHTML);
         const allEvents = [
             // ...calendarEventsPrev,
             ...calendarEventsCurrent,
-            ...calendarEventsNext
+            // ...calendarEventsNext
         ];
-        const finalResults = [];
-        for (const dayData of allEvents) {
-            for (const ev of dayData.events) {
-                try {
-                    const eventRes = await LMSClient_1.default.get(ev.link, {
-                        headers: {
-                            Cookie: loginCookies
-                        }
-                    });
-                    const $ = cheerio.load(eventRes.data);
-                    const courseLink = $("ol.breadcrumb li.breadcrumb-item a")
-                        .first()
-                        .attr("href");
-                    let teachers = [];
-                    if (courseLink) {
-                        const courseId = new URL(courseLink).searchParams.get("id");
-                        const moduleId = new URL(ev.link).searchParams.get("id");
-                        if (courseId && moduleId) {
-                            const courseRes = await LMSClient_1.default.get(`/course/view.php?id=${courseId}`, { headers: { Cookie: loginCookies } });
-                            teachers = extractTeacherForModule(courseRes.data, moduleId);
-                        }
+        const eventPromises = allEvents.flatMap(dayData => dayData.events.map(async (ev) => {
+            try {
+                const eventRes = await LMSClient_1.default.get(ev.link, {
+                    headers: { Cookie: loginCookies }
+                });
+                const $ = cheerio.load(eventRes.data);
+                const courseLink = $("ol.breadcrumb li.breadcrumb-item a")
+                    .first()
+                    .attr("href");
+                let teachers = [];
+                if (courseLink) {
+                    const courseId = new URL(courseLink).searchParams.get("id");
+                    const moduleId = new URL(ev.link).searchParams.get("id");
+                    if (courseId && moduleId) {
+                        const courseRes = await LMSClient_1.default.get(`/course/view.php?id=${courseId}`, { headers: { Cookie: loginCookies } });
+                        teachers = extractTeacherForModule(courseRes.data, moduleId);
                     }
-                    const courseCodeFull = $("ol.breadcrumb li.breadcrumb-item a")
-                        .first()
-                        .text()
-                        .trim();
-                    const courseNameFull = $("ol.breadcrumb li.breadcrumb-item a")
-                        .first()
-                        .attr("title") || "";
-                    const assignmentName = $("h1.h2").first().text().trim();
-                    const name = `${courseCodeFull}/${courseNameFull}/${assignmentName}`;
-                    const dueText = $('div.activity-dates strong:contains("Due:")')
-                        .parent()
-                        .text()
-                        .replace("Due:", "")
-                        .trim();
-                    const isDone = $('[data-region="completion-info"] button.btn-success').length > 0;
-                    finalResults.push({
-                        name,
-                        due: dueText,
-                        done: isDone,
-                        day: dayData.day,
-                        month: dayData.month,
-                        year: dayData.year,
-                        url: ev.link,
-                        teachers
-                    });
                 }
-                catch (err) {
-                    console.error("❌ Failed parsing:", ev.link, err.message);
-                }
+                const courseCodeFull = $("ol.breadcrumb li.breadcrumb-item a")
+                    .first()
+                    .text()
+                    .trim();
+                const courseNameFull = $("ol.breadcrumb li.breadcrumb-item a")
+                    .first()
+                    .attr("title") || "";
+                const assignmentName = $("h1.h2").first().text().trim();
+                const name = `${courseCodeFull}/${courseNameFull}/${assignmentName}`;
+                const dueText = $('div.activity-dates strong:contains("Due:")')
+                    .parent()
+                    .text()
+                    .replace("Due:", "")
+                    .trim();
+                const isDone = $('[data-region="completion-info"] button.btn-success').length > 0;
+                return {
+                    name,
+                    due: dueText,
+                    done: isDone,
+                    day: dayData.day,
+                    month: dayData.month,
+                    year: dayData.year,
+                    url: ev.link,
+                    teachers
+                };
             }
-        }
+            catch (err) {
+                console.error("❌ Failed parsing:", ev.link, err.message);
+                return null;
+            }
+        }));
+        const finalResults = (await Promise.all(eventPromises))
+            .filter(Boolean);
         return finalResults;
     }
     catch (err) {

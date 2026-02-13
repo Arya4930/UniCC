@@ -199,31 +199,27 @@ async function ScrapeLMS(username: string, password: string): Promise<Assingment
         //     loginCookies
         // );
 
-        const nextMonthHTML = await fetchCalendarMonthHTML(
-            sesskey,
-            nextYear,
-            nextMonth,
-            loginCookies
-        );
+        // const nextMonthHTML = await fetchCalendarMonthHTML(
+        //     sesskey,
+        //     nextYear,
+        //     nextMonth,
+        //     loginCookies
+        // );
 
         // const calendarEventsPrev = extractCalendarEvents(prevMonthHTML);
-        const calendarEventsNext = extractCalendarEvents(nextMonthHTML);
+        // const calendarEventsNext = extractCalendarEvents(nextMonthHTML);
 
         const allEvents = [
             // ...calendarEventsPrev,
             ...calendarEventsCurrent,
-            ...calendarEventsNext
+            // ...calendarEventsNext
         ];
 
-        const finalResults = [];
-
-        for (const dayData of allEvents) {
-            for (const ev of dayData.events) {
+        const eventPromises = allEvents.flatMap(dayData =>
+            dayData.events.map(async (ev: any) => {
                 try {
                     const eventRes = await LMSClient.get(ev.link, {
-                        headers: {
-                            Cookie: loginCookies
-                        }
+                        headers: { Cookie: loginCookies }
                     });
 
                     const $ = cheerio.load(eventRes.data);
@@ -266,7 +262,7 @@ async function ScrapeLMS(username: string, password: string): Promise<Assingment
 
                     const isDone = $('[data-region="completion-info"] button.btn-success').length > 0;
 
-                    finalResults.push({
+                    return {
                         name,
                         due: dueText,
                         done: isDone,
@@ -275,12 +271,17 @@ async function ScrapeLMS(username: string, password: string): Promise<Assingment
                         year: dayData.year,
                         url: ev.link,
                         teachers
-                    });
+                    };
                 } catch (err: any) {
                     console.error("❌ Failed parsing:", ev.link, err.message);
+                    return null;
                 }
-            }
-        }
+            })
+        );
+
+        const finalResults = (await Promise.all(eventPromises))
+            .filter(Boolean);
+
         return finalResults;
     } catch (err: any) {
         console.error("Error:", err.message);
