@@ -399,7 +399,8 @@ function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0, i
 
         lastTwo.forEach(day => {
             const d = day.fullDate;
-            if (isThuOrFri(d)) {
+            // this shouldnt happen if the date is before FAT, should only happen for dates before CAT-I and CAT-II
+            if (isThuOrFri(d) && (impDates.lidLabDate - d > 7)) {
                 locked.add(normalize(d));
             }
         });
