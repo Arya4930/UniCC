@@ -18,11 +18,11 @@ export default function ScheduleSubTab({ data, handleScheduleFetch, vitolData, h
     return (
         <>
             <ExamSchedule data={data} handleScheduleFetch={handleScheduleFetch} />
-            {(username && password) ? (
+            {/* {(username && password) ? (
                 <VitolDisplay vitolData={vitolData} handleFetchVitol={handleFetchVitol} setVitolData={setVitolData} />
             ) : (
                 <VitolUserPassForm handleFetchVitol={handleFetchVitol} />
-            )}
+            )} */}
         </>
     );
 }

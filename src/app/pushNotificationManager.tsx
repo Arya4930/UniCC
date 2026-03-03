@@ -131,7 +131,7 @@ export default function PushNotificationManager() {
             {subscription && (
                 <div className="mt-3 flex flex-col gap-4">
 
-                    {/* Vitol */}
+                    {/* Vitol
                     <div className="flex flex-col gap-1">
                         <div className="flex items-center justify-between">
                             <div>
@@ -176,7 +176,7 @@ export default function PushNotificationManager() {
                         >
                             Test Vitol notification
                         </button>
-                    </div>
+                    </div> */}
 
                     {/* Moodle */}
                     <div className="flex flex-col gap-1">

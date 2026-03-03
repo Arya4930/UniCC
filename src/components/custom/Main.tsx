@@ -358,31 +358,21 @@ export default function LoginPage() {
           })()
         );
       }
-      const vitolUsername = localStorage.getItem("vitol_username");
-      const vitolPassword = localStorage.getItem("vitol_password");
-      const vitolSite = localStorage.getItem("vitol_site");
 
-      if (vitolUsername && vitolPassword && vitolSite) {
-        tasks.push(
-          (async () => {
-            const res = await fetch(`${API_BASE}/api/vitol-data`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                username: vitolUsername,
-                pass: vitolPassword,
-                vitolSite,
-              }),
-            });
-
-            const vitolData = await res.json();
-            setVitolData(vitolData);
-            localStorage.setItem("vitolData", JSON.stringify(vitolData));
-            setMessage(prev => prev + "\n✅ Vitol data fetched");
-            setProgressBar(prev => prev + 20);
-          })()
-        );
-      }
+      tasks.push(
+        (async () => {
+          const res = await fetch(`${API_BASE}/api/grades`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ cookies: cookies, authorizedID, csrf, semesterId: currSemesterID }),
+          })
+          const GradesData = await res.json();
+          setGradesData(GradesData);
+          localStorage.setItem("grades", JSON.stringify(GradesData));
+          setMessage(prev => prev + "\n✅ Grades data fetched");
+          setProgressBar(prev => prev + 20);
+        })()
+      )
       await Promise.all(tasks);
 
       setProgressBar(100);
