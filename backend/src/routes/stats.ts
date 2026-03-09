@@ -400,16 +400,6 @@ router.get("/", async (_req, res) => {
       <canvas id="sourceChart"></canvas>
     </div>
     <h2>Users Over Time</h2>
-    <div style="display:flex; gap:20px; margin-bottom:30px;">
-      <div style="background:#11141b;padding:16px;border-radius:10px;border:1px solid var(--border);">
-        <strong>New Users</strong><br/>
-        ${totalNewUsers}
-      </div>
-      <div style="background:#11141b;padding:16px;border-radius:10px;border:1px solid var(--border);">
-        <strong>Returning Users</strong><br/>
-        ${totalReturningUsers}
-      </div>
-    </div>
     <div class="chart-container" style="height: 500px;">
       <canvas id="userChart"></canvas>
     </div>
