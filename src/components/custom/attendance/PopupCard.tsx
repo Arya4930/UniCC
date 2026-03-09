@@ -138,7 +138,7 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                         <div className="w-24 h-24 flex-shrink-0 flex flex-col items-center justify-center">
                             <CircularProgressbar
                                 value={a.attendancePercentage}
-                                text={`${a.attendancePercentage}%`}
+                                text={`${(a.attendedClasses/a.totalClasses * 100).toFixed(1)}%`}
                                 styles={buildStyles({
                                     pathColor:
                                         a.attendancePercentage < 75
@@ -436,10 +436,8 @@ function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0, i
     });
 
     const upcomingCount = (attending + missed);
-    const attendCount = attending;
-    const missedCount = missed;
 
-    const predictedAttended = attendedClasses + attendCount;
+    const predictedAttended = attendedClasses + attending;
     const predictedTotal = totalClasses + upcomingCount;
     const predictedPercent: number = parseFloat(((predictedAttended / predictedTotal) * 100).toFixed(1));
 
@@ -448,8 +446,8 @@ function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0, i
             <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-medium 
                       bg-gray-100 dark:bg-slate-800 midnight:bg-gray-900 
                       px-3 mt-2 py-2 rounded-md border border-gray-200 dark:border-gray-700 midnight:border-gray-800">
-                <span className="text-green-600 dark:text-green-400">Attending: <strong>{attendCount}</strong></span>
-                <span className="text-red-500 dark:text-red-400">Not Attending: <strong>{missedCount}</strong></span>
+                <span className="text-green-600 dark:text-green-400">Attending: <strong>{attending}</strong></span>
+                <span className="text-red-500 dark:text-red-400">Not Attending: <strong>{missed}</strong></span>
                 <span
                     className={`font-semibold ${predictedPercent >= 75
                         ? "text-green-600 dark:text-green-400"

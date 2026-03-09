@@ -119,7 +119,7 @@ export default function CourseCard({ a, onClick, activeDay, isHoliday }) {
                 <div className="w-28 h-28 flex-shrink-0 flex flex-col items-center justify-center ml-4">
                     <CircularProgressbar
                         value={a.attendancePercentage}
-                        text={`${a.attendancePercentage}%`}
+                        text={`${(a.attendedClasses/a.totalClasses * 100).toFixed(1)}%`}
                         styles={buildStyles({
                             pathColor:
                                 a.attendancePercentage < 75
