@@ -17,7 +17,16 @@ type settings = {
   CGPAHidden: boolean;
   attendancePercentageOrString: "percentage" | "str";
   currSemesterID: string;
+  calendarType: "ALL" | "ALL02" | "ALL03" | "ALL05" | "ALL06" | "ALL08" | "ALL11" | "WEI";
 }
+
+const defaultSettings: settings = {
+  decimalValues: false,
+  CGPAHidden: false,
+  attendancePercentageOrString: "percentage",
+  currSemesterID: config.semesterIDs[config.semesterIDs.length - 2],
+  calendarType: "ALL"
+};
 
 export default function LoginPage() {
   // --- State Management ---
@@ -43,13 +52,12 @@ export default function LoginPage() {
   const [HostelActiveSubTab, setHostelActiveSubTab] = useState<string>("mess");
   const [activeAttendanceSubTab, setActiveAttendanceSubTab] = useState<string>("attendance");
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [calendarType, setCalenderType] = useState<string | null>(null)
   const [progressBar, setProgressBar] = useState<number>(0);
   const [moodleData, setMoodleData] = useState([]);
   const [vitolData, setVitolData] = useState([]);
   const [isAPIworking, setIsAPIworking] = useState<boolean>(false);
   const [demoMode, setDemoMode] = useState<boolean>(false);
-  const [settings, setSettings] = useState<settings>({ "decimalValues": false, "CGPAHidden": false, "attendancePercentageOrString": "percentage", "currSemesterID": config.semesterIDs[config.semesterIDs.length - 2] });
+  const [settings, setSettings] = useState<settings>(defaultSettings);
 
   useEffect(() => {
     const day = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
@@ -133,10 +141,15 @@ export default function LoginPage() {
     if (storedAllGrades) setAllGradesData(JSON.parse(storedAllGrades));
     if (storedHoste) sethostelData(JSON.parse(storedHoste));
     if (calendar) setCalender(JSON.parse(calendar));
-    if (calendarType) setCalenderType(calendarType);
     if (MoodleData) setMoodleData(JSON.parse(MoodleData));
     if (VitolData) setVitolData(JSON.parse(VitolData));
-    if (settings) setSettings(JSON.parse(settings));
+    if (settings) {
+      const parsedSettings = JSON.parse(settings);
+      setSettings({
+        ...defaultSettings,
+        ...parsedSettings
+      });
+    }
     setIsLoggedIn((storedUsername && storedPassword) ? true : false);
     setTimeout(() => setIsLoading(false), 300);
   }, []);
@@ -241,7 +254,7 @@ export default function LoginPage() {
           body: JSON.stringify({
             cookies: cookies,
             authorizedID, csrf,
-            type: calendarType || "ALL",
+            type: settings.calendarType || "ALL",
             semesterId: currSemesterID
           }),
         }).then(async r => {
@@ -429,11 +442,9 @@ export default function LoginPage() {
     handleLogin();
   };
 
-  const [isOffline, setIsOffline] = useState(false);
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
 
   useEffect(() => {
-    setIsOffline(!navigator.onLine);
-
     const goOffline = () => setIsOffline(true);
     const goOnline = () => setIsOffline(false);
 
@@ -446,24 +457,11 @@ export default function LoginPage() {
     };
   }, []);
 
-  useEffect(() => {
-    const handleOnline = () => setIsOffline(false);
-    const handleOffline = () => setIsOffline(true);
-
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
-
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
-    };
-  }, []);
-
   const handleDemoClick = () => {
     setDemoMode(true);
     setUsername(demoData.username);
     setPassword(demoData.password);
-    setCalenderType("ALL");
+    setSettings(defaultSettings);
     setAttendanceData(demoData.attendance);
     setMarksData(demoData.marks);
     setGradesData(demoData.grades);
@@ -549,9 +547,7 @@ export default function LoginPage() {
             activeAttendanceSubTab={activeAttendanceSubTab}
             setActiveAttendanceSubTab={setActiveAttendanceSubTab}
             calendarData={Calender}
-            calendarType={calendarType}
             setCalender={setCalender}
-            setCalenderType={setCalenderType}
             setIsReloading={setIsReloading}
             setProgressBar={setProgressBar}
             setMessage={setMessage}

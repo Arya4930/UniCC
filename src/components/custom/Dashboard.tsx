@@ -46,9 +46,7 @@ export default function DashboardContent({
   activeAttendanceSubTab,
   setActiveAttendanceSubTab,
   calendarData,
-  calendarType,
   setCalender,
-  setCalenderType,
   setIsReloading,
   setProgressBar,
   setMessage,
@@ -166,9 +164,9 @@ export default function DashboardContent({
       setProgressBar((prev) => prev + 40);
 
       setCalender(CalenderRes);
-      setCalenderType(FncalendarType);
+      setSettings(prev => ({ ...prev, calendarType: FncalendarType || "ALL" }))
       localStorage.setItem("calender", JSON.stringify(CalenderRes));
-      localStorage.setItem("calendarType", FncalendarType);
+      localStorage.setItem("settings", JSON.stringify({ ...settings, calendarType: FncalendarType }));
 
       setMessage((prev) => prev + "\n✅ Calendar reloaded successfully!");
       setProgressBar(100);
@@ -330,6 +328,7 @@ export default function DashboardContent({
       setProgressBar(0);
     }
   };
+  console.log(settings)
 
   return (
     <div
@@ -419,11 +418,11 @@ export default function DashboardContent({
               <>
                 <CalendarView
                   calendars={calendarData.calendars}
-                  calendarType={calendarType}
+                  calendarType={settings.calendarType}
                   handleCalendarFetch={handleCalendarFetch}
                 />
                 <CalendarTabWrapper
-                  calendarType={calendarType}
+                  calendarType={settings.calendarType}
                   handleCalendarFetch={handleCalendarFetch}
                 />
               </>

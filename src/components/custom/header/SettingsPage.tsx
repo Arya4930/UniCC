@@ -15,6 +15,7 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
     const [selectedSemester, setSelectedSemester] = useState<string>(currSemesterID);
     const [changedPassword, setChangedPassword] = useState<string>(password);
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    console.log(currSemesterID)
 
     const handleSaveSemester = async () => {
         if (!selectedSemester) return;
