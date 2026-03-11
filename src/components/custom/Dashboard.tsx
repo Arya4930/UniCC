@@ -328,7 +328,6 @@ export default function DashboardContent({
       setProgressBar(0);
     }
   };
-  console.log(settings)
 
   return (
     <div
