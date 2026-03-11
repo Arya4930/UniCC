@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Hash, X, BadgeQuestionMark, Calendar } from "lucide-react";
 import TimetableGrid from "./TimetableGrid";
 
-export default function AttendanceTabs({ data, activeDay, setActiveDay, calendars }) {
+export default function AttendanceTabs({ data, activeDay, setActiveDay, calendars, decimalValues }) {
   const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
   const [expandedIdx, setExpandedIdx] = useState(null);
   const [showPredictor, setShowPredictor] = useState(false);
@@ -176,6 +176,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
               onClick={() => setExpandedIdx(idx)}
               activeDay={activeDay}
               isHoliday={isHoliday}
+              decimalValues={decimalValues}
             />
             {expandedIdx === idx && (
               <PopupCard
@@ -184,6 +185,7 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
                 dayCardsMap={dayCardsMap}
                 analyzeCalendars={results}
                 impDates={impDates}
+                decimalValues={decimalValues}
               />
             )}
           </div>

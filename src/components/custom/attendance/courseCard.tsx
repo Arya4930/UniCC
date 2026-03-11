@@ -6,7 +6,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import "react-circular-progressbar/dist/styles.css"
 import { useState, useEffect } from "react"
 
-export default function CourseCard({ a, onClick, activeDay, isHoliday }) {
+export default function CourseCard({ a, onClick, activeDay, isHoliday, decimalValues }) {
     const [ongoing, setOngoing] = useState(false);
     const lab = a.slotName.split('')[0] === "L";
 
@@ -119,7 +119,7 @@ export default function CourseCard({ a, onClick, activeDay, isHoliday }) {
                 <div className="w-28 h-28 flex-shrink-0 flex flex-col items-center justify-center ml-4">
                     <CircularProgressbar
                         value={a.attendancePercentage}
-                        text={`${(a.attendedClasses/a.totalClasses * 100).toFixed(1)}%`}
+                        text={`${!decimalValues ? Math.ceil(a.attendedClasses/a.totalClasses * 100) : (a.attendedClasses/a.totalClasses * 100).toFixed(1)}%`}
                         styles={buildStyles({
                             pathColor:
                                 a.attendancePercentage < 75

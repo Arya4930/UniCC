@@ -28,7 +28,7 @@ const normalize = (d: Date) => {
     return x.getTime();
 };
 
-export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalendars, impDates }) {
+export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalendars, impDates, decimalValues }) {
     const lab = a.courseCode.endsWith("(L)");
 
     useEffect(() => {
@@ -138,7 +138,7 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                         <div className="w-24 h-24 flex-shrink-0 flex flex-col items-center justify-center">
                             <CircularProgressbar
                                 value={a.attendancePercentage}
-                                text={`${(a.attendedClasses/a.totalClasses * 100).toFixed(1)}%`}
+                                text={`${!decimalValues ? Math.ceil(a.attendedClasses/a.totalClasses * 100) : (a.attendedClasses/a.totalClasses * 100).toFixed(1)}%`}
                                 styles={buildStyles({
                                     pathColor:
                                         a.attendancePercentage < 75

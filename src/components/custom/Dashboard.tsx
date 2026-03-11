@@ -46,8 +46,6 @@ export default function DashboardContent({
   activeAttendanceSubTab,
   setActiveAttendanceSubTab,
   calendarData,
-  CGPAHidden,
-  setCGPAHidden,
   calendarType,
   setCalender,
   setCalenderType,
@@ -67,7 +65,9 @@ export default function DashboardContent({
   password,
   setPassword,
   vitolData,
-  setVitolData
+  setVitolData,
+  settings,
+  setSettings
 }) {
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
@@ -351,6 +351,8 @@ export default function DashboardContent({
         setIsReloading={setIsReloading}
         password={password}
         setPassword={setPassword}
+        settings={settings}
+        setSettings={setSettings}
       />
 
       <div className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-screen text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
@@ -361,8 +363,18 @@ export default function DashboardContent({
           feedbackStatus={GradesData.feedback}
           marksData={marksData}
           setGradesDisplayIsOpen={setGradesDisplayIsOpen}
-          CGPAHidden={CGPAHidden}
-          setCGPAHidden={setCGPAHidden}
+          CGPAHidden={settings.CGPAHidden}
+          setCGPAHidden={(val: boolean) => {
+              setSettings(prev => ({ ...prev, CGPAHidden: val }))
+              localStorage.setItem("settings", JSON.stringify({ ...settings, CGPAHidden: val }))
+            }
+          }
+          attendancePercentageOrString={settings.attendancePercentageOrString}
+          setAttendancePercentageOrString={(val: string) => {
+              setSettings(prev => ({ ...prev, attendancePercentageOrString: val }))
+              localStorage.setItem("settings", JSON.stringify({ ...settings, attendancePercentageOrString: val }))
+            }
+          }
         />
 
         {ODhoursIsOpen && (
@@ -396,6 +408,7 @@ export default function DashboardContent({
                   activeDay={activeDay}
                   setActiveDay={setActiveDay}
                   calendars={calendarData.calendars}
+                  decimalValues={settings.decimalValues}
                 />
               </>
             )}

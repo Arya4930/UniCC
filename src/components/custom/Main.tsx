@@ -36,7 +36,6 @@ export default function LoginPage() {
   const [HostelActiveSubTab, setHostelActiveSubTab] = useState<string>("mess");
   const [activeAttendanceSubTab, setActiveAttendanceSubTab] = useState<string>("attendance");
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [CGPAHidden, setCGPAHidden] = useState<boolean>(false);
   const [calendarType, setCalenderType] = useState<string | null>(null)
   const [progressBar, setProgressBar] = useState<number>(0);
   const [currSemesterID, setCurrSemesterID] = useState<string>(config.semesterIDs[config.semesterIDs.length - 2]);
@@ -44,6 +43,7 @@ export default function LoginPage() {
   const [vitolData, setVitolData] = useState([]);
   const [isAPIworking, setIsAPIworking] = useState<boolean>(false);
   const [demoMode, setDemoMode] = useState<boolean>(false);
+  const [settings, setSettings] = useState<object>({ "decimalValues": false, "CGPAHidden": false, "attendancePercentageOrString": "percentage" });
 
   useEffect(() => {
     const day = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
@@ -114,6 +114,7 @@ export default function LoginPage() {
     const storedCurrSemesterID = localStorage.getItem("currSemesterID");
     const MoodleData = localStorage.getItem("moodleData");
     const VitolData = localStorage.getItem("vitolData");
+    const settings = localStorage.getItem("settings");
 
     const parsedStoredAttendance: attendanceRes | null = storedAttendance ? JSON.parse(storedAttendance) : null;
     if (parsedStoredAttendance && parsedStoredAttendance.attendance) {
@@ -131,6 +132,7 @@ export default function LoginPage() {
     if (storedCurrSemesterID) setCurrSemesterID(storedCurrSemesterID);
     if (MoodleData) setMoodleData(JSON.parse(MoodleData));
     if (VitolData) setVitolData(JSON.parse(VitolData));
+    if (settings) setSettings(JSON.parse(settings));
     setIsLoggedIn((storedUsername && storedPassword) ? true : false);
     setTimeout(() => setIsLoading(false), 300);
   }, []);
@@ -393,7 +395,7 @@ export default function LoginPage() {
     setUsername("");
     setPassword("");
 
-    const keysToKeep = ["theme", "CGPAHidden", "activityTree"];
+    const keysToKeep = ["theme", "activityTree", "settings"];
 
     const saved: Record<string, string | null> = {};
     keysToKeep.forEach((key) => {
@@ -424,7 +426,6 @@ export default function LoginPage() {
   };
 
   const [isOffline, setIsOffline] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
     setIsOffline(!navigator.onLine);
@@ -544,8 +545,6 @@ export default function LoginPage() {
             activeAttendanceSubTab={activeAttendanceSubTab}
             setActiveAttendanceSubTab={setActiveAttendanceSubTab}
             calendarData={Calender}
-            CGPAHidden={CGPAHidden}
-            setCGPAHidden={setCGPAHidden}
             calendarType={calendarType}
             setCalender={setCalender}
             setCalenderType={setCalenderType}
@@ -566,6 +565,8 @@ export default function LoginPage() {
             setPassword={setPassword}
             vitolData={vitolData}
             setVitolData={setVitolData}
+            settings={settings}
+            setSettings={setSettings}
           />
         </>
       )}

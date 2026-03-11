@@ -8,12 +8,14 @@ export default function NavigationTabs({
   setActiveTab,
   handleLogOutRequest,
   handleReloadRequest,
-  currSemesterID, 
-  setCurrSemesterID, 
-  handleLogin, 
+  currSemesterID,
+  setCurrSemesterID,
+  handleLogin,
   setIsReloading,
   password,
-  setPassword
+  setPassword,
+  settings,
+  setSettings
 }) {
   const [isSpinning, setIsSpinning] = useState(false);
   const [showSettingsPage, setShowSettingsPage] = useState<boolean>(false);
@@ -31,16 +33,24 @@ export default function NavigationTabs({
 
   return (
     <div data-scrollable className="flex w-full shadow-sm pb-4 dark:bg-slate-900 midnight:bg-black">
-      {showSettingsPage && <SettingsPage 
-        handleClose={() => setShowSettingsPage(false)}
-        currSemesterID={currSemesterID} 
-        setCurrSemesterID={setCurrSemesterID} 
-        handleLogin={handleLogin} 
-        setIsReloading={setIsReloading}
-        handleLogOutRequest={handleLogOutRequest}
-        password={password}
-        setPassword={setPassword}
-      />}
+      {showSettingsPage && (
+        <SettingsPage
+          handleClose={() => setShowSettingsPage(false)}
+          currSemesterID={currSemesterID}
+          setCurrSemesterID={setCurrSemesterID}
+          handleLogin={handleLogin}
+          setIsReloading={setIsReloading}
+          handleLogOutRequest={handleLogOutRequest}
+          password={password}
+          setPassword={setPassword}
+          decimalValues={settings.decimalValues}
+          setDecimalValues={(val: boolean) => {
+              setSettings(prev => ({ ...prev, decimalValues: val }))
+              localStorage.setItem("settings", JSON.stringify({ ...settings, decimalValues: val }))
+            }
+          }
+        />
+      )}
       <button
         onClick={() => setShowSettingsPage(true)}
         className="w-12 flex items-center justify-center bg-gray-400 hover:cursor-pointer text-white text-sm font-medium hover:bg-gray-500 dark:bg-gray-500 dark:hover:bg-gray-600 midnight:bg-gray-600 midnight:hover:bg-gray-700 transition-colors"

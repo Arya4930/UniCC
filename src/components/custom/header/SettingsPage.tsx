@@ -6,11 +6,12 @@ import { Button } from "../../ui/button";
 import config from "../../../app/config.json";
 import { DropdownToggle } from "../toggle";
 import HeatMapComponent from "./HeatMapComponent";
+import { Switch } from "@/components/ui/switch";
 import Links from "./Links";
 import Files from "./Files";
 import PushNotificationManager from "@/app/pushNotificationManager";
 
-export default function SettingsPage({ handleClose, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading, handleLogOutRequest, password, setPassword }) {
+export default function SettingsPage({ handleClose, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading, handleLogOutRequest, password, setPassword, decimalValues, setDecimalValues }) {
     const [selectedSemester, setSelectedSemester] = useState<string>(currSemesterID);
     const [changedPassword, setChangedPassword] = useState<string>(password);
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -27,7 +28,7 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
         setPassword(changedPassword);
         localStorage.setItem("password", changedPassword);
     }
-
+    
     useEffect(() => {
         setSelectedSemester(currSemesterID);
     }, [currSemesterID]);
@@ -123,18 +124,33 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
                     onClick={handleSavePassword}
                     disabled={!password || changedPassword === password}
                     className={`mt-8 px-4 py-2 rounded-lg font-medium flex items-center justify-center transition-colors ${!password || changedPassword === password
-                            ? "bg-gray-400 text-gray-200 cursor-not-allowed"
-                            : "bg-blue-600 hover:bg-blue-700 text-white"
+                        ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                        : "bg-blue-600 hover:bg-blue-700 text-white"
                         }`}
                 >
                     <Save className="w-4 h-4 mr-1" />
                     Save
                 </button>
             </div>
-
             <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-4">
-                <DropdownToggle />
+                <div className="w-full flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                        <div className="flex flex-col">
+                            <p className="text-lg font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100">
+                                Show Attendance Upto One Decimal Place
+                            </p>
+                        </div>
+                        <Switch
+                            checked={decimalValues}
+                            onCheckedChange={setDecimalValues}
+                        />
+                    </div>
+                </div>
             </div>
+
+            {/* <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-4">
+                <DropdownToggle />
+            </div> */}
             {/* <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-4">
                 <HeatMapComponent />
             </div> */}
