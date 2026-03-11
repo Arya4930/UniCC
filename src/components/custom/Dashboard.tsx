@@ -57,8 +57,6 @@ export default function DashboardContent({
   sethostelData,
   setGradesData,
   setScheduleData,
-  currSemesterID,
-  setCurrSemesterID,
   handleLogin,
   moodleData,
   setMoodleData,
@@ -160,7 +158,7 @@ export default function DashboardContent({
           cookies: cookies,
           authorizedID, csrf,
           type: FncalendarType || "ALL",
-          semesterId: currSemesterID
+          semesterId: settings.currSemesterID
         }),
       });
 
@@ -192,7 +190,7 @@ export default function DashboardContent({
       const gradesRes = await fetch(`${API_BASE}/api/grades`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cookies, authorizedID, csrf, semesterId: currSemesterID }),
+        body: JSON.stringify({ cookies, authorizedID, csrf, semesterId: settings.currSemesterID }),
       });
 
       const gradesData = await gradesRes.json();
@@ -247,7 +245,7 @@ export default function DashboardContent({
       const ScheduleRes = await fetch(`${API_BASE}/api/schedule`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cookies: cookies, authorizedID, csrf, semesterId: currSemesterID }),
+        body: JSON.stringify({ cookies: cookies, authorizedID, csrf, semesterId: settings.currSemesterID }),
       });
       const ScheduleData = await ScheduleRes.json();
       setProgressBar((prev) => prev + 40);
@@ -345,8 +343,12 @@ export default function DashboardContent({
         setActiveTab={setActiveTab}
         handleLogOutRequest={handleLogOutRequest}
         handleReloadRequest={handleReloadRequest}
-        currSemesterID={currSemesterID}
-        setCurrSemesterID={setCurrSemesterID}
+        currSemesterID={settings.currSemesterID}
+        setCurrSemesterID={(val: string) => {
+          setSettings(prev => ({ ...prev, currSemesterID: val }))
+          localStorage.setItem("settings", JSON.stringify({ ...settings, currSemesterID: val }))
+        }
+        }
         handleLogin={handleLogin}
         setIsReloading={setIsReloading}
         password={password}
@@ -365,15 +367,15 @@ export default function DashboardContent({
           setGradesDisplayIsOpen={setGradesDisplayIsOpen}
           CGPAHidden={settings.CGPAHidden}
           setCGPAHidden={(val: boolean) => {
-              setSettings(prev => ({ ...prev, CGPAHidden: val }))
-              localStorage.setItem("settings", JSON.stringify({ ...settings, CGPAHidden: val }))
-            }
+            setSettings(prev => ({ ...prev, CGPAHidden: val }))
+            localStorage.setItem("settings", JSON.stringify({ ...settings, CGPAHidden: val }))
+          }
           }
           attendancePercentageOrString={settings.attendancePercentageOrString}
           setAttendancePercentageOrString={(val: string) => {
-              setSettings(prev => ({ ...prev, attendancePercentageOrString: val }))
-              localStorage.setItem("settings", JSON.stringify({ ...settings, attendancePercentageOrString: val }))
-            }
+            setSettings(prev => ({ ...prev, attendancePercentageOrString: val }))
+            localStorage.setItem("settings", JSON.stringify({ ...settings, attendancePercentageOrString: val }))
+          }
           }
         />
 

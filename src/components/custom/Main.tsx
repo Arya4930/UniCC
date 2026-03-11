@@ -12,6 +12,13 @@ import demoData from '../../app/demoData.json';
 
 export const API_BASE = "https://api.uni-cc.site";
 
+type settings = {
+  decimalValues: boolean;
+  CGPAHidden: boolean;
+  attendancePercentageOrString: "percentage" | "str";
+  currSemesterID: string;
+}
+
 export default function LoginPage() {
   // --- State Management ---
   const [username, setUsername] = useState<string>("");
@@ -38,12 +45,11 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [calendarType, setCalenderType] = useState<string | null>(null)
   const [progressBar, setProgressBar] = useState<number>(0);
-  const [currSemesterID, setCurrSemesterID] = useState<string>(config.semesterIDs[config.semesterIDs.length - 2]);
   const [moodleData, setMoodleData] = useState([]);
   const [vitolData, setVitolData] = useState([]);
   const [isAPIworking, setIsAPIworking] = useState<boolean>(false);
   const [demoMode, setDemoMode] = useState<boolean>(false);
-  const [settings, setSettings] = useState<object>({ "decimalValues": false, "CGPAHidden": false, "attendancePercentageOrString": "percentage" });
+  const [settings, setSettings] = useState<settings>({ "decimalValues": false, "CGPAHidden": false, "attendancePercentageOrString": "percentage", "currSemesterID": config.semesterIDs[config.semesterIDs.length - 2] });
 
   useEffect(() => {
     const day = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
@@ -111,7 +117,6 @@ export default function LoginPage() {
     const storedHoste = localStorage.getItem("hostel");
     const calendar = localStorage.getItem("calender");
     const calendarType = localStorage.getItem("calendarType");
-    const storedCurrSemesterID = localStorage.getItem("currSemesterID");
     const MoodleData = localStorage.getItem("moodleData");
     const VitolData = localStorage.getItem("vitolData");
     const settings = localStorage.getItem("settings");
@@ -129,7 +134,6 @@ export default function LoginPage() {
     if (storedHoste) sethostelData(JSON.parse(storedHoste));
     if (calendar) setCalender(JSON.parse(calendar));
     if (calendarType) setCalenderType(calendarType);
-    if (storedCurrSemesterID) setCurrSemesterID(storedCurrSemesterID);
     if (MoodleData) setMoodleData(JSON.parse(MoodleData));
     if (VitolData) setVitolData(JSON.parse(VitolData));
     if (settings) setSettings(JSON.parse(settings));
@@ -314,7 +318,7 @@ export default function LoginPage() {
           cookies,
           authorizedID,
           csrf,
-          semesterId: currSemesterID,
+          semesterId: settings.currSemesterID || config.semesterIDs[config.semesterIDs.length - 2],
         }),
       }).then(async r => {
         const { attRes, marksRes } = await r.json();
@@ -366,7 +370,7 @@ export default function LoginPage() {
           const res = await fetch(`${API_BASE}/api/schedule`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies: cookies, authorizedID, csrf, semesterId: currSemesterID }),
+            body: JSON.stringify({ cookies: cookies, authorizedID, csrf, semesterId: settings.currSemesterID || config.semesterIDs[config.semesterIDs.length - 2] }),
           })
           const GradesData = await res.json();
           setGradesData(GradesData);
@@ -556,8 +560,6 @@ export default function LoginPage() {
             sethostelData={sethostelData}
             setGradesData={setGradesData}
             setScheduleData={setScheduleData}
-            currSemesterID={currSemesterID}
-            setCurrSemesterID={setCurrSemesterID}
             handleLogin={handleLogin}
             moodleData={moodleData}
             setMoodleData={setMoodleData}
