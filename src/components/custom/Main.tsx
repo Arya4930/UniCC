@@ -179,6 +179,7 @@ export default function LoginPage() {
 
   const loginToVTOP = async (retry = false) => {
     try {
+      window.scrollTo({ top: 0, behavior: "smooth" });
       setProgressBar(10);
       setMessage("Logging in and fetching data...");
       const loginRes = await fetch(`${API_BASE}/api/login`, {
