@@ -173,7 +173,7 @@ export default function LoginPage() {
         ...parsedSettings
       });
     }
-    setIsLoggedIn((storedUsername && storedPassword) ? true : false);
+    setIsLoggedIn((storedUsername && storedPassword) || (JSON.parse(IDs)?.VtopUsername && JSON.parse(IDs)?.VtopPassword) ? true : false);
     setTimeout(() => setIsLoading(false), 300);
   }, []);
 
