@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { RefreshCcw, CheckCircle, AlertCircle, Clock, Eye, EyeOff, Undo2 } from "lucide-react";
+import { RefreshCcw, CheckCircle, AlertCircle, Clock, Eye, EyeOff, Undo2, LogOut } from "lucide-react";
 
 export default function MoodleDisplay({ moodleData, handleFetchMoodle, setMoodleData, IDs }) {
     const [showHidden, setShowHidden] = useState(false);
@@ -8,7 +8,7 @@ export default function MoodleDisplay({ moodleData, handleFetchMoodle, setMoodle
         return (
             <div className="text-xl mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
                 <h1 className="font-bold">
-                    Moodle/LMS Data 
+                    Moodle/LMS Data
                     <button onClick={() => handleFetchMoodle()} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
                         <RefreshCcw className={`w-4 h-4`} />
                     </button>
@@ -40,6 +40,11 @@ export default function MoodleDisplay({ moodleData, handleFetchMoodle, setMoodle
             return updated;
         });
     };
+
+    const LogOutMoodle = () => {
+        localStorage.setItem("IDs", JSON.stringify({ ...IDs, MoodleUsername: "", MoodlePassword: "" }))
+        window.location.reload();
+    }
 
     return (
         <div className="mt-6 p-4">
@@ -133,6 +138,15 @@ export default function MoodleDisplay({ moodleData, handleFetchMoodle, setMoodle
                     </button>
                 </div>
             )}
+            <div className="mt-6 flex items-center justify-center gap-3 text-sm text-gray-700 dark:text-gray-300">
+                <button
+                    onClick={LogOutMoodle}
+                    className="w-full max-w-md px-4 py-2 rounded-lg font-medium flex items-center justify-center bg-red-600 hover:bg-red-700 text-white transition-colors"
+                >
+                    <LogOut className="w-4 h-4 mr-1" />
+                    Log Out Moodle
+                </button>
+            </div>
         </div>
     );
 }
