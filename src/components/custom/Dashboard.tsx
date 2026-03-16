@@ -262,6 +262,7 @@ export default function DashboardContent({
   };
 
   const handleFetchMoodle = async (username = IDs.MoodleUsername, pass = IDs.MoodlePassword) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setIsReloading(true);
     setProgressBar(20);
     setMessage("Fetching Moodle data...");

@@ -9,7 +9,7 @@ export default function MoodleDisplay({ moodleData, handleFetchMoodle, setMoodle
             <div className="text-xl mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
                 <h1 className="font-bold">
                     Moodle/LMS Data 
-                    <button onClick={() => {document.documentElement.scrollTo({ top: 0, behavior: "smooth" }); handleFetchMoodle()}} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                    <button onClick={() => handleFetchMoodle()} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
                         <RefreshCcw className={`w-4 h-4`} />
                     </button>
                 </h1>
@@ -145,7 +145,6 @@ export function MoodleUserPassForm({ handleFetchMoodle, IDs }) {
         e.preventDefault();
 
         if (!username || !password) return;
-        document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
         await handleFetchMoodle(username, password);
         localStorage.setItem("IDs", JSON.stringify({ ...IDs, MoodleUsername: username, MoodlePassword: password }))
         window.location.reload();

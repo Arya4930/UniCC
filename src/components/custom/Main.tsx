@@ -498,6 +498,22 @@ export default function LoginPage() {
     setIsLoggedIn(true);
   }
 
+  const [showReloadBanner, setShowReloadBanner] = useState(false);
+
+  useEffect(() => {
+    let timer;
+
+    if (isReloading) {
+      setShowReloadBanner(true);
+    } else {
+      timer = setTimeout(() => {
+        setShowReloadBanner(false);
+      }, 500);
+    }
+
+    return () => clearTimeout(timer);
+  }, [isReloading]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 midnight:bg-black">
@@ -520,7 +536,7 @@ export default function LoginPage() {
       )}
       <motion.div layout>
         <AnimatePresence>
-          {isReloading && (
+          {showReloadBanner && (
             settings.loadingScreen ? (
               <ReloadModal
                 message={message}
