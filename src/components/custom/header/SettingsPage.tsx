@@ -23,11 +23,6 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
         setCurrSemesterID(selectedSemester);
     };
 
-    const handleSavePassword = () => {
-        setPassword(changedPassword);
-        localStorage.setItem("password", changedPassword);
-    }
-    
     useEffect(() => {
         setSelectedSemester(currSemesterID);
     }, [currSemesterID]);
@@ -120,7 +115,7 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
                 </div>
 
                 <button
-                    onClick={handleSavePassword}
+                    onClick={() => setPassword(changedPassword)}
                     disabled={!password || changedPassword === password}
                     className={`mt-8 px-4 py-2 rounded-lg font-medium flex items-center justify-center transition-colors ${!password || changedPassword === password
                         ? "bg-gray-400 text-gray-200 cursor-not-allowed"

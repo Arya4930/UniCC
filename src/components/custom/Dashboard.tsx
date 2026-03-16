@@ -58,8 +58,8 @@ export default function DashboardContent({
   handleLogin,
   moodleData,
   setMoodleData,
-  password,
-  setPassword,
+  IDs,
+  setIDs,
   vitolData,
   setVitolData,
   settings,
@@ -261,7 +261,7 @@ export default function DashboardContent({
     }
   };
 
-  const handleFetchMoodle = async (username = localStorage.getItem("moodle_username"), pass = localStorage.getItem("moodle_password")) => {
+  const handleFetchMoodle = async (username = IDs.MoodleUsername, pass = IDs.MoodlePassword) => {
     setIsReloading(true);
     setProgressBar(20);
     setMessage("Fetching Moodle data...");
@@ -300,35 +300,6 @@ export default function DashboardContent({
     }
   };
 
-  const handleFetchVitol = async (username = localStorage.getItem("vitol_username"), pass = localStorage.getItem("vitol_password"), vitolSite = localStorage.getItem("vitol_site")) => {
-    setIsReloading(true);
-    setProgressBar(20);
-    setMessage("Fetching Vitol data...");
-    try {
-      const vitolRes = await fetch(`${API_BASE}/api/vitol-data`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, pass, vitolSite }),
-      });
-
-      const vitolData = await vitolRes.json();
-      setProgressBar((prev) => prev + 40);
-
-      setVitolData(vitolData);
-      localStorage.setItem("vitolData", JSON.stringify(vitolData));
-
-      setMessage((prev) => prev + "\n✅ Vitol Data fetched Successfully!");
-      setProgressBar(100);
-      setIsReloading(false);
-    } catch (err) {
-      console.error(err);
-      setMessage(
-        "❌ " + (err instanceof Error ? err.message : "Vitol Data fetch failed, check console.")
-      );
-      setProgressBar(0);
-    }
-  };
-
   return (
     <div
       className="w-full max-w-md md:max-w-full mx-auto overflow-hidden"
@@ -349,8 +320,12 @@ export default function DashboardContent({
         }
         handleLogin={handleLogin}
         setIsReloading={setIsReloading}
-        password={password}
-        setPassword={setPassword}
+        password={IDs.VtopPassword}
+        setPassword={(val: string) =>{
+          setIDs(prev => ({ ...prev, VtopPassword: val }))
+          localStorage.setItem("IDs", JSON.stringify({ ...IDs, VtopPassword: val }))
+        }
+        }
         settings={settings}
         setSettings={setSettings}
       />
@@ -435,8 +410,8 @@ export default function DashboardContent({
               activeSubTab={activeSubTab}
               setActiveSubTab={setActiveSubTab}
             />
-            {activeSubTab === "marks" && <MarksSubTab data={marksData} moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} />}
-            {activeSubTab === "schedule" && <ScheduleSubTab data={ScheduleData} handleScheduleFetch={handleScheduleFetch} vitolData={vitolData} handleFetchVitol={handleFetchVitol} setVitolData={setVitolData} />}
+            {activeSubTab === "marks" && <MarksSubTab data={marksData} moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} IDs={IDs} />}
+            {activeSubTab === "schedule" && <ScheduleSubTab data={ScheduleData} handleScheduleFetch={handleScheduleFetch} />}
             {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} />}
           </div>
         )}

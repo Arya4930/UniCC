@@ -15,7 +15,8 @@ import { API_BASE } from "../Main";
 import { Dropzone, DropzoneContent, DropzoneEmptyState } from "@/components/ui/shadcn-io/dropzone";
 
 export default function Files() {
-    const userID = localStorage.getItem("username") || "";
+    const IDs = localStorage.getItem("IDs") || "";
+    const userID = IDs ? JSON.parse(IDs).VtopUsername : null;
     const [open, setOpen] = useState(false);
     const [files, setFiles] = useState<any[]>([]);
     const [loadingFiles, setLoadingFiles] = useState(false);

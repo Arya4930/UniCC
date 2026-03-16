@@ -20,6 +20,13 @@ type settings = {
   calendarType: "ALL" | "ALL02" | "ALL03" | "ALL05" | "ALL06" | "ALL08" | "ALL11" | "WEI";
 }
 
+type IDs = {
+  VtopUsername: string;
+  VtopPassword: string;
+  MoodleUsername: string;
+  MoodlePassword: string;
+}
+
 const defaultSettings: settings = {
   decimalValues: false,
   CGPAHidden: false,
@@ -28,10 +35,16 @@ const defaultSettings: settings = {
   calendarType: "ALL"
 };
 
+const defaultIDs: IDs = {
+  VtopUsername: "",
+  VtopPassword: "",
+  MoodleUsername: "",
+  MoodlePassword: "",
+}
+
 export default function LoginPage() {
   // --- State Management ---
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [IDs, setIDs] = useState<IDs>(defaultIDs);
   const [message, setMessage] = useState<string>("");
   const [attendanceData, setAttendanceData] = useState<attendanceRes | null>({});
   const [marksData, setMarksData] = useState<object>({});
@@ -121,21 +134,21 @@ export default function LoginPage() {
     const storedAllGrades = localStorage.getItem("allGrades");
     const storedUsername = localStorage.getItem("username");
     const storedPassword = localStorage.getItem("password");
+    const storedMoodleUsername = localStorage.getItem("moodle_username");
+    const storedMoodlePassword = localStorage.getItem("moodle_password");
     const storedSchedule = localStorage.getItem("schedule");
     const storedHoste = localStorage.getItem("hostel");
     const calendar = localStorage.getItem("calender");
-    const calendarType = localStorage.getItem("calendarType");
     const MoodleData = localStorage.getItem("moodleData");
     const VitolData = localStorage.getItem("vitolData");
     const settings = localStorage.getItem("settings");
+    const IDs = localStorage.getItem("IDs");
 
     const parsedStoredAttendance: attendanceRes | null = storedAttendance ? JSON.parse(storedAttendance) : null;
     if (parsedStoredAttendance && parsedStoredAttendance.attendance) {
       setAttendanceAndOD(parsedStoredAttendance);
     }
     if (storedMarks) setMarksData(JSON.parse(storedMarks));
-    if (storedUsername) setUsername(storedUsername);
-    if (storedPassword) setPassword(storedPassword);
     if (storedSchedule) setScheduleData(JSON.parse(storedSchedule));
     if (storedGrades) setGradesData(JSON.parse(storedGrades));
     if (storedAllGrades) setAllGradesData(JSON.parse(storedAllGrades));
@@ -143,6 +156,13 @@ export default function LoginPage() {
     if (calendar) setCalender(JSON.parse(calendar));
     if (MoodleData) setMoodleData(JSON.parse(MoodleData));
     if (VitolData) setVitolData(JSON.parse(VitolData));
+    setIDs({
+      VtopUsername: storedUsername || "",
+      VtopPassword: storedPassword || "",
+      MoodleUsername: storedMoodleUsername || "",
+      MoodlePassword: storedMoodlePassword || ""
+    })
+    if (IDs) setIDs(JSON.parse(IDs));
     if (settings) {
       const parsedSettings = JSON.parse(settings);
       setSettings({
@@ -162,8 +182,8 @@ export default function LoginPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          username,
-          password
+          username: IDs.VtopUsername,
+          password: IDs.VtopPassword
         }),
       });
 
@@ -193,8 +213,7 @@ export default function LoginPage() {
   const handleLogin = async (currSemesterID = config.semesterIDs[config.semesterIDs.length - 2]) => {
     try {
       const { cookies, authorizedID, csrf } = await loginToVTOP();
-      localStorage.setItem("username", username);
-      localStorage.setItem("password", password);
+      localStorage.setItem("IDs", JSON.stringify(IDs));
 
       const [
         { attRes, marksRes },
@@ -318,11 +337,10 @@ export default function LoginPage() {
     setIsReloading(true);
     setProgressBar(10);
     setMessage("Reloading data...");
+    localStorage.setItem("IDs", JSON.stringify(IDs));
 
     try {
       const { cookies, authorizedID, csrf } = await loginToVTOP();
-      localStorage.setItem("username", username);
-      localStorage.setItem("password", password);
 
       const coreTask = fetch(`${API_BASE}/api/attendance`, {
         method: "POST",
@@ -344,8 +362,8 @@ export default function LoginPage() {
       });
 
       const tasks: Promise<void>[] = [coreTask];
-      const moodleUsername = localStorage.getItem("moodle_username");
-      const moodlePassword = localStorage.getItem("moodle_password");
+      const moodleUsername = IDs.MoodleUsername;
+      const moodlePassword = IDs.MoodlePassword;
 
       if (moodleUsername && moodlePassword) {
         tasks.push(
@@ -409,8 +427,7 @@ export default function LoginPage() {
 
   const handleLogOutRequest = () => {
     setIsLoggedIn(false);
-    setUsername("");
-    setPassword("");
+    setIDs(defaultIDs);
 
     const keysToKeep = ["theme", "activityTree", "settings"];
 
@@ -436,7 +453,7 @@ export default function LoginPage() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    if (!username || !password) {
+    if (!IDs.VtopUsername || !IDs.VtopPassword) {
       return alert("Please fill all the fields!");
     }
     handleLogin();
@@ -459,8 +476,13 @@ export default function LoginPage() {
 
   const handleDemoClick = () => {
     setDemoMode(true);
-    setUsername(demoData.username);
-    setPassword(demoData.password);
+    setIDs({
+      VtopUsername: demoData.username,
+      VtopPassword: demoData.password,
+      MoodleUsername: "",
+      MoodlePassword: ""
+    });
+
     setSettings(defaultSettings);
     setAttendanceData(demoData.attendance);
     setMarksData(demoData.marks);
@@ -501,10 +523,14 @@ export default function LoginPage() {
       {(!isLoggedIn && !demoMode) && (
         <div className="flex-grow flex items-center justify-center p-4">
           <LoginForm
-            username={username}
-            setUsername={setUsername}
-            password={password}
-            setPassword={setPassword}
+            username={IDs.VtopUsername}
+            setUsername={(val: string) =>
+              setIDs(prev => ({ ...prev, VtopUsername: val }))
+            }
+            password={IDs.VtopPassword}
+            setPassword={(val: string) =>
+              setIDs(prev => ({ ...prev, VtopPassword: val }))
+            }
             message={message}
             handleFormSubmit={handleFormSubmit}
             progressBar={progressBar}
@@ -559,8 +585,8 @@ export default function LoginPage() {
             handleLogin={handleLogin}
             moodleData={moodleData}
             setMoodleData={setMoodleData}
-            password={password}
-            setPassword={setPassword}
+            IDs={IDs}
+            setIDs={setIDs}
             vitolData={vitolData}
             setVitolData={setVitolData}
             settings={settings}

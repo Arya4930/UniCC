@@ -18,7 +18,8 @@ export default function PushNotificationManager() {
     const [moodleEnabled, setMoodleEnabled] = useState(false)
     const [fetchError, setFetchError] = useState<string | null>(null)
 
-    const UserID = localStorage.getItem("username") || ""
+    const IDs = localStorage.getItem("IDs") || ""
+    const UserID = IDs ? JSON.parse(IDs).VtopUsername : null
 
     useEffect(() => {
         if (!UserID) return;

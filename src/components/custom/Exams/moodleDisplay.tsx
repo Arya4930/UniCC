@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { RefreshCcw, CheckCircle, AlertCircle, Clock, Eye, EyeOff, Undo2 } from "lucide-react";
 
-export default function MoodleDisplay({ moodleData, handleFetchMoodle, setMoodleData }) {
+export default function MoodleDisplay({ moodleData, handleFetchMoodle, setMoodleData, IDs }) {
     const [showHidden, setShowHidden] = useState(false);
 
     if (!moodleData || moodleData.length === 0) {
@@ -16,7 +16,7 @@ export default function MoodleDisplay({ moodleData, handleFetchMoodle, setMoodle
                 <h3 className="font-normal text-base p-2">
                     Nothing here yet? Try refreshing.
                 </h3>
-                <MoodleUserPassForm handleFetchMoodle={handleFetchMoodle} />
+                <MoodleUserPassForm handleFetchMoodle={handleFetchMoodle} IDs={IDs} />
             </div>
         );
     }
@@ -137,7 +137,7 @@ export default function MoodleDisplay({ moodleData, handleFetchMoodle, setMoodle
     );
 }
 
-export function MoodleUserPassForm({ handleFetchMoodle }) {
+export function MoodleUserPassForm({ handleFetchMoodle, IDs }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -145,9 +145,8 @@ export function MoodleUserPassForm({ handleFetchMoodle }) {
         e.preventDefault();
 
         if (!username || !password) return;
-        const res = await handleFetchMoodle(username, password);
-        localStorage.setItem("moodle_username", username);
-        localStorage.setItem("moodle_password", password);
+        await handleFetchMoodle(username, password);
+        localStorage.setItem("IDs", JSON.stringify({ ...IDs, MoodleUsername: username, MoodlePassword: password }))
         window.location.reload();
     }
 
