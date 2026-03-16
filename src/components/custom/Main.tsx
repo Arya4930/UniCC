@@ -510,7 +510,6 @@ export default function LoginPage() {
 
   return (
     <motion.div
-      layout
       className="min-h-screen bg-gray-50 dark:bg-gray-900 midnight:bg-black flex flex-col text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors"
     >
       {isAPIworking && !isOffline && (
@@ -518,41 +517,43 @@ export default function LoginPage() {
           ⚠️ Unable to connect to API services. Please check back later. ⚠️
         </div>
       )}
-      <AnimatePresence>
-        {isReloading && (
-          settings.loadingScreen ? (
-            <ReloadModal
-              message={message}
-              onClose={() => setIsReloading(false)}
-              progressBar={progressBar}
-            />
-          ) : (
-            <motion.div
-              layout
-              initial={{ opacity: 0, y: -40 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -40 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              className="w-full z-50 bg-blue-500 text-white shadow-lg"
-            >
-              <div className="flex flex-col items-center justify-center py-2 px-4 text-sm font-medium">
-                <span className="whitespace-pre-wrap">{message}</span>
+      <motion.div layout>
+        <AnimatePresence>
+          {isReloading && (
+            settings.loadingScreen ? (
+              <ReloadModal
+                message={message}
+                onClose={() => setIsReloading(false)}
+                progressBar={progressBar}
+              />
+            ) : (
+              <motion.div
+                layout
+                initial={{ opacity: 0, y: -40 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -40 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+                className="w-full z-50 bg-blue-500 text-white shadow-lg"
+              >
+                <div className="flex flex-col items-center justify-center py-2 px-4 text-sm font-medium">
+                  <span className="whitespace-pre-wrap">{message}</span>
 
-                {progressBar !== undefined && (
-                  <div className="w-full max-w-xl mt-2 h-2 bg-blue-300/40 rounded overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${progressBar}%` }}
-                      transition={{ duration: 0.3 }}
-                      className="h-full bg-blue-100"
-                    />
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          )
-        )}
-      </AnimatePresence>
+                  {progressBar !== undefined && (
+                    <div className="w-full max-w-xl mt-2 h-2 bg-blue-300/40 rounded overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${progressBar}%` }}
+                        transition={{ duration: 0.3 }}
+                        className="h-full bg-blue-100"
+                      />
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )
+          )}
+        </AnimatePresence>
+      </motion.div>
 
       {(!isLoggedIn && !demoMode) && (
         <div className="flex-grow flex items-center justify-center p-4">
