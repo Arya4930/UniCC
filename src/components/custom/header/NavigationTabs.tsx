@@ -49,6 +49,12 @@ export default function NavigationTabs({
               localStorage.setItem("settings", JSON.stringify({ ...settings, decimalValues: val }))
             }
           }
+          loadingScreen={settings.loadingScreen}
+          setLoadingScreen={(val: boolean) => {
+              setSettings(prev => ({ ...prev, loadingScreen: val }))
+              localStorage.setItem("settings", JSON.stringify({ ...settings, loadingScreen: val }))
+            }
+          }
         />
       )}
       <button

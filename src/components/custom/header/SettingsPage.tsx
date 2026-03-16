@@ -11,7 +11,7 @@ import Links from "./Links";
 import Files from "./Files";
 import PushNotificationManager from "@/app/pushNotificationManager";
 
-export default function SettingsPage({ handleClose, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading, handleLogOutRequest, password, setPassword, decimalValues, setDecimalValues }) {
+export default function SettingsPage({ handleClose, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading, handleLogOutRequest, password, setPassword, decimalValues, setDecimalValues, loadingScreen, setLoadingScreen }) {
     const [selectedSemester, setSelectedSemester] = useState<string>(currSemesterID);
     const [changedPassword, setChangedPassword] = useState<string>(password);
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -126,19 +126,25 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
                     Save
                 </button>
             </div>
-            <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-4">
-                <div className="w-full flex flex-col gap-3">
-                    <div className="flex items-center justify-between">
-                        <div className="flex flex-col">
-                            <p className="text-lg font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100">
-                                Show Attendance Upto One Decimal Place
-                            </p>
-                        </div>
-                        <Switch
-                            checked={decimalValues}
-                            onCheckedChange={setDecimalValues}
-                        />
-                    </div>
+            <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-4 flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                    <p className="text-md font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100">
+                        Show Values Upto One Decimal Place
+                    </p>
+                    <Switch
+                        checked={decimalValues}
+                        onCheckedChange={setDecimalValues}
+                    />
+                </div>
+
+                <div className="flex items-center justify-between">
+                    <p className="text-md font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100">
+                        Use Legacy Loading Screen
+                    </p>
+                    <Switch
+                        checked={loadingScreen}
+                        onCheckedChange={setLoadingScreen}
+                    />
                 </div>
             </div>
 

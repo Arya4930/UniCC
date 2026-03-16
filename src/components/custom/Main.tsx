@@ -9,6 +9,7 @@ import { attendanceRes, ODListItem, ODListRaw } from "@/types/data/attendance";
 import { AllGradesRes } from "@/types/data/allgrades";
 import { loadActivityTree, saveActivityTree } from "@/lib/activit-tree";
 import demoData from '../../app/demoData.json';
+import { AnimatePresence, motion } from "framer-motion";
 
 export const API_BASE = "https://api.uni-cc.site";
 
@@ -18,6 +19,7 @@ type settings = {
   attendancePercentageOrString: "percentage" | "str";
   currSemesterID: string;
   calendarType: "ALL" | "ALL02" | "ALL03" | "ALL05" | "ALL06" | "ALL08" | "ALL11" | "WEI";
+  loadingScreen: boolean;
 }
 
 type IDs = {
@@ -32,7 +34,8 @@ const defaultSettings: settings = {
   CGPAHidden: false,
   attendancePercentageOrString: "percentage",
   currSemesterID: config.semesterIDs[config.semesterIDs.length - 2],
-  calendarType: "ALL"
+  calendarType: "ALL",
+  loadingScreen: false
 };
 
 const defaultIDs: IDs = {
@@ -506,19 +509,50 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 midnight:bg-black flex flex-col text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
+    <motion.div
+      layout
+      className="min-h-screen bg-gray-50 dark:bg-gray-900 midnight:bg-black flex flex-col text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors"
+    >
       {isAPIworking && !isOffline && (
         <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium">
           ⚠️ Unable to connect to API services. Please check back later. ⚠️
         </div>
       )}
-      {isReloading && (
-        <ReloadModal
-          message={message}
-          onClose={() => setIsReloading(false)}
-          progressBar={progressBar}
-        />
-      )}
+      <AnimatePresence>
+        {isReloading && (
+          settings.loadingScreen ? (
+            <ReloadModal
+              message={message}
+              onClose={() => setIsReloading(false)}
+              progressBar={progressBar}
+            />
+          ) : (
+            <motion.div
+              layout
+              initial={{ opacity: 0, y: -40 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -40 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="w-full z-50 bg-blue-500 text-white shadow-lg"
+            >
+              <div className="flex flex-col items-center justify-center py-2 px-4 text-sm font-medium">
+                <span className="whitespace-pre-wrap">{message}</span>
+
+                {progressBar !== undefined && (
+                  <div className="w-full max-w-xl mt-2 h-2 bg-blue-300/40 rounded overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${progressBar}%` }}
+                      transition={{ duration: 0.3 }}
+                      className="h-full bg-blue-100"
+                    />
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )
+        )}
+      </AnimatePresence>
 
       {(!isLoggedIn && !demoMode) && (
         <div className="flex-grow flex items-center justify-center p-4">
@@ -599,6 +633,6 @@ export default function LoginPage() {
       </div> */}
 
       <Footer isLoggedIn={isLoggedIn} />
-    </div>
+    </motion.div>
   );
 }
