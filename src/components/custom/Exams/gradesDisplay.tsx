@@ -3,7 +3,7 @@ import { RefreshCcw } from "lucide-react";
 import NoContentFound from "../NoContentFound";
 
 export default function GradesDisplay({ data, handleFetchGrades, marksData, attendance }) {
-  if (!data || !marksData.cgpa) {
+  if (!data || !marksData?.cgpa) {
     return (
       <div>
         <p className="text-center text-gray-600 dark:text-gray-300 midnight:text-gray-200">
@@ -17,7 +17,10 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
     );
   }
 
-  const ongoingCreditsByCategory = attendance.reduce((acc, item) => {
+  const safeAttendance = Array.isArray(attendance) ? attendance : [];
+  const curriculum = Array.isArray(data?.curriculum) ? data.curriculum : [];
+
+  const ongoingCreditsByCategory = safeAttendance.reduce<Record<string, number>>((acc, item) => {
     let category = item.category || "Uncategorized";
     const credits = parseFloat(item.credits) || 0;
     if (category === "Foundation Core - Humanities, Social Sciences and Management (LANGUAGE Basket)") {
@@ -42,14 +45,14 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
     return acc;
   }, {});
 
-  const totalCredits = data.curriculum.find(c =>
-    c.basketTitle.toLowerCase().includes("total credits")
+  const totalCredits = curriculum.find(c =>
+    (c?.basketTitle || "").toLowerCase().includes("total credits")
   );
 
-  const Curriculum = data.curriculum.filter(
-    c => !c.basketTitle.toLowerCase().includes("total credits")
+  const Curriculum = curriculum.filter(
+    c => !(c?.basketTitle || "").toLowerCase().includes("total credits")
   );
-  let effectiveGrades = data.effectiveGrades || [];
+  let effectiveGrades = Array.isArray(data?.effectiveGrades) ? data.effectiveGrades : [];
   effectiveGrades = effectiveGrades.filter(
     eg => !isNaN(parseFloat(eg.creditsEarned))
   );
@@ -57,11 +60,11 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
   const specialBaskets = ["Extra curricular activities", "HSM Elective", "Foreign Language"];
 
   const normalCurriculum = Curriculum.filter(
-    (c) => !specialBaskets.some((b) => c.basketTitle.toLowerCase().includes(b.toLowerCase()))
+    (c) => !specialBaskets.some((b) => (c?.basketTitle || "").toLowerCase().includes(b.toLowerCase()))
   );
 
   const specialCurriculum = Curriculum.filter(
-    (c) => specialBaskets.some((b) => c.basketTitle.toLowerCase().includes(b.toLowerCase()))
+    (c) => specialBaskets.some((b) => (c?.basketTitle || "").toLowerCase().includes(b.toLowerCase()))
   );
 
   const totalInProgressRaw = Object.values(ongoingCreditsByCategory).reduce(
@@ -84,7 +87,7 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
           </button></CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-4 md:grid-cols-8 gap-2 text-center text-sm">
-          {Object.entries(data.cgpa.grades as Record<string, number>).map(([grade, count]) => (
+          {Object.entries((data?.cgpa?.grades || {}) as Record<string, number>).map(([grade, count]) => (
             <div
               key={grade}
               className="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 midnight:bg-gray-800 text-gray-900 dark:text-gray-100 midnight:text-gray-100 font-bold"
