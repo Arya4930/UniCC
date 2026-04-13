@@ -402,6 +402,21 @@ export default function LoginPage() {
 
       tasks.push(
         (async () => {
+          const res = await fetch(`${API_BASE}/api/grades`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ cookies, authorizedID, csrf, semesterId: settings.currSemesterID }),
+          });
+          const GradesData = await res.json();
+          setGradesData(GradesData);
+          localStorage.setItem("grades", JSON.stringify(GradesData));
+          setMessage(prev => prev + "\n✅ Grades data fetched");
+          setProgressBar(prev => prev + 20);
+        })()
+      )
+
+      tasks.push(
+        (async () => {
           const res = await fetch(`${API_BASE}/api/schedule`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
