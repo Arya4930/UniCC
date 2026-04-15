@@ -321,10 +321,11 @@ export default function DashboardContent({
         }
         handleLogin={handleLogin}
         setIsReloading={setIsReloading}
+        username={IDs.VtopUsername}
         password={IDs.VtopPassword}
-        setPassword={(val: string) =>{
-          setIDs(prev => ({ ...prev, VtopPassword: val }))
-          localStorage.setItem("IDs", JSON.stringify({ ...IDs, VtopPassword: val }))
+        setPassword={(val: string[]) =>{
+          setIDs(prev => ({ ...prev, VtopUsername: val[0], VtopPassword: val[1] }))
+          localStorage.setItem("IDs", JSON.stringify({ ...IDs, VtopUsername: val[0], VtopPassword: val[1]}))
         }
         }
         settings={settings}

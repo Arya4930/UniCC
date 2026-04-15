@@ -11,8 +11,9 @@ import Links from "./Links";
 import Files from "./Files";
 import PushNotificationManager from "@/app/pushNotificationManager";
 
-export default function SettingsPage({ handleClose, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading, handleLogOutRequest, password, setPassword, decimalValues, setDecimalValues, loadingScreen, setLoadingScreen }) {
+export default function SettingsPage({ handleClose, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading, handleLogOutRequest, username, password, setPassword, decimalValues, setDecimalValues, loadingScreen, setLoadingScreen }) {
     const [selectedSemester, setSelectedSemester] = useState<string>(currSemesterID);
+    const [changeUsername, setChangedUsername] = useState<string>(username);
     const [changedPassword, setChangedPassword] = useState<string>(password);
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -85,11 +86,22 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
                         htmlFor="semesterSelect"
                         className="text-lg font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100 mb-2"
                     >
-                        Change Password{" "}
+                        Change VTOP Credentials{" "}
                         <span className="text-xs text-gray-800 dark:text-gray-600 midnight:text-gray-500">
                             (Inside UniCC)
                         </span>
                     </label>
+
+                    <input
+                        type="text"
+                        value={changeUsername}
+                        onChange={(e) => setChangedUsername(e.target.value)}
+                        placeholder="Enter new username"
+                        className="w-full px-4 py-2 mb-3 border border-gray-300 dark:border-gray-700
+                                rounded-lg bg-white dark:bg-slate-800 midnight:bg-black
+                                text-gray-800 dark:text-gray-200 midnight:text-gray-100
+                                focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
 
                     <div className="relative">
                         <input
@@ -115,9 +127,15 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
                 </div>
 
                 <button
-                    onClick={() => setPassword(changedPassword)}
-                    disabled={!password || changedPassword === password}
-                    className={`mt-8 px-4 py-2 rounded-lg font-medium flex items-center justify-center transition-colors ${!password || changedPassword === password
+                    onClick={() => setPassword([changeUsername, changedPassword])}
+                    disabled={
+                        !changeUsername ||
+                        !changedPassword ||
+                        (changeUsername === username && changedPassword === password)
+                    }
+                    className={`mt-8 px-4 py-2 rounded-lg font-medium flex items-center justify-center transition-colors ${!changeUsername ||
+                        !changedPassword ||
+                        (changeUsername === username && changedPassword === password)
                         ? "bg-gray-400 text-gray-200 cursor-not-allowed"
                         : "bg-blue-600 hover:bg-blue-700 text-white"
                         }`}

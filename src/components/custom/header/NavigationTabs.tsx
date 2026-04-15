@@ -12,6 +12,7 @@ export default function NavigationTabs({
   setCurrSemesterID,
   handleLogin,
   setIsReloading,
+  username,
   password,
   setPassword,
   settings,
@@ -42,6 +43,7 @@ export default function NavigationTabs({
           setIsReloading={setIsReloading}
           handleLogOutRequest={handleLogOutRequest}
           password={password}
+          username={username}
           setPassword={setPassword}
           decimalValues={settings.decimalValues}
           setDecimalValues={(val: boolean) => {
