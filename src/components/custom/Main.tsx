@@ -422,9 +422,9 @@ export default function LoginPage() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ cookies: cookies, authorizedID, csrf, semesterId: settings.currSemesterID || config.semesterIDs[config.semesterIDs.length - 2] }),
           })
-          const GradesData = await res.json();
-          setGradesData(GradesData);
-          localStorage.setItem("schedule", JSON.stringify(GradesData));
+          const scheduleData = await res.json();
+          setScheduleData(scheduleData);
+          localStorage.setItem("schedule", JSON.stringify(scheduleData));
           setMessage(prev => prev + "\n✅ Schedule data fetched");
           setProgressBar(prev => prev + 20);
         })()
