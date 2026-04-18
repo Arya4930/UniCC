@@ -127,6 +127,24 @@ export default function ExamSchedule({ data, handleScheduleFetch }) {
       }).map((subj) => ({ ...subj, examType }))
     );
 
+  const compareExamDates = (left, right) => {
+    const leftDate = parseExamDate(left.examDate);
+    const rightDate = parseExamDate(right.examDate);
+
+    if (!leftDate && !rightDate) return 0;
+    if (!leftDate) return 1;
+    if (!rightDate) return -1;
+
+    const dateDiff = leftDate.getTime() - rightDate.getTime();
+    if (dateDiff !== 0) return dateDiff;
+
+    return `${left.examTime ?? ""} ${left.courseCode ?? ""}`.localeCompare(
+      `${right.examTime ?? ""} ${right.courseCode ?? ""}`
+    );
+  };
+
+  const sortedTodayExams = [...todayExams].sort(compareExamDates);
+
 
   return (
     <div className="space-y-6 p-2">
@@ -136,13 +154,13 @@ export default function ExamSchedule({ data, handleScheduleFetch }) {
         </button>
       </h1>
 
-      {todayExams.length > 0 && (
+      {sortedTodayExams.length > 0 && (
         <div className="bg-green-100 dark:bg-green-700/40 midnight:bg-green-800/40 
                   rounded-xl p-4 shadow mb-6 border border-green-300 
                   dark:border-green-600 midnight:border-green-700">
 
           <div className="space-y-6">
-            {todayExams.map((exam, i) => (
+            {sortedTodayExams.map((exam, i) => (
               <div
                 key={i}
                 className="grid grid-cols-2 lg:grid-cols-3 gap-4
@@ -189,8 +207,9 @@ export default function ExamSchedule({ data, handleScheduleFetch }) {
       )}
 
       {Object.entries(data.Schedule).map(([examType, subjects]) => {
-        const hasCalendarData = subjects.some((s) => s.examSession && s.reportingTime);
-        const icsUrl = hasCalendarData ? generateICSFile(subjects, examType) : null;
+        const sortedSubjects = [...subjects].sort(compareExamDates);
+        const hasCalendarData = sortedSubjects.some((s) => s.examSession && s.reportingTime);
+        const icsUrl = hasCalendarData ? generateICSFile(sortedSubjects, examType) : null;
 
         return (
           <div
@@ -232,7 +251,7 @@ export default function ExamSchedule({ data, handleScheduleFetch }) {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {subjects.map((subj, idx) => {
+                  {sortedSubjects.map((subj, idx) => {
                     const examDate = parseExamDate(subj.examDate);
                     const isPast = examDate && examDate < today;
                     const isToday =
