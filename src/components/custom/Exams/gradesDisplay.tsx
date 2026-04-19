@@ -2,6 +2,21 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { RefreshCcw } from "lucide-react";
 import NoContentFound from "../NoContentFound";
 
+const normalizeGradesCategory = (rawCategory?: string | null) => {
+  let category = rawCategory?.toLowerCase().trim() || "uncategorized";
+
+  switch (category) {
+    case "fcbes": return "Foundation Core - Basic Engineering Sciences";
+    case "fchssm": return "Foundation Core - Humanities, Social Sciences and Management";
+    case "fcbsm": return "Foundation Core - Basic Sciences and Mathematics";
+    case "dc": return "Disciplinary Core";
+    case "dles": return "Discipline-linked Engineering Sciences";
+    case "ngcr": return "Non-graded Core Requirement";
+    case "oe": return "Open Elective";
+    default: return category;
+  }
+};
+
 export default function GradesDisplay({ data, handleFetchGrades, marksData, attendance }) {
   if (!data || !marksData?.cgpa) {
     return (
@@ -55,6 +70,19 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
   let effectiveGrades = Array.isArray(data?.effectiveGrades) ? data.effectiveGrades : [];
   effectiveGrades = effectiveGrades.filter(
     eg => !isNaN(parseFloat(eg.creditsEarned))
+  );
+
+  const groupedEffectiveGrades = effectiveGrades.reduce((acc: Record<string, typeof effectiveGrades>, grade) => {
+    const category = normalizeGradesCategory((grade as { distributionType?: string })?.distributionType || "Uncategorized");
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(grade);
+    return acc;
+  }, {});
+
+  const sortedGradeCategories = Object.keys(groupedEffectiveGrades).sort((a, b) =>
+    a.localeCompare(b)
   );
 
   const specialBaskets = ["Extra curricular activities", "HSM Elective", "Foreign Language"];
@@ -250,33 +278,48 @@ export default function GradesDisplay({ data, handleFetchGrades, marksData, atte
                 Grades
               </h4>
 
-              <div className="space-y-2 grid grid-cols-1 md:grid-cols-2 gap-x-10">
-                {effectiveGrades.map(
-                  ({ basketTitle, creditsEarned, distributionType, grade }, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center justify-between py-2 border-b
+              <div className="space-y-4">
+                {sortedGradeCategories.map((category) => {
+                  const courses = [...groupedEffectiveGrades[category]].sort((a, b) =>
+                    (a?.basketTitle || "").localeCompare(b?.basketTitle || "")
+                  );
+
+                  return (
+                    <div key={category}>
+                      <h5 className="text-sm font-semibold mb-2 text-gray-800 dark:text-gray-200 midnight:text-gray-200">
+                        {category}
+                      </h5>
+                      <div className="space-y-2 grid grid-cols-1 md:grid-cols-2 gap-x-10">
+                        {courses.map(
+                          ({ basketTitle, creditsEarned, distributionType, grade }, idx) => (
+                            <div
+                              key={`${category}-${basketTitle || "Unknown"}-${idx}`}
+                              className="flex items-center justify-between py-2 border-b
                        text-gray-900 dark:text-gray-100 midnight:text-gray-100"
-                    >
-                      <div className="flex flex-col text-left">
-                        <span className="text-sm font-medium truncate max-w-[16rem]">
-                          {basketTitle || "Unknown"}
-                        </span>
-                        <span className="text-xs text-gray-500 dark:text-gray-300 midnight:text-gray-400">
-                          {distributionType || "—"}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3 text-sm font-semibold">
-                        <span>{grade || "—"}</span>
-                        <span className="text-xs text-gray-500 dark:text-gray-300 midnight:text-gray-400">
-                          {Number.isFinite(Number(creditsEarned))
-                            ? `${Number(creditsEarned).toFixed(1)} cr`
-                            : "—"}
-                        </span>
+                            >
+                              <div className="flex flex-col text-left">
+                                <span className="text-sm font-medium truncate max-w-[16rem]">
+                                  {basketTitle || "Unknown"}
+                                </span>
+                                <span className="text-xs text-gray-500 dark:text-gray-300 midnight:text-gray-400">
+                                  {distributionType || "—"}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-3 text-sm font-semibold">
+                                <span>{grade || "—"}</span>
+                                <span className="text-xs text-gray-500 dark:text-gray-300 midnight:text-gray-400">
+                                  {Number.isFinite(Number(creditsEarned))
+                                    ? `${Number(creditsEarned).toFixed(1)} cr`
+                                    : "—"}
+                                </span>
+                              </div>
+                            </div>
+                          )
+                        )}
                       </div>
                     </div>
-                  )
-                )}
+                  );
+                })}
               </div>
             </div>
           )}

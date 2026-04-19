@@ -1,5 +1,6 @@
 export type EffectiveGrade = {
   basketTitle: string;
+  courseType: string;
   distributionType: string;
   creditsEarned: string;
   grade: string;

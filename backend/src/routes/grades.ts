@@ -148,9 +148,10 @@ router.post("/", async (req: Request, res: Response) => {
                 const tds = $$(el).find("td");
                 effectiveGrades.push({
                     basketTitle: $$(tds[2]).text().trim(),
-                    distributionType: $$(tds[3]).text().trim(),
+                    courseType: $$(tds[3]).text().trim(),
                     creditsEarned: $$(tds[4]).text().trim(),
                     grade: $$(tds[5]).text().trim(),
+                    distributionType: $$(tds[8]).text().trim(),
                 });
             });
 
