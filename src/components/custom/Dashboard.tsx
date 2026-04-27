@@ -414,7 +414,7 @@ export default function DashboardContent({
             />
             {activeSubTab === "marks" && <MarksSubTab data={marksData} moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} IDs={IDs} />}
             {activeSubTab === "schedule" && <ScheduleSubTab data={ScheduleData} handleScheduleFetch={handleScheduleFetch} />}
-            {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} />}
+            {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} CGPA={marksData.cgpa} attendance={attendanceData.attendance} />}
           </div>
         )}
 
