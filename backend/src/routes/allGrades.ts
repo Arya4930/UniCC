@@ -112,6 +112,7 @@ router.post("/", async (req: Request, res: Response) => {
         for (let year = startYear; year <= currentYear; year++) {
             const next = (year + 1).toString().slice(-2);
             semesters.push(`CH${year}${next}01`);
+            semesters.push(`CH${year}${next}07`);
             semesters.push(`CH${year}${next}05`);
         }
 

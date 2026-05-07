@@ -20,6 +20,7 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
     const handleSaveSemester = async () => {
         if (!selectedSemester) return;
         setIsReloading(true);
+        handleClose();
         await handleLogin(selectedSemester);
         setCurrSemesterID(selectedSemester);
     };
@@ -61,7 +62,7 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
                     >
                         {config.semesterIDs?.map((id: string, index: number) => (
                             <option key={index} value={id}>
-                                {id.endsWith("1") ? `FALLSEM` : `WINTERSEM`} {id.slice(4, -4)}-{id.slice(6, -2)}
+                                {id.endsWith("01") ? `FALLSEM` : id.endsWith("05") ? `WINTERSEM` : id.endsWith("07") ? `SUMMERSEM` : `UNKNOWN`} {id.slice(4, -4)}-{id.slice(6, -2)}
                             </option>
                         ))}
                     </select>

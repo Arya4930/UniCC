@@ -133,6 +133,8 @@ router.post("/", async (req, res) => {
                 type = "ALL";
             }
         }
+        else if (semesterId?.toString().endsWith("07"))
+            type = "ALL";
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
         if (!csrf || !authorizedID)
             throw new Error("Cannot find _csrf or authorizedID");
@@ -160,9 +162,9 @@ router.post("/", async (req, res) => {
         }
         else {
             months = [
+                `01-MAY-${nextYear}`,
                 `01-JUN-${nextYear}`,
                 `01-JUL-${nextYear}`,
-                `01-AUG-${nextYear}`,
             ];
         }
         const allCalendars = [];
@@ -184,6 +186,7 @@ router.post("/", async (req, res) => {
                 },
             });
             const parsed = await parseCalendar(ttRes.data);
+            console.log(authorizedID, semesterId, calDate, parsed.month, parsed.days.length);
             allCalendars.push(parsed);
         }
         // Add your custom event (Nov 8)

@@ -105,7 +105,7 @@ router.post("/", async (req: Request, res: Response) => {
             if (type !== "ALL" && type !== "ALL02" && type !== "ALL05") {
                 type = "ALL";
             }
-        }
+        } else if(semesterId?.toString().endsWith("07")) type = "ALL";
 
         const cookieHeader = Array.isArray(cookies) ? cookies.join("; ") : cookies;
         
@@ -136,9 +136,9 @@ router.post("/", async (req: Request, res: Response) => {
             ];
         } else {
             months = [
+                `01-MAY-${nextYear}`,
                 `01-JUN-${nextYear}`,
                 `01-JUL-${nextYear}`,
-                `01-AUG-${nextYear}`,
             ];
         }
 
@@ -167,6 +167,7 @@ router.post("/", async (req: Request, res: Response) => {
             );
 
             const parsed = await parseCalendar(ttRes.data);
+            console.log(authorizedID, semesterId, calDate, parsed.month, parsed.days.length);
             allCalendars.push(parsed);
         }
 
