@@ -167,7 +167,6 @@ router.post("/", async (req: Request, res: Response) => {
             );
 
             const parsed = await parseCalendar(ttRes.data);
-            console.log(authorizedID, semesterId, calDate, parsed.month, parsed.days.length);
             allCalendars.push(parsed);
         }
 

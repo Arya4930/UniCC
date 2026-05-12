@@ -186,7 +186,6 @@ router.post("/", async (req, res) => {
                 },
             });
             const parsed = await parseCalendar(ttRes.data);
-            console.log(authorizedID, semesterId, calDate, parsed.month, parsed.days.length);
             allCalendars.push(parsed);
         }
         // Add your custom event (Nov 8)

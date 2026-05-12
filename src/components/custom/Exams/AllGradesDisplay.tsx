@@ -45,8 +45,20 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
         return Number(numericValue.toFixed(2)).toString();
     };
 
+    const normalizeCourseCode = (courseCode) => courseCode?.slice(0, 8) ?? "";
+
+    const allSemesterGrades = Object.values(data.grades) as Array<{ grades?: Array<{ courseCode?: string; grade?: string }> }>;
+
+    const gradePool = allSemesterGrades.flatMap((semester) => semester?.grades || []).reduce((pool, course) => {
+        const normalizedCode = normalizeCourseCode(course?.courseCode);
+        if (normalizedCode) {
+            pool[normalizedCode] = course?.grade;
+        }
+        return pool;
+    }, {});
+
     const curr = attendance.filter((a) => (a.category !== "Non-graded Core Requirement" && a.courseTitle !== "")).map(a => ({
-        courseCode: a.courseCode,
+        courseCode: normalizeCourseCode(a.courseCode),
         courseTitle: a.courseTitle,
         credits: parseFloat(a.credits)
     }));
@@ -68,7 +80,8 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
 
     const predictedCreditPoints = curr.reduce((sum, course, idx) => {
         const key = `${course.courseCode}-${idx}`;
-        const selectedGrade = predictedGrades[key] || "A";
+        const matchedGrade = gradePool[normalizeCourseCode(course.courseCode)];
+        const selectedGrade = matchedGrade || predictedGrades[key] || "A";
         const gradePoint = gradePointMap[selectedGrade] ?? 10;
         return sum + (course.credits || 0) * gradePoint;
     }, 0);
@@ -307,7 +320,8 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
                     <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
                         {curr.map((course, idx) => {
                             const key = `${course.courseCode}-${idx}`;
-                            const selectedGrade = predictedGrades[key] || "A";
+                            const matchedGrade = gradePool[normalizeCourseCode(course.courseCode)];
+                            const selectedGrade = matchedGrade || predictedGrades[key] || "A";
                             return (
                                 <div
                                     key={key}
@@ -347,6 +361,11 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
                                             <option value="F">F (0)</option>
                                         </select>
                                     </div>
+                                    {matchedGrade && (
+                                        <p className="text-xs text-green-700 dark:text-green-300 midnight:text-green-300">
+                                            Matched from semester grade record: {matchedGrade}
+                                        </p>
+                                    )}
                                 </div>
                             );
                         })}
