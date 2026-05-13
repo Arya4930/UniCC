@@ -78,7 +78,7 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
     const currentCgpa = Number(CGPA?.cgpa) || 0;
     const currentCredits = Number(CGPA?.creditsEarned) || 0;
 
-    const predictedCreditPoints = curr.reduce((sum, course, idx) => {
+    const predictedSemesterCreditPoints = curr.reduce((sum, course, idx) => {
         const key = `${course.courseCode}-${idx}`;
         const matchedGrade = gradePool[normalizeCourseCode(course.courseCode)];
         const selectedGrade = matchedGrade || predictedGrades[key] || "A";
@@ -86,13 +86,33 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
         return sum + (course.credits || 0) * gradePoint;
     }, 0);
 
-    const predictedAddedCredits = curr.reduce((sum, course) => sum + (course.credits || 0), 0);
+    const predictedCreditPoints = curr.reduce((sum, course, idx) => {
+        const key = `${course.courseCode}-${idx}`;
+        const matchedGrade = gradePool[normalizeCourseCode(course.courseCode)];
+        if (matchedGrade) {
+            return sum;
+        }
+
+        const selectedGrade = predictedGrades[key] || "A";
+        const gradePoint = gradePointMap[selectedGrade] ?? 10;
+        return sum + (course.credits || 0) * gradePoint;
+    }, 0);
+
+    const predictedAddedCredits = curr.reduce((sum, course) => {
+        const matchedGrade = gradePool[normalizeCourseCode(course.courseCode)];
+        if (matchedGrade) {
+            return sum;
+        }
+
+        return sum + (course.credits || 0);
+    }, 0);
+    const predictedSemesterCredits = curr.reduce((sum, course) => sum + (course.credits || 0), 0);
     const predictedTotalCredits = currentCredits + predictedAddedCredits;
     const predictedCgpa = predictedTotalCredits > 0
         ? ((currentCgpa * currentCredits) + predictedCreditPoints) / predictedTotalCredits
         : 0;
-    const predictedGpa = predictedAddedCredits > 0
-        ? predictedCreditPoints / predictedAddedCredits
+    const predictedGpa = predictedSemesterCredits > 0
+        ? predictedSemesterCreditPoints / predictedSemesterCredits
         : 0;
 
     return (
@@ -325,10 +345,16 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
                             return (
                                 <div
                                     key={key}
-                                    className="h-full rounded-lg border border-gray-200 dark:border-slate-700 midnight:border-gray-800 p-4 flex flex-col gap-3"
+                                    className={`h-full rounded-lg border p-4 flex flex-col gap-3 ${matchedGrade
+                                        ? "border-gray-200 bg-gray-100 text-gray-500 dark:border-slate-700 dark:bg-slate-900 midnight:border-gray-800 midnight:bg-gray-950"
+                                        : "border-gray-200 dark:border-slate-700 midnight:border-gray-800"
+                                        }`}
                                 >
                                     <div>
-                                        <p className="font-medium text-gray-900 dark:text-gray-100 midnight:text-gray-100 text-sm sm:text-base">
+                                        <p className={`font-medium text-sm sm:text-base ${matchedGrade
+                                            ? "text-gray-500 dark:text-gray-400 midnight:text-gray-500"
+                                            : "text-gray-900 dark:text-gray-100 midnight:text-gray-100"
+                                            }`}>
                                             {course.courseCode} - {course.courseTitle}
                                         </p>
                                         <p className="text-xs text-gray-600 dark:text-gray-300 midnight:text-gray-400 mt-1">
@@ -343,6 +369,7 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
                                         <select
                                             id={`grade-${key}`}
                                             value={selectedGrade}
+                                            disabled={Boolean(matchedGrade)}
                                             onChange={(e) => {
                                                 const value = e.target.value;
                                                 setPredictedGrades((prev) => ({
@@ -350,7 +377,7 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
                                                     [key]: value
                                                 }));
                                             }}
-                                            className="rounded-md border border-gray-300 dark:border-slate-600 midnight:border-gray-700 bg-white dark:bg-slate-900 midnight:bg-black px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 midnight:text-gray-100"
+                                            className="rounded-md border border-gray-300 dark:border-slate-600 midnight:border-gray-700 bg-white dark:bg-slate-900 midnight:bg-black px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 midnight:text-gray-100 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500 dark:disabled:bg-slate-800 dark:disabled:text-gray-400 midnight:disabled:bg-gray-900 midnight:disabled:text-gray-500"
                                         >
                                             <option value="S">S (10)</option>
                                             <option value="A">A (9)</option>
@@ -362,8 +389,8 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
                                         </select>
                                     </div>
                                     {matchedGrade && (
-                                        <p className="text-xs text-green-700 dark:text-green-300 midnight:text-green-300">
-                                            Matched from semester grade record: {matchedGrade}
+                                        <p className="text-xs text-gray-600 dark:text-gray-400 midnight:text-gray-400">
+                                            Already counted in grade: {matchedGrade}
                                         </p>
                                     )}
                                 </div>

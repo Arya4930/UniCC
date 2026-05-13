@@ -22,8 +22,14 @@ async function cleanup() {
                 }
             }
 
-            user.files = user.files.filter(f => f.expiresAt > now);
-            await user.save();
+            await User.updateOne(
+                { _id: user._id },
+                {
+                    $set: {
+                        files: user.files.filter(f => f.expiresAt > now)
+                    }
+                }
+            );
         }
 
         console.log("✨ Cleanup completed.");
