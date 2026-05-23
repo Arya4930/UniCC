@@ -38,8 +38,8 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
         };
     }, []);
 
-    const countTillDate = (endDate) => {
-        if (!endDate) return 0;
+    const countTillDate = (endDate): RemainingClassDay[] | null => {
+        if (!endDate) return null;
         const endMid = new Date(endDate);
         endMid.setHours(23, 59, 59, 999);
 
@@ -65,10 +65,10 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
     const isLab = a.courseCode.endsWith("(L)");
     const isTheory = a.courseCode.endsWith("(T)");
 
-    let classesTillCAT1 = null;
-    let classesTillCAT2 = null;
-    let classesTillMidSem = null;
-    let classesTillLID = null;
+    let classesTillCAT1: RemainingClassDay[] | null = null;
+    let classesTillCAT2: RemainingClassDay[] | null = null;
+    let classesTillMidSem: RemainingClassDay[] | null = null;
+    let classesTillLID: RemainingClassDay[] | null = null;
 
     if (Array.isArray(analyzeCalendars) && analyzeCalendars.length > 0) {
         const allMonthsAreHolidays = analyzeCalendars.every(
@@ -88,6 +88,7 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
             }
         }
     }
+
     const [openDropdown, setOpenDropdown] = useState(null);
     const toggleDropdown = (key) => setOpenDropdown(openDropdown === key ? null : key);
 
@@ -199,7 +200,12 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                     })()}
 
 
-                    {(classesTillCAT1 || classesTillCAT2 || classesTillMidSem || classesTillLID) ? (
+                    {[
+                        classesTillCAT1,
+                        classesTillCAT2,
+                        classesTillMidSem,
+                        classesTillLID,
+                    ].some((data) => Array.isArray(data) && data.length > 0) ? (
                         <div className="text-sm space-y-3 mt-3 border-t border-b border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-2">
                             {[
                                 { key: "CAT1", label: "Classes left before CAT I", data: classesTillCAT1 },
@@ -207,7 +213,7 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                                 { key: "MIDSEM", label: "Classes left before Mid Term Test", data: classesTillMidSem },
                                 { key: "LID", label: "Classes left before FAT", data: classesTillLID },
                             ].map(({ key, label, data }) => (
-                                data && data.length > 0 && (
+                                Array.isArray(data) && data.length > 0 ? (
                                     <div
                                         key={key}
                                         className="w-full rounded-lg overflow-hidden transition-all duration-200"
@@ -252,7 +258,7 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                                             </div>
                                         </div>
                                     </div>
-                                )
+                                ) : null
                             ))}
                         </div>
                     ) : null}

@@ -6,7 +6,7 @@ import config from '@/app/config.json'
 import NoContentFound from "../NoContentFound";
 import OverallAttendancePredictor from "./overallAttendancePredictor";
 import { Button } from "@/components/ui/button";
-import { Hash, X, BadgeQuestionMark, Calendar } from "lucide-react";
+import { X, BadgeQuestionMark, Calendar } from "lucide-react";
 import TimetableGrid from "./TimetableGrid";
 
 export default function AttendanceTabs({ data, activeDay, setActiveDay, calendars, decimalValues }) {
@@ -42,24 +42,27 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
   });
 
   function parseTime(timeStr) {
-    let [h, m] = timeStr.split(":").map(Number);
+    let [h, m] = timeStr.trim().split(":").map(Number);
     if (h < 8) h += 12;
     return h * 60 + m;
+  }
+
+  function getTimeRange(time) {
+    const [start, end] = time.split("-").map((t) => t.trim());
+    return {
+      start: parseTime(start),
+      end: parseTime(end),
+    };
   }
 
   for (const day of days) {
     if (!dayCardsMap[day]) dayCardsMap[day] = [];
 
     dayCardsMap[day].sort((a, b) => {
-      const slotA = a.slotName;
-      const slotB = b.slotName;
-
-      const isMorningA = /[A-Z]1$|L([1-2]?[0-9]|30)$/.test(slotA);
-      const isMorningB = /[A-Z]1$|L([1-2]?[0-9]|30)$/.test(slotB);
-
-      if (isMorningA && !isMorningB) return -1;
-      if (!isMorningA && isMorningB) return 1;
-      return slotA.localeCompare(slotB, undefined, { numeric: true });
+      const timeA = getTimeRange(a.time);
+      const timeB = getTimeRange(b.time);
+      if (timeA.start !== timeB.start) return timeA.start - timeB.start;
+      return a.slotName.localeCompare(b.slotName, undefined, { numeric: true });
     });
 
     const merged = [];
@@ -74,12 +77,11 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
         current.faculty === next.faculty &&
         current.cls === next.cls
       ) {
-        // Check if the gap between slots is at most 30 minutes
-        const currentEndTime = parseTime(current.time.split("-")[1]);
-        const nextStartTime = parseTime(next.time.split("-")[0]);
-        const gapInMinutes = nextStartTime - currentEndTime;
+        const currentRange = getTimeRange(current.time);
+        const nextRange = getTimeRange(next.time);
+        const gapInMinutes = nextRange.start - currentRange.end;
 
-        if (gapInMinutes <= 30) {
+        if (gapInMinutes >= 0 && gapInMinutes <= 5) {
           const mergedSlotName = `${current.slotName}+${next.slotName}`;
           const mergedSlotTime = `${current.time.split("-")[0]}-${next.time.split("-")[1]}`;
           merged.push({

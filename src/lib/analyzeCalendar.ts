@@ -125,27 +125,32 @@ export function analyzeCalendar(calendar: CalendarInput = {}): AnalyzeCalendarRe
         result.summary[dayType]++;
     }
 
-    const IMPORTANT_EVENT_NAMES = new Set([
-        "cat   i",
-        "cat   ii",
-        "lid for laboratory classes",
-        "lid for theory classes",
-        "mid term test"
-    ]);
+    const IMPORTANT_EVENT_NAMES = [
+        { key: "cat   i", display: "CAT I" },
+        { key: "cat   ii", display: "CAT II" },
+        {
+            key: "lid for laboratory classes",
+            display: "LID FOR LABORATORY CLASSES",
+            aliases: ["lid for lab"],
+        },
+        { key: "lid for theory classes", display: "LID FOR THEORY CLASSES" },
+        { key: "mid term test", display: "MID TERM TEST" },
+    ];
 
     const importantEvents = new Map<string, ImportantEvent>();
 
     for (const day of result.days) {
         for (const ev of day.events) {
             const text = normalize(ev.text || "");
-            for (const key of IMPORTANT_EVENT_NAMES) {
-                if (text.includes(key) && !importantEvents.has(key)) {
+            for (const { key, display, aliases = [] } of IMPORTANT_EVENT_NAMES) {
+                const matched = text.includes(key) || aliases.some((alias) => text.includes(alias));
+                if (matched && !importantEvents.has(key)) {
                     const monthIndex = [
                         "january", "february", "march", "april", "may", "june",
                         "july", "august", "september", "october", "november", "december"
                     ].findIndex((m) => String(result.month).toLowerCase().includes(m));
                     importantEvents.set(key, {
-                        event: key.split(" ").filter(e => e.trim() !== "").join(" ").toUpperCase(),
+                        event: display,
                         date: day.date,
                         weekday: day.weekday,
                         month: result.month,
