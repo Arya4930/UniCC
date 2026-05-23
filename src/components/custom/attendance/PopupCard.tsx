@@ -67,6 +67,7 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
 
     let classesTillCAT1 = null;
     let classesTillCAT2 = null;
+    let classesTillMidSem = null;
     let classesTillLID = null;
 
     if (Array.isArray(analyzeCalendars) && analyzeCalendars.length > 0) {
@@ -77,10 +78,12 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
             if (isLab) {
                 classesTillCAT1 = countTillDate(impDates.cat1Date);
                 classesTillCAT2 = countTillDate(impDates.cat2Date);
+                classesTillMidSem = countTillDate(impDates.midsemStart);
                 classesTillLID = countTillDate(impDates.lidLabDate);
             } else if (isTheory) {
                 classesTillCAT1 = countTillDate(impDates.cat1Date);
                 classesTillCAT2 = countTillDate(impDates.cat2Date);
+                classesTillMidSem = countTillDate(impDates.midsemStart);
                 classesTillLID = countTillDate(impDates.lidTheoryDate);
             }
         }
@@ -196,14 +199,15 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                     })()}
 
 
-                    {(classesTillCAT1 && classesTillCAT2 && classesTillLID && classesTillLID.length > 0) ? (
+                    {(classesTillCAT1 || classesTillCAT2 || classesTillMidSem || classesTillLID) ? (
                         <div className="text-sm space-y-3 mt-3 border-t border-b border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-2">
                             {[
                                 { key: "CAT1", label: "Classes left before CAT I", data: classesTillCAT1 },
                                 { key: "CAT2", label: "Classes left before CAT II", data: classesTillCAT2 },
+                                { key: "MIDSEM", label: "Classes left before Mid Term Test", data: classesTillMidSem },
                                 { key: "LID", label: "Classes left before FAT", data: classesTillLID },
                             ].map(({ key, label, data }) => (
-                                data.length > 0 && (
+                                data && data.length > 0 && (
                                     <div
                                         key={key}
                                         className="w-full rounded-lg overflow-hidden transition-all duration-200"

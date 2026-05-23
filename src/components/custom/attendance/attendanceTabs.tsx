@@ -74,14 +74,23 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
         current.faculty === next.faculty &&
         current.cls === next.cls
       ) {
-        const mergedSlotName = `${current.slotName}+${next.slotName}`;
-        const mergedSlotTime = `${current.time.split("-")[0]}-${next.time.split("-")[1]}`;
-        merged.push({
-          ...current,
-          slotName: mergedSlotName,
-          time: mergedSlotTime,
-        });
-        i++;
+        // Check if the gap between slots is at most 30 minutes
+        const currentEndTime = parseTime(current.time.split("-")[1]);
+        const nextStartTime = parseTime(next.time.split("-")[0]);
+        const gapInMinutes = nextStartTime - currentEndTime;
+
+        if (gapInMinutes <= 30) {
+          const mergedSlotName = `${current.slotName}+${next.slotName}`;
+          const mergedSlotTime = `${current.time.split("-")[0]}-${next.time.split("-")[1]}`;
+          merged.push({
+            ...current,
+            slotName: mergedSlotName,
+            time: mergedSlotTime,
+          });
+          i++;
+        } else {
+          merged.push(current);
+        }
       } else {
         merged.push(current);
       }
@@ -124,8 +133,6 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
     }
   }, [daysWithClasses]);
 
-  if (daysWithClasses.length === 0) return <NoContentFound />;
-
   const findEventDate = (eventName) => {
     const ev = [...importantEvents.values()].find(
       (e) => e.event.toLowerCase() === eventName.toLowerCase()
@@ -138,7 +145,10 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
     cat2Date: findEventDate("CAT II"),
     lidLabDate: findEventDate("lid for laboratory classes"),
     lidTheoryDate: findEventDate("LID FOR THEORY CLASSES"),
+    midsemStart: findEventDate("Mid Term Test"),
   };
+
+  if (daysWithClasses.length === 0) return <NoContentFound />;
 
   return (
     <div className="grid gap-4">

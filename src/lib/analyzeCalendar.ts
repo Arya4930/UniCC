@@ -43,7 +43,7 @@ export function analyzeCalendar(calendar: CalendarInput = {}): AnalyzeCalendarRe
     const now = new Date();
 
     // ---- YEAR ----
-    let year = Number(calendar.month.split(" ").pop()) || Number(calendar.year);
+    let year = Number(String(calendar.month ?? "").split(" ").pop()) || Number(calendar.year);
     if (!Number.isFinite(year)) year = now.getFullYear();
 
     // ---- MONTH ----
@@ -130,6 +130,7 @@ export function analyzeCalendar(calendar: CalendarInput = {}): AnalyzeCalendarRe
         "cat   ii",
         "lid for laboratory classes",
         "lid for theory classes",
+        "mid term test"
     ]);
 
     const importantEvents = new Map<string, ImportantEvent>();
