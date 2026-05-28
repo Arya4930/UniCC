@@ -123,7 +123,6 @@ function MakrsModal({ course, totals, onClose }) {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        if (!(course.courseType === "Theory Only" || course.courseType === "Embedded Theory")) return;
         const response = await fetch(`${API_BASE}/api/attendance/marks?classId=${course.classNbr}`);
         const data = await response.json();
         if(!response.ok) {
