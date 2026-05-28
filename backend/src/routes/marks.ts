@@ -100,6 +100,7 @@ export async function getMarks(cookies: string[] | string, authorizedID: string,
                 slNo: cols.eq(0).text().trim(),
                 classNbr: cols.eq(1).text().trim(),
                 courseCode: cols.eq(2).text().trim(),
+                credits: courseCreditMap[`${cols.eq(2).text().trim()}(T)`] ?? 0,
                 courseTitle: cols.eq(3).text().trim(),
                 courseType: cols.eq(4).text().trim(),
                 courseSystem: cols.eq(5).text().trim(),
@@ -135,7 +136,6 @@ export async function getMarks(cookies: string[] | string, authorizedID: string,
         const aceGroups = new Map<string, { theory?: CourseItem; lab?: CourseItem }>();
 
         for (const course of courses) {
-            console.log(course.assessments)
             if (course.courseSystem === "CBCS" && course.courseType === "Theory Only") {
                 const validatedComponent = validateCourseComponent(course);
                 if (validatedComponent) {

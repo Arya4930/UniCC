@@ -169,7 +169,7 @@
         }
     },
     "marks": {
-        "marks": [
+        "courses": [
             {
                 "slNo": "1",
                 "classNbr": "CH2025260102349",
@@ -444,6 +444,151 @@
                         "status": "Present",
                         "scoredMark": "46.0",
                         "weightageMark": "36.8"
+                    }
+                ]
+            },
+            {
+                "slNo": "5",
+                "classNbr": "CH2025260501071",
+                "courseCode": "BCSE203E",
+                "credits": 2,
+                "courseTitle": "Web Programming",
+                "courseType": "Embedded Lab",
+                "courseSystem": "ACE",
+                "faculty": "VALARMATHI SUDHAKAR",
+                "slot": "L15+L16+L27+L28",
+                "courseMode": "LBC",
+                "assessments": [
+                    {
+                        "slNo": "1",
+                        "title": "Assessment - 1",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "10.0",
+                        "weightageMark": "10"
+                    },
+                    {
+                        "slNo": "2",
+                        "title": "Assessment - 2",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "9.0",
+                        "weightageMark": "9"
+                    },
+                    {
+                        "slNo": "3",
+                        "title": "Assessment - 3",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "10.0",
+                        "weightageMark": "10"
+                    },
+                    {
+                        "slNo": "4",
+                        "title": "Assessment - 4",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "9.5",
+                        "weightageMark": "9.5"
+                    },
+                    {
+                        "slNo": "5",
+                        "title": "Assessment - 5",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "10.0",
+                        "weightageMark": "10"
+                    },
+                    {
+                        "slNo": "6",
+                        "title": "Assessment - 6",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "9.0",
+                        "weightageMark": "9"
+                    },
+                    {
+                        "slNo": "7",
+                        "title": "Final Test",
+                        "maxMark": "50",
+                        "weightagePercent": "40",
+                        "status": "Present",
+                        "scoredMark": "46.0",
+                        "weightageMark": "36.8"
+                    }
+                ]
+            },
+            {
+                "slNo": "5",
+                "classNbr": "CH2025260501071",
+                "courseCode": "BCSE203E",
+                "credits": 1,
+                "courseTitle": "Web Programming",
+                "courseType": "Embedded Theory",
+                "courseSystem": "ACE",
+                "faculty": "VALARMATHI SUDHAKAR",
+                "slot": "E2",
+                "courseMode": "CBL09",
+                "assessments": [
+                    {
+                        "slNo": "1",
+                        "title": "CAT - I",
+                        "maxMark": "50",
+                        "weightagePercent": "15",
+                        "status": "Present",
+                        "scoredMark": "36.0",
+                        "weightageMark": "10.8"
+                    },
+                    {
+                        "slNo": "2",
+                        "title": "CAT - II",
+                        "maxMark": "50",
+                        "weightagePercent": "15",
+                        "status": "Present",
+                        "scoredMark": "38.0",
+                        "weightageMark": "11.4"
+                    },
+                    {
+                        "slNo": "3",
+                        "title": "Assignment",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "9.0",
+                        "weightageMark": "9"
+                    },
+                    {
+                        "slNo": "4",
+                        "title": "Quiz - I",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "8.0",
+                        "weightageMark": "8"
+                    },
+                    {
+                        "slNo": "5",
+                        "title": "Quiz - II",
+                        "maxMark": "10",
+                        "weightagePercent": "10",
+                        "status": "Present",
+                        "scoredMark": "9.0",
+                        "weightageMark": "9"
+                    },
+                    {
+                        "slNo": "6",
+                        "title": "Final Assessment Test",
+                        "maxMark": "100",
+                        "weightagePercent": "40",
+                        "status": "Present",
+                        "scoredMark": "64.0",
+                        "weightageMark": "25.6"
                     }
                 ]
             }

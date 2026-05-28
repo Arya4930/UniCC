@@ -5,6 +5,7 @@ export type CourseItem = {
     courseTitle: string;
     courseType: string;
     courseSystem: string;
+    credits?: number | string;
     faculty: string;
     slot: string;
     courseMode: string;

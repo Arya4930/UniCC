@@ -13,6 +13,50 @@ const formatNumber = (num) => {
   return Number(numericValue.toFixed(2)).toString();
 };
 
+const getNumericValue = (value, fallback = 0) => {
+  const numericValue = Number(value);
+  return Number.isFinite(numericValue) ? numericValue : fallback;
+};
+
+const getAssessmentTotals = (assessments) => {
+  return assessments.reduce(
+    (acc, asm) => {
+      acc.max += getNumericValue(asm.maxMark);
+      acc.scored += getNumericValue(asm.scoredMark);
+      acc.weightPercent += getNumericValue(asm.weightagePercent);
+      acc.weighted += getNumericValue(asm.weightageMark);
+      return acc;
+    },
+    { max: 0, scored: 0, weightPercent: 0, weighted: 0 }
+  );
+};
+
+const getCourseCredits = (course) => {
+  const credits = getNumericValue(course?.credits, 1);
+  return credits > 0 ? credits : 1;
+};
+
+const getCourseTotal = (course, labCourse) => {
+  const theoryTotals = getAssessmentTotals(course.assessments);
+  if (!labCourse) {
+    return Math.round(theoryTotals.weighted * 100) / 100 + "/" + formatNumber(theoryTotals.weightPercent);
+  }
+
+  const labTotals = getAssessmentTotals(labCourse.assessments);
+  const theoryCredits = getCourseCredits(course);
+  const labCredits = getCourseCredits(labCourse);
+  const creditsTotal = theoryCredits + labCredits;
+  const combinedWeightPercent = (theoryCredits * theoryTotals.weightPercent + labCredits * labTotals.weightPercent)/creditsTotal;
+
+  if (combinedWeightPercent <= 0) {
+    return theoryTotals.weighted;
+  }
+
+  const res = Math.round(((theoryCredits * theoryTotals.weighted) + (labCredits * labTotals.weighted)) / creditsTotal * 100) / 100;
+
+  return res + "/" + combinedWeightPercent;
+};
+
 export default function MarksDisplay({ data }) {
   const [openCourse, setOpenCourse] = useState(null);
 
@@ -40,6 +84,13 @@ export default function MarksDisplay({ data }) {
       {/* Grid for cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {data.courses.map((course, idx) => {
+          const labCourse =
+            course.courseType === "Embedded Theory"
+              ? data.courses.find(c => c.courseCode === course.courseCode && c.courseType === "Embedded Lab")
+              : null;
+
+          const courseTotal = getCourseTotal(course, labCourse);
+
           const totals = course.assessments.reduce(
             (acc, asm) => {
               acc.max += Number(asm.maxMark) || 0;
@@ -88,7 +139,14 @@ export default function MarksDisplay({ data }) {
 
               {/* Full page modal */}
               {openCourse === course.slNo && (
-                <MakrsModal course={course} totals={totals} onClose={() => setOpenCourse(null)} />
+                <MakrsModal
+                  course={course}
+                  totals={totals}
+                  courseTotal={courseTotal}
+                  // only show the lab table in theory modal when a matching embedded lab exists
+                  labCourse={labCourse}
+                  onClose={() => setOpenCourse(null)}
+                />
               )}
             </div>
           );
@@ -98,7 +156,7 @@ export default function MarksDisplay({ data }) {
   );
 }
 
-function MakrsModal({ course, totals, onClose }) {
+function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
   // prevent scroll in background of modal
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -145,16 +203,17 @@ function MakrsModal({ course, totals, onClose }) {
           {course.courseCode} – {course.courseTitle}
         </h2>
         <p className="mb-1">
-          <strong>Faculty:</strong> {course.faculty}
+          <strong>Course Total:</strong> {courseTotal}
         </p>
         <p className="mb-1">
-          <strong>Slot:</strong> {course.slot}
+          <strong>Faculty:</strong> {course.faculty}
         </p>
         <p className="mb-3">
-          <strong>Class Number:</strong> {course.classNbr}
+          <strong>Slot:</strong> {course.slot}
         </p>
 
         <div className="overflow-x-auto">
+          {/* Theory component table */}
           <table className="w-full border mt-2 border-gray-300 dark:border-gray-600 midnight:border-gray-700">
             <thead className="bg-gray-800 text-white dark:bg-slate-700 midnight:bg-gray-900">
               <tr>
@@ -168,42 +227,71 @@ function MakrsModal({ course, totals, onClose }) {
             <tbody>
               {course.assessments.map((asm, asmIdx) => (
                 <tr
-                  key={asmIdx}
+                  key={`theory-${asmIdx}`}
                   className="border-gray-300 dark:border-gray-600 midnight:border-gray-700"
                 >
                   <td className="border p-2">{asm.title}</td>
-                  <td className="border p-2">
-                    {formatNumber(asm.maxMark)}
-                  </td>
-                  <td className="border p-2">
-                    {formatNumber(asm.scoredMark)}
-                  </td>
-                  <td className="border p-2">
-                    {formatNumber(asm.weightagePercent)}
-                  </td>
-                  <td className="border p-2">
-                    {formatNumber(asm.weightageMark)}
-                  </td>
+                  <td className="border p-2">{formatNumber(asm.maxMark)}</td>
+                  <td className="border p-2">{formatNumber(asm.scoredMark)}</td>
+                  <td className="border p-2">{formatNumber(asm.weightagePercent)}</td>
+                  <td className="border p-2">{formatNumber(asm.weightageMark)}</td>
                 </tr>
               ))}
 
               <tr className="font-bold border-t border-gray-400 dark:border-gray-500 midnight:border-gray-600">
                 <td className="border p-2">Total</td>
-                <td className="border p-2">
-                  {formatNumber(totals.max)}
-                </td>
-                <td className="border p-2">
-                  {formatNumber(totals.scored)}
-                </td>
-                <td className="border p-2">
-                  {formatNumber(totals.weightPercent)}
-                </td>
-                <td className="border p-2">
-                  {formatNumber(totals.weighted)}
-                </td>
+                <td className="border p-2">{formatNumber(totals.max)}</td>
+                <td className="border p-2">{formatNumber(totals.scored)}</td>
+                <td className="border p-2">{formatNumber(totals.weightPercent)}</td>
+                <td className="border p-2">{formatNumber(totals.weighted)}</td>
               </tr>
             </tbody>
           </table>
+
+          {/* Lab component table (if a sibling exists) */}
+          {labCourse && labCourse.assessments && labCourse.assessments.length > 0 && (
+            <div className="mt-6">
+              <h3 className="font-semibold mb-2">Lab Component</h3>
+              <table className="w-full border mt-2 border-gray-300 dark:border-gray-600 midnight:border-gray-700">
+                <thead className="bg-gray-800 text-white dark:bg-slate-700 midnight:bg-gray-900">
+                  <tr>
+                    <th className="border p-2 text-left">Test</th>
+                    <th className="border p-2">Max</th>
+                    <th className="border p-2">Scored</th>
+                    <th className="border p-2">Weight %</th>
+                    <th className="border p-2">Weighted</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {labCourse.assessments.map((asm, asmIdx) => (
+                    <tr key={`lab-${asmIdx}`} className="border-gray-300 dark:border-gray-600 midnight:border-gray-700">
+                      <td className="border p-2">{asm.title}</td>
+                      <td className="border p-2">{formatNumber(asm.maxMark)}</td>
+                      <td className="border p-2">{formatNumber(asm.scoredMark)}</td>
+                      <td className="border p-2">{formatNumber(asm.weightagePercent)}</td>
+                      <td className="border p-2">{formatNumber(asm.weightageMark)}</td>
+                    </tr>
+                  ))}
+
+                  <tr className="font-bold border-t border-gray-400 dark:border-gray-500 midnight:border-gray-600">
+                    <td className="border p-2">Total</td>
+                    <td className="border p-2">
+                      {formatNumber(labCourse.assessments.reduce((s, a) => s + (Number(a.maxMark) || 0), 0))}
+                    </td>
+                    <td className="border p-2">
+                      {formatNumber(labCourse.assessments.reduce((s, a) => s + (Number(a.scoredMark) || 0), 0))}
+                    </td>
+                    <td className="border p-2">
+                      {formatNumber(labCourse.assessments.reduce((s, a) => s + (Number(a.weightagePercent) || 0), 0))}
+                    </td>
+                    <td className="border p-2">
+                      {formatNumber(labCourse.assessments.reduce((s, a) => s + (Number(a.weightageMark) || 0), 0))}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
         {stats && (
           <div className="mt-4 p-4 border rounded text-sm">
