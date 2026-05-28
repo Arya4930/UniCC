@@ -123,7 +123,6 @@ function MakrsModal({ course, totals, onClose }) {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        if (!(course.courseType === "Theory Only" || course.courseType === "Embedded Theory")) return;
         const response = await fetch(`${API_BASE}/api/attendance/marks?classId=${course.classNbr}`);
         const data = await response.json();
         if(!response.ok) {
@@ -138,7 +137,6 @@ function MakrsModal({ course, totals, onClose }) {
   }, [course.classNbr]);
 
   const dataPoints = stats ? (stats.dataPoints ?? stats.count ?? 0) : 0;
-  console.log(stats);
 
   return (
     <div data-scrollable className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
