@@ -2,6 +2,7 @@ export type CourseItem = {
     slNo: string;
     classNbr: string;
     courseCode: string;
+    credits: number;
     courseTitle: string;
     courseType: string;
     courseSystem: string;
