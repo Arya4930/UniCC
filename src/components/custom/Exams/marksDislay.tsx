@@ -112,14 +112,9 @@ function MakrsModal({ course, totals, onClose }) {
       document.body.style.paddingRight = `${scrollbarWidth}px`;
     }
 
-    // Prevent touchmove on mobile when modal is open
-    const preventTouch = (e) => e.preventDefault();
-    document.addEventListener("touchmove", preventTouch, { passive: false });
-
     return () => {
       document.body.style.overflow = prevOverflow;
       document.body.style.paddingRight = prevPaddingRight;
-      document.removeEventListener("touchmove", preventTouch);
     };
   }, []);
 
@@ -131,6 +126,9 @@ function MakrsModal({ course, totals, onClose }) {
         if (!(course.courseType === "Theory Only" || course.courseType === "Embedded Theory")) return;
         const response = await fetch(`${API_BASE}/api/attendance/marks?classId=${course.classNbr}`);
         const data = await response.json();
+        if(!response.ok) {
+          throw new Error(data.error || "Failed to fetch class statistics");
+        }
         setStats(data);
       } catch (error) {
         console.error("Error fetching class statistics:", error);
@@ -140,6 +138,7 @@ function MakrsModal({ course, totals, onClose }) {
   }, [course.classNbr]);
 
   const dataPoints = stats ? (stats.dataPoints ?? stats.count ?? 0) : 0;
+  console.log(stats);
 
   return (
     <div data-scrollable className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
