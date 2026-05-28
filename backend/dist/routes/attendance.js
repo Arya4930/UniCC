@@ -42,6 +42,7 @@ const cheerio = __importStar(require("cheerio"));
 const url_1 = require("url");
 const fetchTimeTable_1 = __importDefault(require("./fetchTimeTable"));
 const marks_1 = require("./marks");
+const addClassData_1 = require("../lib/addClassData");
 const router = express_1.default.Router();
 /**
  * @openapi
@@ -193,7 +194,6 @@ router.post("/", async (req, res) => {
         if (!csrf || !authorizedID)
             throw new Error("Cannot find _csrf or authorizedID");
         const client = (0, VTOPClient_1.default)();
-        const marksRes = await (0, marks_1.getMarks)(cookieHeader, authorizedID, csrf, semesterId, client);
         const ttRes = await client.post("/vtop/processViewStudentAttendance", new url_1.URLSearchParams({
             authorizedID: String(authorizedID),
             semesterSubId: semesterId ?? "",
@@ -207,6 +207,11 @@ router.post("/", async (req, res) => {
             },
         });
         const courseInfo = await (0, fetchTimeTable_1.default)(cookieHeader, authorizedID, csrf, semesterId);
+        const courseCreditMap = {};
+        courseInfo.forEach(course => {
+            courseCreditMap[course.courseCode.trim()] = parseFloat(course.LTPJC?.split(" ")[4] || "0");
+        });
+        const marksRes = await (0, marks_1.getMarks)(cookieHeader, authorizedID, csrf, semesterId, client, courseCreditMap);
         const $$$ = cheerio.load(ttRes.data);
         const attendance = [];
         $$$("#getStudentDetails table tbody tr").each((i, row) => {
@@ -273,6 +278,20 @@ router.post("/", async (req, res) => {
         }
         const detailedAttendance = await Promise.all(mergedAttendance.map(fetchDetail));
         return res.status(200).json({ attRes: { semester: semesterId, attendance: detailedAttendance }, marksRes: marksRes });
+    }
+    catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: err.message });
+    }
+});
+router.get("/marks", async (req, res) => {
+    try {
+        const classId = req.query.classId;
+        const stats = await (0, addClassData_1.fetchClassStatistics)(classId);
+        if (!stats || stats.mean === undefined) {
+            return res.status(404).json({ error: "Class statistics not found" });
+        }
+        return res.status(200).json(stats);
     }
     catch (err) {
         console.error(err);

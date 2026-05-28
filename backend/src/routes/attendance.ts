@@ -7,6 +7,7 @@ import { RequestBody } from "../types/custom";
 import { attendanceItem, courseItem } from "../types/data/attendance";
 import type { Router } from "express";
 import { getMarks } from "./marks";
+import { fetchClassStatistics } from "../lib/addClassData";
 
 const router: Router = express.Router();
 
@@ -170,14 +171,6 @@ router.post("/", async (req: Request, res: Response) => {
 
         const client = VTOPClient();
 
-        const marksRes = await getMarks(
-            cookieHeader,
-            authorizedID,
-            csrf,
-            semesterId as string,
-            client
-        );
-
         const ttRes = await client.post(
             "/vtop/processViewStudentAttendance",
             new URLSearchParams({
@@ -200,6 +193,19 @@ router.post("/", async (req: Request, res: Response) => {
             authorizedID,
             csrf,
             (semesterId as string)
+        );
+        const courseCreditMap: Record<string, number> = {};
+        courseInfo.forEach(course => {
+            courseCreditMap[course.courseCode.trim()] = parseFloat(course.LTPJC?.split(" ")[4] || "0");
+        });
+
+        const marksRes = await getMarks(
+            cookieHeader,
+            authorizedID,
+            csrf,
+            semesterId as string,
+            client,
+            courseCreditMap
         );
 
         const $$$ = cheerio.load(ttRes.data);
@@ -290,6 +296,21 @@ router.post("/", async (req: Request, res: Response) => {
         );
 
         return res.status(200).json({ attRes: { semester: semesterId, attendance: detailedAttendance }, marksRes: marksRes });
+    } catch (err: any) {
+        console.error(err);
+        return res.status(500).json({ error: err.message });
+    }
+});
+
+router.get("/marks", async (req: Request, res: Response) => {
+    try {
+        const classId = req.query.classId as string;
+        const stats = await fetchClassStatistics(classId);
+        
+        if (!stats || stats.mean === undefined) {
+            return res.status(404).json({ error: "Class statistics not found" });
+        }
+        return res.status(200).json(stats);
     } catch (err: any) {
         console.error(err);
         return res.status(500).json({ error: err.message });

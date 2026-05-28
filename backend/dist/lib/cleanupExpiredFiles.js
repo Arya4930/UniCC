@@ -25,8 +25,11 @@ async function cleanup() {
                     console.error("❌ Failed to delete from S3:", err);
                 }
             }
-            user.files = user.files.filter(f => f.expiresAt > now);
-            await user.save();
+            await Users_1.default.updateOne({ _id: user._id }, {
+                $set: {
+                    files: user.files.filter(f => f.expiresAt > now)
+                }
+            });
         }
         console.log("✨ Cleanup completed.");
     }
