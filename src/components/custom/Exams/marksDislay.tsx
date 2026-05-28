@@ -147,8 +147,11 @@ function MakrsModal({ course, totals, onClose }) {
         <p className="mb-1">
           <strong>Faculty:</strong> {course.faculty}
         </p>
-        <p className="mb-3">
+        <p className="mb-1">
           <strong>Slot:</strong> {course.slot}
+        </p>
+        <p className="mb-3">
+          <strong>Class Number:</strong> {course.classNbr}
         </p>
 
         <div className="overflow-x-auto">
