@@ -68,11 +68,16 @@ function validateCourseComponent(course) {
     }
     const finalAssessment = course.assessments[course.assessments.length - 1];
     const finalAssessmentScore = parseFiniteNumber(finalAssessment?.scoredMark ?? "");
+    const finalAssessmentMax = parseFiniteNumber(finalAssessment?.maxMark ?? "");
     // Keep the original FAT gating, but make the comparisons safe for floating-point input.
+    // Use 40% of the final assessment's max marks as the gate instead of an absolute 40 points.
+    const finalAssessmentPercent = finalAssessmentScore === null || finalAssessmentMax === null || finalAssessmentMax <= 0
+        ? null
+        : (finalAssessmentScore / finalAssessmentMax) * 100;
     if (!finalAssessment ||
         finalAssessment.title !== "Final Assessment Test" ||
-        finalAssessmentScore === null ||
-        finalAssessmentScore <= 40 ||
+        finalAssessmentPercent === null ||
+        finalAssessmentPercent <= 40 ||
         Math.abs(totalWeightage - 100) > 0.01) {
         return null;
     }
@@ -135,6 +140,7 @@ async function getMarks(cookies, authorizedID, csrf, semesterId, client, courseC
         });
         const aceGroups = new Map();
         for (const course of courses) {
+            console.log(course.assessments);
             if (course.courseSystem === "CBCS" && course.courseType === "Theory Only") {
                 const validatedComponent = validateCourseComponent(course);
                 if (validatedComponent) {
