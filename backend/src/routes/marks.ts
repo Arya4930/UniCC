@@ -175,7 +175,9 @@ export async function getMarks(cookies: string[] | string, authorizedID: string,
                 ((validatedTheory.totalWeightageMark * theoryCredits) + (validatedLab.totalWeightageMark * labCredits)) /
                 totalCredits;
 
-            await AddClassData(courseCode, maskUserID(authorizedID), Math.ceil(finalMark));
+            // Use the theory component's classNbr as the identifier for class statistics
+            const classIdentifier = theoryComponent?.classNbr;
+            await AddClassData(classIdentifier, maskUserID(authorizedID), Math.ceil(finalMark));
         }
 
         const creditsRes = await client.post(

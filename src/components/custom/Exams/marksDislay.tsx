@@ -138,7 +138,6 @@ function MakrsModal({ course, totals, onClose }) {
   }, [course.classNbr]);
 
   const dataPoints = stats ? (stats.dataPoints ?? stats.count ?? 0) : 0;
-  console.log(stats);
 
   return (
     <div data-scrollable className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">

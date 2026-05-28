@@ -173,7 +173,9 @@ async function getMarks(cookies, authorizedID, csrf, semesterId, client, courseC
             // Weighted aggregation combines the validated theory and lab marks using their separate credits.
             const finalMark = ((validatedTheory.totalWeightageMark * theoryCredits) + (validatedLab.totalWeightageMark * labCredits)) /
                 totalCredits;
-            await (0, addClassData_1.default)(courseCode, (0, mask_1.maskUserID)(authorizedID), Math.ceil(finalMark));
+            // Use the theory component's classNbr as the identifier for class statistics
+            const classIdentifier = theoryComponent?.classNbr;
+            await (0, addClassData_1.default)(classIdentifier, (0, mask_1.maskUserID)(authorizedID), Math.ceil(finalMark));
         }
         const creditsRes = await client.post("/vtop/get/dashboard/current/cgpa/credits", new url_1.URLSearchParams({
             authorizedID,
