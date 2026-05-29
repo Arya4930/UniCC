@@ -33,7 +33,7 @@ const getAssessmentTotals = (assessments) => {
 
 const getCourseCredits = (course) => {
   const credits = getNumericValue(course?.credits, 1);
-  return credits > 0 ? credits : 1;
+  return credits > 0 ? credits : -1;
 };
 
 const getCourseTotal = (course, labCourse) => {
@@ -45,6 +45,9 @@ const getCourseTotal = (course, labCourse) => {
   const labTotals = getAssessmentTotals(labCourse.assessments);
   const theoryCredits = getCourseCredits(course);
   const labCredits = getCourseCredits(labCourse);
+  if(theoryCredits < 0 || labCredits < 0) {
+    return "Reload Required";
+  }
   const creditsTotal = theoryCredits + labCredits;
   const combinedWeightPercent = (theoryCredits * theoryTotals.weightPercent + labCredits * labTotals.weightPercent)/creditsTotal;
 
