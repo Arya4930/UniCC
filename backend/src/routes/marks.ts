@@ -96,11 +96,19 @@ export async function getMarks(cookies: string[] | string, authorizedID: string,
             const cols = $$$(row).find("td");
             if (cols.length < 9) return;
 
+            const courseCode = cols.eq(2).text().trim();
+            const slot = cols.eq(7).text().trim();
+            const isLab = slot.startsWith("L");
+
+            // Prefer the most likely credit key for this component, but fall back to the other if missing.
+            const primaryKey = `${courseCode}(${isLab ? "L" : "T"})`;
+            const creditsValue = courseCreditMap[primaryKey] ?? 0;
+
             const courseData: CourseItem = {
                 slNo: cols.eq(0).text().trim(),
                 classNbr: cols.eq(1).text().trim(),
-                courseCode: cols.eq(2).text().trim(),
-                credits: courseCreditMap[`${cols.eq(2).text().trim()}(T)`] ?? 0,
+                courseCode,
+                credits: creditsValue,
                 courseTitle: cols.eq(3).text().trim(),
                 courseType: cols.eq(4).text().trim(),
                 courseSystem: cols.eq(5).text().trim(),

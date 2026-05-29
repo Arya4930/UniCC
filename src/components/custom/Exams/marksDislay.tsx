@@ -32,7 +32,7 @@ const getAssessmentTotals = (assessments) => {
 };
 
 const getCourseCredits = (course) => {
-  const credits = getNumericValue(course?.credits, 1);
+  const credits = getNumericValue(course?.credits, -1);
   return credits > 0 ? credits : -1;
 };
 
@@ -339,7 +339,7 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
                   const mean = stats.mean || 0;
                   const sd = stats.sd || 0;
 
-                  const sBoundary = Math.max(Math.round(mean + 1.5 * sd), 80);
+                  const sBoundary = Math.min(Math.max(Math.round(mean + 1.5 * sd), 80), 100);
                   const aLower = Math.round(mean + 0.5 * sd);
                   const bLower = Math.round(mean - 0.5 * sd);
                   const cLower = Math.round(mean - 1.0 * sd);
