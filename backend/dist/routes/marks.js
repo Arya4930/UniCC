@@ -147,7 +147,7 @@ async function getMarks(cookies, authorizedID, csrf, semesterId, client, courseC
         });
         const aceGroups = new Map();
         for (const course of courses) {
-            if (course.courseSystem === "CBCS" && course.courseType === "Theory Only") {
+            if (course.courseType === "Theory Only") {
                 const validatedComponent = validateCourseComponent(course);
                 if (validatedComponent) {
                     await (0, addClassData_1.default)(course.classNbr, (0, mask_1.maskUserID)(authorizedID), Math.ceil(validatedComponent.totalWeightageMark));

@@ -144,7 +144,7 @@ export async function getMarks(cookies: string[] | string, authorizedID: string,
         const aceGroups = new Map<string, { theory?: CourseItem; lab?: CourseItem }>();
 
         for (const course of courses) {
-            if (course.courseSystem === "CBCS" && course.courseType === "Theory Only") {
+            if (course.courseType === "Theory Only") {
                 const validatedComponent = validateCourseComponent(course);
                 if (validatedComponent) {
                     await AddClassData(course.classNbr, maskUserID(authorizedID), Math.ceil(validatedComponent.totalWeightageMark));
