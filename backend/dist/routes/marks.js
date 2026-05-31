@@ -77,7 +77,7 @@ function validateCourseComponent(course) {
     if (!finalAssessment ||
         finalAssessment.title !== "Final Assessment Test" ||
         finalAssessmentPercent === null ||
-        finalAssessmentPercent <= 40 ||
+        finalAssessmentPercent <= 1 ||
         Math.abs(totalWeightage - 100) > 0.01) {
         return null;
     }
