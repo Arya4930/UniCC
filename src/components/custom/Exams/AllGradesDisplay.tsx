@@ -72,8 +72,11 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
         C: 7,
         D: 6,
         E: 5,
-        F: 0
+        F: 0,
+        N: 0
     };
+
+    const getGradePoint = (grade) => gradePointMap[grade] ?? 9;
 
     const currentCgpa = Number(CGPA?.cgpa) || 0;
     const currentCredits = Number(CGPA?.creditsEarned) || 0;
@@ -81,21 +84,23 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
     const predictedSemesterCreditPoints = curr.reduce((sum, course, idx) => {
         const key = `${course.courseCode}-${idx}`;
         const matchedGrade = gradePool[normalizeCourseCode(course.courseCode)];
-        const selectedGrade = matchedGrade || predictedGrades[key] || "A";
-        const gradePoint = gradePointMap[selectedGrade] ?? 10;
+        const selectedGrade = predictedGrades[key] || matchedGrade || "A";
+        const gradePoint = getGradePoint(selectedGrade);
         return sum + (course.credits || 0) * gradePoint;
     }, 0);
 
     const predictedCreditPoints = curr.reduce((sum, course, idx) => {
         const key = `${course.courseCode}-${idx}`;
         const matchedGrade = gradePool[normalizeCourseCode(course.courseCode)];
+        const selectedGrade = predictedGrades[key] || matchedGrade || "A";
+        const selectedGradePoint = getGradePoint(selectedGrade);
+
         if (matchedGrade) {
-            return sum;
+            const matchedGradePoint = getGradePoint(matchedGrade);
+            return sum + (course.credits || 0) * (selectedGradePoint - matchedGradePoint);
         }
 
-        const selectedGrade = predictedGrades[key] || "A";
-        const gradePoint = gradePointMap[selectedGrade] ?? 10;
-        return sum + (course.credits || 0) * gradePoint;
+        return sum + (course.credits || 0) * selectedGradePoint;
     }, 0);
 
     const predictedAddedCredits = curr.reduce((sum, course) => {
@@ -341,7 +346,7 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
                         {curr.map((course, idx) => {
                             const key = `${course.courseCode}-${idx}`;
                             const matchedGrade = gradePool[normalizeCourseCode(course.courseCode)];
-                            const selectedGrade = matchedGrade || predictedGrades[key] || "A";
+                            const selectedGrade = predictedGrades[key] || matchedGrade || "A";
                             return (
                                 <div
                                     key={key}
@@ -369,7 +374,6 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
                                         <select
                                             id={`grade-${key}`}
                                             value={selectedGrade}
-                                            disabled={Boolean(matchedGrade)}
                                             onChange={(e) => {
                                                 const value = e.target.value;
                                                 setPredictedGrades((prev) => ({
@@ -386,11 +390,17 @@ export default function AllGradesDisplay({ data, handleAllGradesFetch, CGPA, att
                                             <option value="D">D (6)</option>
                                             <option value="E">E (5)</option>
                                             <option value="F">F (0)</option>
+                                            <option value="N">N (0)</option>
                                         </select>
                                     </div>
-                                    {matchedGrade && (
+                                    {matchedGrade && !predictedGrades[key] && (
                                         <p className="text-xs text-gray-600 dark:text-gray-400 midnight:text-gray-400">
                                             Already counted in grade: {matchedGrade}
+                                        </p>
+                                    )}
+                                    {matchedGrade && predictedGrades[key] && predictedGrades[key] !== matchedGrade && (
+                                        <p className="text-xs text-blue-600 dark:text-blue-400 midnight:text-blue-400">
+                                            Overridden from {matchedGrade} to {predictedGrades[key]}
                                         </p>
                                     )}
                                 </div>
