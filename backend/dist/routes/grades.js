@@ -178,7 +178,7 @@ router.post("/", async (req, res) => {
         });
         const curriculum = [];
         $$("#fixedTableContainer table")
-            .eq(4)
+            .eq(5)
             .find("tr.tableContent")
             .each((_, el) => {
             const tds = $$(el).find("td");
@@ -189,7 +189,7 @@ router.post("/", async (req, res) => {
             });
         });
         $$("#fixedTableContainer table")
-            .eq(5)
+            .eq(6)
             .find("tr.tableContent")
             .each((_, el) => {
             const tds = $$(el).find("td");

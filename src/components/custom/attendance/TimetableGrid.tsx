@@ -1,6 +1,6 @@
 "use client";
 
-import config from "@/app/config.json";
+import config from "../../../../config.json";
 import { useEffect } from "react";
 
 export default function TimetableVtop({ attendance }) {

@@ -4,7 +4,7 @@ import { ReloadModal } from "./reloadModel";
 import LoginForm from "./loginForm";
 import DashboardContent from "./Dashboard";
 import Footer from "./footer/Footer";
-import config from '../../app/config.json'
+import config from "../../../config.json";
 import { attendanceRes, ODListItem, ODListRaw } from "@/types/data/attendance";
 import { AllGradesRes } from "@/types/data/allgrades";
 import { loadActivityTree, saveActivityTree } from "@/lib/activit-tree";

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import CourseCard from "./courseCard";
 import { analyzeAllCalendars } from "@/lib/analyzeCalendar";
 import PopupCard from "./PopupCard";
-import config from '@/app/config.json'
+import config from '../../../../config.json';
 import NoContentFound from "../NoContentFound";
 import OverallAttendancePredictor from "./overallAttendancePredictor";
 import { Button } from "@/components/ui/button";

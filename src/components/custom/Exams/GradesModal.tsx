@@ -14,7 +14,8 @@ const normalizeGradesCategory = (rawCategory?: string | null) => {
     case "fcbes": return "Foundation Core - Basic Engineering Sciences";
     case "fchssm": return "Foundation Core - Humanities, Social Sciences and Management";
     case "fcbsm": return "Foundation Core - Basic Sciences and Mathematics";
-    case "dc": return "Disciplinary Core";
+    case "dc": return "Discipline Core";
+    case "de": return "Discipline Elective";
     case "dles": return "Discipline-linked Engineering Sciences";
     case "ngcr": return "Non-graded Core Requirement";
     case "oe": return "Open Elective";

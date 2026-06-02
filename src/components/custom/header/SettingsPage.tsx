@@ -3,7 +3,7 @@
 import { X, Save, LogOut, Eye } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "../../ui/button";
-import config from "../../../app/config.json";
+import config from "../../../../config.json";
 import { DropdownToggle } from "../toggle";
 import HeatMapComponent from "./HeatMapComponent";
 import { Switch } from "@/components/ui/switch";
