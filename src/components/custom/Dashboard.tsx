@@ -330,14 +330,17 @@ export default function DashboardContent({
         }
         settings={settings}
         setSettings={setSettings}
+        attendancePercentage={attendancePercentage}
+        marksData={marksData}
       />
 
       <div 
-        className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-[100dvh] text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors pb-24"
+        className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-[100dvh] text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors pb-24 md:pb-0 md:pl-64 w-full"
         style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
       >
-        <StatsCards
-          attendancePercentage={attendancePercentage}
+        <div className="md:hidden">
+          <StatsCards
+            attendancePercentage={attendancePercentage}
           ODhoursData={ODhoursData}
           setODhoursIsOpen={setODhoursIsOpen}
           feedbackStatus={GradesData.feedback}
@@ -353,9 +356,10 @@ export default function DashboardContent({
           setAttendancePercentageOrString={(val: string) => {
             setSettings(prev => ({ ...prev, attendancePercentageOrString: val }))
             localStorage.setItem("settings", JSON.stringify({ ...settings, attendancePercentageOrString: val }))
-          }
+            }
           }
         />
+        </div>
 
         {ODhoursIsOpen && (
           <ODHoursModal
