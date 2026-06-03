@@ -11,7 +11,7 @@ import Links from "./Links";
 import Files from "./Files";
 import PushNotificationManager from "@/app/pushNotificationManager";
 
-export default function SettingsPage({ handleClose, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading, handleLogOutRequest, username, password, setPassword, decimalValues, setDecimalValues, loadingScreen, setLoadingScreen }) {
+export default function SettingsPage({ handleClose, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading, handleLogOutRequest, username, password, setPassword, decimalValues, setDecimalValues, loadingScreen, setLoadingScreen, isDayscholarWithBus, setIsDayscholarWithBus }) {
     const [selectedSemester, setSelectedSemester] = useState<string>(currSemesterID);
     const [changeUsername, setChangedUsername] = useState<string>(username);
     const [changedPassword, setChangedPassword] = useState<string>(password);
@@ -163,6 +163,19 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
                     <Switch
                         checked={loadingScreen}
                         onCheckedChange={setLoadingScreen}
+                    />
+                </div>
+
+                <div className="flex items-center justify-between">
+                    <div>
+                        <p className="text-md font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100">
+                            Dayscholar with Bus
+                        </p>
+                        <p className="text-xs text-gray-500">Calculate attendance against an 85% FFCS requirement instead of 75%.</p>
+                    </div>
+                    <Switch
+                        checked={isDayscholarWithBus}
+                        onCheckedChange={setIsDayscholarWithBus}
                     />
                 </div>
             </div>

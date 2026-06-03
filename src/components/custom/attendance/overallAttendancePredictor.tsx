@@ -9,6 +9,7 @@ export default function OverallAttendancePredictor({
   analyzeCalendars,
   dayCardsMap,
   impDates,
+  isDayscholarWithBus
 }) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -338,9 +339,9 @@ export default function OverallAttendancePredictor({
               </span>
             </span>
             <span
-              className={`font-semibold ${p.predictedPercent < 75
+              className={`font-semibold ${p.predictedPercent < (isDayscholarWithBus ? 85 : 75)
                 ? "text-red-500"
-                : p.predictedPercent < 85
+                : p.predictedPercent < (isDayscholarWithBus ? 90 : 85)
                   ? "text-yellow-400"
                   : "text-green-400"
                 }`}

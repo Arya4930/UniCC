@@ -12,10 +12,14 @@ import MessDisplay from "./Hostel/messDisplay";
 import LaundryDisplay from "./Hostel/LaundryDisplay";
 import AttendanceSubTabs from "./attendance/AttendanceSubsTabs";
 import CalendarView from "./attendance/CalendarView";
-import { useState } from "react";
-import { useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import LeaveDisplay from "./Hostel/LeaveDisplay";
 import AllGradesDisplay from "./Exams/AllGradesDisplay";
+import DayscholarSubTabs from "./dayscholar/DayscholarSubTabs";
+import BusFinder from "./dayscholar/BusFinder";
+import BusFeesDisplay from "./dayscholar/BusFeesDisplay";
+import AdminDashboard from "./dayscholar/AdminDashboard";
+import defaultBuses from "@/data/dayscholar_buses.json";
 import { API_BASE } from "./Main";
 import MarksSubTab from "./Exams/MarksSubTab";
 import ScheduleSubTab from "./Exams/ScheduleSubTab";
@@ -45,6 +49,8 @@ export default function DashboardContent({
   setHostelActiveSubTab,
   activeAttendanceSubTab,
   setActiveAttendanceSubTab,
+  activeDayscholarSubTab,
+  setActiveDayscholarSubTab,
   calendarData,
   setCalender,
   setIsReloading,
@@ -71,7 +77,22 @@ export default function DashboardContent({
   const touchEndY = useRef(0);
   const hasMoved = useRef(false);
 
-  const tabsOrder = ["attendance", "exams", "hostel"];
+  const [dayscholarBuses, setDayscholarBuses] = useState([]);
+
+  useEffect(() => {
+    const override = localStorage.getItem('dayscholar_buses_override');
+    if (override) {
+      try {
+        setDayscholarBuses(JSON.parse(override));
+      } catch {
+        setDayscholarBuses(defaultBuses);
+      }
+    } else {
+      setDayscholarBuses(defaultBuses);
+    }
+  }, []);
+
+  const tabsOrder = ["attendance", "exams", "hostel", "dayscholar"];
 
   const handleTouchStart = (e) => {
     const touch = e.touches[0];
@@ -342,10 +363,12 @@ export default function DashboardContent({
         setActiveSubTab={setActiveSubTab}
         HostelActiveSubTab={HostelActiveSubTab}
         setHostelActiveSubTab={setHostelActiveSubTab}
+        activeDayscholarSubTab={activeDayscholarSubTab}
+        setActiveDayscholarSubTab={setActiveDayscholarSubTab}
       />
 
       <div 
-        className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-[100dvh] text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors pb-4 md:pb-0 md:pl-64 w-full"
+        className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-[100dvh] text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors pb-24 md:pb-0 md:pl-64 w-full"
         style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
       >
         <div className="md:hidden">
@@ -394,7 +417,7 @@ export default function DashboardContent({
           />
         )}
 
-        <div className="md:p-6 lg:p-10 max-w-7xl mx-auto">
+        <div className="p-4 md:p-6 lg:p-10 max-w-7xl mx-auto w-full">
           {activeTab === "attendance" && attendanceData?.attendance && (
             <div className="animate-fadeIn">
               <div className="md:hidden">
@@ -412,6 +435,7 @@ export default function DashboardContent({
                     setActiveDay={setActiveDay}
                     calendars={calendarData.calendars}
                     decimalValues={settings.decimalValues}
+                    isDayscholarWithBus={settings.isDayscholarWithBus}
                   />
                 </>
               )}
@@ -457,6 +481,20 @@ export default function DashboardContent({
               {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
               {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
               {HostelActiveSubTab === "leave" && <LeaveDisplay leaveData={hostelData.leaveHistory} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
+            </div>
+          )}
+
+          {activeTab === "dayscholar" && (
+            <div className="animate-fadeIn">
+              <div className="md:hidden">
+                <DayscholarSubTabs
+                  activeSubTab={activeDayscholarSubTab}
+                  setActiveSubTab={setActiveDayscholarSubTab}
+                />
+              </div>
+              {activeDayscholarSubTab === "finder" && <BusFinder buses={dayscholarBuses} />}
+              {activeDayscholarSubTab === "fees" && <BusFeesDisplay />}
+              {activeDayscholarSubTab === "admin" && <AdminDashboard buses={dayscholarBuses} setBuses={setDayscholarBuses} />}
             </div>
           )}
         </div>

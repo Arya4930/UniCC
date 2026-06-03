@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { RefreshCcw, Settings, CalendarCheck, GraduationCap, Building } from "lucide-react";
+import { RefreshCcw, Settings, CalendarCheck, GraduationCap, Building, Bus } from "lucide-react";
 import SettingsPage from "./SettingsPage";
 import Footer from "../footer/Footer";
 
@@ -29,7 +29,9 @@ export default function NavigationTabs({
   activeSubTab,
   setActiveSubTab,
   HostelActiveSubTab,
-  setHostelActiveSubTab
+  setHostelActiveSubTab,
+  activeDayscholarSubTab,
+  setActiveDayscholarSubTab
 }) {
   const [isSpinning, setIsSpinning] = useState(false);
   const [showSettingsPage, setShowSettingsPage] = useState<boolean>(false);
@@ -75,6 +77,12 @@ export default function NavigationTabs({
           setLoadingScreen={(val: boolean) => {
               setSettings(prev => ({ ...prev, loadingScreen: val }))
               localStorage.setItem("settings", JSON.stringify({ ...settings, loadingScreen: val }))
+            }
+          }
+          isDayscholarWithBus={settings.isDayscholarWithBus}
+          setIsDayscholarWithBus={(val: boolean) => {
+              setSettings(prev => ({ ...prev, isDayscholarWithBus: val }))
+              localStorage.setItem("settings", JSON.stringify({ ...settings, isDayscholarWithBus: val }))
             }
           }
         />
@@ -245,6 +253,36 @@ export default function NavigationTabs({
               className={`text-left text-sm py-1.5 transition-colors ${HostelActiveSubTab === "leave" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
             >
               Leave
+            </button>
+          </div>
+        )}
+
+        <button
+          onClick={() => setActiveTab("dayscholar")}
+          className={navItemClass(activeTab === "dayscholar")}
+        >
+          <Bus className="w-5 h-5 md:w-5 md:h-5" />
+          <span className="text-[10px] md:text-sm font-medium">Dayscholar</span>
+        </button>
+        {activeTab === "dayscholar" && (
+          <div className="hidden md:flex flex-col w-full pl-12 pr-4 py-1 space-y-1 bg-white dark:bg-slate-900 midnight:bg-black">
+            <button
+              onClick={() => setActiveDayscholarSubTab("finder")}
+              className={`text-left text-sm py-1.5 transition-colors ${activeDayscholarSubTab === "finder" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+            >
+              Bus Finder
+            </button>
+            <button
+              onClick={() => setActiveDayscholarSubTab("fees")}
+              className={`text-left text-sm py-1.5 transition-colors ${activeDayscholarSubTab === "fees" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+            >
+              Fees & Info
+            </button>
+            <button
+              onClick={() => setActiveDayscholarSubTab("admin")}
+              className={`text-left text-sm py-1.5 transition-colors ${activeDayscholarSubTab === "admin" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+            >
+              Admin
             </button>
           </div>
         )}

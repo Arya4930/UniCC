@@ -20,6 +20,7 @@ type settings = {
   currSemesterID: string;
   calendarType: "ALL" | "ALL02" | "ALL03" | "ALL05" | "ALL06" | "ALL08" | "ALL11" | "WEI";
   loadingScreen: boolean;
+  isDayscholarWithBus: boolean;
 }
 
 type IDs = {
@@ -35,7 +36,8 @@ const defaultSettings: settings = {
   attendancePercentageOrString: "percentage",
   currSemesterID: config.semesterIDs[config.semesterIDs.length - 2],
   calendarType: "ALL",
-  loadingScreen: false
+  loadingScreen: false,
+  isDayscholarWithBus: false
 };
 
 const defaultIDs: IDs = {
@@ -67,6 +69,7 @@ export default function LoginPage() {
   const [activeSubTab, setActiveSubTab] = useState<string>("marks");
   const [HostelActiveSubTab, setHostelActiveSubTab] = useState<string>("mess");
   const [activeAttendanceSubTab, setActiveAttendanceSubTab] = useState<string>("attendance");
+  const [activeDayscholarSubTab, setActiveDayscholarSubTab] = useState<string>("finder");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [progressBar, setProgressBar] = useState<number>(0);
   const [moodleData, setMoodleData] = useState([]);
@@ -639,6 +642,8 @@ export default function LoginPage() {
             setHostelActiveSubTab={setHostelActiveSubTab}
             activeAttendanceSubTab={activeAttendanceSubTab}
             setActiveAttendanceSubTab={setActiveAttendanceSubTab}
+            activeDayscholarSubTab={activeDayscholarSubTab}
+            setActiveDayscholarSubTab={setActiveDayscholarSubTab}
             calendarData={Calender}
             setCalender={setCalender}
             setIsReloading={setIsReloading}

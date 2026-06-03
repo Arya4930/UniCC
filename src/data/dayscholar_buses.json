@@ -1,0 +1,1399 @@
+[
+  {
+    "id": "ac-cmbt",
+    "type": "AC",
+    "route": "CMBT",
+    "boardingPoints": [
+      "CMBT",
+      "MMDA",
+      "VADAPALANI"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-manali-new-town",
+    "type": "AC",
+    "route": "MANALI NEW TOWN",
+    "boardingPoints": [
+      "MANALI NEW TOWN",
+      "CPCL",
+      "MANALI MARKET",
+      "MATHUR",
+      "MILK COLONY",
+      "ARUL NAGAR",
+      "POST OFFICE"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-ashok-pillar",
+    "type": "AC",
+    "route": "ASHOK PILLAR",
+    "boardingPoints": [
+      "ASHOK PILLAR",
+      "KASI THEATRE",
+      "EKKATU THANGAL"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-thiruvottiyur",
+    "type": "AC",
+    "route": "THIRUVOTTIYUR",
+    "boardingPoints": [
+      "THIRUVOTTIYUR",
+      "N-4",
+      "KASIMEDU SIGNAL"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-parrys",
+    "type": "AC",
+    "route": "PARRYS",
+    "boardingPoints": [
+      "PARRYS CORNER",
+      "KANNAGI STATUE",
+      "MRC NAGAR",
+      "SRP TOOLS",
+      "PERUNGUDI"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-kk-nagar-depot",
+    "type": "AC",
+    "route": "KK NAGAR DEPOT",
+    "boardingPoints": [
+      "KK NAGAR DEPOT",
+      "SIVANPARK"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-nathamuni",
+    "type": "AC",
+    "route": "NATHAMUNI",
+    "boardingPoints": [
+      "NATHAMUNI",
+      "K4 POLICE STATION",
+      "18TH MAIN ROAD"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-madhyakailash",
+    "type": "AC",
+    "route": "MADHYAKAILASH",
+    "boardingPoints": [
+      "MADHYAKAILASH",
+      "MADIPAKKAM KOOT ROAD"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-ayanavaram",
+    "type": "AC",
+    "route": "AYANAVARAM",
+    "boardingPoints": [
+      "AYANAVARAM",
+      "ESI HOSPITAL",
+      "MEDAVAKKAM TANK ROAD",
+      "SECRETARIAT COLONY",
+      "KELLYS",
+      "MUMMY DADY BUS STAND",
+      "KILPAUK GARDEN"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-natraja-theatere",
+    "type": "AC",
+    "route": "NATRAJA THEATERE",
+    "boardingPoints": [
+      "NATRAJA THEATERE",
+      "CHENNAI CORPORATION (RIPON BUILDING)",
+      "PANTHEON ROAD ( EGMORE RAMADA HOTEL )"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-kolathur",
+    "type": "AC",
+    "route": "KOLATHUR",
+    "boardingPoints": [
+      "KOLATHUR PERTOL BUNK",
+      "WELDING SHOP"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-avichi-school",
+    "type": "AC",
+    "route": "AVICHI SCHOOL",
+    "boardingPoints": [
+      "AVICHI SCHOOL"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-sterling-road",
+    "type": "AC",
+    "route": "STERLING ROAD",
+    "boardingPoints": [
+      "NELSON MANICKAM ROAD",
+      "POTHYS(T.NAGAR)"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-triplicane",
+    "type": "AC",
+    "route": "TRIPLICANE",
+    "boardingPoints": [
+      "TRIPLICANE",
+      "ROYAPETTAH"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-besant-nagar",
+    "type": "AC",
+    "route": "BESANT NAGAR",
+    "boardingPoints": [
+      "BESANT NAGAR BUS STAND",
+      "VANNANTHURAI BUS STAND",
+      "VETTUVANKENI CHRUCH",
+      "AKKARI"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-vgp",
+    "type": "AC",
+    "route": "VGP",
+    "boardingPoints": [
+      "VGP",
+      "PERUMBAKKAM",
+      "MEDAVAKKAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-aminjikarai",
+    "type": "AC",
+    "route": "AMINJIKARAI",
+    "boardingPoints": [
+      "AMINJIKARAI",
+      "SKYWALK"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-ambedkar-nagar",
+    "type": "AC",
+    "route": "AMBEDKAR NAGAR",
+    "boardingPoints": [
+      "AMBEDKAR NAGAR",
+      "RETTERI"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-kaliamman-koil-main-road",
+    "type": "AC",
+    "route": "KALIAMMAN KOIL MAIN ROAD",
+    "boardingPoints": [
+      "KALIAMMAN KOIL MAIN ROAD (KOYEMBEDU MARKET)",
+      "VIRUGAMBAKKAM SIGNAL"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-kanchipuram",
+    "type": "AC",
+    "route": "KANCHIPURAM",
+    "boardingPoints": [
+      "KANCHIPURAM",
+      "WALAJABAD",
+      "ORAGADAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-alandur-metro",
+    "type": "AC",
+    "route": "ALANDUR METRO",
+    "boardingPoints": [
+      "ALANDUR METRO",
+      "NANGANALLUR PETROL BUNK",
+      "MEENAMBAKKAM",
+      "PALLAVARAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-metha-nagar",
+    "type": "AC",
+    "route": "METHA NAGAR",
+    "boardingPoints": [
+      "METHA NAGAR",
+      "ANAGAPUTHUR BUS STAND",
+      "RETTAI PILLAIYAR KOVIL PAMMAL"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-light-house",
+    "type": "AC",
+    "route": "LIGHT HOUSE",
+    "boardingPoints": [
+      "LIGHT HOUSE",
+      "ALL INDIA RADIO",
+      "KANDANCHAVADI"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-thathankuppam",
+    "type": "AC",
+    "route": "THATHANKUPPAM",
+    "boardingPoints": [
+      "THATHANKUPPAM",
+      "ANNA NAGAR WEST DEPOT",
+      "ROHINI THEATRE",
+      "MADURAVOYAL ERIKARAI"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-icf",
+    "type": "AC",
+    "route": "ICF",
+    "boardingPoints": [
+      "ICF",
+      "PADI SARAVANA STORES",
+      "AMBATTUR INDUSTRIAL ESTATE"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-valasaravakkam",
+    "type": "AC",
+    "route": "VALASARAVAKKAM",
+    "boardingPoints": [
+      "VALASARAVAKKAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-ambattur-oragadam",
+    "type": "AC",
+    "route": "AMBATTUR ORAGADAM",
+    "boardingPoints": [
+      "AMBATTUR ORAGADAM",
+      "AMBATTUR OT"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-devar-statue",
+    "type": "AC",
+    "route": "DEVAR STATUE",
+    "boardingPoints": [
+      "DEVAR STATUE (NANDANAM JUNCTION)",
+      "VELACHERY 100 FT ROAD",
+      "VELACHERY VIJAYANAGAR"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-madipakkam-keelkatalai",
+    "type": "AC",
+    "route": "MADIPAKKAM KEELKATALAI",
+    "boardingPoints": [
+      "KEELKATALAI",
+      "ECHANGADU SIGNAL",
+      "KOVILAMBAKKAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-padi-east-avenue",
+    "type": "AC",
+    "route": "PADI EAST AVENUE",
+    "boardingPoints": [
+      "PADI EAST AVENUE",
+      "MANIKANDAPURAM BUS STAND",
+      "THIRUMULLAIVOYAL BUS STAND",
+      "VAISNAVINAGAR"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-thirumangalam",
+    "type": "AC",
+    "route": "THIRUMANGALAM",
+    "boardingPoints": [
+      "THIRUMANGALAM",
+      "WAVES"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-dagac",
+    "type": "AC",
+    "route": "DAGAC",
+    "boardingPoints": [
+      "DAGAC (AMBEDKAR COLLEGE)",
+      "SHARMA NAGAR",
+      "ERUKKANCHERY",
+      "KANGACHATHIRAM",
+      "KALPANA"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-purasaiwalkam",
+    "type": "AC",
+    "route": "PURASAIWALKAM",
+    "boardingPoints": [
+      "PURASAIWALKAM TANK",
+      "GENGU REDDY SUB WAY",
+      "CHETPET",
+      "VALLUVAR KOTTAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-redhills",
+    "type": "AC",
+    "route": "REDHILLS",
+    "boardingPoints": [
+      "REDHILLS",
+      "KAVANKARAI",
+      "PUZHAL CAMP",
+      "KALIKUPPAM",
+      "PUDHUR"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-mandaveli",
+    "type": "AC",
+    "route": "MANDAVELI",
+    "boardingPoints": [
+      "MANDAVELI",
+      "KALIYAPPA HOSPITAL",
+      "MOOPANAR BRIDGE"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-madipakkam",
+    "type": "AC",
+    "route": "MADIPAKKAM",
+    "boardingPoints": [
+      "RAM NAGAR",
+      "UTI BANK"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-ramapuram-junction",
+    "type": "AC",
+    "route": "RAMAPURAM JUNCTION",
+    "boardingPoints": [
+      "RAMAPURAM JUNCTION",
+      "DLF"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-perambur",
+    "type": "AC",
+    "route": "PERAMBUR",
+    "boardingPoints": [
+      "PERAMBUR RAILWAY STATION",
+      "PERAMBUR CHURCH",
+      "KOLATHUR JUNCTION NEAR VINAYGAR TEMPLE"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-pattabiram",
+    "type": "AC",
+    "route": "PATTABIRAM",
+    "boardingPoints": [
+      "HINDU COLLEGE",
+      "PATTABIRAM",
+      "NEMILICHERY"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-power-house",
+    "type": "AC",
+    "route": "POWER HOUSE",
+    "boardingPoints": [
+      "POWER HOUSE",
+      "SAMIYAR MADAM",
+      "WEST MAMBALAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-avadi",
+    "type": "AC",
+    "route": "AVADI",
+    "boardingPoints": [
+      "MURUGAPPA POLYTECHNIC COLLEGE",
+      "AVADI",
+      "GOVARDANAGIRI",
+      "PARIVAKKAM SIGNAL"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-guindy",
+    "type": "AC",
+    "route": "GUINDY",
+    "boardingPoints": [
+      "GUINDY RACE COURCE",
+      "NGO COLONY"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-santhome",
+    "type": "AC",
+    "route": "SANTHOME",
+    "boardingPoints": [
+      "SANTHOME",
+      "PATINAPAKKAM",
+      "SATHYA STUDIOS",
+      "NEELANGARAI",
+      "INJAMBAKKAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-thiruvallur",
+    "type": "AC",
+    "route": "THIRUVALLUR",
+    "boardingPoints": [
+      "THIRUVALLUR BUS STAND",
+      "PUTTLUR",
+      "SEVAPATET",
+      "VEPPAMPATTU RLY.",
+      "THIRUNINDRAVUR",
+      "JAYA SCHOOL BUS STOP"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-thiruvanmiyur",
+    "type": "AC",
+    "route": "THIRUVANMIYUR",
+    "boardingPoints": [
+      "THIRUVANMIYUR",
+      "THIRUVANMIYUR RTO"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-collector-nagar",
+    "type": "AC",
+    "route": "COLLECTOR NAGAR",
+    "boardingPoints": [
+      "COLLECTOR NAGAR",
+      "JJ NAGAR POLICE STATION",
+      "7H BUS DEPOT",
+      "7M BUS DEPOT"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-thillai-ganga-nagar-subway",
+    "type": "AC",
+    "route": "THILLAI GANGA NAGAR SUBWAY",
+    "boardingPoints": [
+      "THILLAI GANGA NAGAR SUBWAY",
+      "VANUVAMPET CHURCH"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-golden-flats",
+    "type": "AC",
+    "route": "GOLDEN FLATS",
+    "boardingPoints": [
+      "GOLDEN FLATS",
+      "WAVIN"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-adambakkam-police-booth",
+    "type": "AC",
+    "route": "ADAMBAKKAM POLICE BOOTH",
+    "boardingPoints": [
+      "ADAMBAKKAM POLICE BOOTH"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-thiruverkadu-arch",
+    "type": "AC",
+    "route": "THIRUVERKADU ARCH",
+    "boardingPoints": [
+      "THIRUVERKADU ARCH",
+      "NOLAMBUR",
+      "VELAMMAL HALL"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-kalpakkam",
+    "type": "AC",
+    "route": "KALPAKKAM",
+    "boardingPoints": [
+      "KALPAKKAM",
+      "ANUPURAM",
+      "MAHABALIPURAM KOOT ROAD(POONCHERY)",
+      "THANDALAM",
+      "THIRUPORUR"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-chengalpattu",
+    "type": "AC",
+    "route": "CHENGALPATTU",
+    "boardingPoints": [
+      "CHENGALPATTU (GOVT. HOSPITAL)",
+      "PARANUR TOLLGATE",
+      "SP KOIL"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-nolambur",
+    "type": "AC",
+    "route": "NOLAMBUR",
+    "boardingPoints": [
+      "NOLAMBUR"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-chinthamani",
+    "type": "AC",
+    "route": "CHINTHAMANI",
+    "boardingPoints": [
+      "CHINTHAMANI",
+      "BLUE STAR",
+      "SHANTHI COLONY",
+      "ANNA ARCH"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-mahindra-city",
+    "type": "AC",
+    "route": "MAHINDRA CITY",
+    "boardingPoints": [
+      "MAHINDRA CITY",
+      "KATTANKOLATHUR",
+      "MARAIMALAI NAGAR"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-porur-saravana-store",
+    "type": "AC",
+    "route": "PORUR SARAVANA STORE",
+    "boardingPoints": [
+      "PORUR SARAVANA STORE",
+      "PORUR JUNCTION"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-ayodhya-mandapam",
+    "type": "AC",
+    "route": "AYODHYA MANDAPAM",
+    "boardingPoints": [
+      "AYODHYA MANDAPAM",
+      "VELACHERY RAILWAY STATION"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-kutchery-road",
+    "type": "AC",
+    "route": "KUTCHERY ROAD",
+    "boardingPoints": [
+      "KUTCHERY ROAD",
+      "LUZ",
+      "MYLAPORE TANK",
+      "MANDAVELI BSNL OFFICE"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-adyar-aavin",
+    "type": "AC",
+    "route": "ADYAR AAVIN",
+    "boardingPoints": [
+      "ADYAR AAVIN",
+      "ADYAR TELEPHONE EXCHANGE",
+      "PTC QUARTERS"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-iyyapanthangal-bus-stand",
+    "type": "AC",
+    "route": "IYYAPANTHANGAL BUS STAND",
+    "boardingPoints": [
+      "IYYAPANTHANGAL BUS STAND",
+      "IYYAPANTHANGAL HYUNDAI SHOWROOM",
+      "KATTUPAKKAM",
+      "KUMMANACHAVADI (DMART)"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-amma-nana",
+    "type": "AC",
+    "route": "AMMA NANA",
+    "boardingPoints": [
+      "KOTTURPURAM",
+      "THORAIPAKKAM",
+      "KARAPAKKAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-vanagaram",
+    "type": "AC",
+    "route": "VANAGARAM",
+    "boardingPoints": [
+      "VANAGARAM",
+      "POONAMALLEE BYPASS"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-madhanandapuram",
+    "type": "AC",
+    "route": "MADHANANDAPURAM",
+    "boardingPoints": [
+      "MADHANANDAPURAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-kalmandapam",
+    "type": "AC",
+    "route": "KALMANDAPAM",
+    "boardingPoints": [
+      "KALMANDAPAM",
+      "BEACH STATION",
+      "SECRETARIAT",
+      "THIRUVANMIYUR JAYANTHI"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-ayapakkam-junction",
+    "type": "AC",
+    "route": "AYAPAKKAM JUNCTION",
+    "boardingPoints": [
+      "AYAPAKKAM JUNCTION",
+      "AMBATTUR TELEPHONE EXACHANGE",
+      "DECLATHON"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-ttk-road",
+    "type": "AC",
+    "route": "TTK ROAD",
+    "boardingPoints": [
+      "TTK ROAD",
+      "ALWARPET JUNCTION"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-moolakadai",
+    "type": "AC",
+    "route": "MOOLAKADAI",
+    "boardingPoints": [
+      "MOOLAKADAI",
+      "MADHAVARAM ROUNDTANA"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-madipakkam-poonniamman-koil",
+    "type": "AC",
+    "route": "MADIPAKKAM POONNIAMMAN KOIL",
+    "boardingPoints": [
+      "POONNIAMMAN KOIL"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-mangadu",
+    "type": "AC",
+    "route": "MANGADU",
+    "boardingPoints": [
+      "MANGADU",
+      "KOVUR",
+      "KUNDRATHUR",
+      "DMART",
+      "MADHA COLLEGE",
+      "THIRUMUDIVAKKAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-daily-thanthi",
+    "type": "AC",
+    "route": "DAILY THANTHI",
+    "boardingPoints": [
+      "DAILY THANTHI",
+      "DASAPRAKASH",
+      "ARUMBAKKAM",
+      "NERKUNDRAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-kottivakkam",
+    "type": "AC",
+    "route": "KOTTIVAKKAM",
+    "boardingPoints": [
+      "KOTTIVAKKAM",
+      "PALAVAKKAM",
+      "MGM",
+      "KOVALAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-mugalivakkam",
+    "type": "AC",
+    "route": "MUGALIVAKKAM",
+    "boardingPoints": [
+      "MUGALIVAKKAM",
+      "GERUGAMBAKKAM",
+      "THIRUNEERMALAI"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-sriperumbudur",
+    "type": "AC",
+    "route": "SRIPERUMBUDUR",
+    "boardingPoints": [
+      "SRIPERUMBUDUR",
+      "IRUNGATTUKOTTAI",
+      "PAPPANCHATHIRAM",
+      "CHEMBARAMBAKKAM",
+      "NAZARATHPETTAI"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-sholinganallur",
+    "type": "AC",
+    "route": "SHOLINGANALLUR",
+    "boardingPoints": [
+      "SHOLINGANALLUR",
+      "SEMMANCHERI",
+      "NAVALUR",
+      "MARINA MALL"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-gandhimandapam",
+    "type": "AC",
+    "route": "GANDHIMANDAPAM",
+    "boardingPoints": [
+      "GANDHIMANDAPAM",
+      "PHOENIX MALL",
+      "VELACHERY 100 FEET ROAD"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-nanganallur",
+    "type": "AC",
+    "route": "NANGANALLUR",
+    "boardingPoints": [
+      "NANGANALLUR J.K MAHAL",
+      "NANGANALLUR PARK"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-senthil-nagar",
+    "type": "AC",
+    "route": "SENTHIL NAGAR",
+    "boardingPoints": [
+      "SENTHIL NAGAR"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-radiance-apt.",
+    "type": "AC",
+    "route": "RADIANCE APT.",
+    "boardingPoints": [
+      "RADIANCE APT.",
+      "KAMATCHI HOSPITAL",
+      "S KOLATHUR",
+      "KAUVERY HOSPITAL",
+      "CHROMPET"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-porur-baikadai",
+    "type": "AC",
+    "route": "PORUR BAIKADAI",
+    "boardingPoints": [
+      "PORUR BAIKADAI"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "ac-vinayagapuram",
+    "type": "AC",
+    "route": "VINAYAGAPURAM",
+    "boardingPoints": [
+      "VINAYAGAPURAM",
+      "PORUR TOLL PLAZA"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-rajakilpakkam",
+    "type": "Non-AC",
+    "route": "RAJAKILPAKKAM",
+    "boardingPoints": [
+      "RAJAKILPAKKAM",
+      "SUDHARSHAN NAGAR",
+      "KOZHIPANNAI"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-madras-christian-college",
+    "type": "Non-AC",
+    "route": "MADRAS CHRISTIAN COLLEGE",
+    "boardingPoints": [
+      "MCC COLLEGE",
+      "BHARATH UNIVERSITY"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-irumbuliyur",
+    "type": "Non-AC",
+    "route": "IRUMBULIYUR",
+    "boardingPoints": [
+      "IRUMBULIYUR",
+      "SSM NAGAR",
+      "NEDUKUNDRAM TVS"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-rajendra-prasad-road",
+    "type": "Non-AC",
+    "route": "RAJENDRA PRASAD ROAD",
+    "boardingPoints": [
+      "RAJENDRA PRASAD ROAD",
+      "SELIYUR POLICE STATION"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-varatharajan-theatre",
+    "type": "Non-AC",
+    "route": "VARATHARAJAN THEATRE",
+    "boardingPoints": [
+      "VARATHARAJAN THEATRE",
+      "MAPPEDU"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-sembakkam",
+    "type": "Non-AC",
+    "route": "SEMBAKKAM",
+    "boardingPoints": [
+      "SEMBAKKAM",
+      "KAMARAJAPURAM",
+      "MADAMBAKKAM JUNCTION"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-balaji-dental-college",
+    "type": "Non-AC",
+    "route": "BALAJI DENTAL COLLEGE",
+    "boardingPoints": [
+      "BALAJI DENTAL COLLEGE"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-kaiveli",
+    "type": "Non-AC",
+    "route": "KAIVELI",
+    "boardingPoints": [
+      "KAIVELI JUNCTION",
+      "CHITALAPAKKAM",
+      "CHITALAPAKKAM KOOT ROAD",
+      "MEDAVAKKAM MAMBAKKAM JUNCTION"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-dlf-apts",
+    "type": "Non-AC",
+    "route": "DLF APTS",
+    "boardingPoints": [
+      "DLF APTS",
+      "SITHALAPAKKAM KOOT ROAD"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-tambaram-railway-station",
+    "type": "Non-AC",
+    "route": "TAMBARAM RAILWAY STATION",
+    "boardingPoints": [
+      "TAMBARAM RAILWAY STATION - WEST",
+      "PERUNGALATHUR",
+      "VANDALUR"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-velachery-railway-station",
+    "type": "Non-AC",
+    "route": "VELACHERY RAILWAY STATION",
+    "boardingPoints": [
+      "VELACHERY RAILWAY STATION (NEAR KAIVELI)"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-potheri",
+    "type": "Non-AC",
+    "route": "POTHERI",
+    "boardingPoints": [
+      "POTHERI",
+      "GUDUVANCHERY",
+      "URAPAKKAM",
+      "KILAMBAKKAM",
+      "KOLAPKKAM",
+      "KANDIGAI"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-vijayanagaram",
+    "type": "Non-AC",
+    "route": "VIJAYANAGARAM",
+    "boardingPoints": [
+      "VIJAYANAGARAM",
+      "SANTOSAHPURAM",
+      "PUTHU KOVIL",
+      "MEDAVAKKAM KOOT ROAD",
+      "SBIOA"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-mudichur",
+    "type": "Non-AC",
+    "route": "MUDICHUR",
+    "boardingPoints": [
+      "MUDICHUR (ATTA COMPANY)"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-lakshmipuram",
+    "type": "Non-AC",
+    "route": "LAKSHMIPURAM",
+    "boardingPoints": [
+      "LAKSHMIPURAM",
+      "HINDU MISSION HOSPITAL",
+      "PEERKANKARANAI"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-pallikaranai-jeyachandran",
+    "type": "Non-AC",
+    "route": "PALLIKARANAI JEYACHANDRAN",
+    "boardingPoints": [
+      "PALLIKARANAI JEYACHANDRAN",
+      "KALISWARY OIL MILL",
+      "MEDAVAKKAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-bollineni-hills",
+    "type": "Non-AC",
+    "route": "BOLLINENI HILLS",
+    "boardingPoints": [
+      "BOLLINENI HILLS"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-mahalakshmi-nagar",
+    "type": "Non-AC",
+    "route": "MAHALAKSHMI NAGAR",
+    "boardingPoints": [
+      "MAHALAKSHMI NAGAR",
+      "CAMP ROAD"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-padur",
+    "type": "Non-AC",
+    "route": "PADUR",
+    "boardingPoints": [
+      "PADUR",
+      "KELAMBAKKAM JUNCTION",
+      "PUDUPAKKAM",
+      "MAMBAKKAM"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  },
+  {
+    "id": "non-ac-padapai",
+    "type": "Non-AC",
+    "route": "PADAPAI",
+    "boardingPoints": [
+      "PADAPAI",
+      "KARASANGAL",
+      "MANIVAKKAM JUNCTION"
+    ],
+    "driverPhone": "",
+    "driverName": "",
+    "whatsappGroup": "",
+    "busLocation": ""
+  }
+]

@@ -28,7 +28,7 @@ const normalize = (d: Date) => {
     return x.getTime();
 };
 
-export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalendars, impDates, decimalValues }) {
+export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalendars, impDates, decimalValues, isDayscholarWithBus }) {
     const lab = a.courseCode.endsWith("(L)");
 
     useEffect(() => {
@@ -145,9 +145,9 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                                 text={`${!decimalValues ? a.attendancePercentage : (a.attendedClasses/a.totalClasses * 100).toFixed(1)}%`}
                                 styles={buildStyles({
                                     pathColor:
-                                        a.attendancePercentage < 75
+                                        a.attendancePercentage < (isDayscholarWithBus ? 85 : 75)
                                             ? "#EF4444"
-                                            : a.attendancePercentage < 85
+                                            : a.attendancePercentage < (isDayscholarWithBus ? 90 : 85)
                                                 ? "#FACC15"
                                                 : "#2df04aff",
                                     textColor: "currentColor",
@@ -167,19 +167,21 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                         const attended = a.attendedClasses;
                         const total = a.totalClasses;
                         const percentage = (attended / total) * 100;
+                        const threshold = isDayscholarWithBus ? 0.85 : 0.75;
+                        const thresholdPct = isDayscholarWithBus ? 85 : 75;
 
-                        if (percentage < 75) {
-                            const needed = Math.ceil((0.75 * total - attended) / (1 - 0.75));
+                        if (percentage < thresholdPct) {
+                            const needed = Math.ceil((threshold * total - attended) / (1 - threshold));
                             const neededValue = lab ? Math.ceil(needed / 2) : needed;
 
                             return (
                                 <p className="text-red-500 dark:text-red-400 midnight:text-red-400 text-sm">
                                     Need to attend <strong>{neededValue}</strong> more {lab ? "lab" : "class"}
-                                    {neededValue > 1 && (lab ? "s" : "es")} to reach 75%.
+                                    {neededValue > 1 && (lab ? "s" : "es")} to reach {thresholdPct}%.
                                 </p>
                             );
                         } else {
-                            const canMiss = Math.floor(attended / 0.75 - total);
+                            const canMiss = Math.floor(attended / threshold - total);
                             const canMissValue = lab ? Math.floor(canMiss / 2) : canMiss;
 
                             if (canMissValue === 0) {
@@ -192,7 +194,7 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                                 return (
                                     <p className="text-green-500 dark:text-green-400 midnight:text-green-400 text-sm">
                                         Can miss <strong>{canMissValue}</strong> {lab ? "lab" : "class"}
-                                        {canMissValue !== 1 && (lab ? "s" : "es")} and stay above 75%.
+                                        {canMissValue !== 1 && (lab ? "s" : "es")} and stay above {thresholdPct}%.
                                     </p>
                                 );
                             }
@@ -240,6 +242,7 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                                                     totalClasses={a.totalClasses}
                                                     isLab={lab}
                                                     impDates={impDates}
+                                                    isDayscholarWithBus={isDayscholarWithBus}
                                                 />
                                                 <div className="flex items-center justify-center gap-4 mt-3 text-xs font-medium text-gray-700 dark:text-gray-300 midnight:text-gray-300">
                                                     <div className="flex items-center gap-1">
@@ -384,7 +387,7 @@ export function countRemainingClasses(courseCode, slotTime, dayCardsMap, calenda
     return remainingWorkingDays;
 }
 
-function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0, isLab = false, impDates }) {
+function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0, isLab = false, impDates, isDayscholarWithBus }) {
     const [dayStates, setDayStates] = useState<Record<number, number>>({});
     const CLASS_WEIGHT = isLab ? 2 : 1;
 
@@ -459,7 +462,7 @@ function UpcomingClassesList({ classes, attendedClasses = 0, totalClasses = 0, i
                 <span className="text-green-600 dark:text-green-400">Attending: <strong>{attending}</strong></span>
                 <span className="text-red-500 dark:text-red-400">Not Attending: <strong>{missed}</strong></span>
                 <span
-                    className={`font-semibold ${predictedPercent >= 75
+                    className={`font-semibold ${predictedPercent >= (isDayscholarWithBus ? 85 : 75)
                         ? "text-green-600 dark:text-green-400"
                         : "text-red-500 dark:text-red-400"
                         }`}
