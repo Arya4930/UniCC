@@ -332,7 +332,10 @@ export default function DashboardContent({
         setSettings={setSettings}
       />
 
-      <div className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-screen text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors">
+      <div 
+        className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-[100dvh] text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors pb-24"
+        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+      >
         <StatsCards
           attendancePercentage={attendancePercentage}
           ODhoursData={ODhoursData}

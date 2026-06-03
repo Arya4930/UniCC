@@ -160,6 +160,16 @@
 * {
   scrollbar-width: thin;              /* Firefox */
   scrollbar-color: #9ca3af #1f2937;   /* thumb (gray-400) track (gray-800) */
+  -webkit-tap-highlight-color: transparent; /* Remove blue tap highlight on mobile */
+}
+
+body {
+  overscroll-behavior-y: none; /* Prevent pull-to-refresh and bounce on mobile */
+  user-select: none; /* Make text unselectable to feel like a native app */
+}
+
+input, textarea, [contenteditable] {
+  user-select: auto; /* Keep text fields selectable */
 }
 
 /* Chrome, Edge, Safari */

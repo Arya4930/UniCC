@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { LogOut, RefreshCcw, Settings } from "lucide-react";
+import { RefreshCcw, Settings, CalendarCheck, GraduationCap, Building } from "lucide-react";
 import SettingsPage from "./SettingsPage";
 
 export default function NavigationTabs({
@@ -27,13 +27,15 @@ export default function NavigationTabs({
     setTimeout(() => setIsSpinning(false), 600);
   };
 
-  const tabBase = "flex-1 py-3 text-sm font-medium transition-colors";
-  const tabActive = "bg-blue-600 text-white dark:bg-blue-500 dark:text-gray-100 midnight:bg-blue-700 midnight:text-gray-100";
-  const tabInactive =
-    "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-800 dark:text-gray-300 dark:hover:bg-slate-700 midnight:bg-black midnight:text-gray-100 midnight:hover:bg-gray-800";
+  const navItemClass = (isActive) => 
+    `flex flex-col items-center justify-center w-full h-full py-2 space-y-1 transition-colors ${
+      isActive 
+        ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400" 
+        : "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 midnight:text-gray-400 midnight:hover:text-gray-200"
+    }`;
 
   return (
-    <div data-scrollable className="flex w-full shadow-sm pb-4 dark:bg-slate-900 midnight:bg-black">
+    <>
       {showSettingsPage && (
         <SettingsPage
           handleClose={() => setShowSettingsPage(false)}
@@ -59,44 +61,52 @@ export default function NavigationTabs({
           }
         />
       )}
-      <button
-        onClick={() => setShowSettingsPage(true)}
-        className="w-12 flex items-center justify-center bg-gray-400 hover:cursor-pointer text-white text-sm font-medium hover:bg-gray-500 dark:bg-gray-500 dark:hover:bg-gray-600 midnight:bg-gray-600 midnight:hover:bg-gray-700 transition-colors"
-      >
-        <Settings className="w-5 h-5" />
-      </button>
 
-      <button
-        onClick={() => setActiveTab("attendance")}
-        className={`${tabBase} ${activeTab === "attendance" ? tabActive : tabInactive
-          }`}
+      {/* Bottom Navigation Bar for Mobile App Feel */}
+      <div 
+        className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around w-full bg-white dark:bg-slate-900 midnight:bg-black border-t border-gray-200 dark:border-gray-800 midnight:border-gray-900 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] safe-area-pb"
+        style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.5rem)', paddingTop: '0.5rem' }}
       >
-        Attendance
-      </button>
+        <button
+          onClick={() => setActiveTab("attendance")}
+          className={navItemClass(activeTab === "attendance")}
+        >
+          <CalendarCheck className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Attendance</span>
+        </button>
 
-      <button
-        onClick={() => setActiveTab("exams")}
-        className={`${tabBase} ${activeTab === "exams" ? tabActive : tabInactive
-          }`}
-      >
-        Exams
-      </button>
+        <button
+          onClick={() => setActiveTab("exams")}
+          className={navItemClass(activeTab === "exams")}
+        >
+          <GraduationCap className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Exams</span>
+        </button>
 
-      <button
-        onClick={() => setActiveTab("hostel")}
-        className={`${tabBase} ${activeTab === "hostel" ? tabActive : tabInactive
-          }`}
-      >
-        Hostel
-      </button>
+        <button
+          onClick={() => setActiveTab("hostel")}
+          className={navItemClass(activeTab === "hostel")}
+        >
+          <Building className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Hostel</span>
+        </button>
 
-      <button
-        onClick={handleReloadClick}
-        className="w-12 flex items-center justify-center bg-blue-500 hover:cursor-pointer text-white text-sm font-medium hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 midnight:bg-blue-800 transition-colors"
-      >
-        <RefreshCcw className={`w-4 h-4 ${isSpinning ? "animate-spin" : ""}`} />
-      </button>
+        <button
+          onClick={handleReloadClick}
+          className={navItemClass(false)}
+        >
+          <RefreshCcw className={`w-5 h-5 ${isSpinning ? "animate-spin" : ""}`} />
+          <span className="text-[10px] font-medium">Reload</span>
+        </button>
 
-    </div>
+        <button
+          onClick={() => setShowSettingsPage(true)}
+          className={navItemClass(false)}
+        >
+          <Settings className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Settings</span>
+        </button>
+      </div>
+    </>
   );
 }
