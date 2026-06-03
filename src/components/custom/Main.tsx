@@ -665,7 +665,7 @@ export default function LoginPage() {
         Scheduled maintenance on December 29, 2025 ( afternoon ). API services will be temporarily unavailable.
       </div> */}
 
-      <div className="md:hidden">
+      <div className={`md:hidden ${(isLoggedIn || demoMode) ? 'pb-24' : 'pb-6'}`}>
         <Footer isLoggedIn={isLoggedIn} />
       </div>
     </motion.div>
