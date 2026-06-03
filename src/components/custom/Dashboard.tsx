@@ -328,6 +328,7 @@ export default function DashboardContent({
           localStorage.setItem("IDs", JSON.stringify({ ...IDs, VtopUsername: val[0], VtopPassword: val[1]}))
         }
         }
+        settings={settings}
         setSettings={setSettings}
         attendancePercentage={attendancePercentage}
         marksData={marksData}
