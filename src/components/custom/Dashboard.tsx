@@ -18,8 +18,6 @@ import AllGradesDisplay from "./Exams/AllGradesDisplay";
 import DayscholarSubTabs from "./dayscholar/DayscholarSubTabs";
 import BusFinder from "./dayscholar/BusFinder";
 import BusFeesDisplay from "./dayscholar/BusFeesDisplay";
-import AdminDashboard from "./dayscholar/AdminDashboard";
-import defaultBuses from "@/data/dayscholar_buses.json";
 import { API_BASE } from "./Main";
 import MarksSubTab from "./Exams/MarksSubTab";
 import ScheduleSubTab from "./Exams/ScheduleSubTab";
@@ -80,19 +78,19 @@ export default function DashboardContent({
   const [dayscholarBuses, setDayscholarBuses] = useState([]);
 
   useEffect(() => {
-    const override = localStorage.getItem('dayscholar_buses_override');
-    if (override) {
-      try {
-        setDayscholarBuses(JSON.parse(override));
-      } catch {
-        setDayscholarBuses(defaultBuses);
-      }
-    } else {
-      setDayscholarBuses(defaultBuses);
-    }
+    fetch('/api/buses')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.buses) {
+          setDayscholarBuses(data.buses);
+        }
+      })
+      .catch(err => console.error("Failed to fetch buses from API:", err));
   }, []);
 
-  const tabsOrder = ["attendance", "exams", "hostel", "dayscholar"];
+  const tabsOrder = ["attendance", "exams"];
+  if (settings?.residentialStatus !== "dayscholar") tabsOrder.push("hostel");
+  if (settings?.residentialStatus !== "hosteller") tabsOrder.push("dayscholar");
 
   const handleTouchStart = (e) => {
     const touch = e.touches[0];
@@ -368,7 +366,7 @@ export default function DashboardContent({
       />
 
       <div 
-        className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-[100dvh] text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors pb-24 md:pb-0 md:pl-64 w-full"
+        className="bg-gray-50 dark:bg-gray-900 midnight:bg-black min-h-[100dvh] text-gray-900 dark:text-gray-100 midnight:text-gray-100 transition-colors pb-24 md:pb-0 md:pl-72 w-full"
         style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
       >
         <div className="md:hidden">
@@ -494,7 +492,6 @@ export default function DashboardContent({
               </div>
               {activeDayscholarSubTab === "finder" && <BusFinder buses={dayscholarBuses} />}
               {activeDayscholarSubTab === "fees" && <BusFeesDisplay />}
-              {activeDayscholarSubTab === "admin" && <AdminDashboard buses={dayscholarBuses} setBuses={setDayscholarBuses} />}
             </div>
           )}
         </div>

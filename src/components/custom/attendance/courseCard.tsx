@@ -160,7 +160,7 @@ export default function CourseCard({ a, onClick, activeDay, isHoliday, decimalVa
                     <div className="flex-1 min-w-0 px-4 border-r border-gray-200 dark:border-gray-700 midnight:border-gray-800 flex flex-col justify-center">
                         <div className="mb-2">
                             <span className="text-sm text-gray-500 dark:text-gray-400">Classes Attended:</span>
-                            <div className="text-lg font-bold text-gray-900 dark:text-gray-100">{a.attendedClasses} <span className="text-sm text-gray-400 font-normal">/ {a.totalClasses}</span></div>
+                            <div className="text-lg font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100">{a.attendedClasses} <span className="text-sm text-gray-400 font-normal">/ {a.totalClasses}</span></div>
                         </div>
                         {a.totalClasses > 0 && (() => {
                             const attended = a.attendedClasses;

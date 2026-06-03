@@ -90,7 +90,7 @@ export default function NavigationTabs({
 
       {/* Main Container */}
       <div 
-        className="fixed bottom-0 md:top-0 left-0 right-0 md:right-auto z-40 flex items-center md:items-start justify-around md:justify-start w-full md:w-64 md:h-[100dvh] md:flex-col bg-white dark:bg-slate-900 midnight:bg-black border-t md:border-t-0 md:border-r border-gray-200 dark:border-gray-800 midnight:border-gray-900 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] md:shadow-none safe-area-pb md:pb-0 overflow-y-auto"
+        className="fixed bottom-0 md:top-4 left-0 right-0 md:left-4 md:right-auto z-40 flex items-center md:items-start justify-around md:justify-start w-full md:w-64 md:h-[calc(100vh-2rem)] md:flex-col bg-white dark:bg-slate-900 midnight:bg-black border-t md:border border-gray-200 dark:border-gray-800 midnight:border-gray-900 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] md:shadow-lg md:rounded-2xl safe-area-pb md:pb-0 overflow-y-auto"
         style={{ paddingTop: 'env(safe-area-inset-top, 0px)', scrollbarWidth: 'none' }}
       >
         {/* Desktop Sidebar Profile / Stats Area */}
@@ -119,36 +119,49 @@ export default function NavigationTabs({
             </div>
           </div>
           
-          {/* Compact Stats Grid */}
-          <div className="grid grid-cols-2 gap-3 mb-2">
+          {/* Compact Stats Grid - Small Cards */}
+          <div className="grid grid-cols-2 gap-2 mb-2">
             {/* CGPA */}
-            <div className="flex flex-col group cursor-pointer" onClick={() => setSettings(prev => ({...prev, CGPAHidden: !prev.CGPAHidden}))}>
+            <div 
+              className="flex flex-col items-center justify-center p-2 rounded-xl bg-gray-50 dark:bg-gray-800/50 midnight:bg-gray-800/50 border border-gray-100 dark:border-gray-800 midnight:border-gray-700 cursor-pointer hover:shadow-sm transition-all group" 
+              onClick={() => setSettings(prev => ({...prev, CGPAHidden: !prev.CGPAHidden}))}
+            >
               <span className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5 font-medium">CGPA</span>
-              <span className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
+              <span className="font-bold text-sm text-gray-900 dark:text-gray-100 midnight:text-gray-100 group-hover:text-blue-500 transition-colors">
                 {settings.CGPAHidden ? "###" : marksData?.cgpa?.cgpa || "-"}
               </span>
             </div>
 
             {/* Attendance */}
-            <div className="flex flex-col">
+            <div 
+              className="flex flex-col items-center justify-center p-2 rounded-xl bg-gray-50 dark:bg-gray-800/50 midnight:bg-gray-800/50 border border-gray-100 dark:border-gray-800 midnight:border-gray-700 cursor-pointer hover:shadow-sm transition-all group"
+              onClick={() => setSettings(prev => ({ ...prev, attendancePercentageOrString: prev.attendancePercentageOrString === "percentage" ? "str" : "percentage" }))}
+            >
               <span className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5 font-medium">Att.</span>
-              <span className={`font-semibold text-sm ${attendancePercentage?.percentage < 75 ? "text-red-500" : "text-green-500 dark:text-green-400"}`}>
-                {attendancePercentage?.percentage || "-"}%
+              <span className={`font-bold text-sm ${attendancePercentage?.percentage < 75 ? "text-red-500" : "text-green-500 dark:text-green-400"}`}>
+                {attendancePercentage?.[settings.attendancePercentageOrString] || "-"}
+                {settings.attendancePercentageOrString === "percentage" ? "%" : ""}
               </span>
             </div>
 
             {/* OD Hours */}
-            <div className="flex flex-col cursor-pointer group" onClick={() => setODhoursIsOpen(true)}>
+            <div 
+              className="flex flex-col items-center justify-center p-2 rounded-xl bg-gray-50 dark:bg-gray-800/50 midnight:bg-gray-800/50 border border-gray-100 dark:border-gray-800 midnight:border-gray-700 cursor-pointer hover:shadow-sm transition-all group" 
+              onClick={() => setODhoursIsOpen(true)}
+            >
               <span className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5 font-medium">OD Hrs</span>
-              <span className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
+              <span className="font-bold text-sm text-gray-900 dark:text-gray-100 midnight:text-gray-100 group-hover:text-blue-500 transition-colors">
                 {totalODHours}/40
               </span>
             </div>
 
             {/* Credits */}
-            <div className="flex flex-col group cursor-pointer" onClick={() => setGradesDisplayIsOpen(true)}>
+            <div 
+              className="flex flex-col items-center justify-center p-2 rounded-xl bg-gray-50 dark:bg-gray-800/50 midnight:bg-gray-800/50 border border-gray-100 dark:border-gray-800 midnight:border-gray-700 cursor-pointer hover:shadow-sm transition-all group" 
+              onClick={() => setGradesDisplayIsOpen(true)}
+            >
               <span className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5 font-medium">Credits</span>
-              <span className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
+              <span className="font-bold text-sm text-gray-900 dark:text-gray-100 midnight:text-gray-100 group-hover:text-blue-500 transition-colors">
                 {marksData?.cgpa ? Number(marksData.cgpa.creditsEarned) + Number(marksData.cgpa.nonGradedRequirement || 0) : "-"}
               </span>
             </div>
@@ -227,64 +240,66 @@ export default function NavigationTabs({
           </div>
         )}
 
-        <button
-          onClick={() => setActiveTab("hostel")}
-          className={navItemClass(activeTab === "hostel")}
-        >
-          <Building className="w-5 h-5 md:w-5 md:h-5" />
-          <span className="text-[10px] md:text-sm font-medium">Hostel</span>
-        </button>
-        {activeTab === "hostel" && (
-          <div className="hidden md:flex flex-col w-full pl-12 pr-4 py-1 space-y-1 bg-white dark:bg-slate-900 midnight:bg-black">
+        {settings?.residentialStatus !== "dayscholar" && (
+          <>
             <button
-              onClick={() => setHostelActiveSubTab("mess")}
-              className={`text-left text-sm py-1.5 transition-colors ${HostelActiveSubTab === "mess" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+              onClick={() => setActiveTab("hostel")}
+              className={navItemClass(activeTab === "hostel")}
             >
-              Mess
+              <Building className="w-5 h-5 md:w-5 md:h-5" />
+              <span className="text-[10px] md:text-sm font-medium">Hostel</span>
             </button>
-            <button
-              onClick={() => setHostelActiveSubTab("laundry")}
-              className={`text-left text-sm py-1.5 transition-colors ${HostelActiveSubTab === "laundry" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
-            >
-              Laundry
-            </button>
-            <button
-              onClick={() => setHostelActiveSubTab("leave")}
-              className={`text-left text-sm py-1.5 transition-colors ${HostelActiveSubTab === "leave" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
-            >
-              Leave
-            </button>
-          </div>
+            {activeTab === "hostel" && (
+              <div className="hidden md:flex flex-col w-full pl-12 pr-4 py-1 space-y-1 bg-white dark:bg-slate-900 midnight:bg-black">
+                <button
+                  onClick={() => setHostelActiveSubTab("mess")}
+                  className={`text-left text-sm py-1.5 transition-colors ${HostelActiveSubTab === "mess" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+                >
+                  Mess
+                </button>
+                <button
+                  onClick={() => setHostelActiveSubTab("laundry")}
+                  className={`text-left text-sm py-1.5 transition-colors ${HostelActiveSubTab === "laundry" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+                >
+                  Laundry
+                </button>
+                <button
+                  onClick={() => setHostelActiveSubTab("leave")}
+                  className={`text-left text-sm py-1.5 transition-colors ${HostelActiveSubTab === "leave" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+                >
+                  Leave
+                </button>
+              </div>
+            )}
+          </>
         )}
 
-        <button
-          onClick={() => setActiveTab("dayscholar")}
-          className={navItemClass(activeTab === "dayscholar")}
-        >
-          <Bus className="w-5 h-5 md:w-5 md:h-5" />
-          <span className="text-[10px] md:text-sm font-medium">Dayscholar</span>
-        </button>
-        {activeTab === "dayscholar" && (
-          <div className="hidden md:flex flex-col w-full pl-12 pr-4 py-1 space-y-1 bg-white dark:bg-slate-900 midnight:bg-black">
+        {settings?.residentialStatus !== "hosteller" && (
+          <>
             <button
-              onClick={() => setActiveDayscholarSubTab("finder")}
-              className={`text-left text-sm py-1.5 transition-colors ${activeDayscholarSubTab === "finder" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+              onClick={() => setActiveTab("dayscholar")}
+              className={navItemClass(activeTab === "dayscholar")}
             >
-              Bus Finder
+              <Bus className="w-5 h-5 md:w-5 md:h-5" />
+              <span className="text-[10px] md:text-sm font-medium">Dayscholar</span>
             </button>
-            <button
-              onClick={() => setActiveDayscholarSubTab("fees")}
-              className={`text-left text-sm py-1.5 transition-colors ${activeDayscholarSubTab === "fees" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
-            >
-              Fees & Info
-            </button>
-            <button
-              onClick={() => setActiveDayscholarSubTab("admin")}
-              className={`text-left text-sm py-1.5 transition-colors ${activeDayscholarSubTab === "admin" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
-            >
-              Admin
-            </button>
-          </div>
+            {activeTab === "dayscholar" && (
+              <div className="hidden md:flex flex-col w-full pl-12 pr-4 py-1 space-y-1 bg-white dark:bg-slate-900 midnight:bg-black">
+                <button
+                  onClick={() => setActiveDayscholarSubTab("finder")}
+                  className={`text-left text-sm py-1.5 transition-colors ${activeDayscholarSubTab === "finder" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+                >
+                  Bus Finder
+                </button>
+                <button
+                  onClick={() => setActiveDayscholarSubTab("fees")}
+                  className={`text-left text-sm py-1.5 transition-colors ${activeDayscholarSubTab === "fees" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+                >
+                  Fees & Info
+                </button>
+              </div>
+            )}
+          </>
         )}
 
         <div className="hidden md:block w-full flex-grow"></div>

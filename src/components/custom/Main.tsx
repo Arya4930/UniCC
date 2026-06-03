@@ -21,6 +21,7 @@ type settings = {
   calendarType: "ALL" | "ALL02" | "ALL03" | "ALL05" | "ALL06" | "ALL08" | "ALL11" | "WEI";
   loadingScreen: boolean;
   isDayscholarWithBus: boolean;
+  residentialStatus?: "hosteller" | "dayscholar";
 }
 
 type IDs = {
@@ -37,7 +38,8 @@ const defaultSettings: settings = {
   currSemesterID: config.semesterIDs[config.semesterIDs.length - 2],
   calendarType: "ALL",
   loadingScreen: false,
-  isDayscholarWithBus: false
+  isDayscholarWithBus: false,
+  residentialStatus: "hosteller"
 };
 
 const defaultIDs: IDs = {
@@ -605,6 +607,11 @@ export default function LoginPage() {
             handleFormSubmit={handleFormSubmit}
             progressBar={progressBar}
             handleDemoClick={handleDemoClick}
+            residentialStatus={settings.residentialStatus || "hosteller"}
+            setResidentialStatus={(val: "hosteller" | "dayscholar") => {
+              setSettings(prev => ({ ...prev, residentialStatus: val }));
+              localStorage.setItem("settings", JSON.stringify({ ...settings, residentialStatus: val }));
+            }}
           />
         </div>
       )}

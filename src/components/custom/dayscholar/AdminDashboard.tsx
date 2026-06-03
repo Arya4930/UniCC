@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Upload, Save, AlertCircle, RefreshCw } from 'lucide-react';
 
@@ -13,44 +14,62 @@ interface BusRoute {
   busLocation: string;
 }
 
-interface AdminDashboardProps {
-  buses: BusRoute[];
-  setBuses: (buses: BusRoute[]) => void;
-}
-
-const AdminDashboard: React.FC<AdminDashboardProps> = ({ buses, setBuses }) => {
+const AdminDashboard: React.FC = () => {
+  const [buses, setBuses] = useState<BusRoute[]>([]);
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/buses')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.buses) {
+          setBuses(data.buses);
+        }
+      })
+      .catch(err => console.error("Failed to fetch buses:", err));
+  }, []);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       try {
         const content = event.target?.result as string;
         const parsed = JSON.parse(content);
         
         if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].route) {
-          setBuses(parsed);
-          localStorage.setItem('dayscholar_buses_override', JSON.stringify(parsed));
-          setSuccessMsg(`Successfully imported ${parsed.length} routes!`);
+          setIsUploading(true);
           setErrorMsg('');
+          setSuccessMsg('Uploading to database...');
+          
+          const res = await fetch('/api/admin/buses', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(parsed),
+          });
+
+          const data = await res.json();
+          if (data.success) {
+            setBuses(parsed);
+            setSuccessMsg(`Successfully imported ${parsed.length} routes to PostgreSQL!`);
+          } else {
+            throw new Error(data.message || 'Failed to update database');
+          }
         } else {
           throw new Error("Invalid JSON structure. Expected an array of bus routes.");
         }
       } catch (err: any) {
-        setErrorMsg("Failed to parse JSON file: " + err.message);
+        setErrorMsg("Failed to parse/upload JSON file: " + err.message);
         setSuccessMsg('');
+      } finally {
+        setIsUploading(false);
       }
     };
     reader.readAsText(file);
-  };
-
-  const handleReset = () => {
-    localStorage.removeItem('dayscholar_buses_override');
-    window.location.reload();
   };
 
   const downloadTemplate = () => {
@@ -65,10 +84,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ buses, setBuses }) => {
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
-      <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mb-4 md:mb-0">
-        Admin Dashboard
-      </h1>
-
       <Card>
         <CardHeader>
           <CardTitle>Update Bus Database</CardTitle>
@@ -88,17 +103,17 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ buses, setBuses }) => {
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-6 flex flex-col items-center justify-center text-center transition-colors hover:border-blue-500">
+            <div className={`border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-6 flex flex-col items-center justify-center text-center transition-colors ${isUploading ? 'opacity-50' : 'hover:border-blue-500'}`}>
               <Upload className="h-10 w-10 text-gray-400 mb-2" />
               <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Upload updated buses.json
               </p>
               <p className="text-xs text-gray-500 mb-4">
-                This will override the default database locally.
+                This will override the database directly.
               </p>
-              <label className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                Select File
-                <input type="file" accept=".json" className="hidden" onChange={handleFileUpload} />
+              <label className={`cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors ${isUploading ? 'pointer-events-none' : ''}`}>
+                {isUploading ? 'Uploading...' : 'Select File'}
+                <input type="file" accept=".json" className="hidden" onChange={handleFileUpload} disabled={isUploading} />
               </label>
             </div>
 
@@ -114,25 +129,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ buses, setBuses }) => {
                   Download buses_template.json
                 </button>
               </div>
-
-              <div className="p-4 bg-red-50 dark:bg-red-900/10 rounded-xl border border-red-100 dark:border-red-900/30">
-                <h4 className="text-sm font-semibold text-red-800 dark:text-red-400 mb-2 flex items-center gap-2">
-                  <RefreshCw size={16} /> Reset to Default
-                </h4>
-                <p className="text-xs text-red-600/80 mb-3">
-                  Revert to the original bus database and clear your uploaded JSON.
-                </p>
-                <button onClick={handleReset} className="text-sm bg-red-100 text-red-700 hover:bg-red-200 px-3 py-1.5 rounded-md font-medium transition-colors">
-                  Reset Database
-                </button>
-              </div>
             </div>
           </div>
           
-          <div className="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg flex gap-3 text-sm text-yellow-800 dark:text-yellow-200">
+          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex gap-3 text-sm text-blue-800 dark:text-blue-200 border border-blue-100 dark:border-blue-800/50">
             <AlertCircle className="shrink-0" />
             <div>
-              <strong>Note:</strong> Since we are currently using a local JSON workflow, these changes are stored in your browser's localStorage. In the future, this admin panel will sync directly with Supabase/Firebase.
+              <strong>Note:</strong> Changes made here will immediately reflect in the PostgreSQL database and update for all students.
             </div>
           </div>
         </CardContent>

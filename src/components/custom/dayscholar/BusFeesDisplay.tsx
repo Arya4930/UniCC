@@ -18,7 +18,7 @@ const BusFeesDisplay = () => {
             <CardDescription>Academic Year 2026-2027</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2 flex items-center">
+            <div className="text-4xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mb-2 flex items-center">
               <IndianRupee size={32} /> 67,150
             </div>
             <p className="text-sm text-gray-500">Non-refundable fee for Fall & Winter semesters (July '26 - April '27)</p>
@@ -33,7 +33,7 @@ const BusFeesDisplay = () => {
             <CardDescription>Academic Year 2026-2027</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2 flex items-center">
+            <div className="text-4xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-100 mb-2 flex items-center">
               <IndianRupee size={32} /> 49,150
             </div>
             <p className="text-sm text-gray-500">Non-refundable fee for Fall & Winter semesters (July '26 - April '27)</p>

@@ -10,7 +10,9 @@ export default function LoginForm({
   message,
   handleFormSubmit,
   progressBar,
-  handleDemoClick
+  handleDemoClick,
+  residentialStatus,
+  setResidentialStatus
 }) {
   const isLoading = message.startsWith("Logging");
   const [showPassword, setShowPassword] = useState(false);
@@ -57,6 +59,24 @@ export default function LoginForm({
             <Eye className="w-4 h-4 text-gray-500" />
           </button>
         </div>
+
+        <div className="flex bg-gray-100 dark:bg-slate-900 midnight:bg-[#1a1a1a] rounded-lg p-1">
+          <button
+            type="button"
+            onClick={() => setResidentialStatus("hosteller")}
+            className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${residentialStatus === "hosteller" ? "bg-white dark:bg-slate-700 midnight:bg-gray-800 text-gray-900 dark:text-white shadow-sm" : "text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"}`}
+          >
+            Hosteller
+          </button>
+          <button
+            type="button"
+            onClick={() => setResidentialStatus("dayscholar")}
+            className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${residentialStatus === "dayscholar" ? "bg-white dark:bg-slate-700 midnight:bg-gray-800 text-gray-900 dark:text-white shadow-sm" : "text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"}`}
+          >
+            Dayscholar
+          </button>
+        </div>
+
 
         {!isLoading && (
           <button
