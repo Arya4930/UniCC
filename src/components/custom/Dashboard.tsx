@@ -349,6 +349,12 @@ export default function DashboardContent({
         style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
       >
         <div className="md:hidden">
+          <div className="px-6 pt-6 pb-2">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 midnight:text-white tracking-tight">UniCC</h2>
+            <p className="text-sm text-gray-500 mt-1">
+              {new Date().getHours() < 12 ? "Good Morning" : new Date().getHours() < 18 ? "Good Afternoon" : "Good Evening"}, {IDs.VtopUsername}
+            </p>
+          </div>
           <StatsCards
             attendancePercentage={attendancePercentage}
           ODhoursData={ODhoursData}
