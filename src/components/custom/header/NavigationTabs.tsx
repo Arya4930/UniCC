@@ -80,42 +80,70 @@ export default function NavigationTabs({
         />
       )}
 
-      {/* Responsive Navigation: Bottom Bar (Mobile) / Left Sidebar (Desktop) */}
+      {/* Main Container */}
       <div 
-        className="fixed bottom-0 md:top-0 left-0 right-0 md:right-auto z-50 flex items-center md:items-start justify-around md:justify-start w-full md:w-64 md:h-[100dvh] md:flex-col bg-white dark:bg-slate-900 midnight:bg-black border-t md:border-t-0 md:border-r border-gray-200 dark:border-gray-800 midnight:border-gray-900 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] md:shadow-none safe-area-pb md:pb-0"
-        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+        className="fixed bottom-0 md:top-0 left-0 right-0 md:right-auto z-40 flex items-center md:items-start justify-around md:justify-start w-full md:w-64 md:h-[100dvh] md:flex-col bg-white dark:bg-slate-900 midnight:bg-black border-t md:border-t-0 md:border-r border-gray-200 dark:border-gray-800 midnight:border-gray-900 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] md:shadow-none safe-area-pb md:pb-0 overflow-y-auto"
+        style={{ paddingTop: 'env(safe-area-inset-top, 0px)', scrollbarWidth: 'none' }}
       >
         {/* Desktop Sidebar Profile / Stats Area */}
-        <div className="hidden md:flex flex-col w-full p-6 mb-4 border-b border-gray-200 dark:border-gray-800 midnight:border-gray-800 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 midnight:text-white tracking-tight">UniCC</h2>
-          <p className="text-sm text-gray-500 mb-6">{username}</p>
-          
-          <div className="flex justify-between items-center mb-3 group cursor-pointer" onClick={() => setSettings(prev => ({...prev, CGPAHidden: !prev.CGPAHidden}))}>
-            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider group-hover:text-blue-500 transition-colors">CGPA</span>
-            <span className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
-              {settings.CGPAHidden ? "###" : marksData?.cgpa?.cgpa || "-"}
-            </span>
+        <div className="hidden md:flex flex-col w-full p-4 mb-2 border-b border-gray-200 dark:border-gray-800 midnight:border-gray-800 pt-6">
+          <div className="flex justify-between items-center mb-4">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 midnight:text-white tracking-tight">UniCC</h2>
+              <p className="text-xs text-gray-500 truncate max-w-[120px]">{username}</p>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={handleReloadClick}
+                className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 midnight:hover:bg-gray-800 transition-colors"
+                title="Reload Data"
+              >
+                <RefreshCcw className={`w-4 h-4 text-gray-600 dark:text-gray-300 ${isSpinning ? "animate-spin" : ""}`} />
+              </button>
+              <button 
+                onClick={() => setShowSettingsPage(true)}
+                className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 midnight:hover:bg-gray-800 transition-colors"
+                title="Settings"
+              >
+                <Settings className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+              </button>
+            </div>
           </div>
           
-          <div className="flex justify-between items-center mb-3 group cursor-pointer" onClick={() => setSettings(prev => ({ ...prev, attendancePercentageOrString: prev.attendancePercentageOrString === "percentage" ? "str" : "percentage" }))}>
-            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider group-hover:text-blue-500 transition-colors">Attendance</span>
-            <span className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
-              {attendancePercentage?.[settings.attendancePercentageOrString] || "-"}
-            </span>
-          </div>
+          {/* Compact Stats Grid */}
+          <div className="grid grid-cols-2 gap-3 mb-2">
+            {/* CGPA */}
+            <div className="flex flex-col group cursor-pointer" onClick={() => setSettings(prev => ({...prev, CGPAHidden: !prev.CGPAHidden}))}>
+              <span className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5 font-medium">CGPA</span>
+              <span className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
+                {settings.CGPAHidden ? "###" : marksData?.cgpa?.cgpa || "-"}
+              </span>
+            </div>
 
-          <div className="flex justify-between items-center mb-3 group cursor-pointer" onClick={() => setODhoursIsOpen(true)}>
-            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider group-hover:text-blue-500 transition-colors">OD Hours</span>
-            <span className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
-              {totalODHours}/40
-            </span>
-          </div>
+            {/* Attendance */}
+            <div className="flex flex-col">
+              <span className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5 font-medium">Att.</span>
+              <span className={`font-semibold text-sm ${attendancePercentage?.percentage < 75 ? "text-red-500" : "text-green-500 dark:text-green-400"}`}>
+                {attendancePercentage?.percentage || "-"}%
+              </span>
+            </div>
 
-          <div className="flex justify-between items-center mb-3 group cursor-pointer" onClick={() => setGradesDisplayIsOpen(true)}>
-            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider group-hover:text-blue-500 transition-colors">Credits</span>
-            <span className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
-              {marksData?.cgpa ? Number(marksData.cgpa.creditsEarned) + Number(marksData.cgpa.nonGradedRequirement || 0) : "-"}
-            </span>
+            {/* OD Hours */}
+            <div className="flex flex-col cursor-pointer group" onClick={() => setODhoursIsOpen(true)}>
+              <span className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5 font-medium">OD Hrs</span>
+              <span className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
+                {totalODHours}/40
+              </span>
+            </div>
+
+            {/* Credits */}
+            <div className="flex flex-col group cursor-pointer" onClick={() => setGradesDisplayIsOpen(true)}>
+              <span className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5 font-medium">Credits</span>
+              <span className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
+                {marksData?.cgpa ? Number(marksData.cgpa.creditsEarned) + Number(marksData.cgpa.nonGradedRequirement || 0) : "-"}
+              </span>
+            </div>
           </div>
 
           {feedbackStatus && (
@@ -225,7 +253,7 @@ export default function NavigationTabs({
 
         <button
           onClick={handleReloadClick}
-          className={navItemClass(false)}
+          className={`${navItemClass(false)} md:hidden`}
         >
           <RefreshCcw className={`w-5 h-5 md:w-5 md:h-5 ${isSpinning ? "animate-spin" : ""}`} />
           <span className="text-[10px] md:text-sm font-medium">Reload Data</span>
@@ -233,7 +261,7 @@ export default function NavigationTabs({
 
         <button
           onClick={() => setShowSettingsPage(true)}
-          className={navItemClass(false)}
+          className={`${navItemClass(false)} md:hidden`}
         >
           <Settings className="w-5 h-5 md:w-5 md:h-5" />
           <span className="text-[10px] md:text-sm font-medium">Settings</span>
