@@ -116,8 +116,8 @@ export default function MessDisplay({ hostelData, handleHostelDetailsFetch }) {
 
   return (
     <div>
-      <h1 className="text-xl font-bold mb-2 text-center dark:text-white midnight:text-white">
-        Mess Menu
+      <h1 className="text-xl md:text-3xl font-bold mb-2 md:mb-4 text-center md:text-left text-gray-900 dark:text-gray-100 midnight:text-white">
+        Mess Menu ({currentMonth})
       </h1>
       <h2 className="text-md font-bold mb-2 text-center text-gray-700 dark:text-gray-300 midnight:text-gray-300">
         ( Data taken from{" "}

@@ -70,7 +70,7 @@ export default function MarksDisplay({ data }) {
   if (!data || !data.courses || data.courses.length === 0) {
     return (
       <div className="p-2">
-        <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+        <h1 className="text-xl md:text-3xl font-bold mb-4 text-center md:text-left text-gray-900 dark:text-gray-100 midnight:text-gray-100">
           Academic Marks
         </h1>
         <Image src="/chepu/chepu_says_sup.png" alt="No Data" width={300} height={300} className="mx-auto" />
@@ -80,7 +80,7 @@ export default function MarksDisplay({ data }) {
 
   return (
     <div className="p-2">
-      <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+      <h1 className="text-xl md:text-3xl font-bold mb-4 text-center md:text-left text-gray-900 dark:text-gray-100 midnight:text-gray-100">
         Academic Marks
       </h1>
 

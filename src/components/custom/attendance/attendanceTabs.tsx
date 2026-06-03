@@ -154,15 +154,31 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
 
   return (
     <div className="grid gap-4">
-      <h1 className="text-xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-        <button onClick={() => setShowTimetable(true)} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-          <Calendar className={`w-4 h-4`} />
-        </button>
-        {" "} Weekly Attendance {" "}
-        <button onClick={() => setShowPredictor(true)} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-          <BadgeQuestionMark className={`w-4 h-4`} />
-        </button>
-      </h1>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+        {/* Mobile View: Inline Center */}
+        <h1 className="md:hidden text-xl font-bold text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+          <button onClick={() => setShowTimetable(true)} className="inline-flex mr-2 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors align-middle">
+            <Calendar className={`w-4 h-4`} />
+          </button>
+          Weekly Attendance
+          <button onClick={() => setShowPredictor(true)} className="inline-flex ml-2 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors align-middle">
+            <BadgeQuestionMark className={`w-4 h-4`} />
+          </button>
+        </h1>
+
+        {/* Desktop View: Left Aligned Heading + Right Aligned Buttons */}
+        <h1 className="hidden md:block text-3xl font-bold text-left text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+          Weekly Attendance
+        </h1>
+        <div className="hidden md:flex items-center gap-3">
+          <button onClick={() => setShowTimetable(true)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors shadow-sm">
+            <Calendar className={`w-4 h-4`} /> <span className="text-sm">Timetable</span>
+          </button>
+          <button onClick={() => setShowPredictor(true)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors shadow-sm">
+            <BadgeQuestionMark className={`w-4 h-4`} /> <span className="text-sm">Predictor</span>
+          </button>
+        </div>
+      </div>
 
       <div className="flex gap-2 mb-3 justify-center flex-wrap">
         {daysWithClasses.map((d) => (

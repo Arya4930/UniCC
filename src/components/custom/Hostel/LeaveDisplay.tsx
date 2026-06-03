@@ -61,11 +61,24 @@ export default function LeaveDisplay({ leaveData, handleHostelDetailsFetch }) {
 
     return (
         <div>
-            <h1 className="text-xl font-bold mb-2 text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                Leave Details <button onClick={handleHostelDetailsFetch} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
-                    <RefreshCcw className={`w-4 h-4`} />
-                </button>
-            </h1>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                {/* Mobile View: Inline Center */}
+                <h1 className="md:hidden text-xl font-bold text-center text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+                    Leave Details <button onClick={handleHostelDetailsFetch} className="inline-flex ml-2 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors align-middle">
+                        <RefreshCcw className={`w-4 h-4`} />
+                    </button>
+                </h1>
+                
+                {/* Desktop View: Left Aligned Heading + Right Aligned Button */}
+                <h1 className="hidden md:block text-2xl lg:text-3xl font-bold text-left text-gray-900 dark:text-gray-100 midnight:text-gray-100">
+                    Leave Details
+                </h1>
+                <div className="hidden md:flex items-center justify-end">
+                    <button onClick={handleHostelDetailsFetch} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors shadow-sm">
+                        <RefreshCcw size={16} /> <span className="text-sm">Reload</span>
+                    </button>
+                </div>
+            </div>
 
             {activeLeave ? (
                 <div className="max-w-xl mx-auto mb-4 border border-gray-300 dark:border-gray-700 midnight:border-gray-700 rounded-2xl p-4 bg-white dark:bg-slate-800 midnight:bg-black text-gray-900 dark:text-gray-100 midnight:text-gray-100">
