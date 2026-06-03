@@ -18,10 +18,19 @@ export default function NavigationTabs({
   settings,
   setSettings,
   attendancePercentage,
-  marksData
+  marksData,
+  ODhoursData,
+  setODhoursIsOpen,
+  feedbackStatus,
+  setGradesDisplayIsOpen
 }) {
   const [isSpinning, setIsSpinning] = useState(false);
   const [showSettingsPage, setShowSettingsPage] = useState<boolean>(false);
+
+  const totalODHours =
+    ODhoursData && ODhoursData.length > 0 && ODhoursData[0].courses
+      ? ODhoursData.reduce((sum, day) => sum + day.total, 0)
+      : 0;
 
   const handleReloadClick = async () => {
     setIsSpinning(true);
@@ -72,28 +81,53 @@ export default function NavigationTabs({
         {/* Desktop Sidebar Profile / Stats Area */}
         <div className="hidden md:flex flex-col w-full p-6 mb-4 border-b border-gray-200 dark:border-gray-800 midnight:border-gray-800 pt-8">
           <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">UniCC</h2>
-          <p className="text-sm text-gray-500 mb-8">{username}</p>
+          <p className="text-sm text-gray-500 mb-6">{username}</p>
           
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">CGPA</span>
-            <span className="font-semibold text-sm cursor-pointer hover:text-blue-500 transition-colors" onClick={() => setSettings(prev => ({...prev, CGPAHidden: !prev.CGPAHidden}))}>
+          <div className="flex justify-between items-center mb-3 group cursor-pointer" onClick={() => setSettings(prev => ({...prev, CGPAHidden: !prev.CGPAHidden}))}>
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider group-hover:text-blue-500 transition-colors">CGPA</span>
+            <span className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
               {settings.CGPAHidden ? "###" : marksData?.cgpa?.cgpa || "-"}
             </span>
           </div>
           
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Attendance</span>
-            <span className="font-semibold text-sm">
+          <div className="flex justify-between items-center mb-3 group cursor-pointer" onClick={() => setSettings(prev => ({ ...prev, attendancePercentageOrString: prev.attendancePercentageOrString === "percentage" ? "str" : "percentage" }))}>
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider group-hover:text-blue-500 transition-colors">Attendance</span>
+            <span className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
               {attendancePercentage?.[settings.attendancePercentageOrString] || "-"}
             </span>
           </div>
 
-          <div className="flex justify-between items-center">
-            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Credits</span>
-            <span className="font-semibold text-sm">
+          <div className="flex justify-between items-center mb-3 group cursor-pointer" onClick={() => setODhoursIsOpen(true)}>
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider group-hover:text-blue-500 transition-colors">OD Hours</span>
+            <span className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
+              {totalODHours}/40
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center mb-3 group cursor-pointer" onClick={() => setGradesDisplayIsOpen(true)}>
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider group-hover:text-blue-500 transition-colors">Credits</span>
+            <span className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
               {marksData?.cgpa ? Number(marksData.cgpa.creditsEarned) + Number(marksData.cgpa.nonGradedRequirement || 0) : "-"}
             </span>
           </div>
+
+          {feedbackStatus && (
+            <div className="flex flex-col mt-2 pt-3 border-t border-gray-100 dark:border-gray-800 midnight:border-gray-800">
+              <span className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Feedback</span>
+              <div className="flex justify-between items-center">
+                <span className="text-[10px] text-gray-500">Mid Sem</span>
+                <span className={`text-[11px] font-bold ${feedbackStatus?.MidSem?.Curriculum && feedbackStatus?.MidSem?.Course ? "text-green-500" : "text-red-500"}`}>
+                  {feedbackStatus?.MidSem?.Curriculum && feedbackStatus?.MidSem?.Course ? "Given" : "Pending"}
+                </span>
+              </div>
+              <div className="flex justify-between items-center mt-1">
+                <span className="text-[10px] text-gray-500">End Sem</span>
+                <span className={`text-[11px] font-bold ${feedbackStatus?.EndSem?.Curriculum && feedbackStatus?.EndSem?.Course ? "text-green-500" : "text-red-500"}`}>
+                  {feedbackStatus?.EndSem?.Curriculum && feedbackStatus?.EndSem?.Course ? "Given" : "Pending"}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
 
         <button

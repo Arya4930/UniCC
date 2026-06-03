@@ -332,6 +332,10 @@ export default function DashboardContent({
         setSettings={setSettings}
         attendancePercentage={attendancePercentage}
         marksData={marksData}
+        ODhoursData={ODhoursData}
+        setODhoursIsOpen={setODhoursIsOpen}
+        feedbackStatus={GradesData.feedback}
+        setGradesDisplayIsOpen={setGradesDisplayIsOpen}
       />
 
       <div 
