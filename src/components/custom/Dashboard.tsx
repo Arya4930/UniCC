@@ -394,70 +394,72 @@ export default function DashboardContent({
           />
         )}
 
-        {activeTab === "attendance" && attendanceData?.attendance && (
-          <div className="animate-fadeIn">
-            <div className="md:hidden">
-              <AttendanceSubTabs
-                activeSubTab={activeAttendanceSubTab}
-                setActiveAttendanceSubTab={setActiveAttendanceSubTab}
-              />
-            </div>
-
-            {activeAttendanceSubTab === "attendance" && (
-              <>
-                <AttendanceTabs
-                  data={attendanceData}
-                  activeDay={activeDay}
-                  setActiveDay={setActiveDay}
-                  calendars={calendarData.calendars}
-                  decimalValues={settings.decimalValues}
+        <div className="md:p-6 lg:p-10 max-w-7xl mx-auto">
+          {activeTab === "attendance" && attendanceData?.attendance && (
+            <div className="animate-fadeIn">
+              <div className="md:hidden">
+                <AttendanceSubTabs
+                  activeSubTab={activeAttendanceSubTab}
+                  setActiveAttendanceSubTab={setActiveAttendanceSubTab}
                 />
-              </>
-            )}
+              </div>
 
-            {activeAttendanceSubTab === "calendar" && (
-              <>
-                <CalendarView
-                  calendars={calendarData.calendars}
-                  calendarType={settings.calendarType}
-                  handleCalendarFetch={handleCalendarFetch}
-                />
-                <CalendarTabWrapper
-                  calendarType={settings.calendarType}
-                  handleCalendarFetch={handleCalendarFetch}
-                />
-              </>
-            )}
-          </div>
-        )}
+              {activeAttendanceSubTab === "attendance" && (
+                <>
+                  <AttendanceTabs
+                    data={attendanceData}
+                    activeDay={activeDay}
+                    setActiveDay={setActiveDay}
+                    calendars={calendarData.calendars}
+                    decimalValues={settings.decimalValues}
+                  />
+                </>
+              )}
 
-        {activeTab === "exams" && marksData && (
-          <div className="animate-fadeIn">
-            <div className="md:hidden">
-              <ExamsSubTabs
-                activeSubTab={activeSubTab}
-                setActiveSubTab={setActiveSubTab}
-              />
+              {activeAttendanceSubTab === "calendar" && (
+                <>
+                  <CalendarView
+                    calendars={calendarData.calendars}
+                    calendarType={settings.calendarType}
+                    handleCalendarFetch={handleCalendarFetch}
+                  />
+                  <CalendarTabWrapper
+                    calendarType={settings.calendarType}
+                    handleCalendarFetch={handleCalendarFetch}
+                  />
+                </>
+              )}
             </div>
-            {activeSubTab === "marks" && <MarksSubTab data={marksData} moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} IDs={IDs} />}
-            {activeSubTab === "schedule" && <ScheduleSubTab data={ScheduleData} handleScheduleFetch={handleScheduleFetch} />}
-            {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} CGPA={marksData.cgpa} attendance={attendanceData.attendance} />}
-          </div>
-        )}
+          )}
 
-        {activeTab === "hostel" && (
-          <div className="animate-fadeIn">
-            <div className="md:hidden">
-              <HostelSubTabs
-                HostelActiveSubTab={HostelActiveSubTab}
-                setHostelActiveSubTab={setHostelActiveSubTab}
-              />
+          {activeTab === "exams" && marksData && (
+            <div className="animate-fadeIn">
+              <div className="md:hidden">
+                <ExamsSubTabs
+                  activeSubTab={activeSubTab}
+                  setActiveSubTab={setActiveSubTab}
+                />
+              </div>
+              {activeSubTab === "marks" && <MarksSubTab data={marksData} moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} IDs={IDs} />}
+              {activeSubTab === "schedule" && <ScheduleSubTab data={ScheduleData} handleScheduleFetch={handleScheduleFetch} />}
+              {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} CGPA={marksData.cgpa} attendance={attendanceData.attendance} />}
             </div>
-            {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
-            {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
-            {HostelActiveSubTab === "leave" && <LeaveDisplay leaveData={hostelData.leaveHistory} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
-          </div>
-        )}
+          )}
+
+          {activeTab === "hostel" && (
+            <div className="animate-fadeIn">
+              <div className="md:hidden">
+                <HostelSubTabs
+                  HostelActiveSubTab={HostelActiveSubTab}
+                  setHostelActiveSubTab={setHostelActiveSubTab}
+                />
+              </div>
+              {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
+              {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
+              {HostelActiveSubTab === "leave" && <LeaveDisplay leaveData={hostelData.leaveHistory} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
