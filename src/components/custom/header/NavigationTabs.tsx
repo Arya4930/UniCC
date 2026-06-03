@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { RefreshCcw, Settings, CalendarCheck, GraduationCap, Building } from "lucide-react";
 import SettingsPage from "./SettingsPage";
+import Footer from "../footer/Footer";
 
 export default function NavigationTabs({
   activeTab,
@@ -22,7 +23,13 @@ export default function NavigationTabs({
   ODhoursData,
   setODhoursIsOpen,
   feedbackStatus,
-  setGradesDisplayIsOpen
+  setGradesDisplayIsOpen,
+  activeAttendanceSubTab,
+  setActiveAttendanceSubTab,
+  activeSubTab,
+  setActiveSubTab,
+  HostelActiveSubTab,
+  setHostelActiveSubTab
 }) {
   const [isSpinning, setIsSpinning] = useState(false);
   const [showSettingsPage, setShowSettingsPage] = useState<boolean>(false);
@@ -80,7 +87,7 @@ export default function NavigationTabs({
       >
         {/* Desktop Sidebar Profile / Stats Area */}
         <div className="hidden md:flex flex-col w-full p-6 mb-4 border-b border-gray-200 dark:border-gray-800 midnight:border-gray-800 pt-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">UniCC</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 midnight:text-white tracking-tight">UniCC</h2>
           <p className="text-sm text-gray-500 mb-6">{username}</p>
           
           <div className="flex justify-between items-center mb-3 group cursor-pointer" onClick={() => setSettings(prev => ({...prev, CGPAHidden: !prev.CGPAHidden}))}>
@@ -137,6 +144,22 @@ export default function NavigationTabs({
           <CalendarCheck className="w-5 h-5 md:w-5 md:h-5" />
           <span className="text-[10px] md:text-sm font-medium">Attendance</span>
         </button>
+        {activeTab === "attendance" && (
+          <div className="hidden md:flex flex-col w-full pl-12 pr-4 py-1 space-y-1 bg-white dark:bg-slate-900 midnight:bg-black">
+            <button
+              onClick={() => setActiveAttendanceSubTab("attendance")}
+              className={`text-left text-sm py-1.5 transition-colors ${activeAttendanceSubTab === "attendance" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+            >
+              Attendance
+            </button>
+            <button
+              onClick={() => setActiveAttendanceSubTab("calendar")}
+              className={`text-left text-sm py-1.5 transition-colors ${activeAttendanceSubTab === "calendar" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+            >
+              Calendar
+            </button>
+          </div>
+        )}
 
         <button
           onClick={() => setActiveTab("exams")}
@@ -145,6 +168,28 @@ export default function NavigationTabs({
           <GraduationCap className="w-5 h-5 md:w-5 md:h-5" />
           <span className="text-[10px] md:text-sm font-medium">Exams</span>
         </button>
+        {activeTab === "exams" && (
+          <div className="hidden md:flex flex-col w-full pl-12 pr-4 py-1 space-y-1 bg-white dark:bg-slate-900 midnight:bg-black">
+            <button
+              onClick={() => setActiveSubTab("marks")}
+              className={`text-left text-sm py-1.5 transition-colors ${activeSubTab === "marks" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+            >
+              Marks
+            </button>
+            <button
+              onClick={() => setActiveSubTab("schedule")}
+              className={`text-left text-sm py-1.5 transition-colors ${activeSubTab === "schedule" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+            >
+              Schedule
+            </button>
+            <button
+              onClick={() => setActiveSubTab("grades")}
+              className={`text-left text-sm py-1.5 transition-colors ${activeSubTab === "grades" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+            >
+              Grades
+            </button>
+          </div>
+        )}
 
         <button
           onClick={() => setActiveTab("hostel")}
@@ -153,6 +198,28 @@ export default function NavigationTabs({
           <Building className="w-5 h-5 md:w-5 md:h-5" />
           <span className="text-[10px] md:text-sm font-medium">Hostel</span>
         </button>
+        {activeTab === "hostel" && (
+          <div className="hidden md:flex flex-col w-full pl-12 pr-4 py-1 space-y-1 bg-white dark:bg-slate-900 midnight:bg-black">
+            <button
+              onClick={() => setHostelActiveSubTab("mess")}
+              className={`text-left text-sm py-1.5 transition-colors ${HostelActiveSubTab === "mess" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+            >
+              Mess
+            </button>
+            <button
+              onClick={() => setHostelActiveSubTab("laundry")}
+              className={`text-left text-sm py-1.5 transition-colors ${HostelActiveSubTab === "laundry" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+            >
+              Laundry
+            </button>
+            <button
+              onClick={() => setHostelActiveSubTab("leave")}
+              className={`text-left text-sm py-1.5 transition-colors ${HostelActiveSubTab === "leave" ? "text-blue-600 dark:text-blue-400 midnight:text-blue-400 font-medium" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 midnight:hover:text-gray-200"}`}
+            >
+              Leave
+            </button>
+          </div>
+        )}
 
         <div className="hidden md:block w-full flex-grow"></div>
 
@@ -171,6 +238,10 @@ export default function NavigationTabs({
           <Settings className="w-5 h-5 md:w-5 md:h-5" />
           <span className="text-[10px] md:text-sm font-medium">Settings</span>
         </button>
+
+        <div className="hidden md:block w-full mt-auto">
+          <Footer isLoggedIn={true} variant="sidebar" />
+        </div>
       </div>
     </>
   );

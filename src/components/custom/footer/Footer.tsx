@@ -10,9 +10,10 @@ import TermsOfServicePage from "./TermsOfService";
 
 type FooterProps = {
   isLoggedIn: boolean;
+  variant?: "mobile" | "sidebar";
 }
 
-export default function Footer({ isLoggedIn }: FooterProps) {
+export default function Footer({ isLoggedIn, variant = "mobile" }: FooterProps) {
   const [showStoragePage, setShowStoragePage] = useState<boolean>(false);
   const [storageData, setStorageData] = useState<Record<string, string | null>>({});
   const [showPolicy, setShowPolicy] = useState<boolean>(false);
@@ -56,6 +57,44 @@ export default function Footer({ isLoggedIn }: FooterProps) {
     });
   };
 
+  if (variant === "sidebar") {
+    return (
+      <div className="flex flex-col items-center justify-center w-full px-4 pb-6 pt-2">
+        {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} />}
+        {showPolicy && <PrivacyPolicyPage handleClose={() => setShowPolicy(false)} />}
+        {showTOS && <TermsOfServicePage handleClose={() => setShowTOS(false)} />}
+        
+        <div className="flex items-center justify-center gap-2 mb-2 w-full">
+          <Button variant="outline" size="icon" className="w-8 h-8" asChild>
+            <a href="https://github.com/Arya4930/UniCC" target="_blank" rel="noopener noreferrer">
+              <Github size={16} className="text-gray-600 dark:text-gray-300 midnight:text-gray-300" />
+            </a>
+          </Button>
+          <Button variant="outline" size="icon" className="w-8 h-8" asChild>
+            <a href="https://arya22.vercel.app/" target="_blank" rel="noopener noreferrer">
+              <Link size={16} className="text-gray-600 dark:text-gray-300 midnight:text-gray-300" />
+            </a>
+          </Button>
+          <Button variant="outline" size="icon" className="w-8 h-8" onClick={openStoragePage}>
+            <Database size={16} className="text-gray-600 dark:text-gray-300 midnight:text-gray-300 transition-all" />
+          </Button>
+          <div className="scale-75 origin-center">
+            <IconToggle />
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center">
+          <div className="flex items-center gap-2">
+            <button onClick={() => setShowPolicy(true)} className="text-[10px] text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">Privacy</button>
+            <span className="text-[10px] text-gray-400">•</span>
+            <button onClick={() => setShowTOS(true)} className="text-[10px] text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">Terms</button>
+          </div>
+          <span className="text-[9px] text-gray-400 mt-1">&copy; {new Date().getFullYear()} Arya Evil Inc.</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <footer className="bg-transparent text-gray-700 dark:text-gray-300 midnight:text-gray-300 flex items-center justify-center">
       {showStoragePage && isLoggedIn && <DataPage handleClose={() => setShowStoragePage(false)} handleDeleteItem={handleDeleteItem} storageData={storageData} />}
@@ -92,7 +131,6 @@ export default function Footer({ isLoggedIn }: FooterProps) {
 
           <p className="text-sm font-medium tracking-wide px-5">
             Made for No reason<br></br>By My heart{" "}
-            {/* <span className="ml-2 text-xs text-gray-400">v0.1.3</span> */}
           </p>
 
           <Button variant="outline" size="icon" onClick={openStoragePage}>

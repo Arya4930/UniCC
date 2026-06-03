@@ -328,7 +328,6 @@ export default function DashboardContent({
           localStorage.setItem("IDs", JSON.stringify({ ...IDs, VtopUsername: val[0], VtopPassword: val[1]}))
         }
         }
-        settings={settings}
         setSettings={setSettings}
         attendancePercentage={attendancePercentage}
         marksData={marksData}
@@ -336,6 +335,12 @@ export default function DashboardContent({
         setODhoursIsOpen={setODhoursIsOpen}
         feedbackStatus={GradesData.feedback}
         setGradesDisplayIsOpen={setGradesDisplayIsOpen}
+        activeAttendanceSubTab={activeAttendanceSubTab}
+        setActiveAttendanceSubTab={setActiveAttendanceSubTab}
+        activeSubTab={activeSubTab}
+        setActiveSubTab={setActiveSubTab}
+        HostelActiveSubTab={HostelActiveSubTab}
+        setHostelActiveSubTab={setHostelActiveSubTab}
       />
 
       <div 
@@ -384,10 +389,12 @@ export default function DashboardContent({
 
         {activeTab === "attendance" && attendanceData?.attendance && (
           <div className="animate-fadeIn">
-            <AttendanceSubTabs
-              activeSubTab={activeAttendanceSubTab}
-              setActiveAttendanceSubTab={setActiveAttendanceSubTab}
-            />
+            <div className="md:hidden">
+              <AttendanceSubTabs
+                activeSubTab={activeAttendanceSubTab}
+                setActiveAttendanceSubTab={setActiveAttendanceSubTab}
+              />
+            </div>
 
             {activeAttendanceSubTab === "attendance" && (
               <>
@@ -419,10 +426,12 @@ export default function DashboardContent({
 
         {activeTab === "exams" && marksData && (
           <div className="animate-fadeIn">
-            <ExamsSubTabs
-              activeSubTab={activeSubTab}
-              setActiveSubTab={setActiveSubTab}
-            />
+            <div className="md:hidden">
+              <ExamsSubTabs
+                activeSubTab={activeSubTab}
+                setActiveSubTab={setActiveSubTab}
+              />
+            </div>
             {activeSubTab === "marks" && <MarksSubTab data={marksData} moodleData={moodleData} handleFetchMoodle={handleFetchMoodle} setMoodleData={setMoodleData} IDs={IDs} />}
             {activeSubTab === "schedule" && <ScheduleSubTab data={ScheduleData} handleScheduleFetch={handleScheduleFetch} />}
             {activeSubTab === "grades" && <AllGradesDisplay data={allGradesData} handleAllGradesFetch={handleAllGradesFetch} CGPA={marksData.cgpa} attendance={attendanceData.attendance} />}
@@ -431,10 +440,12 @@ export default function DashboardContent({
 
         {activeTab === "hostel" && (
           <div className="animate-fadeIn">
-            <HostelSubTabs
-              HostelActiveSubTab={HostelActiveSubTab}
-              setHostelActiveSubTab={setHostelActiveSubTab}
-            />
+            <div className="md:hidden">
+              <HostelSubTabs
+                HostelActiveSubTab={HostelActiveSubTab}
+                setHostelActiveSubTab={setHostelActiveSubTab}
+              />
+            </div>
             {HostelActiveSubTab === "mess" && <MessDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
             {HostelActiveSubTab === "laundry" && <LaundryDisplay hostelData={hostelData} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
             {HostelActiveSubTab === "leave" && <LeaveDisplay leaveData={hostelData.leaveHistory} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
