@@ -181,21 +181,21 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
 
   const [stats, setStats] = useState(null);
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await fetch(`${API_BASE}/api/attendance/marks?classId=${course.classNbr}`);
-        const data = await response.json();
-        if(!response.ok) {
-          throw new Error(data.error || "Failed to fetch class statistics");
-        }
-        setStats(data);
-      } catch (error) {
-        console.error("Error fetching class statistics:", error);
-      }
-    };
-    fetchStats();
-  }, [course.classNbr]);
+  // useEffect(() => {
+  //   const fetchStats = async () => {
+  //     try {
+  //       const response = await fetch(`${API_BASE}/api/attendance/marks?classId=${course.classNbr}`);
+  //       const data = await response.json();
+  //       if(!response.ok) {
+  //         throw new Error(data.error || "Failed to fetch class statistics");
+  //       }
+  //       setStats(data);
+  //     } catch (error) {
+  //       console.error("Error fetching class statistics:", error);
+  //     }
+  //   };
+  //   fetchStats();
+  // }, [course.classNbr]);
 
   const dataPoints = stats ? (stats.dataPoints ?? stats.count ?? 0) : 0;
 

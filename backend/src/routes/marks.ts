@@ -141,60 +141,60 @@ export async function getMarks(cookies: string[] | string, authorizedID: string,
             }
         });
 
-        const aceGroups = new Map<string, { theory?: CourseItem; lab?: CourseItem }>();
+        // const aceGroups = new Map<string, { theory?: CourseItem; lab?: CourseItem }>();
 
-        for (const course of courses) {
-            if (course.courseType === "Theory Only") {
-                const validatedComponent = validateCourseComponent(course);
-                if (validatedComponent) {
-                    await AddClassData(course.classNbr, maskUserID(authorizedID), Math.ceil(validatedComponent.totalWeightageMark));
-                }
-                continue;
-            }
-            if (course.courseSystem !== "ACE") {
-                continue;
-            }
-            const componentType = getACEComponentType(course.courseType);
-            if (!componentType) {
-                continue;
-            }
-            const groupedCourse = aceGroups.get(course.courseCode) ?? {};
-            groupedCourse[componentType] = course;
-            aceGroups.set(course.courseCode, groupedCourse);
-        }
+        // for (const course of courses) {
+        //     if (course.courseType === "Theory Only") {
+        //         const validatedComponent = validateCourseComponent(course);
+        //         if (validatedComponent) {
+        //             await AddClassData(course.classNbr, maskUserID(authorizedID), Math.ceil(validatedComponent.totalWeightageMark));
+        //         }
+        //         continue;
+        //     }
+        //     if (course.courseSystem !== "ACE") {
+        //         continue;
+        //     }
+        //     const componentType = getACEComponentType(course.courseType);
+        //     if (!componentType) {
+        //         continue;
+        //     }
+        //     const groupedCourse = aceGroups.get(course.courseCode) ?? {};
+        //     groupedCourse[componentType] = course;
+        //     aceGroups.set(course.courseCode, groupedCourse);
+        // }
 
-        for (const [courseCode, groupedCourse] of aceGroups) {
-            const theoryComponent = groupedCourse.theory;
-            const labComponent = groupedCourse.lab;
+        // for (const [courseCode, groupedCourse] of aceGroups) {
+        //     const theoryComponent = groupedCourse.theory;
+        //     const labComponent = groupedCourse.lab;
 
-            if (!theoryComponent || !labComponent) {
-                continue;
-            }
+        //     if (!theoryComponent || !labComponent) {
+        //         continue;
+        //     }
 
-            const validatedTheory = validateCourseComponent(theoryComponent);
-            const validatedLab = validateCourseComponent(labComponent);
+        //     const validatedTheory = validateCourseComponent(theoryComponent);
+        //     const validatedLab = validateCourseComponent(labComponent);
 
-            if (!validatedTheory || !validatedLab) {
-                continue;
-            }
+        //     if (!validatedTheory || !validatedLab) {
+        //         continue;
+        //     }
 
-            const theoryCredits = courseCreditMap[`${courseCode}(T)`] ?? 0;
-            const labCredits = courseCreditMap[`${courseCode}(L)`] ?? 0;
-            const totalCredits = theoryCredits + labCredits;
+        //     const theoryCredits = courseCreditMap[`${courseCode}(T)`] ?? 0;
+        //     const labCredits = courseCreditMap[`${courseCode}(L)`] ?? 0;
+        //     const totalCredits = theoryCredits + labCredits;
 
-            if (totalCredits <= 0) {
-                continue;
-            }
+        //     if (totalCredits <= 0) {
+        //         continue;
+        //     }
 
-            // Weighted aggregation combines the validated theory and lab marks using their separate credits.
-            const finalMark =
-                ((validatedTheory.totalWeightageMark * theoryCredits) + (validatedLab.totalWeightageMark * labCredits)) /
-                totalCredits;
+        //     // Weighted aggregation combines the validated theory and lab marks using their separate credits.
+        //     const finalMark =
+        //         ((validatedTheory.totalWeightageMark * theoryCredits) + (validatedLab.totalWeightageMark * labCredits)) /
+        //         totalCredits;
 
-            // Use the theory component's classNbr as the identifier for class statistics
-            const classIdentifier = theoryComponent?.classNbr;
-            await AddClassData(classIdentifier, maskUserID(authorizedID), Math.ceil(finalMark));
-        }
+        //     // Use the theory component's classNbr as the identifier for class statistics
+        //     const classIdentifier = theoryComponent?.classNbr;
+        //     await AddClassData(classIdentifier, maskUserID(authorizedID), Math.ceil(finalMark));
+        // }
 
         const creditsRes = await client.post(
             "/vtop/get/dashboard/current/cgpa/credits",
