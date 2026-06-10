@@ -119,7 +119,7 @@ function GradesDisplay({ data, handleFetchGrades, marksData, attendance }) {
   const specialBaskets = ["Extra curricular activities", "HSM Elective", "Foreign Language"];
 
   const normalCurriculum = Curriculum.filter(
-    (c) => !specialBaskets.some((b) => (c?.basketTitle || "").toLowerCase().includes(b.toLowerCase()))
+    (c) => (!specialBaskets.some((b) => (c?.basketTitle || "").toLowerCase().includes(b.toLowerCase()) ) && parseFloat(c.creditsRequired) > 0)
   );
 
   const specialCurriculum = Curriculum.filter(
