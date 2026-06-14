@@ -1,4 +1,16 @@
-# UniCC
+```text
+██╗   ██╗███╗   ██╗██╗ ██████╗ ██████╗
+██║   ██║████╗  ██║██║██╔════╝██╔════╝
+██║   ██║██╔██╗ ██║██║██║     ██║     
+██║   ██║██║╚██╗██║██║██║     ██║     
+╚██████╔╝██║ ╚████║██║╚██████╗╚██████╗
+ ╚═════╝ ╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═════╝
+```
+![status](https://img.shields.io/badge/status-active-22c55e)
+![Open Source](https://img.shields.io/badge/Open%20Source-Yes-2ea44f?logo=github&logoColor=white)
+![API Access](https://img.shields.io/badge/API-Available-7c3aed)
+![typescript](https://img.shields.io/badge/language-TypeScript-3178C6?logo=typescript&logoColor=white)
+![license](https://img.shields.io/badge/license-MIT-white)
 
 **Live site:** [https://uni-cc.site/](https://uni-cc.site/)
 
