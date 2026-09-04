@@ -230,7 +230,7 @@ export default function PopupCard({ a, setExpandedIdx, dayCardsMap, analyzeCalen
                                         </button>
 
                                         <div
-                                            className={`transition-all duration-300 ease-in-out ${openDropdown === key ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+                                            className={`transition-all duration-300 ease-in-out ${openDropdown === key ? "opacity-100" : "max-h-0 opacity-0"
                                                 } overflow-hidden`}
                                         >
                                             <div className="px-3 pb-2 bg-gray-50 dark:bg-slate-800 midnight:bg-black rounded-b-lg">

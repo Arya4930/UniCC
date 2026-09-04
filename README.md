@@ -1,4 +1,16 @@
-# UniCC
+```text
+██╗   ██╗███╗   ██╗██╗ ██████╗ ██████╗
+██║   ██║████╗  ██║██║██╔════╝██╔════╝
+██║   ██║██╔██╗ ██║██║██║     ██║     
+██║   ██║██║╚██╗██║██║██║     ██║     
+╚██████╔╝██║ ╚████║██║╚██████╗╚██████╗
+ ╚═════╝ ╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═════╝
+```
+![status](https://img.shields.io/badge/status-active-22c55e)
+![Open Source](https://img.shields.io/badge/Open%20Source-Yes-2ea44f?logo=github&logoColor=white)
+![API Access](https://img.shields.io/badge/API-Available-7c3aed)
+![typescript](https://img.shields.io/badge/language-TypeScript-3178C6?logo=typescript&logoColor=white)
+![license](https://img.shields.io/badge/license-MIT-white)
 
 **Live site:** [https://uni-cc.site/](https://uni-cc.site/)
 
@@ -39,7 +51,7 @@ Hosting your own backend is **not recommended** unless you specifically need to,
 Instead, you can directly use the **hosted UniCC backend API**: ```https://uniccapi.uni-cc.site/```
 To do this, modify the API base URL in: `src/components/custom/main.tsx` Change it to:
 ```ts
-export const API_BASE = "https://uniccapi.uni-cc.site";
+export const API_BASE = "https://api.uni-cc.site/";
 ```
 ---
 ## Optional: Hosting Your Own Backend
