@@ -11,7 +11,7 @@ import { loadActivityTree, saveActivityTree } from "@/lib/activit-tree";
 import demoData from '../../app/demoData.json';
 import { AnimatePresence, motion } from "framer-motion";
 
-export const API_BASE = "https://api.uni-cc.site";
+export const API_BASE = process.env.development ? "http://localhost:3000" : "https://api.uni-cc.site";
 
 type settings = {
   decimalValues: boolean;
@@ -400,20 +400,20 @@ export default function LoginPage() {
         );
       }
 
-      // tasks.push(
-      //   (async () => {
-      //     const res = await fetch(`${API_BASE}/api/grades`, {
-      //       method: "POST",
-      //       headers: { "Content-Type": "application/json" },
-      //       body: JSON.stringify({ cookies, authorizedID, csrf, semesterId: settings.currSemesterID }),
-      //     });
-      //     const GradesData = await res.json();
-      //     setGradesData(GradesData);
-      //     localStorage.setItem("grades", JSON.stringify(GradesData));
-      //     setMessage(prev => prev + "\n✅ Grades data fetched");
-      //     setProgressBar(prev => prev + 20);
-      //   })()
-      // )
+      tasks.push(
+        (async () => {
+          const res = await fetch(`${API_BASE}/api/grades`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ cookies, authorizedID, csrf, semesterId: settings.currSemesterID }),
+          });
+          const GradesData = await res.json();
+          setGradesData(GradesData);
+          localStorage.setItem("grades", JSON.stringify(GradesData));
+          setMessage(prev => prev + "\n✅ Grades data fetched");
+          setProgressBar(prev => prev + 20);
+        })()
+      )
 
       // tasks.push(
       //   (async () => {
