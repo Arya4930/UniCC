@@ -1,9 +1,10 @@
-import { Router } from "express";
+import express, { Request, Response } from "express";
+import type { Router } from "express";
 import { RouteLog } from "../lib/models/RouteLog";
 import { VisitorLog } from "../lib/models/VisitorLog";
 import { fn, col, Op } from "sequelize";
 
-const router = Router();
+const router: Router = express.Router();
 
 router.get("/", async (_req, res) => {
   try {

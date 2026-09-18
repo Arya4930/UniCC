@@ -185,6 +185,8 @@ router.post("/", async (req: Request, res: Response) => {
                     "Content-Type": "application/x-www-form-urlencoded",
                     Referer: "https://vtopcc.vit.ac.in/vtop/open/page",
                 },
+                maxRedirects: 0,
+                validateStatus: (s) => s < 400 || s === 302,
             }
         );
 
@@ -262,6 +264,8 @@ router.post("/", async (req: Request, res: Response) => {
                             Cookie: cookieHeader,
                             "Content-Type": "application/x-www-form-urlencoded",
                         },
+                        maxRedirects: 0,
+                        validateStatus: (s) => s < 400 || s === 302,
                     }
                 );
 

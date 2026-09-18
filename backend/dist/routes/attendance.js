@@ -205,6 +205,8 @@ router.post("/", async (req, res) => {
                 "Content-Type": "application/x-www-form-urlencoded",
                 Referer: "https://vtopcc.vit.ac.in/vtop/open/page",
             },
+            maxRedirects: 0,
+            validateStatus: (s) => s < 400 || s === 302,
         });
         const courseInfo = await (0, fetchTimeTable_1.default)(cookieHeader, authorizedID, csrf, semesterId);
         const courseCreditMap = {};
@@ -255,6 +257,8 @@ router.post("/", async (req, res) => {
                         Cookie: cookieHeader,
                         "Content-Type": "application/x-www-form-urlencoded",
                     },
+                    maxRedirects: 0,
+                    validateStatus: (s) => s < 400 || s === 302,
                 });
                 const $$$ = cheerio.load(attendanceRes.data);
                 const detailed = [];

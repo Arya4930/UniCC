@@ -31,7 +31,7 @@ const sequalize_1 = require("./lib/clients/sequalize");
 const Logger_1 = require("./lib/Logger");
 const stats_1 = __importDefault(require("./routes/stats"));
 const web_push_1 = __importDefault(require("web-push"));
-const VitolReminder_1 = require("./lib/VitolReminder");
+// import { vitolReminder } from "./lib/VitolReminder";
 const swagger_1 = require("./lib/clients/swagger");
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const app = (0, express_1.default)();
@@ -77,6 +77,6 @@ app.listen(PORT, async () => {
     await (0, sequalize_1.initDB)();
     (0, cleanupExpiredFiles_1.startCleanupCron)();
     await (0, nodemailer_1.verifyMailer)();
-    (0, VitolReminder_1.vitolReminder)();
+    // vitolReminder();
 });
 //# sourceMappingURL=server.js.map

@@ -10,6 +10,8 @@ declare const ClassData: mongoose.Model<IClassData, {}, {}, {}, mongoose.Documen
     _id: mongoose.Types.ObjectId;
 }> & {
     __v: number;
+} & {
+    id: string;
 }, any, IClassData>;
 export default ClassData;
 //# sourceMappingURL=classData.d.ts.map

@@ -27,7 +27,7 @@ import { initDB } from "./lib/clients/sequalize";
 import { routeLogger, visitorLogger } from "./lib/Logger";
 import stats from "./routes/stats";
 import webpush from 'web-push'
-import { vitolReminder } from "./lib/VitolReminder";
+// import { vitolReminder } from "./lib/VitolReminder";
 
 import { swaggerSpec } from "./lib/clients/swagger";
 import swaggerUi from "swagger-ui-express";
@@ -88,5 +88,5 @@ app.listen(PORT, async () => {
     await initDB();
     startCleanupCron();
     await verifyMailer();
-    vitolReminder();
+    // vitolReminder();
 });

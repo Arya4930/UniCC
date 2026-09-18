@@ -1,10 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
+const express_1 = __importDefault(require("express"));
 const RouteLog_1 = require("../lib/models/RouteLog");
 const VisitorLog_1 = require("../lib/models/VisitorLog");
 const sequelize_1 = require("sequelize");
-const router = (0, express_1.Router)();
+const router = express_1.default.Router();
 router.get("/", async (_req, res) => {
     try {
         const range = _req.query.range || "30d";

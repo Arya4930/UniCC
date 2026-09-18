@@ -58,6 +58,8 @@ declare const User: mongoose.Model<IUser, {}, {}, {}, mongoose.Document<unknown,
     _id: mongoose.Types.ObjectId;
 }> & {
     __v: number;
+} & {
+    id: string;
 }, any, IUser>;
 export default User;
 //# sourceMappingURL=Users.d.ts.map

@@ -11,7 +11,10 @@ import { loadActivityTree, saveActivityTree } from "@/lib/activit-tree";
 import demoData from '../../app/demoData.json';
 import { AnimatePresence, motion } from "framer-motion";
 
-export const API_BASE = process.env.development ? "http://localhost:3000" : "https://api.uni-cc.site";
+export const API_BASE =
+    process.env.NODE_ENV === "development"
+        ? "http://localhost:3000"
+        : "https://api.uni-cc.site";
 
 type settings = {
   decimalValues: boolean;
@@ -400,20 +403,20 @@ export default function LoginPage() {
         );
       }
 
-      tasks.push(
-        (async () => {
-          const res = await fetch(`${API_BASE}/api/grades`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cookies, authorizedID, csrf, semesterId: settings.currSemesterID }),
-          });
-          const GradesData = await res.json();
-          setGradesData(GradesData);
-          localStorage.setItem("grades", JSON.stringify(GradesData));
-          setMessage(prev => prev + "\n✅ Grades data fetched");
-          setProgressBar(prev => prev + 20);
-        })()
-      )
+      // tasks.push(
+      //   (async () => {
+      //     const res = await fetch(`${API_BASE}/api/grades`, {
+      //       method: "POST",
+      //       headers: { "Content-Type": "application/json" },
+      //       body: JSON.stringify({ cookies, authorizedID, csrf, semesterId: settings.currSemesterID }),
+      //     });
+      //     const GradesData = await res.json();
+      //     setGradesData(GradesData);
+      //     localStorage.setItem("grades", JSON.stringify(GradesData));
+      //     setMessage(prev => prev + "\n✅ Grades data fetched");
+      //     setProgressBar(prev => prev + 20);
+      //   })()
+      // )
 
       // tasks.push(
       //   (async () => {
@@ -662,9 +665,9 @@ export default function LoginPage() {
           />
         </>
       )}
-      {/* <div className="top-0 left-0 w-full bg-blue-500 text-white text-center py-2 font-medium">
-        Scheduled maintenance on December 29, 2025 ( afternoon ). API services will be temporarily unavailable.
-      </div> */}
+      <div className="top-0 left-0 w-full bg-blue-500 text-white text-center py-2 font-medium">
+        After the recent VTOP update reload times seem to be longer than usual. If you experience issues, please try again later.
+      </div>
 
       <Footer isLoggedIn={isLoggedIn} />
     </motion.div>
