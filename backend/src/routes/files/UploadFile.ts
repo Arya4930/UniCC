@@ -105,13 +105,19 @@ router.post("/:userID", upload.single("file"), async (req, res) => {
         await connectDB();
 
         const { userID } = req.params;
-        const maskedID = maskUserID(userID?.toUpperCase() || "");
+
+        const id = Array.isArray(userID) ? userID[0] : userID;
+        const upperUserID = id?.toUpperCase() || "";
+
+        const maskedID = maskUserID(upperUserID);
+
         const file = (req as MulterRequest).file;
         if (!file) return res.status(400).json({ error: "No file uploaded" });
 
-        const isAdmin = ADMINS.includes(userID?.toUpperCase() || "");
+        const isAdmin = ADMINS.includes(upperUserID);
+
         let user = await User.findOne({ UserID: maskedID });
-        
+
         if (!user) {
             user = await User.create({ UserID: maskedID, files: [] });
         }
