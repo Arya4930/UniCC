@@ -42,21 +42,83 @@ const captcha_1 = require("./captcha");
 const solveCaptcha_1 = require("./solveCaptcha");
 const cheerio = __importStar(require("cheerio"));
 const router = express_1.default.Router();
-const mergeCookies = (...cookieGroups) => {
-    const jar = new Map();
-    for (const group of cookieGroups) {
-        for (const setCookie of group ?? []) {
-            const cookie = setCookie.split(";", 1)[0]?.trim();
-            if (!cookie)
-                continue;
-            const separatorIndex = cookie.indexOf("=");
-            if (separatorIndex > 0) {
-                jar.set(cookie.slice(0, separatorIndex), cookie);
-            }
-        }
-    }
-    return [...jar.values()].join("; ");
-};
+/**
+ * @openapi
+ * /api/login:
+ *   post:
+ *     tags:
+ *       - Authentication
+ *     security: []
+ *     summary: Authenticate user via VTOP and return session credentials
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: 24BCE1234
+ *               password:
+ *                 type: string
+ *                 example: mySecretPassword
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Login successful!
+ *                 cookies:
+ *                   type: string
+ *                   description: Session cookies required for authenticated requests
+ *                   example: JSESSIONID=abc123; Path=/; HttpOnly
+ *                 csrf:
+ *                   type: string
+ *                   description: CSRF token required for future form submissions
+ *                   example: 533aba0b-ca27-489c-9c78-d0e117a3e2c7
+ *                 authorizedID:
+ *                   type: string
+ *                   description: Authorized VTOP user ID extracted after login
+ *                   example: 24BCE1234
+ *       401:
+ *         description: Authentication failed due to invalid captcha or credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Invalid Username / Password
+ *       500:
+ *         description: Internal server error or captcha fetch failure
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: Failed to get captcha
+ */
 router.post("/", async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -81,13 +143,18 @@ router.post("/", async (req, res) => {
             validateStatus: (s) => s < 400 || s === 302,
         });
         const loginCookies = loginRes.headers["set-cookie"];
-        const allCookies = mergeCookies(cookies, loginCookies);
-        const dashboardRes = await client.get(loginRes.headers.location, {
-            headers: {
-                Cookie: allCookies,
-            },
-            maxRedirects: 3,
-        });
+        const allCookies = [...(cookies || []), ...(loginCookies || [])].join("; ");
+        let dashboardRes;
+        if (loginRes.status === 302 && loginRes.headers.location) {
+            dashboardRes = await client.get(loginRes.headers.location, {
+                headers: { Cookie: allCookies },
+            });
+        }
+        else {
+            dashboardRes = await client.get("/vtop/open/page", {
+                headers: { Cookie: allCookies },
+            });
+        }
         const dashboardHtml = dashboardRes.data;
         let isAuthorized = false;
         if (/authorizedidx/i.test(dashboardHtml)) {
