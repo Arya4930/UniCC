@@ -612,9 +612,9 @@ export default function LoginPage() {
 
       {(isLoggedIn || demoMode) && (
         <>
-        <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium">
+            {/* <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium">
         After the recent VTOP update our API seems to be not working properly. We are working on fixing it. Please check back later. ⚠️
-      </div>
+      </div> */}
           {isOffline && <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium">
             ⚠️ You’re currently offline. Some features may not work.
           </div>}
