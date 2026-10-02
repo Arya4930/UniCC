@@ -10,8 +10,9 @@ import { AllGradesRes } from "@/types/data/allgrades";
 import { loadActivityTree, saveActivityTree } from "@/lib/activit-tree";
 import demoData from '../../app/demoData.json';
 import { AnimatePresence, motion } from "framer-motion";
+import DomainMigration from "./DomainMigration";
 
-export const API_BASE =  "https://api-unicc.arya22.dev";
+export const API_BASE = "https://api-unicc.arya22.dev";
 
 type settings = {
   decimalValues: boolean;
@@ -46,6 +47,15 @@ const defaultIDs: IDs = {
 }
 
 export default function LoginPage() {
+  const [isOldDomain, setIsOldDomain] = useState(false);
+
+  useEffect(() => {
+    setIsOldDomain(window.location.hostname === "uni-cc.site");
+  }, []);
+
+  if (isOldDomain) {
+    return <DomainMigration />;
+  }
   // --- State Management ---
   const [IDs, setIDs] = useState<IDs>(defaultIDs);
   const [message, setMessage] = useState<string>("");
@@ -609,7 +619,7 @@ export default function LoginPage() {
 
       {(isLoggedIn || demoMode) && (
         <>
-            {/* <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium">
+          {/* <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium">
         After the recent VTOP update our API seems to be not working properly. We are working on fixing it. Please check back later. ⚠️
       </div> */}
           {isOffline && <div className="top-0 left-0 w-full bg-yellow-500 text-black text-center py-2 font-medium">
