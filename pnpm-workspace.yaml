@@ -1,0 +1,6 @@
+allowBuilds:
+  '@scarf/scarf': true
+  canvas: true
+  sharp: true
+  sqlite3: true
+  unrs-resolver: true

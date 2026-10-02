@@ -5,10 +5,10 @@ import { Copy, Check, ChevronDown, ChevronRight } from "lucide-react";
 
 export default function Links() {
     const Links = [
-        "https://uni-cc.site",
+        "https://unicc.arya22.dev",
         "https://uni-cc.vercel.app",
         "https://uni-cc.netlify.app",
-        "https://github.uni-cc.site"
+        "https://github.unicc.arya22.dev"
     ];
 
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);

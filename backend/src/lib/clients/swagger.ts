@@ -16,7 +16,7 @@ export const swaggerSpec = swaggerJSDoc({
             { name: "Files" },
         ],
         servers: [
-            { url: "https://api.uni-cc.site" },
+            { url: "https://api-unicc.arya22.dev" },
             { url: "http://localhost:3000" },
         ],
         // components: {

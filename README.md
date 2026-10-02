@@ -12,11 +12,11 @@
 ![typescript](https://img.shields.io/badge/language-TypeScript-3178C6?logo=typescript&logoColor=white)
 ![license](https://img.shields.io/badge/license-MIT-white)
 
-**Live site:** [https://uni-cc.site/](https://uni-cc.site/)
+**Live site:** [https://unicc.arya22.dev/](https://unicc.arya22.dev/)
 
 **Repository:** [https://github.com/Arya4930/UniCC](https://github.com/Arya4930/UniCC)
-**API Docs:** [https://api.uni-cc.site/docs](https://api.uni-cc.site/docs)
-**API Stats:** [https://api.uni-cc.site/stats](https://api.uni-cc.site/docs)
+**API Docs:** [https://api-unicc.arya22.dev/docs](https://api-unicc.arya22.dev/docs)
+**API Stats:** [https://api-unicc.arya22.dev/stats](https://api-unicc.arya22.dev/docs)
 
 ---
 
@@ -36,7 +36,7 @@ It provides a clean, minimalist interface to access campus-related information s
 It is a **stripped-down version of UniCC**, focusing only on essential information in a simpler and more accessible interface.
 
 - **Repository:** [https://github.com/Arya4930/ParentsCC](https://github.com/Arya4930/ParentsCC)
-- **Live site:** [https://parents.uni-cc.site/](https://parents.uni-cc.site/)
+- **Live site:** [https://parents.unicc.arya22.dev/](https://parents.unicc.arya22.dev/)
 
 ---
 
@@ -48,10 +48,10 @@ Hosting your own backend is **not recommended** unless you specifically need to,
 - A MongoDB database
 - A Backblaze B2 bucket for file storage
 
-Instead, you can directly use the **hosted UniCC backend API**: ```https://uniccapi.uni-cc.site/```
+Instead, you can directly use the **hosted UniCC backend API**: ```https://uniccapi-unicc.arya22.dev/```
 To do this, modify the API base URL in: `src/components/custom/main.tsx` Change it to:
 ```ts
-export const API_BASE = "https://api.uni-cc.site/";
+export const API_BASE = "https://api-unicc.arya22.dev/";
 ```
 ---
 ## Optional: Hosting Your Own Backend

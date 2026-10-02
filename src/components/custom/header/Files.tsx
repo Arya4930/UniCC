@@ -64,7 +64,7 @@ export default function Files() {
     };
 
     const getDownloadUrl = (fileID) =>
-        `https://assets.uni-cc.site/${fileID}?response-content-disposition=attachment`;
+        `https://assets.unicc.arya22.dev/${fileID}?response-content-disposition=attachment`;
 
     useEffect(() => {
         fetchFiles();

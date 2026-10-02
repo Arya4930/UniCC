@@ -8,13 +8,13 @@ import { useRef, useState, useMemo } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
 const allVideos = [
-    "https://assets.uni-cc.site/reels/reel_1.mp4",
-//    "https://assets.uni-cc.site/reels/reel_2.mp4",
-    "https://assets.uni-cc.site/reels/reel_3.mp4",
-    // "https://assets.uni-cc.site/reels/reel_5.mp4",
-    "https://assets.uni-cc.site/reels/reel_6.mp4",
-    "https://assets.uni-cc.site/reels/reel_7.mp4",
-    "https://assets.uni-cc.site/reels/reel_8.mp4"
+    "https://assets-unicc.arya22.dev/reels/reel_1.mp4",
+//    "https://assets-unicc.arya22.dev/reels/reel_2.mp4",
+    "https://assets-unicc.arya22.dev/reels/reel_3.mp4",
+    // "https://assets-unicc.arya22.dev/reels/reel_5.mp4",
+    "https://assets-unicc.arya22.dev/reels/reel_6.mp4",
+    "https://assets-unicc.arya22.dev/reels/reel_7.mp4",
+    "https://assets-unicc.arya22.dev/reels/reel_8.mp4"
 ];
 
 function shuffleArray<T>(array: T[]): T[] {
