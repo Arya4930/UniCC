@@ -47,15 +47,6 @@ const defaultIDs: IDs = {
 }
 
 export default function LoginPage() {
-  const [isOldDomain, setIsOldDomain] = useState(false);
-
-  useEffect(() => {
-    setIsOldDomain(window.location.hostname === "uni-cc.site");
-  }, []);
-
-  if (isOldDomain) {
-    return <DomainMigration />;
-  }
   // --- State Management ---
   const [IDs, setIDs] = useState<IDs>(defaultIDs);
   const [message, setMessage] = useState<string>("");
@@ -539,6 +530,16 @@ export default function LoginPage() {
 
     return () => clearTimeout(timer);
   }, [isReloading]);
+
+  const [isOldDomain, setIsOldDomain] = useState(false);
+
+  useEffect(() => {
+    setIsOldDomain(window.location.hostname === "localhost");
+  }, []);
+
+  if (isOldDomain) {
+    return <DomainMigration />;
+  }
 
   if (isLoading) {
     return (
