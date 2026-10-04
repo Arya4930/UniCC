@@ -534,7 +534,7 @@ export default function LoginPage() {
   const [isOldDomain, setIsOldDomain] = useState(false);
 
   useEffect(() => {
-    setIsOldDomain(window.location.hostname === "localhost");
+    setIsOldDomain(window.location.hostname === "uni-cc.site");
   }, []);
 
   if (isOldDomain) {
