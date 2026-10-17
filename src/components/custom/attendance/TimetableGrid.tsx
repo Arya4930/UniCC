@@ -10,9 +10,18 @@ export default function TimetableVtop({ attendance }) {
             document.body.style.overflow = "";
         };
     }, []);
-    
+
     const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-    const slotMap = config.slotMap || {};
+    const allowedSlots = /^[ABCDEFGTL]/;
+
+    const slotMap = Object.fromEntries(
+        Object.entries(config.slotMap || {}).map(([day, slots]) => [
+            day,
+            Object.fromEntries(
+                Object.entries(slots).filter(([slot]) => allowedSlots.test(slot))
+            )
+        ])
+    );
 
     function toMinutes(t) {
         const [hs = "0", ms = "0"] = String(t).split(":");
