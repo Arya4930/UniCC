@@ -50,6 +50,7 @@ function isInstructionalEvent(e) {
 }
 
 export default function CalendarView({ calendars, calendarType, handleCalendarFetch }) {
+    console.log(calendars);
     const safeCalendars = useMemo(() => {
         if (!calendars) return [];
         if (Array.isArray(calendars)) return calendars;
@@ -118,6 +119,19 @@ export default function CalendarView({ calendars, calendarType, handleCalendarFe
     const blanks = Array.from({ length: blanksCount }, (_, i) => i);
     const today = new Date();
     const isCurrentMonth = today.getFullYear() === year && today.getMonth() === monthIndex;
+
+    if(calendars.every(calendar => calendar.days.length === 0)) {
+        return (
+            <div className="flex flex-col items-center justify-center h-full">
+                <h1 className="text-lg font-semibold mb-3 text-center text-gray-800 dark:text-gray-100 midnight:text-gray-100">
+                    Academic Calendar ({CALENDAR_TYPES[calendarType || "ALL"]}) <button onClick={() => handleCalendarFetch(calendarType || "ALL")} className="mt-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                        <RefreshCcw className={`w-4 h-4`} />
+                    </button>
+                </h1>
+                Calendar Not Found for the selected type.
+            </div>
+        )
+    }
 
     return (
         <div className="flex flex-col gap-4">
