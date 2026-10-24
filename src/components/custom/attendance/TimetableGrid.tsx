@@ -13,12 +13,15 @@ export default function TimetableVtop({ attendance }) {
 
     const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
     const allowedSlots = /^[ABCDEFGTL]/;
+    const allowedExceptions = /^S(?:8|10|11|15)$/;
 
     const slotMap = Object.fromEntries(
         Object.entries(config.slotMap || {}).map(([day, slots]) => [
             day,
             Object.fromEntries(
-                Object.entries(slots).filter(([slot]) => allowedSlots.test(slot))
+                Object.entries(slots).filter(
+                    ([slot]) => allowedSlots.test(slot) || allowedExceptions.test(slot)
+                )
             )
         ])
     );
