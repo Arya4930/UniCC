@@ -119,7 +119,7 @@ export default function CGPAPredictor({ data, attendance, CGPA }) {
                 </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-5">
                 <div className="rounded-lg border border-blue-200 dark:border-blue-800 midnight:border-blue-900 p-3 bg-blue-50 dark:bg-blue-950/40 midnight:bg-blue-950/20">
                     <p className="text-xs text-blue-700 dark:text-blue-300">Current CGPA</p>
                     <p className="text-xl font-bold text-blue-800 dark:text-blue-200">{currentCgpa.toFixed(2)}</p>
@@ -127,6 +127,10 @@ export default function CGPAPredictor({ data, attendance, CGPA }) {
                 <div className="rounded-lg border border-gray-200 dark:border-slate-700 midnight:border-gray-800 p-3">
                     <p className="text-xs text-gray-600 dark:text-gray-300 midnight:text-gray-400">Current Credits</p>
                     <p className="text-xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-200">{currentCredits.toFixed(1)}</p>
+                </div>
+                <div className="rounded-lg border border-gray-200 dark:border-slate-700 midnight:border-gray-800 p-3">
+                    <p className="text-xs text-gray-600 dark:text-gray-300 midnight:text-gray-400">Predicted Credits</p>
+                    <p className="text-xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-200">{predictedAddedCredits.toFixed(1)}</p>
                 </div>
                 <div className="rounded-lg border border-gray-200 dark:border-slate-700 midnight:border-gray-800 p-3">
                     <p className="text-xs text-gray-600 dark:text-gray-300 midnight:text-gray-400">Predicted GPA</p>
@@ -179,7 +183,7 @@ export default function CGPAPredictor({ data, attendance, CGPA }) {
                                         >
                                             <div className="flex items-center justify-between gap-2 mb-3">
                                                 <p className="text-sm font-medium text-gray-900 dark:text-gray-100 midnight:text-gray-100">
-                                                    Semester {SemestersCompleted + idx + 1}
+                                                    Semester {SemestersCompleted + idx + 2}
                                                 </p>
                                                 <button
                                                     type="button"
