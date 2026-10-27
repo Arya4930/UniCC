@@ -130,7 +130,7 @@ export default function CGPAPredictor({ data, attendance, CGPA }) {
                 </div>
                 <div className="rounded-lg border border-gray-200 dark:border-slate-700 midnight:border-gray-800 p-3">
                     <p className="text-xs text-gray-600 dark:text-gray-300 midnight:text-gray-400">Predicted Credits</p>
-                    <p className="text-xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-200">{predictedAddedCredits.toFixed(1)}</p>
+                    <p className="text-xl font-bold text-gray-900 dark:text-gray-100 midnight:text-gray-200">{predictedTotalCredits.toFixed(1)}</p>
                 </div>
                 <div className="rounded-lg border border-gray-200 dark:border-slate-700 midnight:border-gray-800 p-3">
                     <p className="text-xs text-gray-600 dark:text-gray-300 midnight:text-gray-400">Predicted GPA</p>
