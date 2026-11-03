@@ -3,7 +3,6 @@ import { Geist, Geist_Mono, Roboto } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from "../components/themeprovider";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import type { Viewport, Metadata } from "next";
 import './globals.css';
 
@@ -78,7 +77,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </ThemeProvider>
         <Analytics />
-        <SpeedInsights />
       </body>
       <GoogleAnalytics gaId="G-40NYS6B13N" />
       <GoogleAnalytics gaId="G-2H76BLP4VK" />
