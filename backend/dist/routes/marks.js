@@ -32,10 +32,15 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMarks = getMarks;
 const cheerio = __importStar(require("cheerio"));
 const url_1 = require("url");
+const addClassData_1 = __importDefault(require("../lib/addClassData"));
+const mask_1 = require("../lib/mask");
 function parseFiniteNumber(value) {
     const parsed = Number.parseFloat(value);
     return Number.isFinite(parsed) ? parsed : null;
@@ -61,19 +66,22 @@ function validateCourseComponent(course) {
         totalWeightage += weightagePercent;
         totalWeightageMark += weightageMark;
     }
-    const finalAssessment = course.assessments[course.assessments.length - 1];
-    const finalAssessmentScore = parseFiniteNumber(finalAssessment?.scoredMark ?? "");
-    const finalAssessmentMax = parseFiniteNumber(finalAssessment?.maxMark ?? "");
-    // Keep the original FAT gating, but make the comparisons safe for floating-point input.
-    // Use 40% of the final assessment's max marks as the gate instead of an absolute 40 points.
-    const finalAssessmentPercent = finalAssessmentScore === null || finalAssessmentMax === null || finalAssessmentMax <= 0
-        ? null
-        : (finalAssessmentScore / finalAssessmentMax) * 100;
-    if (!finalAssessment ||
-        finalAssessment.title !== "Final Assessment Test" ||
-        finalAssessmentPercent === null ||
-        finalAssessmentPercent <= 1 ||
-        Math.abs(totalWeightage - 100) > 0.01) {
+    // const finalAssessment = course.assessments[course.assessments.length - 1];
+    // const finalAssessmentScore = parseFiniteNumber(finalAssessment?.scoredMark ?? "");
+    // const finalAssessmentMax = parseFiniteNumber(finalAssessment?.maxMark ?? "");
+    // // Keep the original FAT gating, but make the comparisons safe for floating-point input.
+    // // Use 40% of the final assessment's max marks as the gate instead of an absolute 40 points.
+    // const finalAssessmentPercent =
+    //     finalAssessmentScore === null || finalAssessmentMax === null || finalAssessmentMax <= 0
+    //         ? null
+    //         : (finalAssessmentScore / finalAssessmentMax) * 100;
+    if (
+    // !finalAssessment ||
+    // finalAssessment.title !== "Final Assessment Test" ||
+    // finalAssessmentPercent === null ||
+    // finalAssessmentPercent <= 1 ||
+    Math.abs(totalWeightage - 60) > 0.01 // Should be 100 after FAT marks released
+    ) {
         return null;
     }
     return {
@@ -140,51 +148,50 @@ async function getMarks(cookies, authorizedID, csrf, semesterId, client, courseC
                 courses.push(courseData);
             }
         });
-        // const aceGroups = new Map<string, { theory?: CourseItem; lab?: CourseItem }>();
-        // for (const course of courses) {
-        //     if (course.courseType === "Theory Only") {
-        //         const validatedComponent = validateCourseComponent(course);
-        //         if (validatedComponent) {
-        //             await AddClassData(course.classNbr, maskUserID(authorizedID), Math.ceil(validatedComponent.totalWeightageMark));
-        //         }
-        //         continue;
-        //     }
-        //     if (course.courseSystem !== "ACE") {
-        //         continue;
-        //     }
-        //     const componentType = getACEComponentType(course.courseType);
-        //     if (!componentType) {
-        //         continue;
-        //     }
-        //     const groupedCourse = aceGroups.get(course.courseCode) ?? {};
-        //     groupedCourse[componentType] = course;
-        //     aceGroups.set(course.courseCode, groupedCourse);
-        // }
-        // for (const [courseCode, groupedCourse] of aceGroups) {
-        //     const theoryComponent = groupedCourse.theory;
-        //     const labComponent = groupedCourse.lab;
-        //     if (!theoryComponent || !labComponent) {
-        //         continue;
-        //     }
-        //     const validatedTheory = validateCourseComponent(theoryComponent);
-        //     const validatedLab = validateCourseComponent(labComponent);
-        //     if (!validatedTheory || !validatedLab) {
-        //         continue;
-        //     }
-        //     const theoryCredits = courseCreditMap[`${courseCode}(T)`] ?? 0;
-        //     const labCredits = courseCreditMap[`${courseCode}(L)`] ?? 0;
-        //     const totalCredits = theoryCredits + labCredits;
-        //     if (totalCredits <= 0) {
-        //         continue;
-        //     }
-        //     // Weighted aggregation combines the validated theory and lab marks using their separate credits.
-        //     const finalMark =
-        //         ((validatedTheory.totalWeightageMark * theoryCredits) + (validatedLab.totalWeightageMark * labCredits)) /
-        //         totalCredits;
-        //     // Use the theory component's classNbr as the identifier for class statistics
-        //     const classIdentifier = theoryComponent?.classNbr;
-        //     await AddClassData(classIdentifier, maskUserID(authorizedID), Math.ceil(finalMark));
-        // }
+        const aceGroups = new Map();
+        for (const course of courses) {
+            if (course.courseType === "Theory Only") {
+                const validatedComponent = validateCourseComponent(course);
+                if (validatedComponent) {
+                    await (0, addClassData_1.default)(course.classNbr, (0, mask_1.maskUserID)(authorizedID), Math.ceil(validatedComponent.totalWeightageMark));
+                }
+                continue;
+            }
+            if (course.courseSystem !== "ACE") {
+                continue;
+            }
+            const componentType = getACEComponentType(course.courseType);
+            if (!componentType) {
+                continue;
+            }
+            const groupedCourse = aceGroups.get(course.courseCode) ?? {};
+            groupedCourse[componentType] = course;
+            aceGroups.set(course.courseCode, groupedCourse);
+        }
+        for (const [courseCode, groupedCourse] of aceGroups) {
+            const theoryComponent = groupedCourse.theory;
+            const labComponent = groupedCourse.lab;
+            if (!theoryComponent || !labComponent) {
+                continue;
+            }
+            const validatedTheory = validateCourseComponent(theoryComponent);
+            const validatedLab = validateCourseComponent(labComponent);
+            if (!validatedTheory || !validatedLab) {
+                continue;
+            }
+            const theoryCredits = courseCreditMap[`${courseCode}(T)`] ?? 0;
+            const labCredits = courseCreditMap[`${courseCode}(L)`] ?? 0;
+            const totalCredits = theoryCredits + labCredits;
+            if (totalCredits <= 0) {
+                continue;
+            }
+            // Weighted aggregation combines the validated theory and lab marks using their separate credits.
+            const finalMark = ((validatedTheory.totalWeightageMark * theoryCredits) + (validatedLab.totalWeightageMark * labCredits)) /
+                totalCredits;
+            // Use the theory component's classNbr as the identifier for class statistics
+            const classIdentifier = theoryComponent?.classNbr;
+            await (0, addClassData_1.default)(classIdentifier, (0, mask_1.maskUserID)(authorizedID), Math.ceil(finalMark));
+        }
         const creditsRes = await client.post("/vtop/get/dashboard/current/cgpa/credits", new url_1.URLSearchParams({
             authorizedID,
             _csrf: csrf,

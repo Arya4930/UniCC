@@ -181,21 +181,21 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
 
   const [stats, setStats] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchStats = async () => {
-  //     try {
-  //       const response = await fetch(`${API_BASE}/api/attendance/marks?classId=${course.classNbr}`);
-  //       const data = await response.json();
-  //       if(!response.ok) {
-  //         throw new Error(data.error || "Failed to fetch class statistics");
-  //       }
-  //       setStats(data);
-  //     } catch (error) {
-  //       console.error("Error fetching class statistics:", error);
-  //     }
-  //   };
-  //   fetchStats();
-  // }, [course.classNbr]);
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch(`${API_BASE}/api/attendance/marks?classId=${course.classNbr}`);
+        const data = await response.json();
+        if(!response.ok) {
+          throw new Error(data.error || "Failed to fetch class statistics");
+        }
+        setStats(data);
+      } catch (error) {
+        console.error("Error fetching class statistics:", error);
+      }
+    };
+    fetchStats();
+  }, [course.classNbr]);
 
   const dataPoints = stats ? (stats.dataPoints ?? stats.count ?? 0) : 0;
 
@@ -310,9 +310,9 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
         {stats && (
           <div className="overflow-x-auto mt-6">
             <p className="mb-2 text-sm text-gray-700 dark:text-gray-300 midnight:text-gray-300">
-              Data points: {dataPoints} | Mean: {formatNumber(stats.mean)} | SD: {formatNumber(stats.sd)}
+              Data points: {dataPoints} | Mean: {formatNumber(stats.mean)} / 60 | SD: {formatNumber(stats.sd)}
             </p>
-            <table className="w-full border border-gray-300 dark:border-gray-600 midnight:border-gray-700">
+            {/* <table className="w-full border border-gray-300 dark:border-gray-600 midnight:border-gray-700">
               <thead>
                 <tr className="bg-gray-200 dark:bg-slate-700 midnight:bg-gray-900">
                   <th
@@ -379,7 +379,7 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
                   );
                 })()}
               </tbody>
-            </table>
+            </table> */}
           </div>
         )}
         <Button
