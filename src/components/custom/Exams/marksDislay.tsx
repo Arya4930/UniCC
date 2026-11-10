@@ -298,7 +298,10 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
         </div>
         {stats && (
           <div className="mt-4 p-4 border rounded text-sm">
-            <div className="font-semibold">Beta feature — Grade prediction</div>
+            <div className="text-lg font-semibold">Beta feature — Grade prediction</div>
+            <p className="mb-2 text-md text-gray-700 dark:text-gray-300 midnight:text-gray-300">
+              Data points: {dataPoints} | Mean: {formatNumber(stats.mean)} / 60 | SD: {formatNumber(stats.sd)}
+            </p>
             <div className={`mt-2 font-medium ${dataPoints > 0 && dataPoints < 30 ? 'text-red-600 dark:text-red-400 midnight:text-red-400' : 'text-gray-700 dark:text-gray-300 midnight:text-gray-300'}`}>
               {dataPoints > 0 && `Warning: Very low data samples (${dataPoints}). Predictions may be unreliable.`}
             </div>
@@ -309,9 +312,9 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
         )}
         {stats && (
           <div className="overflow-x-auto mt-6">
-            <p className="mb-2 text-sm text-gray-700 dark:text-gray-300 midnight:text-gray-300">
+            {/* <p className="mb-2 text-sm text-gray-700 dark:text-gray-300 midnight:text-gray-300">
               Data points: {dataPoints} | Mean: {formatNumber(stats.mean)} / 60 | SD: {formatNumber(stats.sd)}
-            </p>
+            </p> */}
             {/* <table className="w-full border border-gray-300 dark:border-gray-600 midnight:border-gray-700">
               <thead>
                 <tr className="bg-gray-200 dark:bg-slate-700 midnight:bg-gray-900">
