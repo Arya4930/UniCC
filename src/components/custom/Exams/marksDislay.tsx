@@ -45,11 +45,11 @@ const getCourseTotal = (course, labCourse) => {
   const labTotals = getAssessmentTotals(labCourse.assessments);
   const theoryCredits = getCourseCredits(course);
   const labCredits = getCourseCredits(labCourse);
-  if(theoryCredits < 0 || labCredits < 0) {
+  if (theoryCredits < 0 || labCredits < 0) {
     return "Reload Required";
   }
   const creditsTotal = theoryCredits + labCredits;
-  const combinedWeightPercent = (theoryCredits * theoryTotals.weightPercent + labCredits * labTotals.weightPercent)/creditsTotal;
+  const combinedWeightPercent = (theoryCredits * theoryTotals.weightPercent + labCredits * labTotals.weightPercent) / creditsTotal;
 
   if (combinedWeightPercent <= 0) {
     return theoryTotals.weighted;
@@ -186,7 +186,7 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
       try {
         const response = await fetch(`${API_BASE}/api/attendance/marks?classId=${course.classNbr}`);
         const data = await response.json();
-        if(!response.ok) {
+        if (!response.ok) {
           throw new Error(data.error || "Failed to fetch class statistics");
         }
         setStats(data);
@@ -206,7 +206,20 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
           {course.courseCode} – {course.courseTitle}
         </h2>
         <p className="mb-1">
-          <strong>Course Total:</strong> {courseTotal}
+          <strong>Course Total:</strong> {courseTotal}{" "}
+          {stats && (() => {
+            const difference = Number(courseTotal.split("/")[0]) - stats.mean;
+            const isBelow = difference < 0;
+
+            return (
+              <span className={`font-medium ${isBelow
+                  ? 'text-red-600 dark:text-red-400 midnight:text-red-400'
+                  : 'text-green-600 dark:text-green-400 midnight:text-green-400'
+                }`}>
+                ({difference > 0 ? "+" : ""}{formatNumber(difference)} {isBelow ? "below" : "above"} class mean, {dataPoints} datapoints)
+              </span>
+            );
+          })()}
         </p>
         <p className="mb-1">
           <strong>Faculty:</strong> {course.faculty}
