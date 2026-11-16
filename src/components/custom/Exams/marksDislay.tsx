@@ -315,9 +315,11 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
             <p className="mb-2 text-md text-gray-700 dark:text-gray-300 midnight:text-gray-300">
               Data points: {dataPoints} | Mean: {formatNumber(stats.mean)} / 60 | SD: {formatNumber(stats.sd)}
             </p>
-            <div className={`mt-2 font-medium ${dataPoints > 0 && dataPoints < 30 ? 'text-red-600 dark:text-red-400 midnight:text-red-400' : 'text-gray-700 dark:text-gray-300 midnight:text-gray-300'}`}>
-              {dataPoints > 0 && `Warning: Very low data samples (${dataPoints}). Predictions may be unreliable.`}
-            </div>
+            {dataPoints > 0 && dataPoints <= 30 && (
+              <div className="mt-2 font-medium text-red-600 dark:text-red-400 midnight:text-red-400">
+                Warning: Very low data samples ({dataPoints}). Predictions may be unreliable.
+              </div>
+            )}
             <div className="mt-2 text-xs">
               Your marks are temporarily processed to compute class statistics such as averages and grade ranges. We do not permanently store your marks after processing them, and only anonymous overall class statistics are retained.This is an experimental prediction based on available class data. Do not fully rely on this prediction — it may not represent the entire class.
             </div>
