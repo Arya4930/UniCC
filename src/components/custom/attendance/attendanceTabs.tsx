@@ -135,19 +135,23 @@ export default function AttendanceTabs({ data, activeDay, setActiveDay, calendar
     }
   }, [daysWithClasses]);
 
-  const findEventDate = (eventName) => {
-    const ev = [...importantEvents.values()].find(
-      (e) => e.event.toLowerCase() === eventName.toLowerCase()
-    );
-    if (!ev) return null;
-    return ev.formattedDate;
+  const findEventDate = (searchQuery) => {
+    const ev = [...importantEvents.values()].find((e) => {
+      if (searchQuery instanceof RegExp) {
+        return searchQuery.test(e.event);
+      }
+      return e.event.toLowerCase().includes(searchQuery.toLowerCase());
+    });
+    
+    return ev ? ev.formattedDate : null;
   };
+
   const impDates = {
-    cat1Date: findEventDate("CAT I"),
-    cat2Date: findEventDate("CAT II"),
-    lidLabDate: findEventDate("lid for laboratory classes"),
-    lidTheoryDate: findEventDate("LID FOR THEORY CLASSES"),
-    midsemStart: findEventDate("Mid Term Test"),
+    cat1Date: findEventDate(/cat[\s\-]*(1|I)\b/i), 
+    cat2Date: findEventDate(/cat[\s\-]*(2|II)\b/i),
+    lidLabDate: findEventDate(/lid.*lab/i), 
+    lidTheoryDate: findEventDate(/lid.*theory/i), 
+    midsemStart: findEventDate(/mid\s*term|midsem/i), 
   };
 
   if (daysWithClasses.length === 0) return <NoContentFound />;

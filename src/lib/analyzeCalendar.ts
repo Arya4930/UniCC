@@ -126,40 +126,38 @@ export function analyzeCalendar(calendar: CalendarInput = {}): AnalyzeCalendarRe
     }
 
     const IMPORTANT_EVENT_NAMES = [
-        { key: "cat   i", display: "CAT I" },
-        { key: "cat   ii", display: "CAT II" },
-        {
-            key: "lid for laboratory classes",
-            display: "LID FOR LABORATORY CLASSES",
-            aliases: ["lid for lab"],
-        },
-        { key: "lid for theory classes", display: "LID FOR THEORY CLASSES" },
-        { key: "mid term test", display: "MID TERM TEST" },
+    { id: "cat1", pattern: /cat[\s\-]*(1|i)\b/i, display: "CAT I" },
+    { id: "cat2", pattern: /cat[\s\-]*(2|ii)\b/i, display: "CAT II" },
+    { id: "lidLab", pattern: /lid.*lab|last instructional.*lab/i, display: "LID FOR LABORATORY CLASSES" },
+    { id: "lidTheory", pattern: /lid.*theory|last instructional.*theory/i, display: "LID FOR THEORY CLASSES" },
+    { id: "midsem", pattern: /mid\s*term|midsem/i, display: "MID TERM TEST" },
     ];
 
     const importantEvents = new Map<string, ImportantEvent>();
 
     for (const day of result.days) {
-        for (const ev of day.events) {
-            const text = normalize(ev.text || "");
-            for (const { key, display, aliases = [] } of IMPORTANT_EVENT_NAMES) {
-                const matched = text.includes(key) || aliases.some((alias) => text.includes(alias));
-                if (matched && !importantEvents.has(key)) {
-                    const monthIndex = [
-                        "january", "february", "march", "april", "may", "june",
-                        "july", "august", "september", "october", "november", "december"
-                    ].findIndex((m) => String(result.month).toLowerCase().includes(m));
-                    importantEvents.set(key, {
-                        event: display,
-                        date: day.date,
-                        weekday: day.weekday,
-                        month: result.month,
-                        year: result.year,
-                        formattedDate: new Date(result.year, monthIndex, day.date),
-                    });
-                }
-            }
+    for (const ev of day.events) {
+        const text = ev.text || "";
+
+        for (const { id, pattern, display } of IMPORTANT_EVENT_NAMES) {
+        if (pattern.test(text) && !importantEvents.has(id)) {
+            
+            const monthIndex = [
+            "january", "february", "march", "april", "may", "june",
+            "july", "august", "september", "october", "november", "december"
+            ].findIndex((m) => String(result.month).toLowerCase().includes(m));
+
+            importantEvents.set(id, {
+            event: display,
+            date: day.date,
+            weekday: day.weekday,
+            month: result.month,
+            year: result.year,
+            formattedDate: new Date(result.year, monthIndex, day.date),
+            });
         }
+        }
+    }
     }
     return { result, importantEvents };
 }

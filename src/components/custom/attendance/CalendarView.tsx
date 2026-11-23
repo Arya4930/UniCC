@@ -50,7 +50,6 @@ function isInstructionalEvent(e) {
 }
 
 export default function CalendarView({ calendars, calendarType, handleCalendarFetch }) {
-    console.log(calendars);
     const safeCalendars = useMemo(() => {
         if (!calendars) return [];
         if (Array.isArray(calendars)) return calendars;
