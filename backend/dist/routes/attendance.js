@@ -172,8 +172,6 @@ function mergeAttendanceWithTimetable(attendance, timetable) {
                 courseType: null,
                 slotName: "NILL",
                 faculty: tt.facultyDetails || null,
-                registrationDate: null,
-                attendanceDate: null,
                 attendedClasses: null,
                 totalClasses: null,
                 attendancePercentage: null,
@@ -216,42 +214,49 @@ router.post("/", async (req, res) => {
         const marksRes = await (0, marks_1.getMarks)(cookieHeader, authorizedID, csrf, semesterId, client, courseCreditMap);
         const $$$ = cheerio.load(ttRes.data);
         const attendance = [];
-        $$$("#getStudentDetails table tbody tr").each((i, row) => {
+        $$$("#getStudentDetails table#AttendanceDetailDataTable tbody tr").each((i, row) => {
             const cols = $$$(row).find("td");
-            if (cols.length < 10)
+            if (cols.length < 8)
                 return;
+            const courseDetail = cols.eq(2).text().replace(/\s+/g, " ").trim();
+            const classDetail = cols.eq(3).text().replace(/\s+/g, " ").trim();
+            const courseMatch = courseDetail.match(/^([A-Z0-9]+)\s*-\s*(.+)$/) || "";
+            const classMatch = classDetail.match(/^([^-]+)\s*-\s*(.*?)\s*-\s*(.+)$/);
+            const onclick = cols.eq(9).find("a").attr("onclick") || null;
             attendance.push({
                 slNo: cols.eq(0).text().trim(),
-                courseCode: cols.eq(4).text().trim().startsWith("L")
-                    ? cols.eq(1).text().trim() + "(L)"
-                    : cols.eq(1).text().trim() + "(T)",
-                courseTitle: cols.eq(2).text().trim(),
-                courseType: cols.eq(3).text().trim(),
-                slotName: cols.eq(4).text().trim(),
-                faculty: cols.eq(5).text().replace(/\s+/g, " ").trim(),
-                registrationDate: cols.eq(7).text().trim(),
-                attendanceDate: cols.eq(8).text().trim(),
-                attendedClasses: parseInt(cols.eq(9).text().trim()),
-                totalClasses: parseInt(cols.eq(10).text().trim()),
-                attendancePercentage: cols.eq(11).text().trim(),
-                viewLink: cols.eq(13).find("a").attr("onclick") || null,
+                courseCode: courseMatch
+                    ? courseMatch[1] + (courseDetail.includes("Lab Only") ? "(L)" : "(T)")
+                    : courseDetail,
+                courseTitle: courseMatch?.[2]
+                    ?.replace(/\s*-\s*(Theory Only|Lab Only|Soft Skill)$/, "")
+                    .trim() || courseDetail,
+                courseType: courseDetail.match(/-\s*(Theory Only|Lab Only|Soft Skill)$/)?.[1] || null,
+                slotName: classMatch?.[2] || "NILL",
+                faculty: cols.eq(4).text().replace(/\s+/g, " ").trim(),
+                attendedClasses: parseInt(cols.eq(5).text().trim()) || 0,
+                totalClasses: parseInt(cols.eq(6).text().trim()) || 0,
+                attendancePercentage: cols.eq(7).text().replace("%", "").trim(),
+                viewLink: onclick,
             });
         });
         const mergedAttendance = mergeAttendanceWithTimetable(attendance, courseInfo);
         async function fetchDetail(course) {
             if (!course.viewLink || typeof course.viewLink !== "string")
                 return course;
-            const match = course.viewLink.match(/processViewAttendanceDetail\('([^']+)','([^']+)'\)/);
+            const match = course.viewLink.match(/callStudentAttendanceDetailDisplay\('([^']+)','([^']+)','([^']+)','([^']+)'\)/);
             if (!match)
                 return course;
-            const [, classId, slotName] = match;
+            const [, semesterSubId, studentId, classId, slotName] = match;
             try {
                 const attendanceRes = await client.post("/vtop/processViewAttendanceDetail", new url_1.URLSearchParams({
                     _csrf: String(csrf),
+                    semesterSubId: String(semesterSubId),
+                    registrationNumber: String(studentId),
                     authorizedID: String(authorizedID),
                     x: Date.now().toString(),
-                    classId: String(classId),
-                    slotName: String(slotName),
+                    courseId: String(classId),
+                    courseType: String(slotName),
                 }).toString(), {
                     headers: {
                         Cookie: cookieHeader,
@@ -262,9 +267,7 @@ router.post("/", async (req, res) => {
                 });
                 const $$$ = cheerio.load(attendanceRes.data);
                 const detailed = [];
-                $$$("table.table tr").each((i, row) => {
-                    if (i === 0)
-                        return;
+                $$$("table#StudentAttendanceDetailDataTable tbody tr").each((i, row) => {
                     const cols = $$$(row).find("td");
                     if (cols.length < 5)
                         return;

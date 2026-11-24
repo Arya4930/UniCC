@@ -21,8 +21,6 @@ export type attendanceItem = {
     courseType: string,
     slotName: string,
     faculty: string,
-    registrationDate: string,
-    attendanceDate: string,
     attendedClasses: number,
     totalClasses: number,
     attendancePercentage: string,

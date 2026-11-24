@@ -21,8 +21,6 @@ export type attendanceItem = {
   courseType: string | null,
   slotName: string,
   faculty: string | null,
-  registrationDate: string | null,
-  attendanceDate: string | null,
   attendedClasses: number | null,
   totalClasses: number | null,
   attendancePercentage?: string | null | undefined,
