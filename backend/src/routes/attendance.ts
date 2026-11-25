@@ -218,26 +218,29 @@ router.post("/", async (req: Request, res: Response) => {
 
             const courseDetail = cols.eq(2).text().replace(/\s+/g, " ").trim();
             const classDetail = cols.eq(3).text().replace(/\s+/g, " ").trim();
-            const courseMatch = courseDetail.match(/^([A-Z0-9]+)\s*-\s*(.+)$/) || "";
-            const classMatch = classDetail.match(/^([^-]+)\s*-\s*(.*?)\s*-\s*(.+)$/);
-            const onclick = cols.eq(9).find("a").attr("onclick") || null;
+
+            const courseMatch = courseDetail.match(/^([A-Z0-9]+)\s*-\s*(.+)$/);
+            const courseType = courseDetail.match(
+                /-\s*(Theory Only|Lab Only|Soft Skill|Embedded Lab|Embedded Theory)$/
+            )?.[1] || null;
+
+            const isLab = courseType === "Lab Only" || courseType === "Embedded Lab";
 
             attendance.push({
                 slNo: cols.eq(0).text().trim(),
                 courseCode: courseMatch
-                    ? courseMatch[1] + (courseDetail.includes("Lab Only") ? "(L)" : "(T)")
+                    ? `${courseMatch[1]}${isLab ? "(L)" : "(T)"}`
                     : courseDetail,
                 courseTitle: courseMatch?.[2]
-                    ?.replace(/\s*-\s*(Theory Only|Lab Only|Soft Skill)$/, "")
+                    ?.replace(/\s*-\s*(Theory Only|Lab Only|Soft Skill|Embedded Lab|Embedded Theory)$/, "")
                     .trim() || courseDetail,
-                courseType: courseDetail.match(/-\s*(Theory Only|Lab Only|Soft Skill)$/)?.[1] || null,
-                slotName: classMatch?.[2] || "NILL",
+                courseType,
+                slotName: classDetail.match(/^[^-]+\s*-\s*(.*?)\s*-\s*.+$/)?.[1] || "NILL",
                 faculty: cols.eq(4).text().replace(/\s+/g, " ").trim(),
                 attendedClasses: parseInt(cols.eq(5).text().trim()) || 0,
                 totalClasses: parseInt(cols.eq(6).text().trim()) || 0,
                 attendancePercentage: cols.eq(7).text().replace("%", "").trim(),
-                viewLink: onclick,
-
+                viewLink: cols.eq(9).find("a").attr("onclick") || null,
             });
         });
 
