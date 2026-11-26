@@ -179,25 +179,25 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
     };
   }, []);
 
-  const [stats, setStats] = useState(null);
+  // const [stats, setStats] = useState(null);
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await fetch(`${API_BASE}/api/attendance/marks?classId=${course.classNbr}`);
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.error || "Failed to fetch class statistics");
-        }
-        setStats(data);
-      } catch (error) {
-        console.error("Error fetching class statistics:", error);
-      }
-    };
-    fetchStats();
-  }, [course.classNbr]);
+  // useEffect(() => {
+  //   const fetchStats = async () => {
+  //     try {
+  //       const response = await fetch(`${API_BASE}/api/attendance/marks?classId=${course.classNbr}`);
+  //       const data = await response.json();
+  //       if (!response.ok) {
+  //         throw new Error(data.error || "Failed to fetch class statistics");
+  //       }
+  //       setStats(data);
+  //     } catch (error) {
+  //       console.error("Error fetching class statistics:", error);
+  //     }
+  //   };
+  //   fetchStats();
+  // }, [course.classNbr]);
 
-  const dataPoints = stats ? (stats.dataPoints ?? stats.count ?? 0) : 0;
+  // const dataPoints = stats ? (stats.dataPoints ?? stats.count ?? 0) : 0;
 
   return (
     <div data-scrollable className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
@@ -207,7 +207,7 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
         </h2>
         <p className="mb-1">
           <strong>Course Total:</strong> {courseTotal}{" "}
-          {stats && (() => {
+          {/* {stats && (() => {
             const difference = Number(courseTotal.split("/")[0]) - stats.mean;
             const isBelow = difference < 0;
 
@@ -219,7 +219,7 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
                 ({difference > 0 ? "+" : ""}{formatNumber(difference)} {isBelow ? "below" : "above"} class mean, {dataPoints} datapoints)
               </span>
             );
-          })()}
+          })()} */}
         </p>
         <p className="mb-1">
           <strong>Faculty:</strong> {course.faculty}
@@ -309,7 +309,7 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
             </div>
           )}
         </div>
-        {stats && (
+        {/* {stats && (
           <div className="mt-4 p-4 border rounded text-sm">
             <div className="text-lg font-semibold">Beta feature — Grade prediction</div>
             <p className="mb-2 text-md text-gray-700 dark:text-gray-300 midnight:text-gray-300">
@@ -327,10 +327,10 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
         )}
         {stats && (
           <div className="overflow-x-auto mt-6">
-            {/* <p className="mb-2 text-sm text-gray-700 dark:text-gray-300 midnight:text-gray-300">
+            <p className="mb-2 text-sm text-gray-700 dark:text-gray-300 midnight:text-gray-300">
               Data points: {dataPoints} | Mean: {formatNumber(stats.mean)} / 60 | SD: {formatNumber(stats.sd)}
-            </p> */}
-            {/* <table className="w-full border border-gray-300 dark:border-gray-600 midnight:border-gray-700">
+            </p>
+            <table className="w-full border border-gray-300 dark:border-gray-600 midnight:border-gray-700">
               <thead>
                 <tr className="bg-gray-200 dark:bg-slate-700 midnight:bg-gray-900">
                   <th
@@ -397,9 +397,9 @@ function MakrsModal({ course, labCourse, totals, courseTotal, onClose }) {
                   );
                 })()}
               </tbody>
-            </table> */}
+            </table>
           </div>
-        )}
+        )} */}
         <Button
           variant="ghost"
           size="icon"
