@@ -243,9 +243,6 @@ export default function AutoReload({settings}: {settings?: settings}) {
                                                         <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 midnight:text-gray-100">
                                                             {formatTime12Hour(time)}
                                                         </span>
-                                                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                                                            ({time})
-                                                        </span>
                                                     </div>
 
                                                     <motion.button
