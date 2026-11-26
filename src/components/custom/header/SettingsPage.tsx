@@ -10,8 +10,9 @@ import { Switch } from "@/components/ui/switch";
 import Links from "./Links";
 import Files from "./Files";
 import PushNotificationManager from "@/app/pushNotificationManager";
+import AutoReload from "./autoReload";
 
-export default function SettingsPage({ handleClose, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading, handleLogOutRequest, username, password, setPassword, decimalValues, setDecimalValues, loadingScreen, setLoadingScreen }) {
+export default function SettingsPage({ handleClose, currSemesterID, setCurrSemesterID, handleLogin, setIsReloading, handleLogOutRequest, username, password, setPassword, settings, decimalValues, setDecimalValues, loadingScreen, setLoadingScreen }) {
     const [selectedSemester, setSelectedSemester] = useState<string>(currSemesterID);
     const [changeUsername, setChangedUsername] = useState<string>(username);
     const [changedPassword, setChangedPassword] = useState<string>(password);
@@ -165,6 +166,9 @@ export default function SettingsPage({ handleClose, currSemesterID, setCurrSemes
                         onCheckedChange={setLoadingScreen}
                     />
                 </div>
+            </div>
+            <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-4">
+                <AutoReload settings={settings} />
             </div>
 
             {/* <div className="w-full max-w-3xl border-t border-gray-300 dark:border-gray-700 midnight:border-gray-800 py-4">

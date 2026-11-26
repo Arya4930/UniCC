@@ -16,7 +16,8 @@ api/pnpm-lock.yaml
 /coverage
 /backend-go
 /src/app/test
-/src/lib
+/src/lib/bitmaps.ts
+/src/lib/solveCaptcha.ts
 
 # next.js
 /.next/

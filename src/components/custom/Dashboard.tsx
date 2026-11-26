@@ -19,6 +19,7 @@ import AllGradesDisplay from "./Exams/AllGradesDisplay";
 import { API_BASE } from "./Main";
 import MarksSubTab from "./Exams/MarksSubTab";
 import ScheduleSubTab from "./Exams/ScheduleSubTab";
+import Chepu from "./chepu";
 
 export default function DashboardContent({
   activeTab,
@@ -429,6 +430,7 @@ export default function DashboardContent({
             {HostelActiveSubTab === "leave" && <LeaveDisplay leaveData={hostelData.leaveHistory} handleHostelDetailsFetch={handleHostelDetailsFetch} />}
           </div>
         )}
+        <Chepu />
       </div>
     </div>
   );

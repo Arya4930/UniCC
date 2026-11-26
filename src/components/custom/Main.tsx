@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ReloadModal } from "./reloadModel";
 import LoginForm from "./loginForm";
 import DashboardContent from "./Dashboard";
@@ -14,13 +14,18 @@ import DomainMigration from "./DomainMigration";
 
 export const API_BASE = process.env.NODE_ENV === "production" ? "https://api-unicc.arya22.dev" : "http://localhost:3000";
 
-type settings = {
+export type settings = {
   decimalValues: boolean;
   CGPAHidden: boolean;
   attendancePercentageOrString: "percentage" | "str";
   currSemesterID: string;
   calendarType: "ALL" | "ALL02" | "ALL03" | "ALL05" | "ALL06" | "ALL08" | "ALL11" | "WEI";
   loadingScreen: boolean;
+  autoReload?: {
+    isOn: boolean;
+    times: string[];
+    lastReloadTime: string | null;
+  }
 }
 
 type IDs = {
@@ -36,7 +41,12 @@ const defaultSettings: settings = {
   attendancePercentageOrString: "percentage",
   currSemesterID: config.semesterIDs[config.semesterIDs.length - 2],
   calendarType: "ALL",
-  loadingScreen: false
+  loadingScreen: false,
+  autoReload: {
+    isOn: false,
+    times: ["11:59", "18:00"],
+    lastReloadTime: null,
+  }
 };
 
 const defaultIDs: IDs = {
@@ -75,6 +85,7 @@ export default function LoginPage() {
   const [isAPIworking, setIsAPIworking] = useState<boolean>(false);
   const [demoMode, setDemoMode] = useState<boolean>(false);
   const [settings, setSettings] = useState<settings>(defaultSettings);
+  const hasCheckedAutoReload = useRef<boolean>(false);
 
   useEffect(() => {
     const day = new Date().toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
@@ -432,6 +443,20 @@ export default function LoginPage() {
       )
       await Promise.all(tasks);
 
+      const nowISO = new Date().toISOString();
+      setSettings(prev => {
+        const updated: settings = {
+          ...prev,
+          autoReload: {
+            isOn: prev.autoReload?.isOn ?? false,
+            times: prev.autoReload?.times ?? ["11:59", "18:00"],
+            lastReloadTime: nowISO,
+          },
+        };
+        localStorage.setItem("settings", JSON.stringify(updated));
+        return updated;
+      });
+
       setProgressBar(100);
       setIsLoggedIn(true);
       setIsReloading(false);
@@ -494,6 +519,59 @@ export default function LoginPage() {
       window.removeEventListener("online", goOnline);
     };
   }, []);
+
+  // --- Auto-Reload Check on App Open ---
+  useEffect(() => {
+    if (isLoading || hasCheckedAutoReload.current || isReloading || !isLoggedIn || demoMode) {
+      return;
+    }
+
+    if (isOffline || (typeof navigator !== "undefined" && !navigator.onLine)) {
+      return;
+    }
+
+    if (!IDs.VtopUsername || !IDs.VtopPassword) {
+      return;
+    }
+
+    const autoReload = settings.autoReload;
+    if (!autoReload?.isOn || !Array.isArray(autoReload.times) || autoReload.times.length === 0) {
+      return;
+    }
+
+    const now = new Date();
+    let mostRecentScheduledTime: number | null = null;
+
+    for (const timeStr of autoReload.times) {
+      const [hours, minutes] = timeStr.split(":").map(Number);
+      if (isNaN(hours) || isNaN(minutes)) continue;
+
+      const scheduled = new Date(now);
+      scheduled.setHours(hours, minutes, 0, 0);
+
+      if (now.getTime() < scheduled.getTime()) {
+        scheduled.setDate(scheduled.getDate() - 1);
+      }
+
+      const scheduledMs = scheduled.getTime();
+      if (mostRecentScheduledTime === null || scheduledMs > mostRecentScheduledTime) {
+        mostRecentScheduledTime = scheduledMs;
+      }
+    }
+
+    if (mostRecentScheduledTime !== null) {
+      const lastReload = autoReload.lastReloadTime
+        ? new Date(autoReload.lastReloadTime).getTime()
+        : 0;
+
+      if (!lastReload || isNaN(lastReload) || lastReload < mostRecentScheduledTime) {
+        hasCheckedAutoReload.current = true;
+        handleReloadRequest();
+      } else {
+        hasCheckedAutoReload.current = true;
+      }
+    }
+  }, [isLoading, isLoggedIn, IDs, settings, isReloading, isOffline, demoMode]);
 
   const handleDemoClick = () => {
     setDemoMode(true);

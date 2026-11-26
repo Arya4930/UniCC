@@ -45,6 +45,7 @@ export default function NavigationTabs({
           password={password}
           username={username}
           setPassword={setPassword}
+          settings={settings}
           decimalValues={settings.decimalValues}
           setDecimalValues={(val: boolean) => {
               setSettings(prev => ({ ...prev, decimalValues: val }))
