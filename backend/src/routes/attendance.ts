@@ -225,6 +225,7 @@ router.post("/", async (req: Request, res: Response) => {
             )?.[1] || null;
 
             const isLab = courseType === "Lab Only" || courseType === "Embedded Lab";
+            const attendancePercent = cols.eq(7).text().replace("%", "").trim();
 
             attendance.push({
                 slNo: cols.eq(0).text().trim(),
@@ -239,7 +240,7 @@ router.post("/", async (req: Request, res: Response) => {
                 faculty: cols.eq(4).text().replace(/\s+/g, " ").trim(),
                 attendedClasses: parseInt(cols.eq(5).text().trim()) || 0,
                 totalClasses: parseInt(cols.eq(6).text().trim()) || 0,
-                attendancePercentage: cols.eq(7).text().replace("%", "").trim(),
+                attendancePercentage: Number.isFinite(Number(attendancePercent)) ? attendancePercent : "0",
                 viewLink: cols.eq(9).find("a").attr("onclick") || null,
             });
         });
